@@ -1,0 +1,167 @@
+:root {
+  /* colors */
+  --main-background: linear-gradient(180deg, rgba(233, 205, 191, 0.8) 0%, rgb(224, 169, 127) 100%);
+  --golden: #fbb270;
+  --black-font: #252525;
+  --dark-golden: #845c3a;
+}
+
+@font-face {
+  font-weight: 400; /* Соответствует значению normal */
+  font-family: Almendra;
+  src: url("./fonts/Almendra-Regular.ttf");
+}
+
+@font-face {
+  font-weight: 700; /* Соответствует значению bold */
+  font-family: Almendra;
+  src: url("./fonts/Almendra-Bold.ttf");
+}
+
+.w-90 {
+  max-width: 1000px;
+  width: 90%;
+}
+
+.text-mute {
+  opacity: 0.7;
+}
+
+.main {
+  background: var(--main-background);
+  font-family: "Roboto-Regular", Helvetica;
+  line-height: 2rem;
+  color: var(--black-font);
+  padding-bottom: 5rem;
+}
+
+.cover {
+  width: 100%;
+  height: 100vh;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-image: url("./assets/Cover_back.png");
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.logo-set {
+  display: flex;
+  flex-direction: column;
+  min-width: 350px;
+}
+
+.main-logo {
+  max-width: 400px;
+}
+
+.buttons-set {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  margin-top: 50px;
+}
+
+.main-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2rem;
+  padding: 0;
+  justify-content: center;
+}
+
+h1.title {
+  font-family: "Almendra", Helvetica;
+  font-weight: 700;
+  font-size: 4rem;
+  margin-top: 6rem;
+  word-wrap: break-word;
+  line-height: 4rem;
+}
+
+h2 {
+  font-size: 3rem;
+  line-height: 4rem;
+}
+
+h3 {
+  font-size: 2rem;
+}
+
+.hr-double {
+  color: var(--dark-golden);
+  border: solid;
+  height: 2px;
+  width: 100%;
+}
+
+.hr-thin {
+  color: var(--dark-golden);
+  border: none;
+  border-top: 2px solid var(--dark-golden);
+  height: 3px;
+  width: 100%;
+  margin-bottom: 3rem;
+}
+
+.game-factions-set {
+  margin: 6rem 0 4rem 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem 2rem;
+  width: 100%;
+  justify-content: space-between;
+}
+
+.factions-logo {
+  width: 10rem;
+}
+
+.feature-img {
+  width: 20rem;
+  height: 20rem;
+}
+
+.game-feature-set {
+  margin: 4rem 0 4rem 0;
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+  width: 100%;
+  gap: 3rem 4rem;
+}
+
+.game-feature-set-r {
+  margin: 4rem 0 4rem 0;
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row-reverse;
+  justify-content: space-around;
+  align-items: center;
+  width: 100%;
+  gap: 3rem 4rem;
+}
+
+.feature-text {
+  margin: 0;
+  padding: 0;
+  width: 20rem;
+  flex-grow: 2;
+  vertical-align: top;
+}
+
+.flex-reverse {
+  flex-direction: row;
+}
+
+@media screen and (max-width: 767px) {
+  html {
+    font-size: 12px;
+  }
+}

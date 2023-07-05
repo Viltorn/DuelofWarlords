@@ -1,0 +1,22 @@
+{
+  "name": "duelofwarlords",
+  "version": "1.0.0",
+  "description": "tcg  game",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Viltorn/DuelofWarlords.git"
+  },
+  "keywords": [
+    "game"
+  ],
+  "author": "Viltorn",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Viltorn/DuelofWarlords/issues"
+  },
+  "homepage": "https://github.com/Viltorn/DuelofWarlords#readme"
+}
