@@ -28,6 +28,9 @@ export default {
     GameDescriptTitle: 'ОПИСАНИЕ ИГРЫ',
     GameFactionsTitle: 'ИГРОВЫЕ ФРАКЦИИ',
     GameFeaturesTitle: 'ИГРОВЫЕ ОСОБЕННОСТИ',
+    PageNotFound: 'Страница не найдена',
+    YouCanChangeover: 'Вы можете перейти',
+    GoToMain: 'на главную страницу',
     errors: {
       WrongPhone: 'WhatsApp не найден для этого номера',
       AuthOrNetError: 'Ошибка авторизации или соединения',

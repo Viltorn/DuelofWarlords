@@ -1,0 +1,107 @@
+:root {
+  /* colors */
+  --main-background: linear-gradient(180deg, rgba(142.38, 77.71, 77.71, 0.8) 0%, rgb(91.37, 42.26, 42.26) 100%);
+  --golden: #fbb270;
+  --purple: #484860;
+  --light-gray: #ece8e8;
+  --dark-gray: #868686;
+  --white: #fff;
+}
+
+
+.primary-button {
+  align-items: center;
+  display: flex;
+  gap: 8px;
+  height: 55px;
+  justify-content: center;
+  padding: 12px 30px;
+  position: relative;
+  transition: all 0.3s ease;
+  width: fit-content;
+}
+
+.primary-button .label {
+  font-family: "Roboto-SemiBold", Helvetica;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0;
+  line-height: 24px;
+  position: relative;
+  text-align: center;
+  white-space: nowrap;
+  width: fit-content;
+}
+
+.primary-button .icon {
+  height: 20px !important;
+  min-width: 20px !important;
+  position: relative !important;
+}
+
+.primary-button.hover {
+  border: 3px solid;
+}
+
+.primary-button.default {
+  border: 3px solid;
+}
+
+.primary-button.primary {
+  border: 3px solid;
+}
+
+.primary-button.default.secondary {
+  background-color: var(--light-gray);
+  border-color: var(--purple);
+}
+
+.primary-button.hover.primary {
+  background-color: var(--golden);
+  border-color: var(--purple);
+}
+
+.primary-button.disabled.primary {
+  background-color: var(--dark-gray);
+  border-color: var(--golden);
+}
+
+.primary-button.hover.secondary {
+  background-color: var(--light-gray);
+  border-color: var(--golden);
+}
+
+.primary-button.default.primary {
+  background-color: var(--purple);
+  border-color: var(--golden);
+}
+
+.primary-button.disabled.secondary {
+  background-color: var(--white);
+  border: 1px solid;
+  border-color: var(--dark-gray);
+}
+
+.primary-button.default.secondary .label {
+  color: var(--purple);
+}
+
+.primary-button.hover.primary .label {
+  color: var(--purple);
+}
+
+.primary-button.disabled.primary .label {
+  color: var(--dark-gray);
+}
+
+.primary-button.hover.secondary .label {
+  color: var(--golden);
+}
+
+.primary-button.default.primary .label {
+  color: var(--golden);
+}
+
+.primary-button.disabled.secondary .label {
+  color: var(--dark-gray);
+}

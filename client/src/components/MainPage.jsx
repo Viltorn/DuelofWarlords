@@ -1,7 +1,7 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import PrimaryButton from './PrimaryButton';
-import '../style.css';
+// import '../style.css';
 import '../MainPage.css';
 import LogoMain from '../assets/Logo_main.png';
 import CastleLogo from '../assets/Castle_logo.png';
@@ -11,6 +11,10 @@ import DungeonLogo from '../assets/Dungeon_logo.png';
 import BattlefieldTactics from '../assets/Battlefield_tactics.png';
 import SpellCast from '../assets/Spell_cast.png';
 import HeroPower from '../assets/Hero_power.png';
+import Paladin from '../assets/Paladin_logo.png';
+import Mage from '../assets/Mage_logo.png';
+import Hunter from '../assets/Hunter_logo.png';
+import Assasin from '../assets/Assasin_logo.png';
 
 const MainPage = () => {
   const { t } = useTranslation();
@@ -69,10 +73,30 @@ const MainPage = () => {
             {t('hoverPictures')}
           </p>
           <div className="game-factions-set">
-            <img className="factions-logo" alt="Castle logo" src={CastleLogo} />
-            <img className="factions-logo" alt="Forest logo" src={ForestLogo} />
-            <img className="factions-logo" alt="Academia logo" src={AcademiaLogo} />
-            <img className="factions-logo" alt="Dungeon logo" src={DungeonLogo} />
+            <div className="card">
+              <div className="wrapper">
+                <img src={CastleLogo} alt="Castle logo" className="factions-logo cover-image" />
+              </div>
+              <img src={Paladin} alt="paladin logo" className="character" />
+            </div>
+            <div className="card">
+              <div className="wrapper">
+                <img src={ForestLogo} alt="Forest logo" className="factions-logo cover-image" />
+              </div>
+              <img src={Hunter} alt="paladin logo" className="character" />
+            </div>
+            <div className="card">
+              <div className="wrapper">
+                <img src={AcademiaLogo} alt="Academia logo" className="factions-logo cover-image" />
+              </div>
+              <img src={Mage} alt="paladin logo" className="character" />
+            </div>
+            <div className="card">
+              <div className="wrapper">
+                <img src={DungeonLogo} alt="Dungeon logo" className="factions-logo cover-image" />
+              </div>
+              <img src={Assasin} alt="paladin logo" className="character" />
+            </div>
           </div>
         </div>
         <div className="game-description w-90">
