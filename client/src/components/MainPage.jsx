@@ -1,5 +1,6 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
+import { Link } from 'react-router-dom';
 import PrimaryButton from './PrimaryButton';
 // import '../style.css';
 import '../MainPage.css';
@@ -24,27 +25,32 @@ const MainPage = () => {
         <div className="logo-set">
           <img className="main-logo" alt="Logo main" src={LogoMain} />
           <div className="buttons-set">
-            <PrimaryButton
-              showIcon={false}
-              state="default"
-              text="ПОДРОБНЕЕ"
-              type="primary"
-            />
-            <PrimaryButton
-              showIcon={false}
-              state="default"
-              text="ОБУЧЕНИЕ"
-              type="secondary"
-            />
+            <a href="#description" className="link">
+              <PrimaryButton
+                showIcon={false}
+                state="default"
+                text="ПОДРОБНЕЕ"
+                type="primary"
+              />
+            </a>
+            <Link to="/battle" className="link">
+              <PrimaryButton
+                showIcon={false}
+                state="default"
+                text="ОБУЧЕНИЕ"
+                type="secondary"
+              />
+            </Link>
+
           </div>
         </div>
       </div>
-      <section className="main-section">
+      <section className="main-section" id="description">
         <div className="main-description w-90">
           <h1 className="title">
             Duel of Warlords
           </h1>
-          <p>
+          <p className="description-big">
             {t('mainDescription')}
           </p>
           <p className="text-mute">
@@ -58,7 +64,7 @@ const MainPage = () => {
           <h2>
             {t('GameDescriptTitle')}
           </h2>
-          <p>
+          <p className="description-normal">
             {t('gameDescription')}
           </p>
         </div>
@@ -66,7 +72,7 @@ const MainPage = () => {
           <h2>
             {t('GameFactionsTitle')}
           </h2>
-          <p>
+          <p className="description-normal">
             {t('gameFactions')}
           </p>
           <p className="text-mute">
@@ -140,37 +146,12 @@ const MainPage = () => {
           </div>
         </div>
         <hr className="w-90 hr-double" />
-        <PrimaryButton showIcon={false} state="default" text="ОБУЧЕНИЕ" type="primary" />
+        <Link to="/battle" className="link">
+          <PrimaryButton showIcon={false} state="default" text="ОБУЧЕНИЕ" type="primary" />
+        </Link>
       </section>
     </div>
   );
 };
 
 export default MainPage;
-
-/* <div className="frame-3">
-        <div className="text-wrapper-4">{t('GameDescriptTitle')}</div>
-      </div>
-      <div className="frame-3">
-        <p className="p">
-          {t('gameEssentoials')}
-        </p>
-      </div>
-      <div className="frame-4">
-        <img className="img-2" alt="Castle logo" src={CastleLogo} />
-        <img className="img-2" alt="Forest logo" src={ForestLogo} />
-        <img className="img-2" alt="Academia logo" src={AcademiaLogo} />
-        <img className="dungeon-logo" alt="Dungeon logo" src={DungeonLogo} />
-      </div>
-      <div className="frame-3">
-        <p className="p">
-          {t('gameDescription')}
-        </p>
-      </div>
-      <div className="griffon-and-field-wrapper">
-        <img className="griffon-and-field" alt="Griffon and field" src={GriffonAndTile} />
-      </div>
-      <hr />
-      <PrimaryButton showIcon={false} state="default" text="ОБУЧЕНИЕ" type="primary" />
-    </div>
-    </div> */

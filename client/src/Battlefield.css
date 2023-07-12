@@ -1,0 +1,273 @@
+:root {
+  --cell-width: 6.5rem;
+  --hand-card-width: 8rem;
+  --dark-color: #3F3A3A;
+  --light-brown-color: #E0A97F;
+  --dark-red-color: #C65B4D;
+  --white-color: rgb(238, 238, 238);
+  --black-color: rgb(21, 21, 21);
+}
+
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+.grow-2 {
+  flex-grow: 2;
+}
+
+/* Battlfield */
+
+.container {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: center;
+  align-items: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-image: url("./assets/battlefield/Battlefield-cover.png");
+  background-position: center;
+  height: 100vh;
+}
+
+.battlefield-container {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: center;
+  align-items: flex-end;
+  margin-top: 0;
+  gap: 2rem;
+  padding: 0;
+}
+
+.battlefield-topspells {
+  display: flex;
+  justify-content: center;
+  grid-column-gap: 0.8rem;
+}
+
+.battlefield-core {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  justify-content: center;
+  gap: 1rem;
+  justify-items: center;
+}
+
+.battlefield-center {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+}
+
+.battlefield-side-container {
+  display: grid;
+  grid-template-columns: repeat(2, auto);
+  grid-template-rows: repeat(4, auto);
+  grid-gap: 0.2rem;
+}
+
+.battlefield-midspell-container {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  justify-content: center;
+  gap: 2rem;
+  justify-items: center;
+}
+
+/* Cells */
+
+.default-cell-size {
+  width: calc(var(--cell-width) - 0.8rem);
+  height: calc(var(--cell-width) - 0.8rem); 
+  /* calc((var(--cell-width) - 0.8rem) * 1.14); */
+}
+
+.default-cell-font {
+  font-family: "Roboto-Bold", Helvetica;
+  font-size: 0.6rem;
+  word-break: break-word;
+  text-align: center;
+}
+
+.cell-spell {
+  display: flex;
+  justify-content: center;
+  border: 0.2rem solid var(--dark-color);
+  border-radius: 0.3rem;
+  align-items: center;
+  background-color: var(--light-brown-color), 0.7;
+  padding: 0.3rem;
+}
+
+.cell-big-spell {
+  width: calc(var(--cell-width) + 0.5rem);
+  height: calc(var(--cell-width) - 0.8rem);
+}
+
+.cell-field {
+  background-image: url('./assets/battlefield/WarriorCell_square_withback.png');
+  position: relative;
+  background-color: none;
+  background-size: cover;
+  background-repeat: no-repeat;
+  border: none;
+  width: calc(var(--cell-width));
+  height: calc(var(--cell-width) * 1.14);
+  padding: 0.5rem;
+}
+
+.fieldcell-image {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+/* HeroPad */
+
+.hero-container-1 {
+  display: grid;
+  grid-template-columns: repeat(2, auto);
+  grid-template-rows: repeat(2, auto);
+  gap: 1.3rem;
+}
+
+.hero-container-2 {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  gap: 1.3rem;
+  justify-content: top;
+  margin-top: 0.5rem;
+}
+
+.cell-hero-pad {
+  display: flex;
+  justify-content: center;
+  border-color: var(--dark-color);
+  border: 0.2rem solid var(--dark-color);
+  border-radius: 0.3rem;
+  align-items: center;
+  background-color: var(--dark-red-color);
+  width: calc(var(--cell-width) - 0.8rem);
+  height: calc((var(--cell-width) - 0.8rem) * 1.14);
+}
+
+.deck-container {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 1rem;
+}
+
+.reverse-flex-row {
+  flex-direction: row-reverse;
+}
+
+/* Hands */
+
+.hands-container {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  justify-content: flex-end;
+  align-items: flex-end;
+  width: 100%;
+  gap: 1rem;
+}
+
+.player-hand {
+  min-height: 15rem;
+  width: 35rem;
+  min-width: 25rem;
+  border: 0.2rem solid var(--dark-color);
+  border-radius: 0.3rem;
+  padding: 1rem;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.card-hand {
+  width: var(--hand-card-width);
+  height: calc(var(--hand-card-width) * 1.6);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  padding: 0;
+  margin: 0;
+  gap: 0;
+  overflow: hidden;
+  border: 0.2rem solid var(--black-color);
+  border-radius: 0.5rem;
+  transition: transform 0.3s;
+  z-index: 1;
+}
+
+.card-hand:last-child {
+  margin-right: 0;
+}
+
+.card-hand:hover {
+  transform: scale(1.3);
+  z-index: 100;
+}
+
+.card-image-container {
+  position: relative;
+  width: 100%;
+  height: auto;
+}
+
+.card-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.card-image-container h3 {
+  color: var(--white-color);
+  font-family: "Roboto-Bold", Helvetica;
+  text-shadow: 1px 0 0 var(--dark-color),0 1px 0 var(--dark-color), -1px 0 0 var(--dark-color),0 -1px 0 var(--dark-color);
+  font-size: 1.2rem;
+  position: absolute;
+}
+.warrior-power {
+  left: 0.3rem;
+  top: 0.15rem;
+}
+
+.warrior-health {
+  right: 0.5rem;
+  top: 0.18rem;
+}
+
+.card-hand-description {
+  display: flex;
+  padding: 0.3rem;
+  margin: 0;
+  background: var(--light-brown-color);
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.card-hand-description > p {
+  font-size: 0.5rem;
+}
+
+.card-back {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}

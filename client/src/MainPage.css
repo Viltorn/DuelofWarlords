@@ -31,6 +31,10 @@
   opacity: 0.7;
 }
 
+.link {
+  text-decoration: none;
+}
+
 .main {
   background: var(--main-background);
   font-family: "Roboto-Regular", Helvetica;
@@ -45,6 +49,7 @@
   background-size: cover;
   background-repeat: no-repeat;
   background-image: url("./assets/Cover_back.png");
+  background-position: center;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -75,6 +80,14 @@
   gap: 2rem;
   padding: 0;
   justify-content: center;
+}
+
+.description-big {
+  font-size: 1.4rem;
+}
+
+.description-normal {
+  font-size: 1.2rem;
 }
 
 h1.title {
@@ -155,6 +168,7 @@ h3 {
 .feature-text {
   margin: 0;
   padding: 0;
+  font-size: 1.2rem;
   width: 20rem;
   flex-grow: 2;
   vertical-align: top;
@@ -255,6 +269,6 @@ h3 {
 
 @media screen and (max-width: 767px) {
   html {
-    font-size: 12px;
+    font-size: 13px;
   }
 }

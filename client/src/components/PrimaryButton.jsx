@@ -32,7 +32,7 @@ const PrimaryButton = ({
   });
 
   return (
-    <div
+    <button
       className={`primary-button ${state.state} ${state.type} ${className}`}
       onMouseLeave={() => {
         dispatch('mouse_leave');
@@ -40,9 +40,10 @@ const PrimaryButton = ({
       onMouseEnter={() => {
         dispatch('mouse_enter');
       }}
+      type="button"
     >
       <div className="label">{text}</div>
-    </div>
+    </button>
   );
 };
 

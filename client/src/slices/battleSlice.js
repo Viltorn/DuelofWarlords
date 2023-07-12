@@ -9,7 +9,7 @@ const initialState = {
   currentChatId: '',
 };
 
-const chatsSlice = createSlice({
+const battleSlice = createSlice({
   name: 'chats',
   initialState,
   reducers: {
@@ -83,5 +83,5 @@ const chatsSlice = createSlice({
   },
 });
 
-export const { actions } = chatsSlice;
-export default chatsSlice.reducer;
+export const { actions } = battleSlice;
+export default battleSlice.reducer;
