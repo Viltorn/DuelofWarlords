@@ -7,37 +7,37 @@ const Header = () => {
 
   return (
     <div className="header">
-      <div>
-        <h2>
+      <div className="players-info">
+        <h3 className="title-main-font">
           {t('Player')}
           1:
-        </h2>
-        <h2>
+        </h3>
+        <h3 className="title-main-font">
           {' '}
           Viktor
-        </h2>
+        </h3>
       </div>
       <div className="counter">
-        <h2>1</h2>
+        <h3 className="counter-number">1</h3>
       </div>
       <PrimaryButton
         showIcon={false}
         state="default"
-        text="ПОДРОБНЕЕ"
+        text="ЗАКОНЧИТЬ ХОД"
         type="primary"
       />
-      <div>
-        <h2>
+      <div className="counter">
+        <h3 className="counter-number">1</h3>
+      </div>
+      <div className="players-info">
+        <h3 className="title-main-font">
           {t('Player')}
-          2
-        </h2>
-        <h2>
+          2:
+        </h3>
+        <h3 className="title-main-font">
           {' '}
           AI
-        </h2>
-      </div>
-      <div className="counter">
-        <h2>1</h2>
+        </h3>
       </div>
     </div>
   );

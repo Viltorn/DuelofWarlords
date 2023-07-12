@@ -3,9 +3,10 @@
   --main-background: linear-gradient(180deg, rgba(142.38, 77.71, 77.71, 0.8) 0%, rgb(91.37, 42.26, 42.26) 100%);
   --golden: #fbb270;
   --purple: #484860;
-  --light-gray: #ece8e8;
+  --light-gray: #e1e1e1;
   --dark-gray: #868686;
   --white: #fff;
+  --dark-red-color: #C65B4D;
 }
 
 
@@ -72,8 +73,8 @@
 }
 
 .primary-button.default.primary {
-  background-color: var(--purple);
-  border-color: var(--golden);
+  background-color: var(--dark-red-color);
+  border-color: var(--purple);
 }
 
 .primary-button.disabled.secondary {
@@ -99,7 +100,7 @@
 }
 
 .primary-button.default.primary .label {
-  color: var(--golden);
+  color: var(--light-gray);
 }
 
 .primary-button.disabled.secondary .label {

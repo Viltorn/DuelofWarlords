@@ -109,7 +109,7 @@ const MainPage = () => {
           <h2>
             {t('GameFeaturesTitle')}
           </h2>
-          <div>
+          <div className="mt-2">
             <h3>
               {t('Battlefield')}
             </h3>

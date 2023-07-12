@@ -39,6 +39,8 @@ export default {
     PostponedSpell: 'ОТЛОЖЕННАЯ КАРТА',
     Graveyard: 'СТОК',
     Deck: 'КОЛОДА',
+    RotateScreen: 'Поверните экран',
+    ActiveCard: 'Aктивная карта',
     errors: {
       WrongPhone: 'WhatsApp не найден для этого номера',
       AuthOrNetError: 'Ошибка авторизации или соединения',

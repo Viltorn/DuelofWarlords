@@ -16,7 +16,7 @@ const HandCard = ({ card, player }) => {
 
   const cardElement = useRef();
   // const margin = 5 * 0.8;
-  const marginRight = 10 * 0.4;
+  const marginRight = 6 * 0.5;
 
   const handleMouseEnter = () => {
     let nextSib = cardElement.current.nextSibling;
