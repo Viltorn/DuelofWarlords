@@ -9,8 +9,8 @@ const Header = () => {
     <div className="header">
       <div className="players-info">
         <h3 className="title-main-font">
-          {t('Player')}
-          1:
+          {t('Player1')}
+          :
         </h3>
         <h3 className="title-main-font">
           {' '}
@@ -31,8 +31,8 @@ const Header = () => {
       </div>
       <div className="players-info">
         <h3 className="title-main-font">
-          {t('Player')}
-          2:
+          {t('Player2')}
+          :
         </h3>
         <h3 className="title-main-font">
           {' '}

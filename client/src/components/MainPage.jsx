@@ -47,21 +47,21 @@ const MainPage = () => {
       </div>
       <section className="main-section" id="description">
         <div className="main-description w-90">
-          <h1 className="title">
+          <h1 className="main-title">
             Duel of Warlords
           </h1>
           <p className="description-big">
             {t('mainDescription')}
           </p>
-          <p className="text-mute">
+          <a href="/" className="text-mute">
             &gt;&gt;
             {' '}
             {t('moreAboutMMdoc')}
-          </p>
+          </a>
         </div>
         <hr className="w-90 hr-double" />
         <div className="game-description w-90">
-          <h2>
+          <h2 className="main-h2">
             {t('GameDescriptTitle')}
           </h2>
           <p className="description-normal">
@@ -69,7 +69,7 @@ const MainPage = () => {
           </p>
         </div>
         <div className="game-description w-90">
-          <h2>
+          <h2 className="main-h2">
             {t('GameFactionsTitle')}
           </h2>
           <p className="description-normal">
@@ -106,11 +106,11 @@ const MainPage = () => {
           </div>
         </div>
         <div className="game-description w-90">
-          <h2>
+          <h2 className="main-h2">
             {t('GameFeaturesTitle')}
           </h2>
           <div className="mt-2">
-            <h3>
+            <h3 className="main-h3">
               {t('Battlefield')}
             </h3>
             <div className="game-feature-set">
@@ -122,7 +122,7 @@ const MainPage = () => {
           </div>
           <hr className="w-90 hr-thin" />
           <div>
-            <h3>
+            <h3 className="main-h3">
               {t('Heroes')}
             </h3>
             <div className="game-feature-set-r">
@@ -134,7 +134,7 @@ const MainPage = () => {
           </div>
           <hr className="w-90 hr-thin" />
           <div>
-            <h3>
+            <h3 className="main-h3">
               {t('Spells')}
             </h3>
             <div className="game-feature-set">

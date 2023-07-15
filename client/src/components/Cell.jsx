@@ -2,15 +2,13 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import cn from 'classnames';
 
-const Cell = ({ props, id }) => {
+const Cell = ({ props }) => {
   const { t } = useTranslation();
   const {
     content,
     type,
     status,
   } = props;
-
-  console.log(id);
 
   const classes = cn({
     'default-cell-size': true,

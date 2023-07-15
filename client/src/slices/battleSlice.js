@@ -1,26 +1,23 @@
 /* eslint-disable no-param-reassign */
 import { createSlice } from '@reduxjs/toolkit';
 import _ from 'lodash';
-import { actions as messagesActions } from './messagesSlice.js';
 
 const initialState = {
-  currentChats: [],
-  archiveChats: [],
-  currentChatId: '',
+  playerOneDeck: [],
+  playerTowDeck: [],
+  activeCard: null,
 };
 
 const battleSlice = createSlice({
-  name: 'chats',
+  name: 'battle',
   initialState,
   reducers: {
-    addChats(state, { payload }) {
-      const newChats = payload.map((chat) => {
-        if (chat.name === '') {
-          chat.name = _.uniqueId('User_');
-        }
-        return chat;
-      });
-      state.currentChats = [...newChats];
+    addActiveCard(state, { payload }) {
+      const newState = { ...payload, status: 'active' };
+      state.activeCard = newState;
+    },
+    deleteActiveCard(state) {
+      state.activeCard = null;
     },
     addChat(state, { payload }) {
       const newChat = payload;
@@ -59,27 +56,6 @@ const battleSlice = createSlice({
         return chat;
       });
     },
-  },
-  extraReducers: (builder) => {
-    builder
-      .addCase(messagesActions.addMessage, (state, { payload }) => {
-        const { chatId, senderName } = payload;
-        const name = senderName !== '' ? senderName : _.uniqueId('User_');
-        const oldChat = state.currentChats.find((chat) => chat.id === chatId);
-        if (!oldChat) {
-          state.currentChats = [{
-            id: chatId,
-            name,
-            type: 'user',
-            read: 'not',
-          }, ...state.currentChats];
-        }
-        if (oldChat && state.currentChatId !== chatId) {
-          const restChats = state.currentChats.filter((chat) => chat.id !== chatId);
-          oldChat.read = 'not';
-          state.currentChats = [oldChat, ...restChats];
-        }
-      });
   },
 });
 

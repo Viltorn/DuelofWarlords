@@ -41,6 +41,9 @@ export default {
     Deck: 'КОЛОДА',
     RotateScreen: 'Поверните экран',
     ActiveCard: 'Aктивная карта',
+    Player1: 'Игрок 1',
+    Player2: 'Игрок 2',
+    healthBar: 'ИЗМЕНИТЬ',
     errors: {
       WrongPhone: 'WhatsApp не найден для этого номера',
       AuthOrNetError: 'Ошибка авторизации или соединения',

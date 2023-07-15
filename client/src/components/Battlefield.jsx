@@ -1,10 +1,12 @@
 /* eslint-disable object-curly-newline */
 import React, { useState, useEffect } from 'react';
+import { useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import Cell from './Cell.jsx';
 import HeroPad from './HeroPad.jsx';
 import HandCard from './HandCard.jsx';
 import Header from './Header.jsx';
+import ActiveCard from './ActiveCard.jsx';
 import '../Battlefield.css';
 import cards from '../cardsData/Academia.js';
 import RotateScreen from '../assets/RotateScreen.png';
@@ -16,6 +18,7 @@ const linesSideTwo = ['3', '4'];
 const Battlefield = () => {
   const { t } = useTranslation();
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+  const { activeCard } = useSelector((state) => state.battleReducer);
 
   useEffect(() => {
     const handleWindowResize = () => {
@@ -41,15 +44,15 @@ const Battlefield = () => {
           <Header />
           <div className="battlefield-container">
             <div className="hands-container">
-              <div className="hero-pad-container flex-row">
-                <div className="active-card border-black">
-                  <h3 className="title-main-font">{t('ActiveCard')}</h3>
-                </div>
+              <div className="hero-pad-container">
+                {activeCard && (
+                  <ActiveCard card={activeCard} activeCard={activeCard} />
+                )}
                 <HeroPad player={1} cards={cards} />
               </div>
               <div className="player-hand">
                 {cards.map((card, index) => (
-                  <HandCard key={card.id} index={index} card={card} player="Player1" />
+                  <HandCard key={card.id} index={index} card={card} activeCard={activeCard} />
                 ))}
               </div>
             </div>

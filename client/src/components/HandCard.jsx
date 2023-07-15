@@ -2,9 +2,14 @@
 /* eslint-disable functional/no-let */
 import React, { useRef } from 'react';
 // import cn from 'classnames';
-import CardCover from '../assets/battlefield/Card_back.png';
+import { useDispatch } from 'react-redux';
+import cn from 'classnames';
+import { actions as battleActions } from '../slices/battleSlice.js';
 
-const HandCard = ({ card, player }) => {
+const HandCard = ({ card, activeCard }) => {
+  const dispatch = useDispatch();
+  const cardElement = useRef();
+  const marginRight = 6 * 0.5; /*  empirical number */
   const {
     type,
     power,
@@ -12,11 +17,21 @@ const HandCard = ({ card, player }) => {
     description,
     img,
     name,
+    id,
   } = card;
 
-  const cardElement = useRef();
-  // const margin = 5 * 0.8;
-  const marginRight = 6 * 0.5;
+  const classes = cn({
+    'card-hand': true,
+  });
+
+  const handleClick = () => {
+    const activeId = activeCard ? activeCard.id : null;
+    if (activeId !== id) {
+      dispatch(battleActions.addActiveCard(card));
+    } else {
+      dispatch(battleActions.deleteActiveCard(card));
+    }
+  };
 
   const handleMouseEnter = () => {
     let nextSib = cardElement.current.nextSibling;
@@ -35,24 +50,20 @@ const HandCard = ({ card, player }) => {
   };
 
   return (
-    <div className="card-hand" ref={cardElement} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave} style={{ marginRight: `-${marginRight}rem` }}>
-      {player === 'Player1' ? (
+    <button className={classes} type="button" ref={cardElement} onClick={handleClick} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave} style={{ marginRight: `-${marginRight}rem` }}>
+      <div className="card-image-container">
+        {type === 'warrior' && (
         <>
-          <div className="card-image-container">
-            {type === 'warrior' && (
-              <>
-                <h3 className="warrior-power">{power}</h3>
-                <h3 className="warrior-health">{health}</h3>
-              </>
-            )}
-            <img className="card-image" src={img} alt={name} />
-          </div>
-          <div className="card-hand-description">
-            <p>{description}</p>
-          </div>
+          <h3 className="warrior-power">{power}</h3>
+          <h3 className="warrior-health">{health}</h3>
         </>
-      ) : <img className="card-back" src={CardCover} alt="card cover" />}
-    </div>
+        )}
+        <img className="card-image" src={img} alt={name} />
+      </div>
+      <div className="card-hand-description">
+        <p>{description}</p>
+      </div>
+    </button>
   );
 };
 

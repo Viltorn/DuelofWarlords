@@ -28,11 +28,16 @@
 }
 
 .text-mute {
+  margin-top: 1rem;
+  text-decoration: none;
+  color: var(--black-font);
   opacity: 0.7;
 }
+
 .mt-2 {
  margin-top: 2rem;
 }
+
 .link {
   text-decoration: none;
 }
@@ -85,31 +90,35 @@
 }
 
 .description-big {
-  margin-top: 2rem;
-  font-size: 1.4rem;
+  margin: 2rem 0 1rem 0;
+  line-height: 40px;
+  font-size: 25px;
 }
 
 .description-normal {
   margin-top: 1.5rem;
-  font-size: 1.2rem;
+  line-height: 35px;
+  font-size: 20px;
 }
 
-h1.title {
+.main-title {
   font-family: "Almendra", Helvetica;
   font-weight: 700;
-  font-size: 4rem;
+  font-size: 60px;
   margin-top: 6rem;
   word-wrap: break-word;
   line-height: 4rem;
 }
 
-h2 {
-  font-size: 3rem;
+.main-h2 {
+  font-size: 40px;
   line-height: 4rem;
 }
 
-h3 {
-  font-size: 2rem;
+.main-h3 {
+  margin-top: 4rem;
+  text-align: center;
+  font-size: 30px;
 }
 
 .hr-double {
@@ -125,7 +134,6 @@ h3 {
   border-top: 2px solid var(--dark-golden);
   height: 3px;
   width: 100%;
-  margin-bottom: 3rem;
 }
 
 .game-factions-set {
@@ -172,7 +180,8 @@ h3 {
 .feature-text {
   margin: 0;
   padding: 0;
-  font-size: 1.2rem;
+  font-size: 20px;
+  line-height: 35px;
   width: 20rem;
   flex-grow: 2;
   vertical-align: top;
@@ -274,5 +283,38 @@ h3 {
 @media screen and (max-width: 767px) {
   html {
     font-size: 13px;
+  }
+  .text-mute {
+    font-size: 14px;
+  }
+
+  .main-title {
+    font-size: 45px;
+  }
+
+  .main-h2 {
+    font-size: 30px;
+  }
+
+  .main-h3 {
+    font-size: 20px;
+  }
+
+  .description-big {
+    text-justify: inter-word;
+    font-size: 20px;
+    line-height:30px;
+  }
+
+  .description-normal {
+    text-justify: inter-word;
+    font-size: 16px;
+    line-height:25px;
+  }
+
+  .feature-text {
+    text-justify: inter-word;
+    font-size: 16px;
+    line-height:25px;
   }
 }

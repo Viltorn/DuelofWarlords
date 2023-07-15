@@ -106,3 +106,9 @@
 .primary-button.disabled.secondary .label {
   color: var(--dark-gray);
 }
+
+@media screen and (max-width: 767px) {
+  .primary-button {
+    height: 45px;
+  }
+}
