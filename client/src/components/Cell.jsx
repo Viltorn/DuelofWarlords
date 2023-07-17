@@ -1,9 +1,13 @@
 import React from 'react';
+import { useDispatch, useStore } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import cn from 'classnames';
+import { actions as battleActions } from '../slices/battleSlice.js';
 
-const Cell = ({ props }) => {
+const Cell = ({ props, id }) => {
   const { t } = useTranslation();
+  const store = useStore();
+  const dispatch = useDispatch();
   const {
     content,
     type,
@@ -18,14 +22,37 @@ const Cell = ({ props }) => {
     inactive: status === 'inactive',
   });
 
+  const marginTop = content.length * 0.5;
+
+  const handleCellClick = () => {
+    const { activeCard } = store.getState().battleReducer;
+    console.log(activeCard);
+    if (activeCard) {
+      if (activeCard.type === 'warrior' && content.length === 0) {
+        dispatch(battleActions.addFieldContent({ activeCard, id }));
+      }
+    }
+  };
+
   return (
-    <div className={classes}>
-      {content.length !== 0 ? (
+    <button type="button" onClick={handleCellClick} className={classes}>
+      {content.length !== 0 && (
         content.map((item) => (
-          <img className="fieldcell-image" key={item.id} src={item.img} alt={item.name} />
+          <div key={item.id} className="cell-container__content" style={{ marginTop: `-${marginTop}rem` }}>
+            {item.type === 'warrior' && (
+            <>
+              <h3 className="cell-container__warrior-power">{item.power}</h3>
+              <h3 className="cell-container__warrior-health">{item.health}</h3>
+            </>
+            )}
+            <img className="cell-container__image" src={item.img} alt={item.name} />
+          </div>
         ))
-      ) : <h3 className="default-cell-font ">{t(`${type}`)}</h3>}
-    </div>
+      )}
+      {type !== 'field' && (
+        <h3 className="default-cell-font ">{t(`${type}`)}</h3>
+      )}
+    </button>
   );
 };
 

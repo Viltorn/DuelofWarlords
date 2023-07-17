@@ -1,10 +1,21 @@
 /* eslint-disable no-param-reassign */
 import { createSlice } from '@reduxjs/toolkit';
-import _ from 'lodash';
+import academiaDeck from '../game-data/academiaDeck.js';
+import makeFieldCells from '../utils/makeFieldCells.js';
+import makeShaffledDeck from '../utils/makeShaffledDeck.js';
+
+const cellsData = {
+  rows: ['1', '2', '3', '4'],
+  linesSideOne: ['1', '2'],
+  linesSideTwo: ['3', '4'],
+};
 
 const initialState = {
   playerOneDeck: [],
-  playerTowDeck: [],
+  playerOneHand: makeShaffledDeck(academiaDeck),
+  playerTwoHand: [],
+  playerTwoDeck: [],
+  fieldCells: makeFieldCells(cellsData),
   activeCard: null,
 };
 
@@ -13,48 +24,26 @@ const battleSlice = createSlice({
   initialState,
   reducers: {
     addActiveCard(state, { payload }) {
-      const newState = { ...payload, status: 'active' };
+      const { card, player } = payload;
+      const newState = { ...card, status: 'active', player };
       state.activeCard = newState;
     },
     deleteActiveCard(state) {
       state.activeCard = null;
     },
-    addChat(state, { payload }) {
-      const newChat = payload;
-      if (newChat.name === '') {
-        newChat.name = _.uniqueId('User_');
-      }
-      state.currentChats = [...state.currentChats, newChat];
-    },
-    addAvatar(state, { payload }) {
-      const { id, avatarUrl } = payload;
-      const newChats = state.currentChats.map((chat) => {
-        if (chat.id === id) {
-          chat.avatar = avatarUrl;
+    addFieldContent(state, { payload }) {
+      const { activeCard, id } = payload;
+      const newFieldCells = state.fieldCells.map((cell) => {
+        if (cell.id === id) {
+          cell.content = [...cell.content, activeCard];
         }
-        return chat;
+        return cell;
       });
-      state.currentChats = [...newChats];
-    },
-    changeName(state, { payload }) {
-      const { id, chatName } = payload;
-      const newChats = state.currentChats.map((chat) => {
-        if (chat.id === id) {
-          chat.name = chatName;
-        }
-        return chat;
-      });
-      state.currentChats = [...newChats];
-    },
-    changeCurrentChat(state, { payload }) {
-      const id = payload;
-      state.currentChatId = id;
-      state.currentChats = state.currentChats.map((chat) => {
-        if (chat.id === id) {
-          chat.read = 'yes';
-        }
-        return chat;
-      });
+      state.fieldCells = newFieldCells;
+      state.activeCard = null;
+      const hand = activeCard.player === 'player1' ? 'playerOneHand' : 'playerTwoHand';
+      const newPlayerHand = state[hand].filter((card) => card.id !== activeCard.id);
+      state[hand] = newPlayerHand;
     },
   },
 });

@@ -6,10 +6,9 @@ import { useDispatch } from 'react-redux';
 import cn from 'classnames';
 import { actions as battleActions } from '../slices/battleSlice.js';
 
-const HandCard = ({ card, activeCard }) => {
+const Card = ({ card, activeCard, player }) => {
   const dispatch = useDispatch();
   const cardElement = useRef();
-  const marginRight = 6 * 0.5; /*  empirical number */
   const {
     type,
     power,
@@ -18,16 +17,20 @@ const HandCard = ({ card, activeCard }) => {
     img,
     name,
     id,
+    status,
   } = card;
+
+  const marginRight = status === 'hand' ? 6 * 0.5 : 0; /*  empirical number */
 
   const classes = cn({
     'card-hand': true,
+    'active-card-block__active-card': status === 'active',
   });
 
   const handleClick = () => {
     const activeId = activeCard ? activeCard.id : null;
     if (activeId !== id) {
-      dispatch(battleActions.addActiveCard(card));
+      dispatch(battleActions.addActiveCard({ card, player }));
     } else {
       dispatch(battleActions.deleteActiveCard(card));
     }
@@ -67,4 +70,4 @@ const HandCard = ({ card, activeCard }) => {
   );
 };
 
-export default HandCard;
+export default Card;

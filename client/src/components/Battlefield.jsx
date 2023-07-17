@@ -4,11 +4,10 @@ import { useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import Cell from './Cell.jsx';
 import HeroPad from './HeroPad.jsx';
-import HandCard from './HandCard.jsx';
+import Card from './Card.jsx';
 import Header from './Header.jsx';
 import ActiveCard from './ActiveCard.jsx';
 import '../Battlefield.css';
-import cards from '../cardsData/Academia.js';
 import RotateScreen from '../assets/RotateScreen.png';
 
 const rows = ['1', '2', '3', '4'];
@@ -18,7 +17,9 @@ const linesSideTwo = ['3', '4'];
 const Battlefield = () => {
   const { t } = useTranslation();
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
-  const { activeCard } = useSelector((state) => state.battleReducer);
+  const { activeCard, fieldCells, playerOneHand } = useSelector((state) => state.battleReducer);
+  const cellsPlayer1 = fieldCells.filter((cell) => cell.player === 'player1');
+  const cellsPlayer2 = fieldCells.filter((cell) => cell.player === 'player2');
 
   useEffect(() => {
     const handleWindowResize = () => {
@@ -48,11 +49,11 @@ const Battlefield = () => {
                 {activeCard && (
                   <ActiveCard card={activeCard} activeCard={activeCard} />
                 )}
-                <HeroPad player={1} cards={cards} />
+                <HeroPad player={1} cards={playerOneHand} />
               </div>
               <div className="player-hand">
-                {cards.map((card, index) => (
-                  <HandCard key={card.id} index={index} card={card} activeCard={activeCard} />
+                {playerOneHand.map((card, index) => (
+                  <Card key={card.id} index={index} card={card} player="player1" activeCard={activeCard} />
                 ))}
               </div>
             </div>
@@ -94,20 +95,18 @@ const Battlefield = () => {
               </div>
               <div className="battlefield-center">
                 <div className="battlefield-side-container">
-                  {rows.map((row) => (
-                    linesSideOne.map((line) => (
-                      <Cell
-                        key={`${row}.${line}`}
-                        id={`${row}.${line}`}
-                        props={{
-                          content: [cards[0]],
-                          type: 'field',
-                          status: 'active',
-                          row,
-                          line,
-                        }}
-                      />
-                    ))
+                  {cellsPlayer1.map((cell) => (
+                    <Cell
+                      key={cell.id}
+                      id={cell.id}
+                      props={{
+                        content: cell.content,
+                        type: 'field',
+                        status: 'active',
+                        row: cell.row,
+                        line: cell.line,
+                      }}
+                    />
                   ))}
                 </div>
                 <div className="battlefield-midspell-container">
@@ -125,25 +124,23 @@ const Battlefield = () => {
                   ))}
                 </div>
                 <div className="battlefield-side-container">
-                  {rows.map((row) => (
-                    linesSideTwo.map((line) => (
-                      <Cell
-                        key={`${row}.${line}`}
-                        id={`${row}.${line}`}
-                        props={{
-                          content: [],
-                          type: 'field',
-                          status: 'active',
-                          row,
-                          line,
-                        }}
-                      />
-                    ))
+                  {cellsPlayer2.map((cell) => (
+                    <Cell
+                      key={cell.id}
+                      id={cell.id}
+                      props={{
+                        content: cell.content,
+                        type: 'field',
+                        status: 'active',
+                        row: cell.row,
+                        line: cell.line,
+                      }}
+                    />
                   ))}
                 </div>
               </div>
             </div>
-            <HeroPad player={2} cards={cards} />
+            <HeroPad player={2} cards={playerOneHand} />
           </div>
         </>
       )}
