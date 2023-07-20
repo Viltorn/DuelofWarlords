@@ -1,6 +1,6 @@
 import React from 'react';
 import ActionButton from './ActionButton';
-import HandCard from './Card';
+import Card from './Card';
 
 const ActiveCard = ({ card, activeCard }) => {
   const { status, type, id } = card;
@@ -18,7 +18,7 @@ const ActiveCard = ({ card, activeCard }) => {
           <ActionButton button={{ btnType: 'healthBar', id }} />
         )}
       </div>
-      <HandCard card={card} activeCard={activeCard} />
+      <Card card={card} activeCard={activeCard} active="active" />
     </div>
   );
 };

@@ -48,12 +48,13 @@
   flex-direction: row;
   flex-wrap: nowrap;
   justify-content: center;
-  align-items: center;
+  align-items: flex-start;
   background-size: cover;
   background-repeat: no-repeat;
   background-image: url("./assets/battlefield/Battlefield-cover.png");
   background-position: center;
   height: 100vh;
+  padding: 0 0 0 0;
 }
 
 .battlefield-container {
@@ -64,7 +65,7 @@
   align-items: flex-end;
   margin-top: 0;
   gap: 1rem;
-  padding: 0;
+  margin-top: 5.5rem;
 }
 
 .hero-pad {
@@ -155,6 +156,13 @@
   height: calc(var(--cell-width) - 0.8rem);
 }
 
+.cell__default-btn {
+  width: 100%;
+  height: 100%;
+  background: transparent;
+  border: none;
+}
+
 .cell-field {
   background-image: url('./assets/battlefield/WarriorCell_square_withback.png');
   background-color: none;
@@ -162,17 +170,24 @@
   background-repeat: no-repeat;
   border: none;
   width: calc(var(--cell-width));
-  height: calc(var(--cell-width) * 1.14);
-  padding: 0.5rem;
+  height: calc(var(--cell-width) * 1.16);
+  padding-bottom: 0.4rem;
   display: flex;
   flex-direction: column;
+  flex-wrap: nowrap;
   justify-content: flex-end;
 }
 
-.cell-container__content {
+.cell-container__content-item {
   position: relative;
   width: var(--cell-content-width);
   height: var(--cell-content-width);
+  border: none;
+  border-radius: 0.5rem;
+}
+
+.cell-container__content-item:first-child {
+  margin-top: 0;
 }
 
 .cell-container__image {
@@ -347,7 +362,7 @@
   object-fit: cover;
 }
 
-/* HEADER */
+/* Header */
 
 .header {
   width: 100%;
@@ -396,7 +411,8 @@
 .action-button {
   display: inline-flex;
   height: 2.5rem;
-  padding: 0.75rem 1.25rem;
+  width: 7rem;
+  padding: 0.75rem 0.5rem;
   justify-content: center;
   align-items: center;
   gap: 0.5rem;
@@ -414,7 +430,7 @@
   color: var(--golden);
   text-align: center;
   font-family: Roboto;
-  font-size: 0.7rem;
+  font-size: 0.6rem;
   font-style: normal;
   font-weight: 600;
   line-height: 1.5rem;
@@ -422,7 +438,6 @@
 
 .action-button__icon {
   color: var(--golden);
-  
   width: 1.25rem;
   height: 1.25rem;
 }
@@ -443,10 +458,10 @@
 
 .active-card__buttons {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   flex-wrap: nowrap;
   align-items: center;
-  justify-content: flex-end;
+  justify-content: flex-start;
   gap: 0.5rem;
 }
 

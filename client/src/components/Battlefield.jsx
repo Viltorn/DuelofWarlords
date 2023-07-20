@@ -52,8 +52,8 @@ const Battlefield = () => {
                 <HeroPad player={1} cards={playerOneHand} />
               </div>
               <div className="player-hand">
-                {playerOneHand.map((card, index) => (
-                  <Card key={card.id} index={index} card={card} player="player1" activeCard={activeCard} />
+                {playerOneHand.map((card) => (
+                  <Card key={card.id} content={playerOneHand} card={card} player="player1" activeCard={activeCard} />
                 ))}
               </div>
             </div>

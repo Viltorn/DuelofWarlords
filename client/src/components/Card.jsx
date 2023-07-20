@@ -1,12 +1,13 @@
 /* eslint-disable functional/no-loop-statements */
 /* eslint-disable functional/no-let */
 import React, { useRef } from 'react';
-// import cn from 'classnames';
 import { useDispatch } from 'react-redux';
 import cn from 'classnames';
 import { actions as battleActions } from '../slices/battleSlice.js';
 
-const Card = ({ card, activeCard, player }) => {
+const Card = ({
+  card, activeCard, player, active, content,
+}) => {
   const dispatch = useDispatch();
   const cardElement = useRef();
   const {
@@ -17,14 +18,13 @@ const Card = ({ card, activeCard, player }) => {
     img,
     name,
     id,
-    status,
   } = card;
 
-  const marginRight = status === 'hand' ? 6 * 0.5 : 0; /*  empirical number */
+  const marginRight = active !== 'active' ? content.length * 0.5 : 0; /*  empirical number */
 
   const classes = cn({
     'card-hand': true,
-    'active-card-block__active-card': status === 'active',
+    'active-card-block__active-card': active === 'active',
   });
 
   const handleClick = () => {

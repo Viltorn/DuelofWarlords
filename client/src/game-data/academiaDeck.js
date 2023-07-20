@@ -5,6 +5,8 @@ import LivingWall from '../assets/AcademiaDeck/LivingWall.png';
 import Gargoyle from '../assets/AcademiaDeck/Gargoyle.png';
 import MageApprentice from '../assets/AcademiaDeck/MageApprentice.png';
 import Rakshasa from '../assets/AcademiaDeck/Rakshasa.png';
+import IceArrow from '../assets/AcademiaDeck/IceArrow.png';
+import IceArmor from '../assets/AcademiaDeck/IceArmor.png';
 
 export const types = ['beforeturn', 'afterplay', 'protection', 'afterdeath'];
 
@@ -26,6 +28,12 @@ const academiaDeck = [
   },
   {
     name: 'Earth golem', type: 'warrior', subtype: 'figther', power: 2, health: 4, currentHP: 4, description: 'При входе в игру, вылечить 1 здоровье у прилегающих воинов.', id: _.uniqueId(), feature: '', img: EarthGolem, status: 'hand',
+  },
+  {
+    name: 'Ice arrow', type: 'spell', subtype: 'instant', description: 'Отнять 2 здоровья у воина, этот воин получает ОГЛУШЕНИЕ', id: _.uniqueId(), feature: '', img: IceArrow, status: 'hand',
+  },
+  {
+    name: 'Ice armor', type: 'spell', subtype: 'temporary', description: 'Накладывается на союзного воина или героя. При получении урона во время хода врага, отнимается здоровье у Ледяной брони, пока оно не станет равным 0.', id: _.uniqueId(), feature: '', img: IceArmor, status: 'hand',
   },
 ];
 
