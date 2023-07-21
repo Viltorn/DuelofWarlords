@@ -30,7 +30,7 @@ const MainPage = () => {
                 showIcon={false}
                 state="default"
                 text="ПОДРОБНЕЕ"
-                type="primary"
+                variant="primary"
               />
             </a>
             <Link to="/battle" className="link">
@@ -38,10 +38,9 @@ const MainPage = () => {
                 showIcon={false}
                 state="default"
                 text="ОБУЧЕНИЕ"
-                type="secondary"
+                variant="secondary"
               />
             </Link>
-
           </div>
         </div>
       </div>
@@ -147,7 +146,7 @@ const MainPage = () => {
         </div>
         <hr className="w-90 hr-double" />
         <Link to="/battle" className="link">
-          <PrimaryButton showIcon={false} state="default" text="ОБУЧЕНИЕ" type="primary" />
+          <PrimaryButton showIcon={false} state="default" text="ОБУЧЕНИЕ" variant="primary" />
         </Link>
       </section>
     </div>

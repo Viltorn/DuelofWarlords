@@ -1,15 +1,17 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { useDispatch, useStore } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import cn from 'classnames';
 import { actions as battleActions } from '../slices/battleSlice.js';
 import CellCard from './CellCard.jsx';
+import functionContext from '../contexts/functionsContext.js';
 
 const Cell = ({ props, id }) => {
   const { t } = useTranslation();
   const store = useStore();
   const dispatch = useDispatch();
   const { type, content } = props;
+  const { deleteCardfromSource } = useContext(functionContext);
 
   const classes = cn({
     'default-cell-size': true,
@@ -18,32 +20,15 @@ const Cell = ({ props, id }) => {
     'cell-field': type === 'field',
   });
 
-  const deleteCardfromSource = (card) => {
-    const { player, status, cellId } = card;
-    const cardId = card.id;
-    switch (status) {
-      case 'hand':
-        dispatch(battleActions.deleteHandCard({ cardId, player }));
-        break;
-      case 'field':
-        dispatch(battleActions.deleteFieldCard({ cardId, cellId }));
-        break;
-      default:
-        break;
-    }
-  };
-
   const handleCellClick = () => {
     const { activeCard } = store.getState().battleReducer;
     if (activeCard && activeCard.type === 'warrior' && type === 'field' && content.length === 0) {
-      deleteCardfromSource(activeCard);
       dispatch(battleActions.addFieldContent({ activeCard, id }));
+      deleteCardfromSource(activeCard);
       dispatch(battleActions.deleteActiveCard(activeCard));
-      return;
-    }
-    if (activeCard && activeCard.type === 'spell' && (type === 'midSpell' || 'bigSpell' || 'topSpell') && content.length === 0) {
-      deleteCardfromSource(activeCard);
+    } else if (activeCard && activeCard.type === 'spell' && content.length === 0) {
       dispatch(battleActions.addFieldContent({ activeCard, id }));
+      deleteCardfromSource(activeCard);
       dispatch(battleActions.deleteActiveCard(activeCard));
     }
   };
@@ -52,7 +37,12 @@ const Cell = ({ props, id }) => {
     <div className={classes}>
       {content.length !== 0 ? (
         content.map((item) => (
-          <CellCard key={item.id} item={item} content={content} deleteFunc={deleteCardfromSource} />
+          <CellCard
+            key={item.id}
+            item={item}
+            type={type}
+            content={content}
+          />
         ))) : (
           <button type="button" className="cell__default-btn" onClick={handleCellClick}>
             <h3 className="default-cell-font ">{t(`${type}`)}</h3>

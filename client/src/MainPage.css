@@ -4,10 +4,15 @@
   --golden: #fbb270;
   --black-font: #252525;
   --dark-golden: #845c3a;
-}
-
-* {
-  box-sizing: border-box;
+  --hand-card-width: 8rem;
+  --dark-color: #3F3A3A;
+  --light-brown-color: #E0A97F;
+  --dark-red-color: #C65B4D;
+  --white-color: rgb(238, 238, 238);
+  --black-color: rgb(21, 21, 21);
+  --golden: #fbb270;
+  --dark-blue: #484860;
+  --red: #850409;
 }
 
 @font-face {
@@ -25,6 +30,10 @@
 .w-90 {
   max-width: 1000px;
   width: 90%;
+}
+
+.visually-hidden {
+  display: none;
 }
 
 .text-mute {

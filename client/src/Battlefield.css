@@ -4,31 +4,18 @@
   --cell-content-width: 5.5rem;
 
   /* Colors */
-  --hand-card-width: 8rem;
-  --dark-color: #3F3A3A;
-  --light-brown-color: #E0A97F;
-  --dark-red-color: #C65B4D;
-  --white-color: rgb(238, 238, 238);
-  --black-color: rgb(21, 21, 21);
-  --golden: #fbb270;
-  --dark-blue: #484860;
+
 }
 
 * {
   box-sizing: border-box;
   padding: 0;
   margin: 0;
+  color: var(--black-color);
 }
 
 .grow-2 {
   flex-grow: 2;
-}
-
-.flex-column {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 2rem;
 }
 
 .border-black {
@@ -37,6 +24,14 @@
 }
 
 /* Battlfield */
+
+.rotate-screen {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2rem;
+  align-self: center;
+}
 
 .rotate-img {
   height: 100px;
@@ -139,6 +134,7 @@
   font-size: 0.6rem;
   word-break: break-word;
   text-align: center;
+  margin: 0.5rem;
 }
 
 .cell-spell {
@@ -148,12 +144,13 @@
   border-radius: 0.3rem;
   align-items: center;
   background-color: var(--light-brown-color), 0.7;
-  padding: 0.3rem;
+  padding: 0;
 }
 
 .cell-big-spell {
   width: calc(var(--cell-width) + 0.5rem);
   height: calc(var(--cell-width) - 0.8rem);
+  padding: 0;
 }
 
 .cell__default-btn {
@@ -184,6 +181,14 @@
   height: var(--cell-content-width);
   border: none;
   border-radius: 0.5rem;
+}
+
+.cell-container__content-item.turn_1 {
+  transform: rotate(-45deg);
+}
+
+.cell-container__content-item.turn_2 {
+  transform: rotate(-90deg);
 }
 
 .cell-container__content-item:first-child {
@@ -423,7 +428,7 @@
 }
 
 .action-button:hover {
-  transform: scale(1.2);
+  transform: scale(1.1);
 }
 
 .action-button__label {

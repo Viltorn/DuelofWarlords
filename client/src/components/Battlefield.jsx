@@ -9,17 +9,27 @@ import Header from './Header.jsx';
 import ActiveCard from './ActiveCard.jsx';
 import '../Battlefield.css';
 import RotateScreen from '../assets/RotateScreen.png';
-
-const rows = ['1', '2', '3', '4'];
-const linesSideOne = ['1', '2'];
-const linesSideTwo = ['3', '4'];
+import getModal from '../modals/index.js';
 
 const Battlefield = () => {
   const { t } = useTranslation();
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
   const { activeCard, fieldCells, playerOneHand } = useSelector((state) => state.battleReducer);
-  const cellsPlayer1 = fieldCells.filter((cell) => cell.player === 'player1');
-  const cellsPlayer2 = fieldCells.filter((cell) => cell.player === 'player2');
+  const { isOpened, type } = useSelector((state) => state.modalsReducer);
+  const cellsPlayer1 = fieldCells.filter((cell) => cell.player === 'player1' && cell.type === 'field');
+  const cellsPlayer2 = fieldCells.filter((cell) => cell.player === 'player2' && cell.type === 'field');
+  const topSpellsPlayer1 = fieldCells.filter((cell) => cell.player === 'player1' && cell.type === 'topSpell');
+  const topSpellsPlayer2 = fieldCells.filter((cell) => cell.player === 'player2' && cell.type === 'topSpell');
+  const bigSpell = fieldCells.find((cell) => cell.type === 'bigSpell');
+  const midPells = fieldCells.filter((cell) => cell.type === 'midSpell');
+
+  const renderModal = (status, option) => {
+    if (!status) {
+      return null;
+    }
+    const Modal = getModal(option);
+    return <Modal />;
+  };
 
   useEffect(() => {
     const handleWindowResize = () => {
@@ -36,7 +46,7 @@ const Battlefield = () => {
   return (
     <div className="container">
       {windowWidth < 500 ? (
-        <div className="flex-column">
+        <div className="rotate-screen">
           <h3>{t('RotateScreen')}</h3>
           <img className="rotate-img" src={RotateScreen} alt="rotate screen" />
         </div>
@@ -47,7 +57,7 @@ const Battlefield = () => {
             <div className="hands-container">
               <div className="hero-pad-container">
                 {activeCard && (
-                  <ActiveCard card={activeCard} activeCard={activeCard} />
+                  <ActiveCard activeCard={activeCard} />
                 )}
                 <HeroPad player={1} cards={playerOneHand} />
               </div>
@@ -59,36 +69,34 @@ const Battlefield = () => {
             </div>
             <div className="battlefield-core">
               <div className="battlefield-topspells">
-                {linesSideOne.map((spell) => (
+                {topSpellsPlayer1.map((spell) => (
                   <Cell
-                    key={spell}
-                    id={spell}
+                    key={spell.id}
+                    id={spell.id}
                     props={{
-                      content: [],
+                      content: spell.content,
                       type: 'topSpell',
                       status: 'active',
-                      line: spell,
                     }}
                   />
                 ))}
                 <Cell
-                  key="bigSpell"
-                  id="bigSpell"
+                  key={bigSpell.id}
+                  id={bigSpell.id}
                   props={{
-                    content: [],
+                    content: bigSpell.content,
                     type: 'bigSpell',
                     status: 'active',
                   }}
                 />
-                {linesSideTwo.map((spell) => (
+                {topSpellsPlayer2.map((spell) => (
                   <Cell
-                    key={spell}
-                    id={spell}
+                    key={spell.id}
+                    id={spell.id}
                     props={{
-                      content: [],
+                      content: spell.content,
                       type: 'topSpell',
                       status: 'active',
-                      line: spell,
                     }}
                   />
                 ))}
@@ -110,15 +118,14 @@ const Battlefield = () => {
                   ))}
                 </div>
                 <div className="battlefield-midspell-container">
-                  {rows.map((row) => (
+                  {midPells.map((spell) => (
                     <Cell
-                      key={`${row}.midSpell`}
-                      id={`${row}.midSpell`}
+                      key={spell.id}
+                      id={spell.id}
                       props={{
-                        content: [],
+                        content: spell.content,
                         type: 'midSpell',
                         status: 'active',
-                        row,
                       }}
                     />
                   ))}
@@ -142,6 +149,7 @@ const Battlefield = () => {
             </div>
             <HeroPad player={2} cards={playerOneHand} />
           </div>
+          {renderModal(isOpened, type)}
         </>
       )}
     </div>

@@ -6,7 +6,7 @@ import cn from 'classnames';
 import { actions as battleActions } from '../slices/battleSlice.js';
 
 const Card = ({
-  card, activeCard, player, active, content,
+  card, activeCard, active, content,
 }) => {
   const dispatch = useDispatch();
   const cardElement = useRef();
@@ -30,9 +30,9 @@ const Card = ({
   const handleClick = () => {
     const activeId = activeCard ? activeCard.id : null;
     if (activeId !== id) {
-      dispatch(battleActions.addActiveCard({ card, player }));
+      dispatch(battleActions.addActiveCard({ card }));
     } else {
-      dispatch(battleActions.deleteActiveCard(card));
+      dispatch(battleActions.deleteActiveCard());
     }
   };
 

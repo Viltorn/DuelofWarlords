@@ -24,7 +24,7 @@ const Header = () => {
         showIcon={false}
         state="default"
         text="ЗАКОНЧИТЬ ХОД"
-        type="primary"
+        variant="primary"
       />
       <div className="counter">
         <h3 className="counter-number">1</h3>

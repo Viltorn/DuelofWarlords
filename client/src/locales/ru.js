@@ -44,6 +44,9 @@ export default {
     Player1: 'Игрок 1',
     Player2: 'Игрок 2',
     healthBar: 'ИЗМЕНИТЬ',
+    turnLeft: 'ПОВЕРНУТЬ',
+    turnRight: 'ПОВЕРНУТЬ',
+    return: 'ВОЗВРАТИТЬ',
     errors: {
       WrongPhone: 'WhatsApp не найден для этого номера',
       AuthOrNetError: 'Ошибка авторизации или соединения',

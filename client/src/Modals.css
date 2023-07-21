@@ -1,0 +1,57 @@
+.modal-window {
+  position: fixed; /* Stay in place */
+  display: flex;
+  justify-content: center;
+  align-items: top;
+  z-index: 100; /* Sit on top */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  background-color: rgb(0,0,0); /* Fallback color */
+  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+.modal-window__content {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2rem;
+  background-color: var(--light-brown-color);
+  margin: 15rem auto; /* 15% from the top and centered */
+  padding: 2rem 4rem;
+  border: 1px solid #888;
+  width: 25rem; /* Could be more or less, depending on screen size */
+  height: 18rem;
+  border-radius: 0.5rem;
+}
+
+.modal-window__header {
+  color: var(--black-color);
+  font-size: 1.5rem;
+}
+
+.modal-winodw__fieldset {
+  border: none;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.modal-winodw__input {
+  height: 2.5rem;
+  width: 4rem;
+  font-weight: 600;
+  border-radius: 0.3rem;
+  padding: 0.5rem;
+  font-size: 2rem;
+  background-color: var(--red);
+  color: var(--white-color);
+  text-align: center;
+}
+
+.modal-winodw__buttons {
+  display: flex;
+  flex-direction: row;
+  gap: 1.5rem;
+}

@@ -1,46 +1,98 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useStore } from 'react-redux';
 import { actions as modalsActions } from '../slices/modalsSlice.js';
+import { actions as battleActions } from '../slices/battleSlice.js';
+import functionContext from '../contexts/functionsContext.js';
 
-const ActionButton = ({ button }) => {
+const ActionButton = ({ type, card }) => {
+  const { deleteCardfromSource } = useContext(functionContext);
   const dispatch = useDispatch();
   const { t } = useTranslation();
+  const store = useStore();
 
-  const { btnType, id } = button;
+  const {
+    id, cellId,
+  } = card;
+
+  const makeTurn = (direction) => {
+    const { fieldCells } = store.getState().battleReducer;
+    const cell = fieldCells.find((item) => item.id === cellId);
+    const currentCard = cell.content.find((item) => item.id === id);
+    const currentTurn = currentCard.turn;
+    if (direction === 'turnLeft') {
+      if (currentTurn < 2) {
+        dispatch(battleActions.turnCardLeft({ cardId: id, cellId }));
+      }
+    } else if (currentTurn > 0) {
+      dispatch(battleActions.turnCardRight({ cardId: id, cellId }));
+    }
+  };
+
+  const makeClick = (btnType) => {
+    switch (btnType) {
+      case 'healthBar':
+        dispatch(modalsActions.openModal({ type: 'changeStats', id, cellId }));
+        break;
+      case 'turnLeft':
+        makeTurn('turnLeft');
+        break;
+      case 'turnRight':
+        makeTurn('turnRight');
+        break;
+      case 'return':
+        dispatch(battleActions.returnCard({ card }));
+        deleteCardfromSource(card);
+        dispatch(battleActions.deleteActiveCard());
+        break;
+      default:
+        break;
+    }
+  };
 
   const handleButtonClick = () => {
-    const makeClick = (type) => {
-      switch (type) {
-        case 'healthBar':
-          dispatch(modalsActions.openModal({ type: 'healthBar', id }));
-          break;
-        default:
-          break;
-      }
-    };
-
-    makeClick(btnType);
+    makeClick(type);
   };
+
+  function handleKeyDown(e) {
+    const { key } = e;
+    switch (key) {
+      case '1':
+        makeClick('turnLeft');
+        break;
+      case '2':
+        makeClick('turnRight');
+        break;
+      case 'q':
+        makeClick('healthBar');
+        break;
+      case 'r':
+        makeClick('return');
+        break;
+      default:
+        break;
+    }
+  }
 
   return (
     <button
       className="action-button"
       onClick={handleButtonClick}
       type="button"
+      onKeyDown={(e) => handleKeyDown(e)}
     >
-      <div className="action-button__label">{t(btnType)}</div>
-      {btnType === 'turnLeft' && (
+      <div className="action-button__label">{t(type)}</div>
+      {type === 'turnLeft' && (
         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
           <path d="M16.875 10L3.125 10M3.125 10L8.75 15.625M3.125 10L8.75 4.375" stroke="#FBB270" strokeWidth="1.66667" strokeLinecap="round" strokeLinejoin="round" />
         </svg>
       )}
-      {btnType === 'turnRight' && (
+      {type === 'turnRight' && (
       <svg xmlns="http://www.w3.org/2000/svg" width="21" height="21" viewBox="0 0 21 21" fill="none">
         <path d="M3.28027 10.5H17.0303M17.0303 10.5L11.4053 4.875M17.0303 10.5L11.4053 16.125" stroke="#FBB270" strokeWidth="1.66667" strokeLinecap="round" strokeLinejoin="round" />
       </svg>
       )}
-      {btnType === 'healthBar' && (
+      {type === 'healthBar' && (
       <svg
         className="action-button__icon"
         version="1.1"
@@ -59,7 +111,7 @@ const ActionButton = ({ button }) => {
               c0,0.829,0.671,1.5,1.5,1.5s1.5-0.671,1.5-1.5c0-9.017,7.335-16.352,16.352-16.352c9.024,0,16.367,7.335,16.367,16.352
               C84.22,38.589,83.329,41.596,81.643,44.248z"
           stroke="#FBB270"
-          strokeWidth="2"
+          strokeWidth="4"
         />
       </svg>
       )}

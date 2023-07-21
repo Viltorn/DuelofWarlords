@@ -1,5 +1,15 @@
+@import url('./MainPage.css');
+@import url('./PrimaryButton.css');
+@import url('./Battlefield.css');
+@import url('./ErrorPage.css');
+@import url('./Modals.css');
+
 html {
   scroll-behavior: smooth;
+}
+
+* {
+  box-sizing: border-box;
 }
 
 body {

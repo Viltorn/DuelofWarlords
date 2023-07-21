@@ -5,7 +5,7 @@ import { Provider as StoreProvider } from 'react-redux';
 import store from './slices/index.js';
 import App from './components/App.jsx';
 import resources from './locales/index.js';
-import { AuthProvider } from './contexts/authContext.js';
+import { FunctionProvider } from './contexts/functionsContext.js';
 
 const Init = async () => {
   const i18n = i18next.createInstance();
@@ -23,11 +23,11 @@ const Init = async () => {
 
   return (
     <I18nextProvider i18n={i18n}>
-      <AuthProvider>
-        <StoreProvider store={store}>
+      <StoreProvider store={store}>
+        <FunctionProvider>
           <App />
-        </StoreProvider>
-      </AuthProvider>
+        </FunctionProvider>
+      </StoreProvider>
     </I18nextProvider>
   );
 };
