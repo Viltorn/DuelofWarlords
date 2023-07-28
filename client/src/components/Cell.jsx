@@ -21,15 +21,16 @@ const Cell = ({ props, id }) => {
   });
 
   const handleCellClick = () => {
-    const { activeCard } = store.getState().battleReducer;
+    const { activeCardPlayer1, activeCardPlayer2, thisPlayer } = store.getState().battleReducer;
+    const activeCard = thisPlayer === 'player1' ? activeCardPlayer1 : activeCardPlayer2;
     if (activeCard && activeCard.type === 'warrior' && type === 'field' && content.length === 0) {
       dispatch(battleActions.addFieldContent({ activeCard, id }));
       deleteCardfromSource(activeCard);
-      dispatch(battleActions.deleteActiveCard(activeCard));
+      dispatch(battleActions.deleteActiveCard({ player: thisPlayer }));
     } else if (activeCard && activeCard.type === 'spell' && content.length === 0) {
       dispatch(battleActions.addFieldContent({ activeCard, id }));
       deleteCardfromSource(activeCard);
-      dispatch(battleActions.deleteActiveCard(activeCard));
+      dispatch(battleActions.deleteActiveCard({ player: thisPlayer }));
     }
   };
 

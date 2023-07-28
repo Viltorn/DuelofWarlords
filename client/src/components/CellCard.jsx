@@ -21,22 +21,23 @@ const CellCard = ({ item, type }) => {
   });
 
   const handleCardClick = () => {
-    const { activeCard } = store.getState().battleReducer;
+    const { activeCardPlayer1, activeCardPlayer2, thisPlayer } = store.getState().battleReducer;
+    const activeCard = thisPlayer === 'player1' ? activeCardPlayer1 : activeCardPlayer2;
     if (!activeCard) {
       const cardId = cardElement.current.id;
       const { fieldCells } = store.getState().battleReducer;
       const currentCell = fieldCells.find((cell) => cell.id === cellId);
       const currentCardData = currentCell.content.find((card) => card.id === cardId);
-      dispatch(battleActions.addActiveCard({ card: currentCardData }));
+      dispatch(battleActions.addActiveCard({ card: currentCardData, player: thisPlayer }));
     } else {
       const cardId = cardElement.current.id;
       const activeId = activeCard.id;
       if (activeId === cardId) {
-        dispatch(battleActions.deleteActiveCard(activeCard));
+        dispatch(battleActions.deleteActiveCard({ player: thisPlayer }));
       } else if (activeCard.type === 'spell') {
         deleteCardfromSource(activeCard);
         dispatch(battleActions.addFieldContent({ activeCard, id: cellId }));
-        dispatch(battleActions.deleteActiveCard(activeCard));
+        dispatch(battleActions.deleteActiveCard({ player: thisPlayer }));
       }
     }
   };

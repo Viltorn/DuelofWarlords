@@ -1,10 +1,15 @@
 /* eslint-disable no-param-reassign */
 import { createSlice } from '@reduxjs/toolkit';
 import academiaDeck from '../game-data/academiaDeck.js';
+import castleDeck from '../game-data/castleDeck.js';
 import createFieldCells from '../utils/makeFieldCells.js';
 import makeShaffledDeck from '../utils/makeShaffledDeck.js';
 import createDeckForPLayer from '../utils/makeDeckForPlayer.js';
-import { bigSpell, topSpells, midSpells } from '../game-data/spellCellsData.js';
+import {
+  bigSpell, topSpells, midSpells, heroes,
+} from '../game-data/heroes&spellsCellsData.js';
+import { Zigfrid } from '../game-data/castleHeroes.js';
+import { Nala } from '../game-data/academiaHeroes.js';
 
 const cellsData = {
   rows: ['1', '2', '3', '4'],
@@ -16,26 +21,48 @@ const initialState = {
   commonPoints: 1,
   player1Points: 1,
   player2Points: 1,
-  player: 'player1',
+  players: { player1: { name: 'Viktor', id: 'player1' }, player2: { name: 'AI', id: 'player2' } },
+  thisPlayer: 'player1',
   playerOneDeck: [],
   playerOneHand: createDeckForPLayer(makeShaffledDeck(academiaDeck), 'player1'),
-  playerTwoHand: [],
+  playerOneHero: Zigfrid,
+  playerTwoHand: createDeckForPLayer(makeShaffledDeck(castleDeck), 'player2'),
   playerTwoDeck: [],
-  fieldCells: [...createFieldCells(cellsData), ...bigSpell, ...topSpells, ...midSpells],
-  activeCard: null,
+  playerTwoHero: Nala,
+  fieldCells: [...createFieldCells(cellsData), ...bigSpell, ...topSpells, ...midSpells, ...heroes],
+  activeCardPlayer1: null,
+  activeCardPlayer2: null,
 };
 
 const battleSlice = createSlice({
   name: 'battle',
   initialState,
   reducers: {
-    addActiveCard(state, { payload }) {
-      const { card } = payload;
-      state.activeCard = card;
+    changePlayer(state, { payload }) {
+      const { newPlayer } = payload;
+      state.thisPlayer = newPlayer;
     },
 
-    deleteActiveCard(state) {
-      state.activeCard = null;
+    setPlayerPoints(state, { payload }) {
+      const { points, player } = payload;
+      const playerToChange = player === 'player1' ? 'player1Points' : 'player2Points';
+      state[playerToChange] = points;
+    },
+
+    addCommonPoint(state) {
+      state.commonPoints += 1;
+    },
+
+    addActiveCard(state, { payload }) {
+      const { card, player } = payload;
+      const stateOption = player === 'player1' ? 'activeCardPlayer1' : 'activeCardPlayer2';
+      state[stateOption] = card;
+    },
+
+    deleteActiveCard(state, { payload }) {
+      const { player } = payload;
+      const stateOption = player === 'player1' ? 'activeCardPlayer1' : 'activeCardPlayer2';
+      state[stateOption] = null;
     },
 
     addFieldContent(state, { payload }) {

@@ -1,7 +1,7 @@
 /* eslint-disable functional/no-loop-statements */
 /* eslint-disable functional/no-let */
 import React, { useRef } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import cn from 'classnames';
 import { actions as battleActions } from '../slices/battleSlice.js';
 
@@ -9,6 +9,7 @@ const Card = ({
   card, activeCard, active, content,
 }) => {
   const dispatch = useDispatch();
+  const { thisPlayer } = useSelector((state) => state.battleReducer);
   const cardElement = useRef();
   const {
     type,
@@ -18,6 +19,7 @@ const Card = ({
     img,
     name,
     id,
+    player,
   } = card;
 
   const marginRight = active !== 'active' ? content.length * 0.5 : 0; /*  empirical number */
@@ -30,9 +32,9 @@ const Card = ({
   const handleClick = () => {
     const activeId = activeCard ? activeCard.id : null;
     if (activeId !== id) {
-      dispatch(battleActions.addActiveCard({ card }));
+      dispatch(battleActions.addActiveCard({ card, player }));
     } else {
-      dispatch(battleActions.deleteActiveCard());
+      dispatch(battleActions.deleteActiveCard({ player: thisPlayer }));
     }
   };
 
@@ -60,6 +62,9 @@ const Card = ({
           <h3 className="warrior-power">{power}</h3>
           <h3 className="warrior-health">{health}</h3>
         </>
+        )}
+        {type === 'hero' && (
+          <h3 className="hero-health">{health}</h3>
         )}
         <img className="card-image" src={img} alt={name} />
       </div>

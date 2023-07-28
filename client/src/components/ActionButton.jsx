@@ -1,15 +1,24 @@
 import React, { useContext } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useDispatch, useStore } from 'react-redux';
+import { useDispatch, useStore, useSelector } from 'react-redux';
 import { actions as modalsActions } from '../slices/modalsSlice.js';
 import { actions as battleActions } from '../slices/battleSlice.js';
 import functionContext from '../contexts/functionsContext.js';
+
+const maxTurns = 2;
+const minTurns = 0;
 
 const ActionButton = ({ type, card }) => {
   const { deleteCardfromSource } = useContext(functionContext);
   const dispatch = useDispatch();
   const { t } = useTranslation();
   const store = useStore();
+
+  const {
+    activeCardPlayer1,
+    activeCardPlayer2,
+    thisPlayer,
+  } = useSelector((state) => state.battleReducer);
 
   const {
     id, cellId,
@@ -21,11 +30,20 @@ const ActionButton = ({ type, card }) => {
     const currentCard = cell.content.find((item) => item.id === id);
     const currentTurn = currentCard.turn;
     if (direction === 'turnLeft') {
-      if (currentTurn < 2) {
+      if (currentTurn < maxTurns) {
         dispatch(battleActions.turnCardLeft({ cardId: id, cellId }));
       }
-    } else if (currentTurn > 0) {
+    } else if (currentTurn > minTurns) {
       dispatch(battleActions.turnCardRight({ cardId: id, cellId }));
+    }
+  };
+
+  const deleteOtherActiveCard = (card1, card2, thisplayer) => {
+    const card1Id = card1 ? card1.id : null;
+    const card2Id = card2 ? card2.id : null;
+    if (card1Id === card2Id) {
+      const anotherPlayer = thisplayer === 'player1' ? 'player2' : 'player1';
+      dispatch(battleActions.deleteActiveCard({ player: anotherPlayer }));
     }
   };
 
@@ -43,7 +61,8 @@ const ActionButton = ({ type, card }) => {
       case 'return':
         dispatch(battleActions.returnCard({ card }));
         deleteCardfromSource(card);
-        dispatch(battleActions.deleteActiveCard());
+        dispatch(battleActions.deleteActiveCard({ player: thisPlayer }));
+        deleteOtherActiveCard(activeCardPlayer1, activeCardPlayer2, thisPlayer);
         break;
       default:
         break;

@@ -7,13 +7,6 @@
 
 }
 
-* {
-  box-sizing: border-box;
-  padding: 0;
-  margin: 0;
-  color: var(--black-color);
-}
-
 .grow-2 {
   flex-grow: 2;
 }
@@ -21,6 +14,14 @@
 .border-black {
   border: 0.2rem solid var(--black-color);
   border-radius: 0.5rem;
+}
+
+.turn_1 {
+  transform: rotate(-45deg);
+}
+
+.turn_2 {
+  transform: rotate(-90deg);
 }
 
 /* Battlfield */
@@ -46,7 +47,7 @@
   align-items: flex-start;
   background-size: cover;
   background-repeat: no-repeat;
-  background-image: url("./assets/battlefield/Battlefield-cover.png");
+  background-image: url("./assets/battlefield/BattlefieldOption.png");
   background-position: center;
   height: 100vh;
   padding: 0 0 0 0;
@@ -113,11 +114,20 @@
   justify-items: center;
 }
 
-.hero-pad-container {
+.hero-pad-container-1 {
   width: 100%;
   display: flex;
   flex-direction: row;
   justify-content: flex-end;
+  gap: 1rem;
+  align-items: flex-end;
+}
+
+.hero-pad-container-2 {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
   gap: 1rem;
   align-items: flex-end;
 }
@@ -183,14 +193,6 @@
   border-radius: 0.5rem;
 }
 
-.cell-container__content-item.turn_1 {
-  transform: rotate(-45deg);
-}
-
-.cell-container__content-item.turn_2 {
-  transform: rotate(-90deg);
-}
-
 .cell-container__content-item:first-child {
   margin-top: 0;
 }
@@ -242,14 +244,26 @@
   margin-top: 0.5rem;
 }
 
+.cell-hero-pad__hero-health {
+  color: var(--white-color);
+  font-family: "Roboto-Bold", Helvetica;
+  text-shadow: 1px 0 0 var(--dark-color),0 1px 0 var(--dark-color), -1px 0 0 var(--dark-color),0 -1px 0 var(--dark-color);
+  font-size: 0.8rem;
+  position: absolute;
+  top: 0.3rem;
+  right: 0.3rem;
+  text-align: center;
+}
+
 .cell-hero-pad {
   display: flex;
+  position: relative;
   justify-content: center;
   border-color: var(--dark-color);
   border: 0.2rem solid var(--dark-color);
   border-radius: 0.3rem;
   align-items: center;
-  background-color: var(--light-brown-color);
+  background-color: none;
   width: calc(var(--cell-width) - 0.8rem);
   height: calc((var(--cell-width) - 0.8rem) * 1.14);
 }
@@ -319,7 +333,7 @@
 .card-image-container {
   position: relative;
   width: 100%;
-  height: auto;
+  height: 70%;
 }
 
 .card-image {
@@ -337,13 +351,18 @@
 }
 
 .warrior-power {
-  left: 0.3rem;
-  top: 0.15rem;
+  left: 0.35rem;
+  top: 0.13rem;
 }
 
 .warrior-health {
-  left: 0.3rem;
+  left: 0.4rem;
   top: 2rem;
+}
+
+.hero-health {
+  right: 0.3rem;
+  top: 0.4rem;
 }
 
 .card-hand-description {
@@ -449,9 +468,17 @@
 
 /* ActiveCard */
 
-.active-card-block {
+.active-card-block-1 {
   display: flex;
   flex-direction: row;
+  justify-content: flex-end;
+  align-items: flex-start;
+  gap: 0.5rem;
+}
+
+.active-card-block-2 {
+  display: flex;
+  flex-direction: row-reverse;
   justify-content: flex-end;
   align-items: flex-start;
   gap: 0.5rem;
@@ -468,28 +495,4 @@
   align-items: center;
   justify-content: flex-start;
   gap: 0.5rem;
-}
-
-@media screen and (max-width: 1200px) {
-  html {
-    font-size: 14px;
-  }
-}
-
-@media screen and (max-width: 1024px) {
-  html {
-    font-size: 12px;
-  }
-}
-
-@media screen and (max-width: 900px) {
-  html {
-    font-size: 10px;
-  }
-}
-
-@media screen and (max-width: 767px) {
-  html {
-    font-size: 9px;
-  }
 }

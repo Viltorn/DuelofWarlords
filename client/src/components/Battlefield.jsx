@@ -14,7 +14,14 @@ import getModal from '../modals/index.js';
 const Battlefield = () => {
   const { t } = useTranslation();
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
-  const { activeCard, fieldCells, playerOneHand } = useSelector((state) => state.battleReducer);
+  const {
+    activeCardPlayer1,
+    activeCardPlayer2,
+    fieldCells,
+    playerOneHand,
+    playerTwoHand,
+    thisPlayer,
+  } = useSelector((state) => state.battleReducer);
   const { isOpened, type } = useSelector((state) => state.modalsReducer);
   const cellsPlayer1 = fieldCells.filter((cell) => cell.player === 'player1' && cell.type === 'field');
   const cellsPlayer2 = fieldCells.filter((cell) => cell.player === 'player2' && cell.type === 'field');
@@ -54,19 +61,26 @@ const Battlefield = () => {
         <>
           <Header />
           <div className="battlefield-container">
-            <div className="hands-container">
-              <div className="hero-pad-container">
-                {activeCard && (
-                  <ActiveCard activeCard={activeCard} />
-                )}
-                <HeroPad player={1} cards={playerOneHand} />
+            {thisPlayer === 'player1' ? (
+              <div className="hands-container">
+                <div className="hero-pad-container-1">
+                  {activeCardPlayer1 && (
+                  <ActiveCard activeCard={activeCardPlayer1} playerType="player1" />
+                  )}
+                  <HeroPad type="first" player={thisPlayer} />
+                </div>
+                <div className="player-hand">
+                  {playerOneHand.map((card) => (
+                    <Card
+                      key={card.id}
+                      content={playerOneHand}
+                      card={card}
+                      activeCard={activeCardPlayer1}
+                    />
+                  ))}
+                </div>
               </div>
-              <div className="player-hand">
-                {playerOneHand.map((card) => (
-                  <Card key={card.id} content={playerOneHand} card={card} player="player1" activeCard={activeCard} />
-                ))}
-              </div>
-            </div>
+            ) : (<HeroPad type="second" cards={playerOneHand} />)}
             <div className="battlefield-core">
               <div className="battlefield-topspells">
                 {topSpellsPlayer1.map((spell) => (
@@ -147,7 +161,26 @@ const Battlefield = () => {
                 </div>
               </div>
             </div>
-            <HeroPad player={2} cards={playerOneHand} />
+            {thisPlayer === 'player2' ? (
+              <div className="hands-container">
+                <div className="hero-pad-container-2">
+                  <HeroPad type="first" player={thisPlayer} />
+                  {activeCardPlayer2 && (
+                  <ActiveCard activeCard={activeCardPlayer2} playerType="player2" />
+                  )}
+                </div>
+                <div className="player-hand">
+                  {playerTwoHand.map((card) => (
+                    <Card
+                      key={card.id}
+                      content={playerTwoHand}
+                      card={card}
+                      activeCard={activeCardPlayer2}
+                    />
+                  ))}
+                </div>
+              </div>
+            ) : (<HeroPad type="second" player={thisPlayer} />)}
           </div>
           {renderModal(isOpened, type)}
         </>

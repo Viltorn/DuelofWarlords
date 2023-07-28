@@ -290,9 +290,6 @@
 
 
 @media screen and (max-width: 767px) {
-  html {
-    font-size: 13px;
-  }
   .text-mute {
     font-size: 14px;
   }
