@@ -1,11 +1,12 @@
 import { createContext } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useStore } from 'react-redux';
 import { actions as battleActions } from '../slices/battleSlice.js';
 
 const FunctionContext = createContext({});
 
 export const FunctionProvider = ({ children }) => {
   const dispatch = useDispatch();
+  const store = useStore();
 
   const deleteCardfromSource = (card) => {
     const { player, status, cellId } = card;
@@ -22,9 +23,15 @@ export const FunctionProvider = ({ children }) => {
     }
   };
 
+  const getActiveCard = () => {
+    const { activeCardPlayer1, activeCardPlayer2, thisPlayer } = store.getState().battleReducer;
+    return thisPlayer === 'player1' ? activeCardPlayer1 : activeCardPlayer2;
+  };
+
   return (
     <FunctionContext.Provider value={{
       deleteCardfromSource,
+      getActiveCard,
     }}
     >
       {children}

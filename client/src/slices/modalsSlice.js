@@ -6,6 +6,7 @@ const initialState = {
   type: null,
   id: null,
   cellId: null,
+  player: null,
 };
 
 const modalsSlice = createSlice({
@@ -17,12 +18,14 @@ const modalsSlice = createSlice({
       state.type = payload.type;
       state.id = payload.id ?? null;
       state.cellId = payload.cellId ?? null;
+      state.player = payload.player ?? null;
     },
     closeModal(state) {
       state.isOpened = false;
       state.type = null;
       state.id = null;
       state.cellId = null;
+      state.player = null;
     },
   },
 });

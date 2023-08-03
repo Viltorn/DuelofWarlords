@@ -1,42 +1,26 @@
-import React, { useContext } from 'react';
+import React, { useEffect, useContext, useRef } from 'react';
+import { useDispatch, useSelector, useStore } from 'react-redux';
 import { useTranslation } from 'react-i18next';
-import { useDispatch, useStore, useSelector } from 'react-redux';
 import { actions as modalsActions } from '../slices/modalsSlice.js';
 import { actions as battleActions } from '../slices/battleSlice.js';
 import functionContext from '../contexts/functionsContext.js';
-
-const maxTurns = 2;
-const minTurns = 0;
+import { minCardTurns, maxCardTurns } from '../gameData/gameLimits.js';
 
 const ActionButton = ({ type, card }) => {
-  const { deleteCardfromSource } = useContext(functionContext);
-  const dispatch = useDispatch();
   const { t } = useTranslation();
+  const dispatch = useDispatch();
   const store = useStore();
+  const element = useRef();
+  const { deleteCardfromSource } = useContext(functionContext);
+  const {
+    id, cellId,
+  } = card;
 
   const {
     activeCardPlayer1,
     activeCardPlayer2,
     thisPlayer,
   } = useSelector((state) => state.battleReducer);
-
-  const {
-    id, cellId,
-  } = card;
-
-  const makeTurn = (direction) => {
-    const { fieldCells } = store.getState().battleReducer;
-    const cell = fieldCells.find((item) => item.id === cellId);
-    const currentCard = cell.content.find((item) => item.id === id);
-    const currentTurn = currentCard.turn;
-    if (direction === 'turnLeft') {
-      if (currentTurn < maxTurns) {
-        dispatch(battleActions.turnCardLeft({ cardId: id, cellId }));
-      }
-    } else if (currentTurn > minTurns) {
-      dispatch(battleActions.turnCardRight({ cardId: id, cellId }));
-    }
-  };
 
   const deleteOtherActiveCard = (card1, card2, thisplayer) => {
     const card1Id = card1 ? card1.id : null;
@@ -47,7 +31,21 @@ const ActionButton = ({ type, card }) => {
     }
   };
 
-  const makeClick = (btnType) => {
+  const makeTurn = (direction) => {
+    const { fieldCells } = store.getState().battleReducer;
+    const cell = fieldCells.find((item) => item.id === cellId);
+    const currentCard = cell.content.find((item) => item.id === id);
+    const currentTurn = currentCard.turn;
+    if (direction === 'turnLeft') {
+      if (currentTurn < maxCardTurns) {
+        dispatch(battleActions.turnCardLeft({ cardId: id, cellId }));
+      }
+    } else if (currentTurn > minCardTurns) {
+      dispatch(battleActions.turnCardRight({ cardId: id, cellId }));
+    }
+  };
+
+  const performClick = (btnType) => {
     switch (btnType) {
       case 'healthBar':
         dispatch(modalsActions.openModal({ type: 'changeStats', id, cellId }));
@@ -64,41 +62,59 @@ const ActionButton = ({ type, card }) => {
         dispatch(battleActions.deleteActiveCard({ player: thisPlayer }));
         deleteOtherActiveCard(activeCardPlayer1, activeCardPlayer2, thisPlayer);
         break;
+      case 'graveyard':
+        deleteCardfromSource(card);
+        dispatch(battleActions.addToGraveyard({ card }));
+        dispatch(battleActions.deleteActiveCard({ player: thisPlayer }));
+        deleteOtherActiveCard(activeCardPlayer1, activeCardPlayer2, thisPlayer);
+        break;
       default:
         break;
     }
   };
 
   const handleButtonClick = () => {
-    makeClick(type);
+    performClick(type);
   };
 
   function handleKeyDown(e) {
+    e.preventDefault();
     const { key } = e;
+    console.log(key);
     switch (key) {
       case '1':
-        makeClick('turnLeft');
+        performClick('turnLeft');
         break;
       case '2':
-        makeClick('turnRight');
+        performClick('turnRight');
         break;
       case 'q':
-        makeClick('healthBar');
+        performClick('healthBar');
         break;
       case 'r':
-        makeClick('return');
+        performClick('return');
+        break;
+      case 'z':
+        performClick('graveyard');
         break;
       default:
         break;
     }
   }
 
+  useEffect(() => {
+    window.addEventListener('keydown', handleKeyDown);
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  });
+
   return (
     <button
       className="action-button"
-      onClick={handleButtonClick}
       type="button"
-      onKeyDown={(e) => handleKeyDown(e)}
+      ref={element}
+      onClick={handleButtonClick}
     >
       <div className="action-button__label">{t(type)}</div>
       {type === 'turnLeft' && (

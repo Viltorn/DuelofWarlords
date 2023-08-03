@@ -7,14 +7,13 @@ import { actions as battleActions } from '../slices/battleSlice.js';
 import PrimaryButton from '../components/PrimaryButton';
 import './Modals.css';
 
-const ChangeCardStats = () => {
+const ChangePoints = () => {
   const { t } = useTranslation();
   const inputEl = useRef();
   const dispatch = useDispatch();
-  const { id, cellId } = useSelector((state) => state.modalsReducer);
-  const { fieldCells } = useSelector((state) => state.battleReducer);
-  const currentCell = fieldCells.find((cell) => cell.id === cellId);
-  const currentCard = currentCell.content.find((card) => card.id === id);
+  const { player } = useSelector((state) => state.modalsReducer);
+  const { playerPoints } = useSelector((state) => state.battleReducer);
+  const currentPoints = playerPoints.find((item) => item.player === player).points;
 
   useEffect(() => {
     inputEl.current.focus();
@@ -34,15 +33,11 @@ const ChangeCardStats = () => {
 
   const formik = useFormik({
     initialValues: {
-      health: currentCard.currentHP,
+      points: currentPoints,
     },
-    onSubmit: ({ health }) => {
+    onSubmit: ({ points }) => {
       try {
-        dispatch(battleActions.changeHP({
-          health,
-          cardId: currentCard.id,
-          cellId: currentCard.cellId,
-        }));
+        dispatch(battleActions.setPlayerPoints({ points, player }));
         handleClose();
       } catch (err) {
         console.log(err);
@@ -60,20 +55,20 @@ const ChangeCardStats = () => {
           <fieldset className="modal-winodw__fieldset" disabled={formik.isSubmitting}>
             <input
               onKeyDown={(e) => handleKeyDown(e)}
-              className="modal-winodw__input"
-              id="health"
+              className="modal-winodw__input_black"
+              id="points"
               type="text"
               ref={inputEl}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
-              value={formik.values.health}
+              value={formik.values.points}
               data-testid="input-body"
-              name="health"
+              name="points"
             />
             {formik.errors.health ? (
-              <div className="invalid-feedback">{t(`errors.${formik.errors.phone}`)}</div>
+              <div className="invalid-feedback">{t(`errors.${formik.errors.points}`)}</div>
             ) : null}
-            <label htmlFor="health" className="visually-hidden">{t('ChangeHP')}</label>
+            <label htmlFor="points" className="visually-hidden">{t('ChangePoints')}</label>
             <div className="modal-winodw__buttons">
               <PrimaryButton
                 showIcon={false}
@@ -97,4 +92,4 @@ const ChangeCardStats = () => {
   );
 };
 
-export default ChangeCardStats;
+export default ChangePoints;

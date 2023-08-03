@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { useDispatch, useStore } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import cn from 'classnames';
 import { actions as battleActions } from '../slices/battleSlice.js';
@@ -8,10 +8,10 @@ import functionContext from '../contexts/functionsContext.js';
 
 const Cell = ({ props, id }) => {
   const { t } = useTranslation();
-  const store = useStore();
+  const { thisPlayer } = useSelector((state) => state.battleReducer);
   const dispatch = useDispatch();
   const { type, content } = props;
-  const { deleteCardfromSource } = useContext(functionContext);
+  const { deleteCardfromSource, getActiveCard } = useContext(functionContext);
 
   const classes = cn({
     'default-cell-size': true,
@@ -21,8 +21,7 @@ const Cell = ({ props, id }) => {
   });
 
   const handleCellClick = () => {
-    const { activeCardPlayer1, activeCardPlayer2, thisPlayer } = store.getState().battleReducer;
-    const activeCard = thisPlayer === 'player1' ? activeCardPlayer1 : activeCardPlayer2;
+    const activeCard = getActiveCard();
     if (activeCard && activeCard.type === 'warrior' && type === 'field' && content.length === 0) {
       dispatch(battleActions.addFieldContent({ activeCard, id }));
       deleteCardfromSource(activeCard);

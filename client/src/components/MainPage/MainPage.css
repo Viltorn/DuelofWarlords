@@ -1,31 +1,3 @@
-:root {
-  /* colors */
-  --main-background: linear-gradient(180deg, rgba(233, 205, 191, 0.8) 0%, rgb(224, 169, 127) 100%);
-  --golden: #fbb270;
-  --black-font: #252525;
-  --dark-golden: #845c3a;
-  --hand-card-width: 8rem;
-  --dark-color: #3F3A3A;
-  --light-brown-color: #E0A97F;
-  --dark-red-color: #C65B4D;
-  --white-color: rgb(238, 238, 238);
-  --black-color: rgb(21, 21, 21);
-  --golden: #fbb270;
-  --dark-blue: #484860;
-  --red: #850409;
-}
-
-@font-face {
-  font-weight: 400; /* Соответствует значению normal */
-  font-family: Almendra;
-  src: url("./fonts/Almendra-Regular.ttf");
-}
-
-@font-face {
-  font-weight: 700; /* Соответствует значению bold */
-  font-family: Almendra;
-  src: url("./fonts/Almendra-Bold.ttf");
-}
 
 .w-90 {
   max-width: 1000px;
@@ -64,7 +36,7 @@
   height: 100vh;
   background-size: cover;
   background-repeat: no-repeat;
-  background-image: url("./assets/Cover_back.png");
+  background-image: url("../../assets/MainPage/Cover_back.png");
   background-position: center;
   display: flex;
   justify-content: center;

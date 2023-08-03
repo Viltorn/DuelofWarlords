@@ -7,8 +7,8 @@ import HeroPad from './HeroPad.jsx';
 import Card from './Card.jsx';
 import Header from './Header.jsx';
 import ActiveCard from './ActiveCard.jsx';
-import '../Battlefield.css';
-import RotateScreen from '../assets/RotateScreen.png';
+import './Battlefield.css';
+import RotateScreen from '../assets/battlefield/RotateScreen.png';
 import getModal from '../modals/index.js';
 
 const Battlefield = () => {
@@ -48,13 +48,13 @@ const Battlefield = () => {
     return () => {
       window.removeEventListener('resize', handleWindowResize);
     };
-  }, []);
+  });
 
   return (
     <div className="container">
       {windowWidth < 500 ? (
         <div className="rotate-screen">
-          <h3>{t('RotateScreen')}</h3>
+          <h2>{t('RotateScreen')}</h2>
           <img className="rotate-img" src={RotateScreen} alt="rotate screen" />
         </div>
       ) : (
@@ -80,7 +80,7 @@ const Battlefield = () => {
                   ))}
                 </div>
               </div>
-            ) : (<HeroPad type="second" cards={playerOneHand} />)}
+            ) : (<HeroPad type="second" player="player1" />)}
             <div className="battlefield-core">
               <div className="battlefield-topspells">
                 {topSpellsPlayer1.map((spell) => (
@@ -180,7 +180,7 @@ const Battlefield = () => {
                   ))}
                 </div>
               </div>
-            ) : (<HeroPad type="second" player={thisPlayer} />)}
+            ) : (<HeroPad type="second" player="player2" />)}
           </div>
           {renderModal(isOpened, type)}
         </>

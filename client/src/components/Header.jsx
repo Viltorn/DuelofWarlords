@@ -3,28 +3,35 @@ import { useTranslation } from 'react-i18next';
 import { useSelector, useDispatch } from 'react-redux';
 import PrimaryButton from './PrimaryButton';
 import { actions as battleActions } from '../slices/battleSlice.js';
-
-const maxPoints = 9;
+import { actions as modalsActions } from '../slices/modalsSlice.js';
+import { maxActionPoints } from '../gameData/gameLimits';
 
 const Header = () => {
   const { t } = useTranslation();
   const {
-    thisPlayer, player1Points, player2Points, commonPoints,
+    thisPlayer, playerPoints, commonPoints,
   } = useSelector((state) => state.battleReducer);
+  const player1Points = playerPoints.find((item) => item.player === 'player1').points;
+  const player2Points = playerPoints.find((item) => item.player === 'player2').points;
   const dispatch = useDispatch();
 
-  const hadleEndTurn = () => {
+  const hadleEndTurnClick = () => {
     const newPlayer = thisPlayer === 'player1' ? 'player2' : 'player1';
-    const newCommonPoints = commonPoints < maxPoints ? commonPoints + 1 : maxPoints;
+    const newCommonPoints = commonPoints < maxActionPoints ? commonPoints + 1 : maxActionPoints;
     if (newPlayer === 'player2') {
       dispatch(battleActions.setPlayerPoints({ points: commonPoints, player: 'player2' }));
     } else {
-      if (commonPoints < maxPoints) {
+      if (commonPoints < maxActionPoints) {
         dispatch(battleActions.addCommonPoint());
       }
       dispatch(battleActions.setPlayerPoints({ points: newCommonPoints, player: 'player1' }));
     }
+    dispatch(battleActions.drawCard({ player: newPlayer }));
     dispatch(battleActions.changePlayer({ newPlayer }));
+  };
+
+  const handlePointsClick = (player) => {
+    dispatch(modalsActions.openModal({ type: 'openPointsCounter', player }));
   };
 
   return (
@@ -39,19 +46,19 @@ const Header = () => {
           Viktor
         </h3>
       </div>
-      <div className="counter">
+      <button type="button" onClick={() => handlePointsClick('player1')} className="counter">
         <h3 className="counter-number">{player1Points}</h3>
-      </div>
+      </button>
       <PrimaryButton
         showIcon={false}
         state="default"
         text="ЗАКОНЧИТЬ ХОД"
         variant="primary"
-        onClick={hadleEndTurn}
+        onClick={hadleEndTurnClick}
       />
-      <div className="counter">
+      <button type="button" onClick={() => handlePointsClick('player2')} className="counter">
         <h3 className="counter-number">{player2Points}</h3>
-      </div>
+      </button>
       <div className="players-info">
         <h3 className="title-main-font">
           {t('Player2')}

@@ -1,6 +1,3 @@
-import { Nala } from './academiaHeroes.js';
-import { Zigfrid } from './castleHeroes.js';
-
 export const topSpells = [
   {
     id: '1', player: 'player1', content: [], type: 'topSpell',
@@ -39,9 +36,33 @@ export const midSpells = [
 
 export const heroes = [
   {
-    id: 'hero1', player: 'player1', content: [Zigfrid], type: 'hero',
+    id: 'hero1', player: 'player1', content: [], type: 'hero',
   },
   {
-    id: 'hero2', player: 'player2', content: [Nala], type: 'hero',
+    id: 'hero2', player: 'player2', content: [], type: 'hero',
   },
 ];
+
+export const postponed = [
+  {
+    id: 'postponed1', player: 'player1', content: [], type: 'postponed', status: 'cover',
+  },
+  {
+    id: 'postponed2', player: 'player2', content: [], type: 'postponed', status: 'cover',
+  },
+];
+
+export const graveyard = [
+  {
+    id: 'graveyard1', player: 'player1', content: [], type: 'graveyard',
+  },
+  {
+    id: 'graveyard2', player: 'player2', content: [], type: 'graveyard',
+  },
+];
+
+export const fieldCells = {
+  rows: ['1', '2', '3', '4'],
+  linesSideOne: ['1', '2'],
+  linesSideTwo: ['3', '4'],
+};

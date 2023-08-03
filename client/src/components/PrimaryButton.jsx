@@ -1,7 +1,7 @@
 /* eslint-disable no-nested-ternary */
 import PropTypes from 'prop-types';
 import React, { useReducer } from 'react';
-import '../PrimaryButton.css';
+import './PrimaryButton.css';
 
 function reducer(state, action) {
   switch (action) {

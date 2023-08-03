@@ -1,35 +1,28 @@
 /* eslint-disable no-param-reassign */
 import { createSlice } from '@reduxjs/toolkit';
-import academiaDeck from '../game-data/academiaDeck.js';
-import castleDeck from '../game-data/castleDeck.js';
 import createFieldCells from '../utils/makeFieldCells.js';
-import makeShaffledDeck from '../utils/makeShaffledDeck.js';
-import createDeckForPLayer from '../utils/makeDeckForPlayer.js';
 import {
-  bigSpell, topSpells, midSpells, heroes,
-} from '../game-data/heroes&spellsCellsData.js';
-import { Zigfrid } from '../game-data/castleHeroes.js';
-import { Nala } from '../game-data/academiaHeroes.js';
-
-const cellsData = {
-  rows: ['1', '2', '3', '4'],
-  linesSideOne: ['1', '2'],
-  linesSideTwo: ['3', '4'],
-};
+  bigSpell, topSpells, midSpells, heroes, postponed, graveyard, fieldCells,
+} from '../gameData/heroes&spellsCellsData.js';
 
 const initialState = {
   commonPoints: 1,
-  player1Points: 1,
-  player2Points: 1,
+  playerPoints: [{ player: 'player1', points: 1 }, { player: 'player2', points: 1 }],
   players: { player1: { name: 'Viktor', id: 'player1' }, player2: { name: 'AI', id: 'player2' } },
   thisPlayer: 'player1',
   playerOneDeck: [],
-  playerOneHand: createDeckForPLayer(makeShaffledDeck(academiaDeck), 'player1'),
-  playerOneHero: Zigfrid,
-  playerTwoHand: createDeckForPLayer(makeShaffledDeck(castleDeck), 'player2'),
+  playerOneHand: [],
+  playerTwoHand: [],
   playerTwoDeck: [],
-  playerTwoHero: Nala,
-  fieldCells: [...createFieldCells(cellsData), ...bigSpell, ...topSpells, ...midSpells, ...heroes],
+  fieldCells: [
+    ...createFieldCells(fieldCells),
+    ...bigSpell,
+    ...topSpells,
+    ...midSpells,
+    ...heroes,
+    ...postponed,
+    ...graveyard,
+  ],
   activeCardPlayer1: null,
   activeCardPlayer2: null,
 };
@@ -38,6 +31,47 @@ const battleSlice = createSlice({
   name: 'battle',
   initialState,
   reducers: {
+    setHeroes(state, { payload }) {
+      const { player1Hero, player2Hero } = payload;
+      state.fieldCells = state.fieldCells.map((cell) => {
+        if (cell.id === 'hero1') {
+          cell.content = [{ ...player1Hero, cellId: 'hero1' }];
+        }
+        if (cell.id === 'hero2') {
+          cell.content = [{ ...player2Hero, cellId: 'hero2' }];
+        }
+        return cell;
+      });
+    },
+
+    setPlayersDecks(state, { payload }) {
+      const { player1Deck, player2Deck } = payload;
+      state.playerOneDeck = player1Deck;
+      state.playerTwoDeck = player2Deck;
+    },
+
+    setPlayersHands(state, { payload }) {
+      const { player1Hand, player2Hand } = payload;
+      state.playerOneHand = player1Hand;
+      state.playerTwoHand = player2Hand;
+    },
+
+    drawCard(state, { payload }) {
+      const { player } = payload;
+      const hand = player === 'player1' ? 'playerOneHand' : 'playerTwoHand';
+      const deck = player === 'player1' ? 'playerOneDeck' : 'playerTwoDeck';
+      if (state[deck].length !== 0) {
+        const card = state[deck].shift();
+        state[hand] = [card, ...state[hand]];
+      }
+    },
+
+    sendCardtoDeck(state, { payload }) {
+      const { activeCard } = payload;
+      const deck = activeCard.player === 'player1' ? 'playerOneDeck' : 'playerTwoDeck';
+      state[deck] = [...state[deck], activeCard];
+    },
+
     changePlayer(state, { payload }) {
       const { newPlayer } = payload;
       state.thisPlayer = newPlayer;
@@ -45,8 +79,11 @@ const battleSlice = createSlice({
 
     setPlayerPoints(state, { payload }) {
       const { points, player } = payload;
-      const playerToChange = player === 'player1' ? 'player1Points' : 'player2Points';
-      state[playerToChange] = points;
+      state.playerPoints = state.playerPoints.map((item) => {
+        const newPoints = item.player === player ? points : item.points;
+        item.points = newPoints;
+        return item;
+      });
     },
 
     addCommonPoint(state) {
@@ -93,6 +130,19 @@ const battleSlice = createSlice({
       const changedCard = { ...card, status: 'hand', cellId: '' };
       const hand = changedCard.player === 'player1' ? 'playerOneHand' : 'playerTwoHand';
       state[hand] = [...state[hand], changedCard];
+    },
+
+    addToGraveyard(state, { payload }) {
+      const { card } = payload;
+      const { player } = card;
+      const cellId = player === 'player1' ? 'graveyard1' : 'graveyard2';
+      const newCard = { ...card, status: 'field', cellId };
+      state.fieldCells = state.fieldCells.map((cell) => {
+        if (cell.type === 'graveyard' && cell.player === player) {
+          cell.content = [newCard, ...cell.content];
+        }
+        return cell;
+      });
     },
 
     turnCardLeft(state, { payload }) {

@@ -2,9 +2,7 @@
   /* Demensions */
   --cell-width: 6.5rem;
   --cell-content-width: 5.5rem;
-
   /* Colors */
-
 }
 
 .grow-2 {
@@ -34,6 +32,12 @@
   align-self: center;
 }
 
+.rotate-screen h2 {
+  font-size: 2rem;
+  text-shadow: 1px 0 0 var(--dark-color),0 1px 0 var(--dark-color), -1px 0 0 var(--dark-color),0 -1px 0 var(--dark-color);
+  color: var(--white-color);
+}
+
 .rotate-img {
   height: 100px;
   width: 100px;
@@ -47,10 +51,10 @@
   align-items: flex-start;
   background-size: cover;
   background-repeat: no-repeat;
-  background-image: url("./assets/battlefield/BattlefieldOption.png");
+  background-image: url("../assets/battlefield/BattlefieldOption.png");
   background-position: center;
   height: 100vh;
-  padding: 0 0 0 0;
+  padding: 0;
 }
 
 .battlefield-container {
@@ -171,7 +175,7 @@
 }
 
 .cell-field {
-  background-image: url('./assets/battlefield/WarriorCell_square_withback.png');
+  background-image: url('../assets/battlefield/WarriorCell_square_withback.png');
   background-color: none;
   background-size: cover;
   background-repeat: no-repeat;
@@ -205,6 +209,10 @@
   border-radius: 0.3rem;
 }
 
+.cell-container__image_no-border {
+  border: none;
+}
+
 .cell-container__warrior-power {
   color: var(--white-color);
   font-family: "Roboto-Bold", Helvetica;
@@ -236,12 +244,48 @@
 }
 
 .hero-container-2 {
-  display: flex;
-  flex-direction: column;
-  flex-wrap: nowrap;
+  display: grid;
+  grid-template-columns: repeat(1, auto);
+  grid-template-rows: auto;
   gap: 1.3rem;
-  justify-content: top;
+  align-items: start;
   margin-top: 0.5rem;
+}
+
+.second-type:nth-of-type(1) {
+  order: 1;
+}
+
+.second-type:nth-of-type(3) {
+  order: 2;
+}
+
+.second-type:nth-of-type(5) {
+  order: 3;
+}
+
+.second-type:nth-of-type(2) {
+  order: 4;
+}
+
+.second-type:nth-of-type(4) {
+  order: 5;
+}
+
+.second-player:nth-of-type(2) {
+  order: 1;
+}
+
+.second-player:nth-of-type(1) {
+  order: 2;
+}
+
+.second-player:nth-of-type(4) {
+  order: 3;
+}
+
+.second-player:nth-of-type(3) {
+  order: 4;
 }
 
 .cell-hero-pad__hero-health {
@@ -255,17 +299,32 @@
   text-align: center;
 }
 
+.cell-hero-pad__cards-count {
+  color: var(--white-color);
+  font-family: "Roboto-Bold", Helvetica;
+  text-shadow: 1px 0 0 var(--dark-color),0 1px 0 var(--dark-color), -1px 0 0 var(--dark-color),0 -1px 0 var(--dark-color);
+  font-size: 1.8rem;
+  position: absolute;
+  top: 0.7rem;
+  left: auto;
+  right: auto;
+  text-align: center;
+}
+
 .cell-hero-pad {
   display: flex;
   position: relative;
   justify-content: center;
-  border-color: var(--dark-color);
   border: 0.2rem solid var(--dark-color);
   border-radius: 0.3rem;
   align-items: center;
-  background-color: none;
+  background-color: transparent;
   width: calc(var(--cell-width) - 0.8rem);
   height: calc((var(--cell-width) - 0.8rem) * 1.14);
+}
+
+.cell-hero-pad_no-border {
+  border: none;
 }
 
 .deck-container {
@@ -377,6 +436,7 @@
 
 .card-hand-description > p {
   font-size: 0.5rem;
+  line-height: 0.6rem;
   text-align: start;
 }
 
@@ -423,6 +483,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  border: none;
 }
 
 .counter-number {

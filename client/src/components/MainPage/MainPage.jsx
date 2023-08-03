@@ -1,21 +1,20 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
-import PrimaryButton from './PrimaryButton';
-// import '../style.css';
-import '../MainPage.css';
-import LogoMain from '../assets/Logo_main.png';
-import CastleLogo from '../assets/Castle_logo.png';
-import ForestLogo from '../assets/Forest_logo.png';
-import AcademiaLogo from '../assets/Academia_logo.png';
-import DungeonLogo from '../assets/Dungeon_logo.png';
-import BattlefieldTactics from '../assets/Battlefield_tactics.png';
-import SpellCast from '../assets/Spell_cast.png';
-import HeroPower from '../assets/Hero_power.png';
-import Paladin from '../assets/Paladin_logo.png';
-import Mage from '../assets/Mage_logo.png';
-import Hunter from '../assets/Hunter_logo.png';
-import Assasin from '../assets/Assasin_logo.png';
+import PrimaryButton from '../PrimaryButton';
+import './MainPage.css';
+import LogoMain from '../../assets/MainPage/Logo_main.png';
+import CastleLogo from '../../assets/MainPage/Castle_logo.png';
+import ForestLogo from '../../assets/MainPage/Forest_logo.png';
+import AcademiaLogo from '../../assets/MainPage/Academia_logo.png';
+import DungeonLogo from '../../assets/MainPage/Dungeon_logo.png';
+import BattlefieldTactics from '../../assets/MainPage/Battlefield_tactics.png';
+import SpellCast from '../../assets/MainPage/Spell_cast.png';
+import HeroPower from '../../assets/MainPage/Hero_power.png';
+import Paladin from '../../assets/MainPage/Paladin_logo.png';
+import Mage from '../../assets/MainPage/Mage_logo.png';
+import Hunter from '../../assets/MainPage/Hunter_logo.png';
+import Assasin from '../../assets/MainPage/Assasin_logo.png';
 
 const MainPage = () => {
   const { t } = useTranslation();
@@ -33,11 +32,11 @@ const MainPage = () => {
                 variant="primary"
               />
             </a>
-            <Link to="/battle" className="link">
+            <Link to="/choose" className="link">
               <PrimaryButton
                 showIcon={false}
                 state="default"
-                text="ОБУЧЕНИЕ"
+                text="ИГРАТЬ"
                 variant="secondary"
               />
             </Link>

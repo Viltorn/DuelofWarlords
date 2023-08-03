@@ -1,16 +1,15 @@
 import React, { useRef, useContext } from 'react';
-import { useDispatch, useStore } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import cn from 'classnames';
 import { actions as battleActions } from '../slices/battleSlice.js';
 import functionContext from '../contexts/functionsContext.js';
 
 const CellCard = ({ item, type }) => {
-  const { deleteCardfromSource } = useContext(functionContext);
+  const { deleteCardfromSource, getActiveCard } = useContext(functionContext);
   const cardElement = useRef();
-  const store = useStore();
   const dispatch = useDispatch();
   const { cellId, turn } = item;
-
+  const { thisPlayer, fieldCells } = useSelector((state) => state.battleReducer);
   const marginTop = type === 'field' ? 4.5 : 0;
   const marginRight = type === 'bigSpell' ? 1.5 : 0;
 
@@ -21,11 +20,9 @@ const CellCard = ({ item, type }) => {
   });
 
   const handleCardClick = () => {
-    const { activeCardPlayer1, activeCardPlayer2, thisPlayer } = store.getState().battleReducer;
-    const activeCard = thisPlayer === 'player1' ? activeCardPlayer1 : activeCardPlayer2;
+    const activeCard = getActiveCard();
     if (!activeCard) {
       const cardId = cardElement.current.id;
-      const { fieldCells } = store.getState().battleReducer;
       const currentCell = fieldCells.find((cell) => cell.id === cellId);
       const currentCardData = currentCell.content.find((card) => card.id === cardId);
       dispatch(battleActions.addActiveCard({ card: currentCardData, player: thisPlayer }));

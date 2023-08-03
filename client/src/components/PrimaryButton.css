@@ -1,13 +1,3 @@
-:root {
-  /* colors */
-  --main-background: linear-gradient(180deg, rgba(142.38, 77.71, 77.71, 0.8) 0%, rgb(91.37, 42.26, 42.26) 100%);
-  --golden: #fbb270;
-  --purple: #484860;
-  --light-gray: #e1e1e1;
-  --dark-gray: #868686;
-  --white: #fff;
-  --dark-red-color: #C65B4D;
-}
 
 
 .primary-button {

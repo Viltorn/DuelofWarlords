@@ -1,0 +1,38 @@
+.choose-game {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: center;
+  align-items: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-image: url("../../assets/ChooseGameCover.png");
+  background-position: center;
+  height: 100vh;
+  padding: 0;
+}
+
+.choose-game__options {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 1.5rem;
+  background-color: transparent;
+  background-repeat: no-repeat;
+  background-image: url("../../assets/MenuBackCover.png");
+  background-position: center;
+  background-size: cover;
+  margin: auto; /* 15% from the top and centered */
+  padding: 2rem 4rem;
+  width: 300px; /* Could be more or less, depending on screen size */
+  min-width: 300px;
+  height: 430px;
+  border-radius: 0.5rem;
+}
+
+.choose-game__header {
+  text-align: center;
+  color: var(--dark-golden);
+  font-size: 1.3rem;
+}
