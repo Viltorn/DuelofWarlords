@@ -3,6 +3,7 @@ import { useSelector } from 'react-redux';
 import cn from 'classnames';
 import ActionButton from './ActionButton';
 import Card from './Card';
+import './ActiveCard.css';
 
 const ActiveCard = ({ activeCard, playerType }) => {
   const {
@@ -10,8 +11,8 @@ const ActiveCard = ({ activeCard, playerType }) => {
   } = activeCard;
 
   const cardClasses = cn({
-    'active-card-block-1': playerType === 'player1',
-    'active-card-block-2': playerType === 'player2',
+    'active-card_block-1': playerType === 'player1',
+    'active-card_block-2': playerType === 'player2',
   });
   const { isOpened } = useSelector((state) => state.modalsReducer);
 

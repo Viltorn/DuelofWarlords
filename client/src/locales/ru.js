@@ -59,6 +59,7 @@ export default {
     ChooseFactions: 'ВЫБЕРИТЕ ФРАКЦИЮ И ГЕРОЯ',
     Start: 'НАЧАТЬ',
     Back: 'НАЗАД',
+    ResetBtn: 'СБРОСИТЬ',
     errors: {
       WrongPhone: 'WhatsApp не найден для этого номера',
       AuthOrNetError: 'Ошибка авторизации или соединения',

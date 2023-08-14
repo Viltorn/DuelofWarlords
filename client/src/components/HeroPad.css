@@ -1,0 +1,131 @@
+/* HeroPad */
+
+.hero-pad_1 {
+  display: grid;
+  grid-template-columns: repeat(2, auto);
+  grid-template-rows: repeat(2, auto);
+  gap: 1.3rem;
+}
+
+.hero-pad_2 {
+  display: grid;
+  grid-template-columns: repeat(1, auto);
+  grid-template-rows: auto;
+  gap: 1.3rem;
+  align-items: start;
+  margin-top: 0.5rem;
+}
+
+.hero-pad__default-btn {
+  width: 100%;
+  height: 100%;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+.hero-pad__cells {
+  display: flex;
+  position: relative;
+  justify-content: center;
+  border: 0.2rem solid var(--dark-color);
+  border-radius: 0.3rem;
+  align-items: center;
+  background-color: transparent;
+  width: calc(var(--cell-width) - 0.8rem);
+  height: calc((var(--cell-width) - 0.8rem) * 1.14);
+}
+
+
+.hero-pad__cells.second-type:nth-of-type(1) {
+  order: 1;
+}
+
+.hero-pad__cells.second-type:nth-of-type(3) {
+  order: 2;
+}
+
+.hero-pad__cells.second-type:nth-of-type(5) {
+  order: 3;
+}
+
+.hero-pad__cells.second-type:nth-of-type(2) {
+  order: 4;
+}
+
+.hero-pad__cells.second-type:nth-of-type(4) {
+  order: 5;
+}
+
+.hero-pad__cells.second-player:nth-of-type(2) {
+  order: 1;
+}
+
+.hero-pad__cells.second-player:nth-of-type(1) {
+  order: 2;
+}
+
+.hero-pad__cells.second-player:nth-of-type(4) {
+  order: 3;
+}
+
+.hero-pad__cells.second-player:nth-of-type(3) {
+  order: 4;
+}
+
+.hero-pad__hero-health {
+  color: var(--white-color);
+  font-family: "Roboto-Bold", Helvetica;
+  text-shadow: 1px 0 0 var(--dark-color),0 1px 0 var(--dark-color), -1px 0 0 var(--dark-color),0 -1px 0 var(--dark-color);
+  font-size: 0.8rem;
+  position: absolute;
+  top: 0.3rem;
+  right: 0.3rem;
+  text-align: center;
+}
+
+.hero-pad__cards-count {
+  color: var(--white-color);
+  font-family: "Roboto-Bold", Helvetica;
+  text-shadow: 1px 0 0 var(--dark-color),0 1px 0 var(--dark-color), -1px 0 0 var(--dark-color),0 -1px 0 var(--dark-color);
+  font-size: 1.8rem;
+  position: absolute;
+  top: 0.7rem;
+  left: auto;
+  right: auto;
+  text-align: center;
+}
+
+.hero-pad__cells_no-border {
+  border: none;
+}
+
+.hero-pad__image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border: 0.1rem solid var(--dark-color);
+  border-radius: 0.3rem;
+}
+
+.hero-pad__image_no-border {
+  border: none;
+}
+
+.hero-pad__default-title {
+  font-family: "Roboto-Bold", Helvetica;
+  font-size: 0.6rem;
+  word-break: break-word;
+  text-align: center;
+  margin: 0.5rem;
+}
+
+.deck-container {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 1rem;
+}
+
+.reverse-flex-row {
+  flex-direction: row-reverse;
+}

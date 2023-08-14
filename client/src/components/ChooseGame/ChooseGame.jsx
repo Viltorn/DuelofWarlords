@@ -20,7 +20,7 @@ const ChooseGame = () => {
             type="submit"
           />
         </Link>
-        <Link to="/hotseatmenu" className="link">
+        <Link to="/hotseat" className="link">
           <PrimaryButton
             showIcon={false}
             state="default"

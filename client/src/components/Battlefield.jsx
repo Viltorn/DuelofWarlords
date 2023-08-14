@@ -1,6 +1,6 @@
 /* eslint-disable object-curly-newline */
 import React, { useState, useEffect } from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import Cell from './Cell.jsx';
 import HeroPad from './HeroPad.jsx';
@@ -10,9 +10,11 @@ import ActiveCard from './ActiveCard.jsx';
 import './Battlefield.css';
 import RotateScreen from '../assets/battlefield/RotateScreen.png';
 import getModal from '../modals/index.js';
+import { actions as modalsActions } from '../slices/modalsSlice.js';
 
 const Battlefield = () => {
   const { t } = useTranslation();
+  const dispatch = useDispatch();
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
   const {
     activeCardPlayer1,
@@ -50,8 +52,12 @@ const Battlefield = () => {
     };
   });
 
+  useEffect(() => {
+    dispatch(modalsActions.openModal({ type: 'openHotSeatMenu' }));
+  }, [dispatch]);
+
   return (
-    <div className="container">
+    <div className="battlefield__container">
       {windowWidth < 500 ? (
         <div className="rotate-screen">
           <h2>{t('RotateScreen')}</h2>
@@ -60,16 +66,16 @@ const Battlefield = () => {
       ) : (
         <>
           <Header />
-          <div className="battlefield-container">
+          <div className="battlefield__main">
             {thisPlayer === 'player1' ? (
-              <div className="hands-container">
-                <div className="hero-pad-container-1">
+              <div className="battlefield__hands-container">
+                <div className="battlefield__heropad-1">
                   {activeCardPlayer1 && (
                   <ActiveCard activeCard={activeCardPlayer1} playerType="player1" />
                   )}
                   <HeroPad type="first" player={thisPlayer} />
                 </div>
-                <div className="player-hand">
+                <div className="battlefield__player-hand">
                   {playerOneHand.map((card) => (
                     <Card
                       key={card.id}
@@ -81,8 +87,8 @@ const Battlefield = () => {
                 </div>
               </div>
             ) : (<HeroPad type="second" player="player1" />)}
-            <div className="battlefield-core">
-              <div className="battlefield-topspells">
+            <div className="battlefield__core">
+              <div className="battlefield__topspells">
                 {topSpellsPlayer1.map((spell) => (
                   <Cell
                     key={spell.id}
@@ -115,8 +121,8 @@ const Battlefield = () => {
                   />
                 ))}
               </div>
-              <div className="battlefield-center">
-                <div className="battlefield-side-container">
+              <div className="battlefield__middle-cells">
+                <div className="battlefield__middle-fieldcells">
                   {cellsPlayer1.map((cell) => (
                     <Cell
                       key={cell.id}
@@ -131,7 +137,7 @@ const Battlefield = () => {
                     />
                   ))}
                 </div>
-                <div className="battlefield-midspell-container">
+                <div className="battlefield__middle-spells">
                   {midPells.map((spell) => (
                     <Cell
                       key={spell.id}
@@ -144,7 +150,7 @@ const Battlefield = () => {
                     />
                   ))}
                 </div>
-                <div className="battlefield-side-container">
+                <div className="battlefield__middle-fieldcells">
                   {cellsPlayer2.map((cell) => (
                     <Cell
                       key={cell.id}
@@ -162,14 +168,14 @@ const Battlefield = () => {
               </div>
             </div>
             {thisPlayer === 'player2' ? (
-              <div className="hands-container">
-                <div className="hero-pad-container-2">
+              <div className="battlefield__hands-container">
+                <div className="battlefield__heropad-2">
                   <HeroPad type="first" player={thisPlayer} />
                   {activeCardPlayer2 && (
                   <ActiveCard activeCard={activeCardPlayer2} playerType="player2" />
                   )}
                 </div>
-                <div className="player-hand">
+                <div className="battlefield__player-hand">
                   {playerTwoHand.map((card) => (
                     <Card
                       key={card.id}

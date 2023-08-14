@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import cn from 'classnames';
 import { actions as battleActions } from '../slices/battleSlice.js';
 import functionContext from '../contexts/functionsContext.js';
+import './Card.css';
 
 const Card = ({
   card, active, activeCard, content,
@@ -27,8 +28,13 @@ const Card = ({
   const marginRight = active !== 'active' ? content.length * 0.5 : 0; /*  empirical number */
 
   const classes = cn({
-    'card-hand': true,
-    'active-card-block__active-card': active === 'active',
+    'card-block': true,
+    'card-block_active': active === 'active',
+  });
+
+  const descriptClasses = cn({
+    'card-block__font-active': active === 'active',
+    'card-block__font': active !== 'active',
   });
 
   const handleClick = () => {
@@ -58,20 +64,20 @@ const Card = ({
 
   return (
     <button className={classes} type="button" ref={cardElement} onClick={handleClick} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave} style={{ marginRight: `-${marginRight}rem` }}>
-      <div className="card-image-container">
+      <div className={cn('card-block__image-container', { active: active === 'active' })}>
         {type === 'warrior' && (
         <>
-          <h3 className="warrior-power">{power}</h3>
-          <h3 className="warrior-health">{health}</h3>
+          <h3 className={cn('card-block__warrior-power', { active: active === 'active' })}>{power}</h3>
+          <h3 className={cn('card-block__warrior-health', { active: active === 'active' })}>{health}</h3>
         </>
         )}
         {type === 'hero' && (
-          <h3 className="hero-health">{health}</h3>
+          <h3 className="card-block__hero-health">{health}</h3>
         )}
-        <img className="card-image" src={img} alt={name} />
+        <img className="card-block__main-image" src={img} alt={name} />
       </div>
-      <div className="card-hand-description">
-        <p>{description}</p>
+      <div className="card-block__description">
+        <p className={descriptClasses}>{description}</p>
       </div>
     </button>
   );

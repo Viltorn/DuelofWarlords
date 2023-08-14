@@ -4,32 +4,52 @@ import { useTranslation } from 'react-i18next';
 import cn from 'classnames';
 import { actions as battleActions } from '../slices/battleSlice.js';
 import CellCard from './CellCard.jsx';
+import './Cell.css';
 import functionContext from '../contexts/functionsContext.js';
 
 const Cell = ({ props, id }) => {
   const { t } = useTranslation();
-  const { thisPlayer } = useSelector((state) => state.battleReducer);
+  const { thisPlayer, playerPoints } = useSelector((state) => state.battleReducer);
   const dispatch = useDispatch();
   const { type, content } = props;
   const { deleteCardfromSource, getActiveCard } = useContext(functionContext);
+  const currentPoints = playerPoints.find((item) => item.player === thisPlayer).points;
 
   const classes = cn({
-    'default-cell-size': true,
-    'cell-spell': type === 'midSpell' || 'topSpell',
-    'cell-big-spell': type === 'bigSpell',
-    'cell-field': type === 'field',
+    'cell__default-size': true,
+    cell__spell: type === 'midSpell' || 'topSpell',
+    'cell__big-spell': type === 'bigSpell',
+    cell__field: type === 'field',
   });
+
+  const isAllowedCost = (card) => {
+    const newCost = currentPoints - card.cost;
+    if ((card.status === 'hand' && newCost >= 0) || card.status !== 'hand') {
+      return true;
+    }
+    return false;
+  };
 
   const handleCellClick = () => {
     const activeCard = getActiveCard();
-    if (activeCard && activeCard.type === 'warrior' && type === 'field' && content.length === 0) {
+
+    const addCardToField = () => {
+      if (activeCard.status === 'hand') {
+        const newPoints = currentPoints - activeCard.cost;
+        dispatch(battleActions.setPlayerPoints({ points: newPoints, player: thisPlayer }));
+      }
       dispatch(battleActions.addFieldContent({ activeCard, id }));
       deleteCardfromSource(activeCard);
       dispatch(battleActions.deleteActiveCard({ player: thisPlayer }));
-    } else if (activeCard && activeCard.type === 'spell' && content.length === 0) {
-      dispatch(battleActions.addFieldContent({ activeCard, id }));
-      deleteCardfromSource(activeCard);
-      dispatch(battleActions.deleteActiveCard({ player: thisPlayer }));
+    };
+
+    if (!isAllowedCost(activeCard)) {
+      return;
+    }
+
+    if ((activeCard && activeCard.type === 'warrior' && type === 'field' && content.length === 0)
+    || (activeCard && activeCard.type === 'spell' && content.length === 0)) {
+      addCardToField();
     }
   };
 
@@ -45,7 +65,7 @@ const Cell = ({ props, id }) => {
           />
         ))) : (
           <button type="button" className="cell__default-btn" onClick={handleCellClick}>
-            <h3 className="default-cell-font ">{t(`${type}`)}</h3>
+            <h3 className="cell__title-default">{t(`${type}`)}</h3>
           </button>
       )}
     </div>

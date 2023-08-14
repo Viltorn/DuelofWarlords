@@ -1,0 +1,59 @@
+/* Header */
+
+.header {
+  width: 100%;
+  height: 5rem;
+  position: absolute;
+  top: 0;
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 2rem;
+  justify-content: space-between;
+  align-items: center;
+  background-color: var(--white-color);
+  padding: 0 2rem;
+}
+
+.header__title {
+  color: var(--dark-color);
+  font-size: 1.5rem;
+}
+
+.header__players-info {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.header__counter {
+  border-radius: 50%;
+  background-color: var(--black-color);
+  height: 3rem;
+  width: 3rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: none;
+  cursor: pointer;
+}
+
+.header__counter_num {
+  font-size: 2rem;
+  color: var(--white-color);
+}
+
+.header__central-block {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 2rem;
+}
+
+.header__reset-btn {
+  border: none;
+  font-size: 1rem;
+  background: transparent;
+}

@@ -31,6 +31,8 @@ const battleSlice = createSlice({
   name: 'battle',
   initialState,
   reducers: {
+    resetState: () => initialState,
+
     setHeroes(state, { payload }) {
       const { player1Hero, player2Hero } = payload;
       state.fieldCells = state.fieldCells.map((cell) => {

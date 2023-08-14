@@ -1,49 +1,6 @@
-:root {
-  /* Demensions */
-  --cell-width: 6.5rem;
-  --cell-content-width: 5.5rem;
-  /* Colors */
-}
-
-.grow-2 {
-  flex-grow: 2;
-}
-
-.border-black {
-  border: 0.2rem solid var(--black-color);
-  border-radius: 0.5rem;
-}
-
-.turn_1 {
-  transform: rotate(-45deg);
-}
-
-.turn_2 {
-  transform: rotate(-90deg);
-}
-
 /* Battlfield */
 
-.rotate-screen {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 2rem;
-  align-self: center;
-}
-
-.rotate-screen h2 {
-  font-size: 2rem;
-  text-shadow: 1px 0 0 var(--dark-color),0 1px 0 var(--dark-color), -1px 0 0 var(--dark-color),0 -1px 0 var(--dark-color);
-  color: var(--white-color);
-}
-
-.rotate-img {
-  height: 100px;
-  width: 100px;
-}
-
-.container {
+.battlefield__container {
   display: flex;
   flex-direction: row;
   flex-wrap: nowrap;
@@ -57,7 +14,7 @@
   padding: 0;
 }
 
-.battlefield-container {
+.battlefield__main {
   display: flex;
   flex-direction: row;
   flex-wrap: nowrap;
@@ -68,57 +25,18 @@
   margin-top: 5.5rem;
 }
 
-.hero-pad {
-  min-height: 15rem;
-}
-
-.active-card {
+.battlefield__hands-container {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  justify-content: flex-end;
+  align-items: flex-end;
   height: 100%;
-  min-height: 15rem;
-  padding: 1rem;
-}
-
-.battlefield-topspells {
-  display: flex;
-  justify-content: center;
-  grid-column-gap: 0.8rem;
-}
-
-.battlefield-core {
-  display: flex;
-  flex-direction: column;
-  flex-wrap: nowrap;
-  justify-content: center;
-  gap: 1rem;
-  justify-items: center;
-}
-
-.battlefield-center {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: nowrap;
-  justify-content: center;
-  align-items: center;
+  width: 100%;
   gap: 1rem;
 }
 
-.battlefield-side-container {
-  display: grid;
-  grid-template-columns: repeat(2, auto);
-  grid-template-rows: repeat(4, auto);
-  grid-gap: 0.2rem;
-}
-
-.battlefield-midspell-container {
-  display: flex;
-  flex-direction: column;
-  flex-wrap: nowrap;
-  justify-content: center;
-  gap: 2rem;
-  justify-items: center;
-}
-
-.hero-pad-container-1 {
+.battlefield__heropad-1 {
   width: 100%;
   display: flex;
   flex-direction: row;
@@ -127,7 +45,7 @@
   align-items: flex-end;
 }
 
-.hero-pad-container-2 {
+.battlefield__heropad-2 {
   width: 100%;
   display: flex;
   flex-direction: row;
@@ -136,221 +54,7 @@
   align-items: flex-end;
 }
 
-/* Cells */
-
-.default-cell-size {
-  width: calc(var(--cell-width) - 0.8rem);
-  height: calc(var(--cell-width) - 0.8rem); 
-}
-
-.default-cell-font {
-  font-family: "Roboto-Bold", Helvetica;
-  font-size: 0.6rem;
-  word-break: break-word;
-  text-align: center;
-  margin: 0.5rem;
-}
-
-.cell-spell {
-  display: flex;
-  justify-content: center;
-  border: 0.2rem solid var(--dark-color);
-  border-radius: 0.3rem;
-  align-items: center;
-  background-color: var(--light-brown-color), 0.7;
-  padding: 0;
-}
-
-.cell-big-spell {
-  width: calc(var(--cell-width) + 0.5rem);
-  height: calc(var(--cell-width) - 0.8rem);
-  padding: 0;
-}
-
-.cell__default-btn {
-  width: 100%;
-  height: 100%;
-  background: transparent;
-  border: none;
-}
-
-.cell-field {
-  background-image: url('../assets/battlefield/WarriorCell_square_withback.png');
-  background-color: none;
-  background-size: cover;
-  background-repeat: no-repeat;
-  border: none;
-  width: calc(var(--cell-width));
-  height: calc(var(--cell-width) * 1.16);
-  padding-bottom: 0.4rem;
-  display: flex;
-  flex-direction: column;
-  flex-wrap: nowrap;
-  justify-content: flex-end;
-}
-
-.cell-container__content-item {
-  position: relative;
-  width: var(--cell-content-width);
-  height: var(--cell-content-width);
-  border: none;
-  border-radius: 0.5rem;
-}
-
-.cell-container__content-item:first-child {
-  margin-top: 0;
-}
-
-.cell-container__image {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  border: 0.1rem solid var(--dark-color);
-  border-radius: 0.3rem;
-}
-
-.cell-container__image_no-border {
-  border: none;
-}
-
-.cell-container__warrior-power {
-  color: var(--white-color);
-  font-family: "Roboto-Bold", Helvetica;
-  text-shadow: 1px 0 0 var(--dark-color),0 1px 0 var(--dark-color), -1px 0 0 var(--dark-color),0 -1px 0 var(--dark-color);
-  font-size: 0.8rem;
-  position: absolute;
-  top: 0.2rem;
-  left: 0.4rem;
-}
-
-.cell-container__warrior-health {
-  color: var(--white-color);
-  font-family: "Roboto-Bold", Helvetica;
-  text-shadow: 1px 0 0 var(--dark-color),0 1px 0 var(--dark-color), -1px 0 0 var(--dark-color),0 -1px 0 var(--dark-color);
-  font-size: 0.8rem;
-  position: absolute;
-  top: 1.4rem;
-  left: 0.4rem;
-}
- 
-
-/* HeroPad */
-
-.hero-container-1 {
-  display: grid;
-  grid-template-columns: repeat(2, auto);
-  grid-template-rows: repeat(2, auto);
-  gap: 1.3rem;
-}
-
-.hero-container-2 {
-  display: grid;
-  grid-template-columns: repeat(1, auto);
-  grid-template-rows: auto;
-  gap: 1.3rem;
-  align-items: start;
-  margin-top: 0.5rem;
-}
-
-.second-type:nth-of-type(1) {
-  order: 1;
-}
-
-.second-type:nth-of-type(3) {
-  order: 2;
-}
-
-.second-type:nth-of-type(5) {
-  order: 3;
-}
-
-.second-type:nth-of-type(2) {
-  order: 4;
-}
-
-.second-type:nth-of-type(4) {
-  order: 5;
-}
-
-.second-player:nth-of-type(2) {
-  order: 1;
-}
-
-.second-player:nth-of-type(1) {
-  order: 2;
-}
-
-.second-player:nth-of-type(4) {
-  order: 3;
-}
-
-.second-player:nth-of-type(3) {
-  order: 4;
-}
-
-.cell-hero-pad__hero-health {
-  color: var(--white-color);
-  font-family: "Roboto-Bold", Helvetica;
-  text-shadow: 1px 0 0 var(--dark-color),0 1px 0 var(--dark-color), -1px 0 0 var(--dark-color),0 -1px 0 var(--dark-color);
-  font-size: 0.8rem;
-  position: absolute;
-  top: 0.3rem;
-  right: 0.3rem;
-  text-align: center;
-}
-
-.cell-hero-pad__cards-count {
-  color: var(--white-color);
-  font-family: "Roboto-Bold", Helvetica;
-  text-shadow: 1px 0 0 var(--dark-color),0 1px 0 var(--dark-color), -1px 0 0 var(--dark-color),0 -1px 0 var(--dark-color);
-  font-size: 1.8rem;
-  position: absolute;
-  top: 0.7rem;
-  left: auto;
-  right: auto;
-  text-align: center;
-}
-
-.cell-hero-pad {
-  display: flex;
-  position: relative;
-  justify-content: center;
-  border: 0.2rem solid var(--dark-color);
-  border-radius: 0.3rem;
-  align-items: center;
-  background-color: transparent;
-  width: calc(var(--cell-width) - 0.8rem);
-  height: calc((var(--cell-width) - 0.8rem) * 1.14);
-}
-
-.cell-hero-pad_no-border {
-  border: none;
-}
-
-.deck-container {
-  display: flex;
-  flex-wrap: nowrap;
-  gap: 1rem;
-}
-
-.reverse-flex-row {
-  flex-direction: row-reverse;
-}
-
-/* Hands */
-
-.hands-container {
-  display: flex;
-  flex-direction: column;
-  flex-wrap: nowrap;
-  justify-content: flex-end;
-  align-items: flex-end;
-  height: 100%;
-  width: 100%;
-  gap: 1rem;
-}
-
-.player-hand {
+.battlefield__player-hand {
   min-height: 15rem;
   width: 40rem;
   min-width: 25rem;
@@ -363,197 +67,52 @@
   align-items: center;
 }
 
-.card-hand {
-  width: var(--hand-card-width);
-  height: calc(var(--hand-card-width) * 1.6);
-  position: relative;
+.battlefield__core {
   display: flex;
   flex-direction: column;
   flex-wrap: nowrap;
-  padding: 0;
-  margin: 0;
-  gap: 0;
-  overflow: hidden;
-  border: 0.2rem solid var(--black-color);
-  border-radius: 0.5rem;
-  transition: transform 0.3s;
-  z-index: 1;
+  justify-content: center;
+  gap: 1rem;
+  justify-items: center;
 }
 
-.card-hand:last-child {
-  margin-right: 0;
-}
-
-.card-hand:hover {
-  transform: scale(1.3);
-  z-index: 100;
-}
-
-.card-image-container {
-  position: relative;
-  width: 100%;
-  height: 70%;
-}
-
-.card-image {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.card-image-container h3 {
-  color: var(--white-color);
-  font-family: "Roboto-Bold", Helvetica;
-  text-shadow: 1px 0 0 var(--dark-color),0 1px 0 var(--dark-color), -1px 0 0 var(--dark-color),0 -1px 0 var(--dark-color);
-  font-size: 1.2rem;
-  position: absolute;
-}
-
-.warrior-power {
-  left: 0.35rem;
-  top: 0.13rem;
-}
-
-.warrior-health {
-  left: 0.4rem;
-  top: 2rem;
-}
-
-.hero-health {
-  right: 0.3rem;
-  top: 0.4rem;
-}
-
-.card-hand-description {
+.battlefield__topspells {
   display: flex;
-  padding: 0.3rem;
-  margin: 0;
-  background: var(--light-brown-color);
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
+  justify-content: center;
+  grid-column-gap: 0.8rem;
 }
 
-.card-hand-description > p {
-  font-size: 0.5rem;
-  line-height: 0.6rem;
-  text-align: start;
-}
-
-.card-back {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-/* Header */
-
-.header {
-  width: 100%;
-  height: 5rem;
-  position: absolute;
-  top: 0;
+.battlefield__middle-cells {
   display: flex;
+  flex-direction: row;
   flex-wrap: nowrap;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+}
+
+.battlefield__middle-fieldcells {
+  display: grid;
+  grid-template-columns: repeat(2, auto);
+  grid-template-rows: repeat(4, auto);
+  grid-gap: 0.2rem;
+}
+
+.battlefield__middle-spells {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  justify-content: center;
   gap: 2rem;
-  justify-content: center;
-  align-items: center;
-  background-color: var(--white-color);
+  justify-items: center;
 }
 
-.title-main-font {
-  color: var(--dark-color);
-  font-size: 1.5rem;
+/* .hero-pad {
+  min-height: 15rem;
 }
 
-.players-info {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: nowrap;
-  justify-content: center;
-  align-items: center;
-  gap: 0.5rem;
-}
-
-.counter {
-  border-radius: 50%;
-  background-color: var(--black-color);
-  height: 3rem;
-  width: 3rem;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border: none;
-}
-
-.counter-number {
-  font-size: 2rem;
-  color: var(--white-color);
-}
-
-/* ActionButton */
-
-.action-button {
-  display: inline-flex;
-  height: 2.5rem;
-  width: 7rem;
-  padding: 0.75rem 0.5rem;
-  justify-content: center;
-  align-items: center;
-  gap: 0.5rem;
-  flex-shrink: 0;
-  border: 3px solid var(--golden);
-  background: var(--dark-blue);
-  transition: transform 0.3s;
-}
-
-.action-button:hover {
-  transform: scale(1.1);
-}
-
-.action-button__label {
-  color: var(--golden);
-  text-align: center;
-  font-family: Roboto;
-  font-size: 0.6rem;
-  font-style: normal;
-  font-weight: 600;
-  line-height: 1.5rem;
-}
-
-.action-button__icon {
-  color: var(--golden);
-  width: 1.25rem;
-  height: 1.25rem;
-}
-
-/* ActiveCard */
-
-.active-card-block-1 {
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-end;
-  align-items: flex-start;
-  gap: 0.5rem;
-}
-
-.active-card-block-2 {
-  display: flex;
-  flex-direction: row-reverse;
-  justify-content: flex-end;
-  align-items: flex-start;
-  gap: 0.5rem;
-}
-
-.active-card-block__active-card:hover {
-  transform: scale(1.5);
-}
-
-.active-card__buttons {
-  display: flex;
-  flex-direction: column;
-  flex-wrap: nowrap;
-  align-items: center;
-  justify-content: flex-start;
-  gap: 0.5rem;
-}
+.active-card {
+  height: 100%;
+  min-height: 15rem;
+  padding: 1rem;
+} */

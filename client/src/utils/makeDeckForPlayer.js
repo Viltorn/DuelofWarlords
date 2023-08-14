@@ -1,7 +1,8 @@
 const makeDeckForPLayer = (deck, player) => {
   const newDeck = deck.map((card) => {
-    card.player = player;
-    return card;
+    const newCardcard = { ...card };
+    newCardcard.player = player;
+    return newCardcard;
   });
   return newDeck;
 };

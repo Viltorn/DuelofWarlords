@@ -9,6 +9,7 @@ import CardCover from '../assets/battlefield/CardCover.png';
 import DeckCover from '../assets/battlefield/DeckCover.png';
 import CardCounter from '../assets/battlefield/CardCounter.png';
 import functionContext from '../contexts/functionsContext.js';
+import './HeroPad.css';
 
 const HeroPad = ({ type, player }) => {
   const { t } = useTranslation();
@@ -31,23 +32,22 @@ const HeroPad = ({ type, player }) => {
   const postponedCell = player === 'player1' ? postponedCell1 : postponedCell2;
   const postponedContentData = player === 'player1' ? postponed1data : postponed2data;
   const heroData = player === 'player1' ? hero1Data : hero2Data;
-  // const heroCellId = player === 'player1' ? hero1Cell.id : hero2Cell.id;
   const graveyardContent = fieldCells.find((cell) => cell.player === player && cell.type === 'graveyard').content;
   const lastItem = graveyardContent[0];
 
   const classesContainer = cn({
-    'hero-container-1': type === 'first',
-    'hero-container-2': type === 'second',
+    'hero-pad_1': type === 'first',
+    'hero-pad_2': type === 'second',
   });
 
   const heroCardClasses = cn({
-    'cell__default-btn': true,
-    turn_1: heroData.turn === 1,
-    turn_2: heroData.turn === 2,
+    'hero-pad__default-btn': true,
+    turn_1: heroData?.turn === 1,
+    turn_2: heroData?.turn === 2,
   });
 
   const cellsClasses = cn({
-    'cell-hero-pad': true,
+    'hero-pad__cells': true,
     'second-type': type === 'second',
     'second-player': type === 'first' && player === 'player2',
   });
@@ -99,45 +99,45 @@ const HeroPad = ({ type, player }) => {
   return (
     <div className={classesContainer}>
       {type === 'second' && (
-        <div className="cell-hero-pad cell-hero-pad_no-border">
-          <h3 className="cell-hero-pad__cards-count">{cardsCount}</h3>
-          <img className="cell-container__image cell-container__image_no-border" src={CardCounter} alt="cards counter" />
+        <div className="hero-pad__cells hero-pad__cells_no-border">
+          <h3 className="hero-pad__cards-count">{cardsCount}</h3>
+          <img className="hero-pad__image  hero-pad__image_no-border" src={CardCounter} alt="cards counter" />
         </div>
       )}
-      <div className={`${cellsClasses} cell-hero-pad_no-border`}>
-        <button className="cell__default-btn" ref={deck} data-player={player} type="button" onClick={handleDeckClick}>
-          <img className="cell-container__image cell-container__image_no-border" src={DeckCover} alt="deck cover" />
+      <div className={`${cellsClasses} hero-pad__cells_no-border`}>
+        <button className="hero-pad__default-btn" ref={deck} data-player={player} type="button" onClick={handleDeckClick}>
+          <img className="hero-pad__image hero-pad__image_no-border" src={DeckCover} alt="deck cover" />
         </button>
       </div>
-      <div className={`${cellsClasses} cell-hero-pad_no-border`}>
+      <div className={`${cellsClasses} hero-pad__cells_no-border`}>
         <button className={heroCardClasses} type="button" onClick={handleHeroClick}>
-          <h3 className="cell-hero-pad__hero-health">{heroData.currentHP}</h3>
-          <img className="cell-container__image" src={heroData.img} alt={heroData.name} />
+          <h3 className="hero-pad__hero-health">{heroData?.currentHP}</h3>
+          <img className="hero-pad__image" src={heroData?.img} alt={heroData?.name} />
         </button>
       </div>
       <div className={cellsClasses}>
         {graveyardContent.length !== 0 ? (
-          <button className="cell__default-btn" type="button" onClick={checkGraveyard}>
-            <img className="cell-container__image" src={lastItem.img} alt={lastItem.name} />
+          <button className="hero-pad__default-btn" type="button" onClick={checkGraveyard}>
+            <img className="hero-pad__image" src={lastItem.img} alt={lastItem.name} />
           </button>
         ) : (
-          <button className="cell__default-btn" onClick={checkGraveyard} type="button">
-            <h3 className="default-cell-font">{t('Graveyard')}</h3>
+          <button className="hero-pad__default-btn" onClick={checkGraveyard} type="button">
+            <h3 className="hero-pad__default-title">{t('Graveyard')}</h3>
           </button>
         )}
       </div>
       <div className={cellsClasses}>
         {postponedCell.content.length !== 0 ? (
-          <button className="cell__default-btn" id={postponedCell.id} onClick={handlePostCardClick} type="button">
+          <button className="hero-pad__default-btn" id={postponedCell.id} onClick={handlePostCardClick} type="button">
             {postponedCell.status === 'face' ? (
-              <img className="cell-container__image" src={postponedContentData.img} alt={postponedContentData.name} />
+              <img className="hero-pad__image" src={postponedContentData.img} alt={postponedContentData.name} />
             ) : (
-              <img className="cell-container__image" src={CardCover} alt="cards cover" />
+              <img className="hero-pad__image" src={CardCover} alt="cards cover" />
             )}
           </button>
         ) : (
-          <button className="cell__default-btn" id={postponedCell.id} onClick={addPosponedCard} type="button">
-            <h3 className="default-cell-font">{t('PostponedSpell')}</h3>
+          <button className="hero-pad__default-btn" id={postponedCell.id} onClick={addPosponedCard} type="button">
+            <h3 className="hero-pad__default-title">{t('PostponedSpell')}</h3>
           </button>
         )}
       </div>

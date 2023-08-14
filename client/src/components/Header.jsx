@@ -5,6 +5,7 @@ import PrimaryButton from './PrimaryButton';
 import { actions as battleActions } from '../slices/battleSlice.js';
 import { actions as modalsActions } from '../slices/modalsSlice.js';
 import { maxActionPoints } from '../gameData/gameLimits';
+import './Header.css';
 
 const Header = () => {
   const { t } = useTranslation();
@@ -34,41 +35,50 @@ const Header = () => {
     dispatch(modalsActions.openModal({ type: 'openPointsCounter', player }));
   };
 
+  const handleResetClick = () => {
+    dispatch(battleActions.resetState());
+    dispatch(modalsActions.openModal({ type: 'openHotSeatMenu' }));
+  };
+
   return (
     <div className="header">
-      <div className="players-info">
-        <h3 className="title-main-font">
-          {t('Player1')}
-          :
-        </h3>
-        <h3 className="title-main-font">
-          {' '}
-          Viktor
-        </h3>
+      <button type="button" onClick={handleResetClick} className="header__reset-btn">{t('ResetBtn')}</button>
+      <div className="header__central-block">
+        <div className="header__players-info">
+          <h3 className="header__title">
+            {t('Player1')}
+            :
+          </h3>
+          <h3 className="header__title">
+            {' '}
+            Viktor
+          </h3>
+        </div>
+        <button type="button" onClick={() => handlePointsClick('player1')} className="header__counter">
+          <h3 className="header__counter_num">{player1Points}</h3>
+        </button>
+        <PrimaryButton
+          showIcon={false}
+          state="default"
+          text="ЗАКОНЧИТЬ ХОД"
+          variant="primary"
+          onClick={hadleEndTurnClick}
+        />
+        <button type="button" onClick={() => handlePointsClick('player2')} className="header__counter">
+          <h3 className="header__counter_num">{player2Points}</h3>
+        </button>
+        <div className="header__players-info">
+          <h3 className="header__title">
+            {t('Player2')}
+            :
+          </h3>
+          <h3 className="header__title">
+            {' '}
+            AI
+          </h3>
+        </div>
       </div>
-      <button type="button" onClick={() => handlePointsClick('player1')} className="counter">
-        <h3 className="counter-number">{player1Points}</h3>
-      </button>
-      <PrimaryButton
-        showIcon={false}
-        state="default"
-        text="ЗАКОНЧИТЬ ХОД"
-        variant="primary"
-        onClick={hadleEndTurnClick}
-      />
-      <button type="button" onClick={() => handlePointsClick('player2')} className="counter">
-        <h3 className="counter-number">{player2Points}</h3>
-      </button>
-      <div className="players-info">
-        <h3 className="title-main-font">
-          {t('Player2')}
-          :
-        </h3>
-        <h3 className="title-main-font">
-          {' '}
-          AI
-        </h3>
-      </div>
+      <div />
     </div>
   );
 };

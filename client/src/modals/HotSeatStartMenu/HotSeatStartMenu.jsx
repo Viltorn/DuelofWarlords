@@ -4,13 +4,15 @@ import { useDispatch } from 'react-redux';
 import { useFormik } from 'formik';
 import { useNavigate, Link } from 'react-router-dom';
 import { actions as battleActions } from '../../slices/battleSlice.js';
-import PrimaryButton from '../PrimaryButton.jsx';
+import PrimaryButton from '../../components/PrimaryButton.jsx';
 import { factionsData, heroes, decks } from '../../gameCardsData/factionsData.js';
 import { startCardsNumber1, startCardsNumber2 } from '../../gameData/gameLimits.js';
+import { actions as modalsActions } from '../../slices/modalsSlice.js';
 import './HotSeatStartMenu.css';
 import MenuSlider from './MenuSlider.jsx';
 import makeShaffledDeck from '../../utils/makeShaffledDeck.js';
 import createDeckForPLayer from '../../utils/makeDeckForPlayer.js';
+import dummyCard from '../../gameCardsData/dummyCard.js';
 
 const HotSeatMenu = () => {
   const [factionNumber, setFactionSlide] = useState({ player1: 0, player2: 1 });
@@ -56,6 +58,10 @@ const HotSeatMenu = () => {
     }
   };
 
+  const handleClose = () => {
+    dispatch(modalsActions.closeModal());
+  };
+
   const formik = useFormik({
     initialValues: {
       player1Faction,
@@ -71,7 +77,7 @@ const HotSeatMenu = () => {
         const player1Hand = player1FullDeck.slice(0, startCardsNumber1);
         const player1Deck = player1FullDeck.slice(startCardsNumber1);
         const player2FullDeck = createDeckForPLayer(makeShaffledDeck(values.player2Deck), 'player2');
-        const player2Hand = player2FullDeck.slice(0, startCardsNumber2);
+        const player2Hand = [...player2FullDeck.slice(0, startCardsNumber2), dummyCard];
         const player2Deck = player2FullDeck.slice(startCardsNumber2);
         dispatch(battleActions.setHeroes({
           player1Hero: values.player1Hero,
@@ -85,7 +91,7 @@ const HotSeatMenu = () => {
           player1Hand,
           player2Hand,
         }));
-        navigate('/hotseat');
+        handleClose();
       } catch (err) {
         console.log(err);
         formik.setSubmitting(false);

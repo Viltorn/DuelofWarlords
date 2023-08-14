@@ -5,6 +5,7 @@ import { actions as modalsActions } from '../slices/modalsSlice.js';
 import { actions as battleActions } from '../slices/battleSlice.js';
 import functionContext from '../contexts/functionsContext.js';
 import { minCardTurns, maxCardTurns } from '../gameData/gameLimits.js';
+import './ActionButton.css';
 
 const ActionButton = ({ type, card }) => {
   const { t } = useTranslation();
@@ -111,12 +112,12 @@ const ActionButton = ({ type, card }) => {
 
   return (
     <button
-      className="action-button"
+      className="action-btn"
       type="button"
       ref={element}
       onClick={handleButtonClick}
     >
-      <div className="action-button__label">{t(type)}</div>
+      <div className="action-btn__label">{t(type)}</div>
       {type === 'turnLeft' && (
         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
           <path d="M16.875 10L3.125 10M3.125 10L8.75 15.625M3.125 10L8.75 4.375" stroke="#FBB270" strokeWidth="1.66667" strokeLinecap="round" strokeLinejoin="round" />
@@ -129,7 +130,7 @@ const ActionButton = ({ type, card }) => {
       )}
       {type === 'healthBar' && (
       <svg
-        className="action-button__icon"
+        className="action-btn__icon"
         version="1.1"
         xmlns="http://www.w3.org/2000/svg"
         x="0px"

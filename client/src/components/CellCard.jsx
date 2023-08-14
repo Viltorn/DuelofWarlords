@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import cn from 'classnames';
 import { actions as battleActions } from '../slices/battleSlice.js';
 import functionContext from '../contexts/functionsContext.js';
+import './CellCard.css';
 
 const CellCard = ({ item, type }) => {
   const { deleteCardfromSource, getActiveCard } = useContext(functionContext);

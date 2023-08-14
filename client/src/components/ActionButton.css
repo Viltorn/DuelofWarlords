@@ -1,0 +1,37 @@
+/* ActionButton */
+
+.action-btn {
+  display: inline-flex;
+  height: 2.5rem;
+  width: 7rem;
+  padding: 0.75rem 0.5rem;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+  flex-shrink: 0;
+  border: 3px solid var(--golden);
+  background: var(--dark-blue);
+  transition: transform 0.3s;
+  cursor: pointer;
+}
+
+.action-btn:hover {
+  transform: scale(1.1);
+}
+
+.action-btn__label {
+  color: var(--golden);
+  text-align: center;
+  font-family: Roboto;
+  font-size: 0.6rem;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 1.5rem;
+}
+
+.action-btn__icon {
+  color: var(--golden);
+  width: 1.25rem;
+  height: 1.25rem;
+}
+

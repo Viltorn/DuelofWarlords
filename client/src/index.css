@@ -6,7 +6,7 @@
 
 html {
   scroll-behavior: smooth;
-  font-size: 20px;
+  font-size: 22px;
 }
 
 * {
@@ -48,6 +48,48 @@ code {
   --purple: #484860;
   --light-gray: #e1e1e1;
   --dark-gray: #868686;
+
+  /* dimensions */
+  --cell-width: 6.5rem;
+  --cell-content-width: 5.5rem;
+
+  --cursor-gold: url('./assets/CursorRed.svg'), auto;
+}
+
+.grow-2 {
+  flex-grow: 2;
+}
+
+.border-black {
+  border: 0.2rem solid var(--black-color);
+  border-radius: 0.5rem;
+}
+
+.turn_1 {
+  transform: rotate(-45deg);
+}
+
+.turn_2 {
+  transform: rotate(-90deg);
+}
+
+.rotate-screen {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2rem;
+  align-self: center;
+}
+
+.rotate-screen h2 {
+  font-size: 2rem;
+  text-shadow: 1px 0 0 var(--dark-color),0 1px 0 var(--dark-color), -1px 0 0 var(--dark-color),0 -1px 0 var(--dark-color);
+  color: var(--white-color);
+}
+
+.rotate-img {
+  height: 100px;
+  width: 100px;
 }
 
 @font-face {
@@ -113,6 +155,11 @@ code {
   }
 }
 
+@media (min-width: 1651px) and (max-width: 1750px) {
+  html {
+    font-size: 20px;
+  }
+}
 
 
 
