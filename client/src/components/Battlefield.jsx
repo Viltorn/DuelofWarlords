@@ -54,7 +54,8 @@ const Battlefield = () => {
 
   useEffect(() => {
     dispatch(modalsActions.openModal({ type: 'openHotSeatMenu' }));
-  }, [dispatch]);
+  // eslint-disable-next-line
+  }, []);
 
   return (
     <div className="battlefield__container">

@@ -8,7 +8,7 @@ import functionContext from '../contexts/functionsContext.js';
 import './Card.css';
 
 const Card = ({
-  card, active, activeCard, content,
+  card, active, content,
 }) => {
   const dispatch = useDispatch();
   const { thisPlayer } = useSelector((state) => state.battleReducer);
@@ -38,7 +38,8 @@ const Card = ({
   });
 
   const handleClick = () => {
-    const activeId = getActiveCard() ? activeCard.id : null;
+    const activeCard = getActiveCard();
+    const activeId = activeCard ? activeCard.id : null;
     if (activeId !== id) {
       dispatch(battleActions.addActiveCard({ card, player }));
     } else {

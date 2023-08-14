@@ -42,6 +42,16 @@
 }
 
 .modal-window__hand {
+  min-height: 15rem;
+  width: 40rem;
+  min-width: 25rem;
+  border: 0.2rem solid var(--dark-color);
+  border-radius: 0.3rem;
+  padding: 1rem;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
   grid-column: 1 / span 2;
 }
 

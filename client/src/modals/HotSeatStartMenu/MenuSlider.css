@@ -10,6 +10,7 @@
   background: transparent;
   height: 50px;
   width: 50px;
+  cursor: pointer;
 }
 
 .menu-slider__btn-image {

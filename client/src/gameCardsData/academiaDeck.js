@@ -151,10 +151,10 @@ const academiaDeck = [
     name: 'Waterfall', type: 'spell', subtype: 'temporary', cost: 2, description: 'Кладется рядом с полем боя. Все воины с текущей базовой атакой 2 или меньше не могут атаковать в свой ход', id: _.uniqueId(), feature: '', img: Waterfall, status: 'hand',
   },
   {
-    name: 'Ice arrow', type: 'spell', subtype: 'instant', description: 'Отнять 2 здоровья у воина, этот воин получает ОГЛУШЕНИЕ', id: _.uniqueId(), feature: '', img: IceArrow, status: 'hand',
+    name: 'Ice arrow', type: 'spell', subtype: 'instant', cost: 2, description: 'Отнять 2 здоровья у воина, этот воин получает ОГЛУШЕНИЕ', id: _.uniqueId(), feature: '', img: IceArrow, status: 'hand',
   },
   {
-    name: 'Ice armor', type: 'spell', subtype: 'temporary', description: 'Накладывается на союзного воина или героя. При получении урона во время хода врага, отнимается здоровье у Ледяной брони, пока оно не станет равным 0.', id: _.uniqueId(), feature: '', img: IceArmor, status: 'hand',
+    name: 'Ice armor', type: 'spell', subtype: 'temporary', cost: 1, description: 'Накладывается на союзного воина или героя. При получении урона во время хода врага, отнимается здоровье у Ледяной брони, пока оно не станет равным 0.', id: _.uniqueId(), feature: '', img: IceArmor, status: 'hand',
   },
 ];
 

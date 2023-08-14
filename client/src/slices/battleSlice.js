@@ -33,6 +33,23 @@ const battleSlice = createSlice({
   reducers: {
     resetState: () => initialState,
 
+    massTurnCards(state, { payload }) {
+      const { player } = payload;
+      const changedCells = state.fieldCells
+        .map((cell) => {
+          if (cell?.player === player && (cell.type === 'hero' || cell.type === 'field')) {
+            cell.content.map((item) => {
+              if (item.type === 'warrior' || item.type === 'hero') {
+                item.turn = item.turn > 0 ? item.turn - 1 : item.turn;
+              }
+              return item;
+            });
+          }
+          return cell;
+        });
+      state.fieldCells = [...changedCells];
+    },
+
     setHeroes(state, { payload }) {
       const { player1Hero, player2Hero } = payload;
       state.fieldCells = state.fieldCells.map((cell) => {

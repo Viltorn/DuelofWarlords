@@ -17,8 +17,10 @@ const HeroPad = ({ type, player }) => {
   const dispatch = useDispatch();
   const { deleteCardfromSource, getActiveCard } = useContext(functionContext);
   const {
-    fieldCells, playerOneHand, playerTwoHand, thisPlayer,
+    fieldCells, playerOneHand, playerTwoHand, thisPlayer, playerPoints,
   } = useSelector((state) => state.battleReducer);
+
+  const currentPoints = playerPoints.find((data) => data.player === thisPlayer).points;
 
   const hero1Cell = fieldCells.find((cell) => cell.id === 'hero1');
   const hero1Data = hero1Cell.content[0];
@@ -52,18 +54,35 @@ const HeroPad = ({ type, player }) => {
     'second-player': type === 'first' && player === 'player2',
   });
 
+  const isAllowedCost = (card) => {
+    const newCost = currentPoints - card.cost;
+    if ((card.status === 'hand' && newCost >= 0) || card.status !== 'hand') {
+      return true;
+    }
+    return false;
+  };
+
   const handleHeroClick = () => {
     const activeCard = getActiveCard();
-    if (!activeCard) {
-      dispatch(battleActions.addActiveCard({ card: heroData, player: thisPlayer }));
-    } else if (activeCard.id === heroData.id) {
+    if (activeCard?.id === heroData.id) {
       dispatch(battleActions.deleteActiveCard({ player: thisPlayer }));
+    } else {
+      dispatch(battleActions.addActiveCard({ card: heroData, player: thisPlayer }));
     }
   };
 
   const addPosponedCard = () => {
     const activeCard = getActiveCard();
+
+    if (activeCard && !isAllowedCost(activeCard)) {
+      return;
+    }
+
     if (activeCard && player === activeCard.player) {
+      if (activeCard.status === 'hand') {
+        const newPoints = currentPoints - activeCard.cost;
+        dispatch(battleActions.setPlayerPoints({ points: newPoints, player: thisPlayer }));
+      }
       dispatch(battleActions.addFieldContent({ activeCard, id: postponedCell.id }));
       deleteCardfromSource(activeCard);
       dispatch(battleActions.deleteActiveCard({ player: thisPlayer }));

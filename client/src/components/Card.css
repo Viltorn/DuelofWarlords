@@ -70,6 +70,7 @@
 .card-block__warrior-health {
   left: 0.4rem;
   top: 2rem;
+  text-align: center;
 }
 
 .card-block__warrior-health.active {
@@ -80,6 +81,7 @@
 .card-block__hero-health {
   right: 0.5rem;
   top: 0.4rem;
+  text-align: center;
 }
 
 .card-block__description {

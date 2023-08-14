@@ -43,7 +43,7 @@ const Cell = ({ props, id }) => {
       dispatch(battleActions.deleteActiveCard({ player: thisPlayer }));
     };
 
-    if (!isAllowedCost(activeCard)) {
+    if (activeCard && !isAllowedCost(activeCard)) {
       return;
     }
 

@@ -10,7 +10,8 @@ const CellCard = ({ item, type }) => {
   const cardElement = useRef();
   const dispatch = useDispatch();
   const { cellId, turn } = item;
-  const { thisPlayer, fieldCells } = useSelector((state) => state.battleReducer);
+  const { thisPlayer, fieldCells, playerPoints } = useSelector((state) => state.battleReducer);
+  const currentPoints = playerPoints.find((data) => data.player === thisPlayer).points;
   const marginTop = type === 'field' ? 4.5 : 0;
   const marginRight = type === 'bigSpell' ? 1.5 : 0;
 
@@ -20,23 +21,35 @@ const CellCard = ({ item, type }) => {
     turn_2: turn === 2,
   });
 
+  const isAllowedCost = (card) => {
+    const newCost = currentPoints - card.cost;
+    if ((card.status === 'hand' && newCost >= 0) || card.status !== 'hand') {
+      return true;
+    }
+    return false;
+  };
+
   const handleCardClick = () => {
     const activeCard = getActiveCard();
-    if (!activeCard) {
-      const cardId = cardElement.current.id;
+    const cardId = cardElement.current.id;
+    const activeId = activeCard?.id ?? null;
+    if (activeId === cardId) {
+      dispatch(battleActions.deleteActiveCard({ player: thisPlayer }));
+    } else if (activeCard?.type === 'spell') {
+      if (!isAllowedCost(activeCard)) {
+        return;
+      }
+      if (activeCard.status === 'hand') {
+        const newPoints = currentPoints - activeCard.cost;
+        dispatch(battleActions.setPlayerPoints({ points: newPoints, player: thisPlayer }));
+      }
+      deleteCardfromSource(activeCard);
+      dispatch(battleActions.addFieldContent({ activeCard, id: cellId }));
+      dispatch(battleActions.deleteActiveCard({ player: thisPlayer }));
+    } else {
       const currentCell = fieldCells.find((cell) => cell.id === cellId);
       const currentCardData = currentCell.content.find((card) => card.id === cardId);
       dispatch(battleActions.addActiveCard({ card: currentCardData, player: thisPlayer }));
-    } else {
-      const cardId = cardElement.current.id;
-      const activeId = activeCard.id;
-      if (activeId === cardId) {
-        dispatch(battleActions.deleteActiveCard({ player: thisPlayer }));
-      } else if (activeCard.type === 'spell') {
-        deleteCardfromSource(activeCard);
-        dispatch(battleActions.addFieldContent({ activeCard, id: cellId }));
-        dispatch(battleActions.deleteActiveCard({ player: thisPlayer }));
-      }
     }
   };
 

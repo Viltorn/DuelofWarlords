@@ -2,7 +2,7 @@ import React, { useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch } from 'react-redux';
 import { useFormik } from 'formik';
-import { useNavigate, Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { actions as battleActions } from '../../slices/battleSlice.js';
 import PrimaryButton from '../../components/PrimaryButton.jsx';
 import { factionsData, heroes, decks } from '../../gameCardsData/factionsData.js';
@@ -20,19 +20,11 @@ const HotSeatMenu = () => {
   const { t } = useTranslation();
   const inputEl = useRef();
   const dispatch = useDispatch();
-  const navigate = useNavigate();
 
   const player1Faction = factionsData[factionNumber.player1];
   const player2Faction = factionsData[factionNumber.player2];
   const player1Heroes = heroes.filter((hero) => hero.factionId === player1Faction.id);
   const player2Heroes = heroes.filter((hero) => hero.factionId === player2Faction.id);
-
-  function handleKeyDown(e) {
-    const { key } = e;
-    if (key === 'enter') {
-      navigate('/hotseat');
-    }
-  }
 
   const changeFaction = (number, player) => {
     const maxNumber = factionsData.length - 1;
@@ -115,6 +107,14 @@ const HotSeatMenu = () => {
                 variant="primary"
                 type="submit"
               />
+              <PrimaryButton
+                onClick={handleClose}
+                showIcon={false}
+                state="default"
+                text={t('Continue')}
+                variant="primary"
+                type="submit"
+              />
               <Link to="/choose" className="link">
                 <PrimaryButton
                   showIcon={false}
@@ -131,7 +131,6 @@ const HotSeatMenu = () => {
               <div className="modal-slider__slide-block">
                 <MenuSlider item={player1Faction} player="player1" changeSlide={changeFaction} />
                 <input
-                  onKeyDown={(e) => handleKeyDown(e)}
                   className="modal-slider__slide-input"
                   id="player1Faction"
                   type="text"
@@ -147,7 +146,6 @@ const HotSeatMenu = () => {
               <div className="modal-slider__slide-block">
                 <MenuSlider item={player1Heroes[heroNumber.player1]} player="player1" changeSlide={changeHero} />
                 <input
-                  onKeyDown={(e) => handleKeyDown(e)}
                   className="modal-slider__slide-input"
                   id="player1Hero"
                   type="text"
@@ -169,7 +167,6 @@ const HotSeatMenu = () => {
               <div className="modal-slider__slide-block">
                 <MenuSlider item={player2Faction} player="player2" changeSlide={changeFaction} />
                 <input
-                  onKeyDown={(e) => handleKeyDown(e)}
                   className="modal-slider__slide-input"
                   id="player1Faction"
                   type="text"
@@ -185,7 +182,6 @@ const HotSeatMenu = () => {
               <div className="modal-slider__slide-block">
                 <MenuSlider item={player2Heroes[heroNumber.player2]} player="player2" changeSlide={changeHero} />
                 <input
-                  onKeyDown={(e) => handleKeyDown(e)}
                   className="modal-slider__slide-input"
                   id="player1Hero"
                   type="text"

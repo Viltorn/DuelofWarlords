@@ -60,6 +60,7 @@ export default {
     Start: 'НАЧАТЬ',
     Back: 'НАЗАД',
     ResetBtn: 'СБРОСИТЬ',
+    Continue: 'ПРОДОЛЖИТЬ',
     errors: {
       WrongPhone: 'WhatsApp не найден для этого номера',
       AuthOrNetError: 'Ошибка авторизации или соединения',
