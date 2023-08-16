@@ -27,6 +27,7 @@ const Header = () => {
       }
       dispatch(battleActions.setPlayerPoints({ points: newCommonPoints, player: 'player1' }));
     }
+    dispatch(battleActions.turnPosponed({ player: newPlayer, status: 'face' }));
     dispatch(battleActions.drawCard({ player: newPlayer }));
     dispatch(battleActions.massTurnCards({ player: newPlayer }));
     dispatch(battleActions.changePlayer({ newPlayer }));

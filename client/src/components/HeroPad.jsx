@@ -147,7 +147,7 @@ const HeroPad = ({ type, player }) => {
       </div>
       <div className={cellsClasses}>
         {postponedCell.content.length !== 0 ? (
-          <button className="hero-pad__default-btn" id={postponedCell.id} onClick={handlePostCardClick} type="button">
+          <button className="hero-pad__default-btn hero-pad__posponed_active" id={postponedCell.id} onClick={handlePostCardClick} type="button">
             {postponedCell.status === 'face' ? (
               <img className="hero-pad__image" src={postponedContentData.img} alt={postponedContentData.name} />
             ) : (

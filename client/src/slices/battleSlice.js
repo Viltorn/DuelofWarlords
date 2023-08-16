@@ -33,6 +33,16 @@ const battleSlice = createSlice({
   reducers: {
     resetState: () => initialState,
 
+    turnPosponed(state, { payload }) {
+      const { player, status } = payload;
+      state.fieldCells = state.fieldCells.map((cell) => {
+        if (cell.type === 'postponed' && cell.player === player) {
+          cell.status = status === 'face' && cell.content.length !== 0 ? 'face' : 'cover';
+        }
+        return cell;
+      });
+    },
+
     massTurnCards(state, { payload }) {
       const { player } = payload;
       const changedCells = state.fieldCells

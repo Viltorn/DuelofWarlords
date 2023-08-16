@@ -1,21 +1,20 @@
 /* eslint-disable object-curly-newline */
-import React, { useState, useEffect } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { useTranslation } from 'react-i18next';
 import Cell from './Cell.jsx';
 import HeroPad from './HeroPad.jsx';
 import Card from './Card.jsx';
 import Header from './Header.jsx';
+import RotateScreen from './RotateScreen.jsx';
 import ActiveCard from './ActiveCard.jsx';
 import './Battlefield.css';
-import RotateScreen from '../assets/battlefield/RotateScreen.png';
 import getModal from '../modals/index.js';
+import functionContext from '../contexts/functionsContext.js';
 import { actions as modalsActions } from '../slices/modalsSlice.js';
 
 const Battlefield = () => {
-  const { t } = useTranslation();
   const dispatch = useDispatch();
-  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+  const { windowWidth } = useContext(functionContext);
   const {
     activeCardPlayer1,
     activeCardPlayer2,
@@ -41,29 +40,14 @@ const Battlefield = () => {
   };
 
   useEffect(() => {
-    const handleWindowResize = () => {
-      setWindowWidth(window.innerWidth);
-    };
-
-    window.addEventListener('resize', handleWindowResize);
-
-    return () => {
-      window.removeEventListener('resize', handleWindowResize);
-    };
-  });
-
-  useEffect(() => {
     dispatch(modalsActions.openModal({ type: 'openHotSeatMenu' }));
   // eslint-disable-next-line
   }, []);
 
   return (
     <div className="battlefield__container">
-      {windowWidth < 500 ? (
-        <div className="rotate-screen">
-          <h2>{t('RotateScreen')}</h2>
-          <img className="rotate-img" src={RotateScreen} alt="rotate screen" />
-        </div>
+      {windowWidth < 700 ? (
+        <RotateScreen />
       ) : (
         <>
           <Header />

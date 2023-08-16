@@ -50,7 +50,7 @@
 
 .modal-slider__player-slides {
   display: flex;
-  justify-content: flex-start;
+  justify-content: space-around;
   align-items: center;
 }
 
@@ -80,7 +80,7 @@
 
 .modal-slider__player {
   color: var(--golden);
-  font-size: 1.5rem;
+  font-size: 30px;
   width: 10rem;
 }
 
@@ -90,4 +90,10 @@
   justify-content: space-between;
   align-items: center;
   gap: 1rem;
+}
+
+@media (max-width: 900px) {
+  .modal-slider__player {
+    font-size: 20px;
+  }
 }

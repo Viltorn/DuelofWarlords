@@ -36,6 +36,22 @@
   height: calc((var(--cell-width) - 0.8rem) * 1.14);
 }
 
+.hero-pad__posponed_active {
+  animation: 1.5s infinite alternate glowing;
+}
+
+@keyframes glowing {
+  from {
+    box-shadow: 0rem  0rem  0.3rem  0.3rem var(--golden);
+  }
+
+  to {
+    box-shadow: 0rem  0rem  0.5rem  0.5rem var(--golden);
+  }
+}
+
+
+
 
 .hero-pad__cells.second-type:nth-of-type(1) {
   order: 1;
@@ -80,7 +96,7 @@
   font-size: 0.8rem;
   position: absolute;
   top: 0.3rem;
-  right: 0.3rem;
+  right: 0.4rem;
   text-align: center;
 }
 

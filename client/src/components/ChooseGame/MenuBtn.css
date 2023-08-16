@@ -1,0 +1,20 @@
+.choose-game__btn {
+  border: 0.2rem solid var(--dark-golden);
+  width: 160px;
+  height: 45px;
+  font-family: "Roboto-SemiBold", Helvetica;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0;
+  line-height: 24px;
+}
+
+.choose-game__btn.primary {
+  background-color: var(--dark-red-color);
+  color: var(--light-gray);
+}
+
+.choose-game__btn.secondary {
+  background-color: var(--golden);
+  color: var(--dark-color);
+}

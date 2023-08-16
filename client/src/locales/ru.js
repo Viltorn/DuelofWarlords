@@ -53,7 +53,7 @@ export default {
     ChangeHP: 'ПОМЕНЯТЬ ЗДОРОВЬЕ',
     PlayedCards: 'СЫГРАННЫЕ КАРТЫ',
     ChangePoints: 'ИЗМЕНИТЬ ОЧКИ ДЕЙСТВИЯ',
-    ChooseGame: 'ВЫБЕРИТЕ ВАРИАНТ ИГРЫ',
+    ChooseGame: 'ВЫБЕРИТЕ ИГРУ',
     Tutorial: 'ОБУЧЕНИЕ',
     HotSeat: '"HOT SEAT"',
     ChooseFactions: 'ВЫБЕРИТЕ ФРАКЦИЮ И ГЕРОЯ',
@@ -61,6 +61,7 @@ export default {
     Back: 'НАЗАД',
     ResetBtn: 'СБРОСИТЬ',
     Continue: 'ПРОДОЛЖИТЬ',
+    Install: 'УСТАНОВИТЬ',
     errors: {
       WrongPhone: 'WhatsApp не найден для этого номера',
       AuthOrNetError: 'Ошибка авторизации или соединения',
