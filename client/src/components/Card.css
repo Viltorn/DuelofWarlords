@@ -24,8 +24,8 @@
 }
 
 .card-block_active {
-  width: calc((var(--hand-card-width)) * 1.65);
-  height: calc((var(--hand-card-width)) * 1.6 * 1.65);
+  width: calc((var(--hand-card-width)) * 1.43);
+  height: calc((var(--hand-card-width)) * 1.6 * 1.43);
 }
 
 .card-block_active:hover {
@@ -63,7 +63,7 @@
 }
 
 .card-block__warrior-power.active {
-  left: 0.7rem;
+  left: 0.5rem;
   top: 0.15rem;
 }
 
@@ -74,8 +74,8 @@
 }
 
 .card-block__warrior-health.active {
-  left: 0.7rem;
-  top: 3.3rem;
+  left: 0.6rem;
+  top: 2.8rem;
 }
 
 .card-block__hero-health {
@@ -86,7 +86,7 @@
 
 .card-block__description {
   display: flex;
-  padding: 0.2rem;
+  padding: 0.15rem;
   margin: 0;
   background: var(--light-brown-color);
   width: 100%;
@@ -102,9 +102,9 @@
 }
 
 .card-block__font-active {
-  font-size: 0.8rem;
+  font-size: 0.7rem;
   font-weight: 600;
-  line-height: 0.9rem;
+  line-height: 0.8rem;
   text-align: start;
   margin: 0.1rem;
 }

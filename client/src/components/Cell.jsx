@@ -9,7 +9,7 @@ import functionContext from '../contexts/functionsContext.js';
 
 const Cell = ({ props, id }) => {
   const { t } = useTranslation();
-  const { thisPlayer, playerPoints } = useSelector((state) => state.battleReducer);
+  const { thisPlayer, playerPoints, fieldCells } = useSelector((state) => state.battleReducer);
   const dispatch = useDispatch();
   const { type, content } = props;
   const { deleteCardfromSource, getActiveCard } = useContext(functionContext);
@@ -30,6 +30,19 @@ const Cell = ({ props, id }) => {
     return false;
   };
 
+  const moveAttachedSpells = (card) => {
+    if (card.type === 'warrior' && card.status === 'field') {
+      const { cellId } = card;
+      const activeCell = fieldCells.find((cell) => cell.id === cellId);
+      activeCell.content.forEach((item) => {
+        if (item.type === 'spell') {
+          dispatch(battleActions.addFieldContent({ activeCard: item, id }));
+          deleteCardfromSource(item);
+        }
+      });
+    }
+  };
+
   const handleCellClick = () => {
     const activeCard = getActiveCard();
 
@@ -41,6 +54,7 @@ const Cell = ({ props, id }) => {
       dispatch(battleActions.addFieldContent({ activeCard, id }));
       deleteCardfromSource(activeCard);
       dispatch(battleActions.deleteActiveCard({ player: thisPlayer }));
+      moveAttachedSpells(activeCard);
     };
 
     if (activeCard && !isAllowedCost(activeCard)) {
@@ -48,7 +62,7 @@ const Cell = ({ props, id }) => {
     }
 
     if ((activeCard && activeCard.type === 'warrior' && type === 'field' && content.length === 0)
-    || (activeCard && activeCard.type === 'spell' && content.length === 0)) {
+    || (activeCard && activeCard.type === 'spell')) {
       addCardToField();
     }
   };

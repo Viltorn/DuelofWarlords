@@ -11,8 +11,9 @@ const CellCard = ({ item, type }) => {
   const dispatch = useDispatch();
   const { cellId, turn } = item;
   const { thisPlayer, fieldCells, playerPoints } = useSelector((state) => state.battleReducer);
+  const currentCell = fieldCells.find((cell) => cell.id === cellId);
   const currentPoints = playerPoints.find((data) => data.player === thisPlayer).points;
-  const marginTop = type === 'field' ? 4.5 : 0;
+  const marginTop = type === 'field' ? 5 : 0;
   const marginRight = type === 'bigSpell' ? 1.5 : 0;
 
   const cardStyles = cn({
@@ -47,7 +48,6 @@ const CellCard = ({ item, type }) => {
       dispatch(battleActions.addFieldContent({ activeCard, id: cellId }));
       dispatch(battleActions.deleteActiveCard({ player: thisPlayer }));
     } else {
-      const currentCell = fieldCells.find((cell) => cell.id === cellId);
       const currentCardData = currentCell.content.find((card) => card.id === cardId);
       dispatch(battleActions.addActiveCard({ card: currentCardData, player: thisPlayer }));
     }

@@ -5,15 +5,16 @@
   grid-template-columns: repeat(2, auto);
   grid-template-rows: repeat(2, auto);
   gap: 1.3rem;
+  margin-bottom: 2rem;
 }
 
 .hero-pad_2 {
   display: grid;
   grid-template-columns: repeat(1, auto);
   grid-template-rows: auto;
-  gap: 1.3rem;
+  gap: 1rem;
   align-items: start;
-  margin-top: 0.5rem;
+  margin-top: 0.3rem;
 }
 
 .hero-pad__default-btn {
@@ -23,7 +24,7 @@
   border: none;
   cursor: pointer;
 }
-
+ 
 .hero-pad__cells {
   display: flex;
   position: relative;

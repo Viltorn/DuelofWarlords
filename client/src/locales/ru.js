@@ -62,6 +62,7 @@ export default {
     ResetBtn: 'СБРОСИТЬ',
     Continue: 'ПРОДОЛЖИТЬ',
     Install: 'УСТАНОВИТЬ',
+    EndTurn: 'ЗАКОНЧИТЬ ХОД',
     errors: {
       WrongPhone: 'WhatsApp не найден для этого номера',
       AuthOrNetError: 'Ошибка авторизации или соединения',

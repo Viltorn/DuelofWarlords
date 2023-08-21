@@ -1,10 +1,10 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { useSelector, useDispatch } from 'react-redux';
-import PrimaryButton from './PrimaryButton';
 import { actions as battleActions } from '../slices/battleSlice.js';
 import { actions as modalsActions } from '../slices/modalsSlice.js';
 import { maxActionPoints } from '../gameData/gameLimits';
+import Menu from '../assets/Menu.svg';
 import './Header.css';
 
 const Header = () => {
@@ -43,9 +43,13 @@ const Header = () => {
   };
 
   return (
-    <div className="header">
-      <button type="button" onClick={handleResetClick} className="header__reset-btn">{t('ResetBtn')}</button>
+    <div className="header" style={thisPlayer === 'player1' ? { left: 0 } : { right: 0 }}>
       <div className="header__central-block">
+        {thisPlayer === 'player1' && (
+          <button type="button" onClick={handleResetClick} className="header__menu-btn">
+            <img src={Menu} alt="menu" />
+          </button>
+        )}
         <div className="header__players-info">
           <h3 className="header__title">
             {t('Player1')}
@@ -55,21 +59,17 @@ const Header = () => {
             {' '}
             Viktor
           </h3>
+          <button type="button" onClick={() => handlePointsClick('player1')} className="header__counter">
+            <h3 className="header__counter_num">{player1Points}</h3>
+          </button>
         </div>
-        <button type="button" onClick={() => handlePointsClick('player1')} className="header__counter">
-          <h3 className="header__counter_num">{player1Points}</h3>
-        </button>
-        <PrimaryButton
-          showIcon={false}
-          state="default"
-          text="ЗАКОНЧИТЬ ХОД"
-          variant="primary"
-          onClick={hadleEndTurnClick}
-        />
-        <button type="button" onClick={() => handlePointsClick('player2')} className="header__counter">
-          <h3 className="header__counter_num">{player2Points}</h3>
+        <button className="header__endturn-btn" type="button" onClick={hadleEndTurnClick}>
+          {t('EndTurn')}
         </button>
         <div className="header__players-info">
+          <button type="button" onClick={() => handlePointsClick('player2')} className="header__counter">
+            <h3 className="header__counter_num">{player2Points}</h3>
+          </button>
           <h3 className="header__title">
             {t('Player2')}
             :
@@ -79,8 +79,12 @@ const Header = () => {
             AI
           </h3>
         </div>
+        {thisPlayer === 'player2' && (
+          <button type="button" onClick={handleResetClick} className="header__menu-btn">
+            <img src={Menu} alt="menu" />
+          </button>
+        )}
       </div>
-      <div />
     </div>
   );
 };

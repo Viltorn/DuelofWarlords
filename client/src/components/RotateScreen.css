@@ -1,0 +1,18 @@
+.rotate-screen {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2rem;
+  align-self: center;
+}
+
+.rotate-screen h2 {
+  font-size: 2rem;
+  text-shadow: 1px 0 0 var(--dark-color),0 1px 0 var(--dark-color), -1px 0 0 var(--dark-color),0 -1px 0 var(--dark-color);
+  color: var(--white-color);
+}
+
+.rotate-screen__img {
+  height: 100px;
+  width: 100px;
+}

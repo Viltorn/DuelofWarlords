@@ -50,10 +50,10 @@ const Battlefield = () => {
         <RotateScreen />
       ) : (
         <>
-          <Header />
           <div className="battlefield__main">
             {thisPlayer === 'player1' ? (
               <div className="battlefield__hands-container">
+                <Header />
                 <div className="battlefield__heropad-1">
                   {activeCardPlayer1 && (
                   <ActiveCard activeCard={activeCardPlayer1} playerType="player1" />
@@ -154,6 +154,7 @@ const Battlefield = () => {
             </div>
             {thisPlayer === 'player2' ? (
               <div className="battlefield__hands-container">
+                <Header />
                 <div className="battlefield__heropad-2">
                   <HeroPad type="first" player={thisPlayer} />
                   {activeCardPlayer2 && (

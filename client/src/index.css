@@ -36,7 +36,6 @@ code {
   --golden: #fbb270;
   --black-font: #252525;
   --dark-golden: #845c3a;
-  --hand-card-width: 8rem;
   --dark-color: #3F3A3A;
   --light-brown-color: #E0A97F;
   --dark-red-color: #C65B4D;
@@ -49,8 +48,9 @@ code {
   --dark-gray: #868686;
 
   /* dimensions */
-  --cell-width: 6.5rem;
-  --cell-content-width: 5.5rem;
+  --hand-card-width: 8rem;
+  --cell-width: 7.4rem;
+  --cell-content-width: 6rem;
 
   --cursor-gold: url('./assets/CursorRed.svg'), auto;
 }
@@ -70,25 +70,6 @@ code {
 
 .turn_2 {
   transform: rotate(-90deg);
-}
-
-.rotate-screen {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 2rem;
-  align-self: center;
-}
-
-.rotate-screen h2 {
-  font-size: 2rem;
-  text-shadow: 1px 0 0 var(--dark-color),0 1px 0 var(--dark-color), -1px 0 0 var(--dark-color),0 -1px 0 var(--dark-color);
-  color: var(--white-color);
-}
-
-.rotate-img {
-  height: 100px;
-  width: 100px;
 }
 
 @font-face {

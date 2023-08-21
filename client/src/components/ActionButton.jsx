@@ -32,6 +32,19 @@ const ActionButton = ({ type, card }) => {
     }
   };
 
+  const deleteAttachedSpells = (deletingCard, currentCell) => {
+    if (deletingCard.type === 'warrior' && deletingCard.status === 'field') {
+      const { fieldCells } = store.getState().battleReducer;
+      const activeCell = fieldCells.find((cell) => cell.id === currentCell);
+      activeCell.content.forEach((item) => {
+        if (item.type === 'spell') {
+          deleteCardfromSource(item);
+          dispatch(battleActions.addToGraveyard({ card: item }));
+        }
+      });
+    }
+  };
+
   const makeTurn = (direction) => {
     const { fieldCells } = store.getState().battleReducer;
     const cell = fieldCells.find((item) => item.id === cellId);
@@ -68,6 +81,7 @@ const ActionButton = ({ type, card }) => {
         dispatch(battleActions.addToGraveyard({ card }));
         dispatch(battleActions.deleteActiveCard({ player: thisPlayer }));
         deleteOtherActiveCard(activeCardPlayer1, activeCardPlayer2, thisPlayer);
+        deleteAttachedSpells(card, cellId);
         break;
       default:
         break;
