@@ -33,6 +33,23 @@ const battleSlice = createSlice({
   reducers: {
     resetState: () => initialState,
 
+    addAnimation(state, { payload }) {
+      const { cell, type } = payload;
+      state.fieldCells = state.fieldCells.map((cellItem) => {
+        if (cellItem.id === cell.id) {
+          cellItem.animation = type;
+        }
+        return cellItem;
+      });
+    },
+
+    deleteAnimation(state) {
+      state.fieldCells = state.fieldCells.map((cellItem) => {
+        cellItem.animation = '';
+        return cellItem;
+      });
+    },
+
     turnPosponed(state, { payload }) {
       const { player, status } = payload;
       state.fieldCells = state.fieldCells.map((cell) => {

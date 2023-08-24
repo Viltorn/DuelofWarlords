@@ -12,7 +12,7 @@ const ActionButton = ({ type, card }) => {
   const dispatch = useDispatch();
   const store = useStore();
   const element = useRef();
-  const { deleteCardfromSource } = useContext(functionContext);
+  const { deleteCardfromSource, handleAnimation } = useContext(functionContext);
   const {
     id, cellId,
   } = card;
@@ -71,6 +71,7 @@ const ActionButton = ({ type, card }) => {
         makeTurn('turnRight');
         break;
       case 'return':
+        handleAnimation(card, 'delete');
         dispatch(battleActions.returnCard({ card }));
         deleteCardfromSource(card);
         dispatch(battleActions.deleteActiveCard({ player: thisPlayer }));

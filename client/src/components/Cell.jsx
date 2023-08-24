@@ -9,9 +9,11 @@ import functionContext from '../contexts/functionsContext.js';
 
 const Cell = ({ props, id }) => {
   const { t } = useTranslation();
-  const { thisPlayer, playerPoints, fieldCells } = useSelector((state) => state.battleReducer);
+  const {
+    thisPlayer, playerPoints, fieldCells,
+  } = useSelector((state) => state.battleReducer);
   const dispatch = useDispatch();
-  const { type, content } = props;
+  const { type, content, animation } = props;
   const { deleteCardfromSource, getActiveCard } = useContext(functionContext);
   const currentPoints = playerPoints.find((item) => item.player === thisPlayer).points;
 
@@ -20,6 +22,8 @@ const Cell = ({ props, id }) => {
     cell__spell: type === 'midSpell' || 'topSpell',
     'cell__big-spell': type === 'bigSpell',
     cell__field: type === 'field',
+    cell__animation_green: animation === 'green',
+    cell__animation_red: animation === 'red',
   });
 
   const isAllowedCost = (card) => {
@@ -51,6 +55,7 @@ const Cell = ({ props, id }) => {
         const newPoints = currentPoints - activeCard.cost;
         dispatch(battleActions.setPlayerPoints({ points: newPoints, player: thisPlayer }));
       }
+      dispatch(battleActions.deleteAnimation());
       dispatch(battleActions.addFieldContent({ activeCard, id }));
       deleteCardfromSource(activeCard);
       dispatch(battleActions.deleteActiveCard({ player: thisPlayer }));

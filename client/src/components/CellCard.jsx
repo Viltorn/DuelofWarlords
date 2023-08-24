@@ -5,19 +5,30 @@ import { actions as battleActions } from '../slices/battleSlice.js';
 import functionContext from '../contexts/functionsContext.js';
 import './CellCard.css';
 
+const getTopMargin = (cardtype) => {
+  if (cardtype === 'field') {
+    return 5;
+  }
+  if (cardtype === 'hero') {
+    return 6.5;
+  }
+  return 0;
+};
+
 const CellCard = ({ item, type }) => {
-  const { deleteCardfromSource, getActiveCard } = useContext(functionContext);
+  const { deleteCardfromSource, getActiveCard, handleAnimation } = useContext(functionContext);
   const cardElement = useRef();
   const dispatch = useDispatch();
   const { cellId, turn } = item;
   const { thisPlayer, fieldCells, playerPoints } = useSelector((state) => state.battleReducer);
   const currentCell = fieldCells.find((cell) => cell.id === cellId);
   const currentPoints = playerPoints.find((data) => data.player === thisPlayer).points;
-  const marginTop = type === 'field' ? 5 : 0;
+  const marginTop = getTopMargin(type);
   const marginRight = type === 'bigSpell' ? 1.5 : 0;
 
   const cardStyles = cn({
-    'cell-container__content-item': true,
+    'cell-container__content-item': type !== 'hero',
+    'cell-container__hero-cell-item': type === 'hero',
     turn_1: turn === 1,
     turn_2: turn === 2,
   });
@@ -36,6 +47,7 @@ const CellCard = ({ item, type }) => {
     const activeId = activeCard?.id ?? null;
     if (activeId === cardId) {
       dispatch(battleActions.deleteActiveCard({ player: thisPlayer }));
+      handleAnimation(activeCard, 'delete');
     } else if (activeCard?.type === 'spell') {
       if (!isAllowedCost(activeCard)) {
         return;
@@ -44,12 +56,14 @@ const CellCard = ({ item, type }) => {
         const newPoints = currentPoints - activeCard.cost;
         dispatch(battleActions.setPlayerPoints({ points: newPoints, player: thisPlayer }));
       }
+      handleAnimation(activeCard, 'delete');
       deleteCardfromSource(activeCard);
       dispatch(battleActions.addFieldContent({ activeCard, id: cellId }));
       dispatch(battleActions.deleteActiveCard({ player: thisPlayer }));
     } else {
       const currentCardData = currentCell.content.find((card) => card.id === cardId);
       dispatch(battleActions.addActiveCard({ card: currentCardData, player: thisPlayer }));
+      handleAnimation(currentCardData, 'add');
     }
   };
 
@@ -69,6 +83,9 @@ const CellCard = ({ item, type }) => {
         <h3 className="cell-container__warrior-power">{item.power}</h3>
         <h3 className="cell-container__warrior-health">{item.currentHP}</h3>
       </>
+      )}
+      {item.type === 'hero' && (
+        <h3 className="cell-container__hero-health">{item.currentHP}</h3>
       )}
       <img
         className="cell-container__image"

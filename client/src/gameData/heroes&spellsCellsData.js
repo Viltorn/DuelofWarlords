@@ -21,16 +21,16 @@ export const bigSpell = [
 
 export const midSpells = [
   {
-    id: 'A', player: 'player1', content: [], type: 'midSpell', animation: '', disabled: false,
+    id: 'A', row: 1, player: 'player1', content: [], type: 'midSpell', animation: '', disabled: false,
   },
   {
-    id: 'B', player: 'player1', content: [], type: 'midSpell', animation: '', disabled: false,
+    id: 'B', row: 2, player: 'player1', content: [], type: 'midSpell', animation: '', disabled: false,
   },
   {
-    id: 'C', player: 'player2', content: [], type: 'midSpell', animation: '', disabled: false,
+    id: 'C', row: 3, player: 'player2', content: [], type: 'midSpell', animation: '', disabled: false,
   },
   {
-    id: 'D', player: 'player2', content: [], type: 'midSpell', animation: '', disabled: false,
+    id: 'D', row: 4, player: 'player2', content: [], type: 'midSpell', animation: '', disabled: false,
   },
 ];
 
@@ -62,7 +62,7 @@ export const graveyard = [
 ];
 
 export const fieldCells = {
-  rows: ['1', '2', '3', '4'],
-  linesSideOne: ['1', '2'],
+  rows: ['2', '1', '3', '4'],
+  linesSideOne: ['2', '1'],
   linesSideTwo: ['3', '4'],
 };

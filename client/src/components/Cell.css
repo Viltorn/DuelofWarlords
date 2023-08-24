@@ -50,3 +50,31 @@
   flex-wrap: nowrap;
   justify-content: flex-end;
 }
+
+.cell__animation_green {
+  animation: 1.5s infinite alternate greenglowing;
+}
+
+@keyframes greenglowing {
+  from {
+    box-shadow: 0rem  0rem  0.3rem  0.3rem var(--green);
+  }
+
+  to {
+    box-shadow: 0rem  0rem  0.5rem  0.5rem var(--green);
+  }
+}
+
+.cell__animation_red {
+  animation: 1.5s infinite alternate redglowing;
+}
+
+@keyframes redglowing {
+  from {
+    box-shadow: 0rem  0rem  0.3rem  0.3rem var(--red-light);
+  }
+
+  to {
+    box-shadow: 0rem  0rem  0.5rem  0.5rem var(--red-light);
+  }
+}

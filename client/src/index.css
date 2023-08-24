@@ -46,6 +46,8 @@ code {
   --purple: #484860;
   --light-gray: #e1e1e1;
   --dark-gray: #868686;
+  --green: rgb(46, 135, 46);
+  --red-light: rgb(215, 44, 44);
 
   /* dimensions */
   --hand-card-width: 8rem;

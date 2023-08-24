@@ -23,7 +23,7 @@ const Card = ({
     id,
     player,
   } = card;
-  const { getActiveCard } = useContext(functionContext);
+  const { getActiveCard, handleAnimation } = useContext(functionContext);
 
   const marginRight = active !== 'active' ? content.length * 0.5 : 0; /*  empirical number */
 
@@ -41,9 +41,12 @@ const Card = ({
     const activeCard = getActiveCard();
     const activeId = activeCard ? activeCard.id : null;
     if (activeId !== id) {
+      handleAnimation(activeCard, 'delete');
       dispatch(battleActions.addActiveCard({ card, player }));
+      handleAnimation(card, 'add');
     } else {
       dispatch(battleActions.deleteActiveCard({ player: thisPlayer }));
+      handleAnimation(activeCard, 'delete');
     }
   };
 

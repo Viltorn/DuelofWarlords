@@ -7,6 +7,15 @@
   cursor: pointer;
 }
 
+.cell-container__hero-cell-item {
+  position: relative;
+  width: calc(var(--cell-width) - 0.8rem);
+  height: calc((var(--cell-width) - 0.8rem) * 1.14);
+  border: none;
+  border-radius: 0.5rem;
+  cursor: pointer;
+}
+
 .cell-container__content-item:first-child {
   margin-top: 0;
 }
@@ -41,4 +50,14 @@
   position: absolute;
   top: 1.6rem;
   left: 0.4rem;
+}
+
+.cell-container__hero-health {
+  color: var(--white-color);
+  font-family: "Roboto-Bold", Helvetica;
+  text-shadow: 1px 0 0 var(--dark-color),0 1px 0 var(--dark-color), -1px 0 0 var(--dark-color),0 -1px 0 var(--dark-color);
+  font-size: 0.8rem;
+  position: absolute;
+  top: 0.4rem;
+  right: 0.5rem;
 }

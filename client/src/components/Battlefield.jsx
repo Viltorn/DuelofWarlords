@@ -79,6 +79,7 @@ const Battlefield = () => {
                     key={spell.id}
                     id={spell.id}
                     props={{
+                      animation: spell.animation,
                       content: spell.content,
                       type: 'topSpell',
                       status: 'active',
@@ -89,6 +90,7 @@ const Battlefield = () => {
                   key={bigSpell.id}
                   id={bigSpell.id}
                   props={{
+                    animation: bigSpell.animation,
                     content: bigSpell.content,
                     type: 'bigSpell',
                     status: 'active',
@@ -99,6 +101,7 @@ const Battlefield = () => {
                     key={spell.id}
                     id={spell.id}
                     props={{
+                      animation: spell.animation,
                       content: spell.content,
                       type: 'topSpell',
                       status: 'active',
@@ -113,6 +116,7 @@ const Battlefield = () => {
                       key={cell.id}
                       id={cell.id}
                       props={{
+                        animation: cell.animation,
                         content: cell.content,
                         type: 'field',
                         status: 'active',
@@ -128,6 +132,7 @@ const Battlefield = () => {
                       key={spell.id}
                       id={spell.id}
                       props={{
+                        animation: spell.animation,
                         content: spell.content,
                         type: 'midSpell',
                         status: 'active',
@@ -141,6 +146,7 @@ const Battlefield = () => {
                       key={cell.id}
                       id={cell.id}
                       props={{
+                        animation: cell.animation,
                         content: cell.content,
                         type: 'field',
                         status: 'active',

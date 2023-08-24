@@ -9,13 +9,16 @@ import CardCover from '../assets/battlefield/CardCover.png';
 import DeckCover from '../assets/battlefield/DeckCover.png';
 import CardCounter from '../assets/battlefield/CardCounter.png';
 import functionContext from '../contexts/functionsContext.js';
+import CellCard from './CellCard.jsx';
 import './HeroPad.css';
 
 const HeroPad = ({ type, player }) => {
   const { t } = useTranslation();
   const deck = useRef();
   const dispatch = useDispatch();
-  const { deleteCardfromSource, getActiveCard } = useContext(functionContext);
+  const {
+    deleteCardfromSource, getActiveCard, handleAnimation, isAllowedCost,
+  } = useContext(functionContext);
   const {
     fieldCells, playerOneHand, playerTwoHand, thisPlayer, playerPoints,
   } = useSelector((state) => state.battleReducer);
@@ -23,17 +26,14 @@ const HeroPad = ({ type, player }) => {
   const currentPoints = playerPoints.find((data) => data.player === thisPlayer).points;
 
   const hero1Cell = fieldCells.find((cell) => cell.id === 'hero1');
-  const hero1Data = hero1Cell.content[0];
   const hero2Cell = fieldCells.find((cell) => cell.id === 'hero2');
-  const hero2Data = hero2Cell.content[0];
   const postponedCell1 = fieldCells.find((cell) => cell.id === 'postponed1');
-  const postponed1data = postponedCell1.content[0];
   const postponedCell2 = fieldCells.find((cell) => cell.id === 'postponed2');
-  const postponed2data = postponedCell2.content[0];
   const cardsCount = thisPlayer === 'player1' ? playerTwoHand.length : playerOneHand.length;
   const postponedCell = player === 'player1' ? postponedCell1 : postponedCell2;
-  const postponedContentData = player === 'player1' ? postponed1data : postponed2data;
-  const heroData = player === 'player1' ? hero1Data : hero2Data;
+  const postponedContentData = postponedCell.content[0];
+  const heroCell = player === 'player1' ? hero1Cell : hero2Cell;
+  const heroData = heroCell.content;
   const graveyardContent = fieldCells.find((cell) => cell.player === player && cell.type === 'graveyard').content;
   const lastItem = graveyardContent[0];
 
@@ -42,11 +42,11 @@ const HeroPad = ({ type, player }) => {
     'hero-pad_2': type === 'second',
   });
 
-  const heroCardClasses = cn({
-    'hero-pad__default-btn': true,
-    turn_1: heroData?.turn === 1,
-    turn_2: heroData?.turn === 2,
-  });
+  // const heroCardClasses = cn({
+  //   'hero-pad__default-btn': true,
+  //   turn_1: heroData?.turn === 1,
+  //   turn_2: heroData?.turn === 2,
+  // });
 
   const cellsClasses = cn({
     'hero-pad__cells': true,
@@ -54,22 +54,34 @@ const HeroPad = ({ type, player }) => {
     'second-player': type === 'first' && player === 'player2',
   });
 
-  const isAllowedCost = (card) => {
-    const newCost = currentPoints - card.cost;
-    if ((card.status === 'hand' && newCost >= 0) || card.status !== 'hand') {
-      return true;
-    }
-    return false;
-  };
+  const postPonedAnima = cn({
+    'hero-pad___animation_green': postponedCell.animation === 'green',
+  });
 
-  const handleHeroClick = () => {
-    const activeCard = getActiveCard();
-    if (activeCard?.id === heroData.id) {
-      dispatch(battleActions.deleteActiveCard({ player: thisPlayer }));
-    } else {
-      dispatch(battleActions.addActiveCard({ card: heroData, player: thisPlayer }));
-    }
-  };
+  const heroAnima = cn({
+    'hero-pad___animation_green': heroCell.animation === 'green',
+    'hero-pad___animation_red': heroCell.animation === 'red',
+  });
+
+  // const handleHeroClick = () => {
+  //   const activeCard = getActiveCard();
+  //   if (activeCard?.id === heroData[0].id) {
+  //     dispatch(battleActions.deleteActiveCard({ player: thisPlayer }));
+  //   } else if (activeCard?.type === 'spell') {
+  //     if (!isAllowedCost(activeCard)) {
+  //       return;
+  //     }
+  //     if (activeCard.status === 'hand') {
+  //       const newPoints = currentPoints - activeCard.cost;
+  //       dispatch(battleActions.setPlayerPoints({ points: newPoints, player: thisPlayer }));
+  //     }
+  //     deleteCardfromSource(activeCard);
+  //     dispatch(battleActions.addFieldContent({ activeCard, id: heroCell.id }));
+  //     dispatch(battleActions.deleteActiveCard({ player: thisPlayer }));
+  //   } else {
+  //     dispatch(battleActions.addActiveCard({ card: heroData[0], player: thisPlayer }));
+  //   }
+  // };
 
   const addPosponedCard = () => {
     const activeCard = getActiveCard();
@@ -83,6 +95,7 @@ const HeroPad = ({ type, player }) => {
         const newPoints = currentPoints - activeCard.cost;
         dispatch(battleActions.setPlayerPoints({ points: newPoints, player: thisPlayer }));
       }
+      handleAnimation(activeCard, 'delete');
       dispatch(battleActions.addFieldContent({ activeCard, id: postponedCell.id }));
       deleteCardfromSource(activeCard);
       dispatch(battleActions.deleteActiveCard({ player: thisPlayer }));
@@ -91,18 +104,23 @@ const HeroPad = ({ type, player }) => {
 
   const handlePostCardClick = () => {
     const activeCard = getActiveCard();
-    if (!activeCard && ((postponedCell.status === 'cover' && player === thisPlayer) || (postponedCell.status === 'face'))) {
+    if (!activeCard && (postponedCell.status === 'cover' && player === thisPlayer)) {
       dispatch(battleActions.addActiveCard({ card: postponedContentData, player: thisPlayer }));
+    }
+    if (!activeCard && postponedCell.status === 'face') {
+      dispatch(battleActions.addActiveCard({ card: postponedContentData, player: thisPlayer }));
+      handleAnimation(postponedContentData, 'add');
     } else if (activeCard && activeCard.id === postponedContentData.id) {
       dispatch(battleActions.deleteActiveCard({ player: thisPlayer }));
+      handleAnimation(activeCard, 'delete');
     }
   };
 
   const handleDeckClick = () => {
     const activeCard = getActiveCard();
     const deckOwner = deck.current.dataset.player;
-    console.log(deckOwner);
     if (activeCard && player === activeCard.player) {
+      handleAnimation(activeCard, 'delete');
       dispatch(battleActions.sendCardtoDeck({ activeCard }));
       deleteCardfromSource(activeCard);
       dispatch(battleActions.deleteActiveCard({ player: thisPlayer }));
@@ -128,11 +146,23 @@ const HeroPad = ({ type, player }) => {
           <img className="hero-pad__image hero-pad__image_no-border" src={DeckCover} alt="deck cover" />
         </button>
       </div>
-      <div className={`${cellsClasses} hero-pad__cells_no-border`}>
-        <button className={heroCardClasses} type="button" onClick={handleHeroClick}>
-          <h3 className="hero-pad__hero-health">{heroData?.currentHP}</h3>
-          <img className="hero-pad__image" src={heroData?.img} alt={heroData?.name} />
-        </button>
+      <div className={`${cellsClasses} ${heroAnima} hero-pad__cells_no-border`}>
+        {/* {heroData.length === 1 && (
+          <button className={heroCardClasses} type="button" onClick={handleHeroClick}>
+            <h3 className="hero-pad__hero-health">{heroData[0]?.currentHP}</h3>
+            <img className="hero-pad__image" src={heroData[0]?.img} alt={heroData[0]?.name} />
+          </button>
+        )} */}
+        {heroData.length > 0 && (
+          heroData.map((item) => (
+            <CellCard
+              key={item.id}
+              item={item}
+              type="hero"
+              content={heroData}
+            />
+          ))
+        )}
       </div>
       <div className={cellsClasses}>
         {graveyardContent.length !== 0 ? (
@@ -145,7 +175,7 @@ const HeroPad = ({ type, player }) => {
           </button>
         )}
       </div>
-      <div className={cellsClasses}>
+      <div className={`${cellsClasses} ${postPonedAnima}`}>
         {postponedCell.content.length !== 0 ? (
           <button className="hero-pad__default-btn hero-pad__posponed_active" id={postponedCell.id} onClick={handlePostCardClick} type="button">
             {postponedCell.status === 'face' ? (
