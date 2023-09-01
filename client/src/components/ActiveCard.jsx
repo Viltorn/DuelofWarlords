@@ -29,10 +29,10 @@ const ActiveCard = ({ activeCard, playerType }) => {
           {(status === 'field') && (type === 'warrior' || type === 'hero') && (
           <ActionButton card={activeCard} type="healthBar" />
           )}
-          {status === 'field' && (type !== 'hero') && (
+          {status !== 'hand' && (type !== 'hero') && (
           <ActionButton card={activeCard} type="return" />
           )}
-          {type !== 'hero' && (
+          {type !== 'hero' && status !== 'graveyard' && (
           <ActionButton card={activeCard} type="graveyard" />
           )}
         </div>

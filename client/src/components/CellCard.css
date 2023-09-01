@@ -61,3 +61,50 @@
   top: 0.4rem;
   right: 0.5rem;
 }
+
+.turn_1 {
+  transform: rotate(-45deg);
+}
+
+.turn_2 {
+  transform: rotate(-90deg);
+}
+
+.cell-container__makeattack-animation {
+  animation: 1s 1 alternate makeattack;
+}
+
+
+@keyframes makeattack {
+  from {
+    transform: scale(1);
+  }
+
+  to {
+    transform: scale(1.5);
+  }
+}
+
+.cell-container__attack-icon {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: auto;
+  bottom: auto;
+  width: 5rem;
+  height: 5rem;
+  animation: 1s 1 normal attacked;
+  opacity: 0;
+}
+
+@keyframes attacked {
+  from {
+    transform: rotate(-45deg);
+    opacity: 1;
+  }
+
+  to {
+    transform: rotate(60deg);
+    opacity: 1;
+  }
+}

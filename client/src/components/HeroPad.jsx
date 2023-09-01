@@ -3,12 +3,14 @@ import React, { useContext, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useSelector, useDispatch } from 'react-redux';
 import cn from 'classnames';
+import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import { actions as battleActions } from '../slices/battleSlice.js';
 import { actions as modalsActions } from '../slices/modalsSlice.js';
 import CardCover from '../assets/battlefield/CardCover.png';
 import DeckCover from '../assets/battlefield/DeckCover.png';
 import CardCounter from '../assets/battlefield/CardCounter.png';
 import functionContext from '../contexts/functionsContext.js';
+import abilityContext from '../contexts/abilityActions.js';
 import CellCard from './CellCard.jsx';
 import './HeroPad.css';
 
@@ -19,6 +21,9 @@ const HeroPad = ({ type, player }) => {
   const {
     deleteCardfromSource, getActiveCard, handleAnimation, isAllowedCost,
   } = useContext(functionContext);
+
+  const { makeFeatureCast } = useContext(abilityContext);
+
   const {
     fieldCells, playerOneHand, playerTwoHand, thisPlayer, playerPoints,
   } = useSelector((state) => state.battleReducer);
@@ -99,6 +104,9 @@ const HeroPad = ({ type, player }) => {
       dispatch(battleActions.addFieldContent({ activeCard, id: postponedCell.id }));
       deleteCardfromSource(activeCard);
       dispatch(battleActions.deleteActiveCard({ player: thisPlayer }));
+      if (activeCard.type === 'spell' && activeCard.features[0].place === 'postponed') {
+        makeFeatureCast(activeCard.features[0], null);
+      }
     }
   };
 
@@ -147,12 +155,6 @@ const HeroPad = ({ type, player }) => {
         </button>
       </div>
       <div className={`${cellsClasses} ${heroAnima} hero-pad__cells_no-border`}>
-        {/* {heroData.length === 1 && (
-          <button className={heroCardClasses} type="button" onClick={handleHeroClick}>
-            <h3 className="hero-pad__hero-health">{heroData[0]?.currentHP}</h3>
-            <img className="hero-pad__image" src={heroData[0]?.img} alt={heroData[0]?.name} />
-          </button>
-        )} */}
         {heroData.length > 0 && (
           heroData.map((item) => (
             <CellCard
@@ -165,29 +167,39 @@ const HeroPad = ({ type, player }) => {
         )}
       </div>
       <div className={cellsClasses}>
-        {graveyardContent.length !== 0 ? (
-          <button className="hero-pad__default-btn" type="button" onClick={checkGraveyard}>
-            <img className="hero-pad__image" src={lastItem.img} alt={lastItem.name} />
-          </button>
-        ) : (
+        <TransitionGroup component={null}>
+          {graveyardContent.length !== 0 && (
+          <CSSTransition timeout={500} classNames="cardanimation">
+            <button className="hero-pad__default-btn" type="button" onClick={checkGraveyard}>
+              <img className="hero-pad__image" src={lastItem.img} alt={lastItem.name} />
+            </button>
+          </CSSTransition>
+          )}
+        </TransitionGroup>
+        {graveyardContent.length === 0 && (
           <button className="hero-pad__default-btn" onClick={checkGraveyard} type="button">
             <h3 className="hero-pad__default-title">{t('Graveyard')}</h3>
           </button>
         )}
       </div>
       <div className={`${cellsClasses} ${postPonedAnima}`}>
-        {postponedCell.content.length !== 0 ? (
-          <button className="hero-pad__default-btn hero-pad__posponed_active" id={postponedCell.id} onClick={handlePostCardClick} type="button">
-            {postponedCell.status === 'face' ? (
-              <img className="hero-pad__image" src={postponedContentData.img} alt={postponedContentData.name} />
-            ) : (
-              <img className="hero-pad__image" src={CardCover} alt="cards cover" />
-            )}
-          </button>
-        ) : (
-          <button className="hero-pad__default-btn" id={postponedCell.id} onClick={addPosponedCard} type="button">
-            <h3 className="hero-pad__default-title">{t('PostponedSpell')}</h3>
-          </button>
+        <TransitionGroup component={null}>
+          {postponedCell.content.length !== 0 && (
+            <CSSTransition timeout={500} classNames="cardanimation">
+              <button className="hero-pad__default-btn hero-pad__posponed_active" id={postponedCell.id} onClick={handlePostCardClick} type="button">
+                {postponedCell.status === 'face' ? (
+                  <img className="hero-pad__image" src={postponedContentData.img} alt={postponedContentData.name} />
+                ) : (
+                  <img className="hero-pad__image" src={CardCover} alt="cards cover" />
+                )}
+              </button>
+            </CSSTransition>
+          )}
+        </TransitionGroup>
+        {postponedCell.content.length === 0 && (
+        <button className="hero-pad__default-btn" id={postponedCell.id} onClick={addPosponedCard} type="button">
+          <h3 className="hero-pad__default-title">{t('PostponedSpell')}</h3>
+        </button>
         )}
       </div>
     </div>

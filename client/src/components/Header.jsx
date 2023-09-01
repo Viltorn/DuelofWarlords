@@ -1,17 +1,21 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useSelector, useDispatch } from 'react-redux';
 import { actions as battleActions } from '../slices/battleSlice.js';
 import { actions as modalsActions } from '../slices/modalsSlice.js';
 import { maxActionPoints } from '../gameData/gameLimits';
+import functionContext from '../contexts/functionsContext.js';
 import Menu from '../assets/Menu.svg';
 import './Header.css';
 
 const Header = () => {
   const { t } = useTranslation();
   const {
-    thisPlayer, playerPoints, commonPoints,
+    thisPlayer, playerPoints, commonPoints, activeCardPlayer1, activeCardPlayer2, fieldCells,
   } = useSelector((state) => state.battleReducer);
+  const {
+    deleteCardfromSource, handleAnimation, deleteOtherActiveCard,
+  } = useContext(functionContext);
   const player1Points = playerPoints.find((item) => item.player === 'player1').points;
   const player2Points = playerPoints.find((item) => item.player === 'player2').points;
   const dispatch = useDispatch();
@@ -19,6 +23,7 @@ const Header = () => {
   const hadleEndTurnClick = () => {
     const newPlayer = thisPlayer === 'player1' ? 'player2' : 'player1';
     const newCommonPoints = commonPoints < maxActionPoints ? commonPoints + 1 : maxActionPoints;
+    const posponedCell = fieldCells.find((cell) => cell.type === 'postponed' && cell.player === thisPlayer);
     if (newPlayer === 'player2') {
       dispatch(battleActions.setPlayerPoints({ points: commonPoints, player: 'player2' }));
     } else {
@@ -27,7 +32,15 @@ const Header = () => {
       }
       dispatch(battleActions.setPlayerPoints({ points: newCommonPoints, player: 'player1' }));
     }
-    dispatch(battleActions.turnPosponed({ player: newPlayer, status: 'face' }));
+    if (posponedCell.status === 'face') {
+      const card = posponedCell.content[0];
+      dispatch(battleActions.returnCard({ card }));
+      deleteCardfromSource(card);
+      dispatch(battleActions.deleteActiveCard({ player: thisPlayer }));
+      deleteOtherActiveCard(activeCardPlayer1, activeCardPlayer2, thisPlayer);
+    }
+    handleAnimation(activeCardPlayer2, 'delete');
+    dispatch(battleActions.turnPostponed({ player: newPlayer, status: 'face' }));
     dispatch(battleActions.drawCard({ player: newPlayer }));
     dispatch(battleActions.massTurnCards({ player: newPlayer }));
     dispatch(battleActions.changePlayer({ newPlayer }));

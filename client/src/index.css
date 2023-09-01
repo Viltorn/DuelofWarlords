@@ -57,22 +57,11 @@ code {
   --cursor-gold: url('./assets/CursorRed.svg'), auto;
 }
 
-.grow-2 {
-  flex-grow: 2;
-}
-
 .border-black {
   border: 0.2rem solid var(--black-color);
   border-radius: 0.5rem;
 }
 
-.turn_1 {
-  transform: rotate(-45deg);
-}
-
-.turn_2 {
-  transform: rotate(-90deg);
-}
 
 @font-face {
   font-weight: 400; /* Соответствует значению normal */

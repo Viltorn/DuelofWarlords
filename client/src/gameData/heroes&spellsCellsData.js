@@ -62,7 +62,7 @@ export const graveyard = [
 ];
 
 export const fieldCells = {
-  rows: ['2', '1', '3', '4'],
+  rows: ['1', '2', '3', '4'],
   linesSideOne: ['2', '1'],
   linesSideTwo: ['3', '4'],
 };

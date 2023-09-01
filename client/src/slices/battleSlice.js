@@ -33,10 +33,47 @@ const battleSlice = createSlice({
   reducers: {
     resetState: () => initialState,
 
+    addAttachment(state, { payload }) {
+      const { cellId, feature, type } = payload;
+      state.fieldCells = state.fieldCells.map((cell) => {
+        if (cell.id === cellId) {
+          if (type === 'cell' && cell.attachments) {
+            cell.attachments = [...cell.attachments, feature];
+          } else {
+            cell.content.map((item) => {
+              if (item.type === 'warrior') {
+                item.attachments = [...item.attachments, feature];
+              }
+              return item;
+            });
+          }
+        }
+        return cell;
+      });
+    },
+
+    deleteAttachment(state, { payload }) {
+      const { spellId } = payload;
+      state.fieldCells = state.fieldCells.map((cell) => {
+        if (cell.attachments) {
+          cell.attachments = cell.attachments.filter((attach) => attach.id !== spellId);
+        }
+        if (cell.type === 'field' && cell.content.length !== 0) {
+          cell.content.map((item) => {
+            if (item.type === 'warrior') {
+              item.attachments = item.attachments.filter((attach) => attach.id !== spellId);
+            }
+            return item;
+          });
+        }
+        return cell;
+      });
+    },
+
     addAnimation(state, { payload }) {
       const { cell, type } = payload;
       state.fieldCells = state.fieldCells.map((cellItem) => {
-        if (cellItem.id === cell.id) {
+        if (cellItem.id === cell?.id) {
           cellItem.animation = type;
         }
         return cellItem;
@@ -50,7 +87,7 @@ const battleSlice = createSlice({
       });
     },
 
-    turnPosponed(state, { payload }) {
+    turnPostponed(state, { payload }) {
       const { player, status } = payload;
       state.fieldCells = state.fieldCells.map((cell) => {
         if (cell.type === 'postponed' && cell.player === player) {
@@ -182,7 +219,7 @@ const battleSlice = createSlice({
       const { card } = payload;
       const { player } = card;
       const cellId = player === 'player1' ? 'graveyard1' : 'graveyard2';
-      const newCard = { ...card, status: 'field', cellId };
+      const newCard = { ...card, status: 'graveyard', cellId };
       state.fieldCells = state.fieldCells.map((cell) => {
         if (cell.type === 'graveyard' && cell.player === player) {
           cell.content = [newCard, ...cell.content];
@@ -192,12 +229,12 @@ const battleSlice = createSlice({
     },
 
     turnCardLeft(state, { payload }) {
-      const { cardId, cellId } = payload;
+      const { cardId, cellId, qty } = payload;
       const newState = state.fieldCells.map((cell) => {
         if (cell.id === cellId) {
           cell.content = cell.content.map((card) => {
             if (card.id === cardId) {
-              card.turn += 1;
+              card.turn += qty;
             }
             return card;
           });
@@ -208,12 +245,12 @@ const battleSlice = createSlice({
     },
 
     turnCardRight(state, { payload }) {
-      const { cardId, cellId } = payload;
+      const { cardId, cellId, qty } = payload;
       const newState = state.fieldCells.map((cell) => {
         if (cell.id === cellId) {
           cell.content = cell.content.map((card) => {
             if (card.id === cardId) {
-              card.turn -= 1;
+              card.turn -= qty;
             }
             return card;
           });

@@ -12,7 +12,9 @@ const ActionButton = ({ type, card }) => {
   const dispatch = useDispatch();
   const store = useStore();
   const element = useRef();
-  const { deleteCardfromSource, handleAnimation } = useContext(functionContext);
+  const {
+    deleteCardfromSource, handleAnimation, moveAttachedSpells, deleteOtherActiveCard,
+  } = useContext(functionContext);
   const {
     id, cellId,
   } = card;
@@ -23,28 +25,6 @@ const ActionButton = ({ type, card }) => {
     thisPlayer,
   } = useSelector((state) => state.battleReducer);
 
-  const deleteOtherActiveCard = (card1, card2, thisplayer) => {
-    const card1Id = card1 ? card1.id : null;
-    const card2Id = card2 ? card2.id : null;
-    if (card1Id === card2Id) {
-      const anotherPlayer = thisplayer === 'player1' ? 'player2' : 'player1';
-      dispatch(battleActions.deleteActiveCard({ player: anotherPlayer }));
-    }
-  };
-
-  const deleteAttachedSpells = (deletingCard, currentCell) => {
-    if (deletingCard.type === 'warrior' && deletingCard.status === 'field') {
-      const { fieldCells } = store.getState().battleReducer;
-      const activeCell = fieldCells.find((cell) => cell.id === currentCell);
-      activeCell.content.forEach((item) => {
-        if (item.type === 'spell') {
-          deleteCardfromSource(item);
-          dispatch(battleActions.addToGraveyard({ card: item }));
-        }
-      });
-    }
-  };
-
   const makeTurn = (direction) => {
     const { fieldCells } = store.getState().battleReducer;
     const cell = fieldCells.find((item) => item.id === cellId);
@@ -52,10 +32,10 @@ const ActionButton = ({ type, card }) => {
     const currentTurn = currentCard.turn;
     if (direction === 'turnLeft') {
       if (currentTurn < maxCardTurns) {
-        dispatch(battleActions.turnCardLeft({ cardId: id, cellId }));
+        dispatch(battleActions.turnCardLeft({ cardId: id, cellId, qty: 1 }));
       }
     } else if (currentTurn > minCardTurns) {
-      dispatch(battleActions.turnCardRight({ cardId: id, cellId }));
+      dispatch(battleActions.turnCardRight({ cardId: id, cellId, qty: 1 }));
     }
   };
 
@@ -72,17 +52,25 @@ const ActionButton = ({ type, card }) => {
         break;
       case 'return':
         handleAnimation(card, 'delete');
+        moveAttachedSpells(card, null, 'return');
         dispatch(battleActions.returnCard({ card }));
         deleteCardfromSource(card);
         dispatch(battleActions.deleteActiveCard({ player: thisPlayer }));
         deleteOtherActiveCard(activeCardPlayer1, activeCardPlayer2, thisPlayer);
+        if (card.type === 'spell') {
+          dispatch(battleActions.deleteAttachment({ spellId: card.id }));
+        }
         break;
       case 'graveyard':
+        handleAnimation(card, 'delete');
+        moveAttachedSpells(card, null, 'kill');
         deleteCardfromSource(card);
         dispatch(battleActions.addToGraveyard({ card }));
         dispatch(battleActions.deleteActiveCard({ player: thisPlayer }));
         deleteOtherActiveCard(activeCardPlayer1, activeCardPlayer2, thisPlayer);
-        deleteAttachedSpells(card, cellId);
+        if (card.type === 'spell') {
+          dispatch(battleActions.deleteAttachment({ spellId: card.id }));
+        }
         break;
       default:
         break;
