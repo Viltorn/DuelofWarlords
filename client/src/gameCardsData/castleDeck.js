@@ -113,8 +113,9 @@ const castleDeck = [
     cost: 2,
     description: 'Накладывается на воина. Он может атаковать и ходить в один ход',
     id: _.uniqueId(),
+    place: 'warrior',
     features: [{
-      place: 'attach',
+      attach: true,
       aim: ['warrior'],
       type: 'good',
       spellName: 'Swift',
@@ -200,11 +201,11 @@ const castleDeck = [
     cost: 2,
     description: 'Кладется на вашего воина - он получает + 1 к базовой атаке',
     id: _.uniqueId(),
+    place: 'warrior',
     features: [{
-      place: 'attach',
+      attach: true,
       aim: ['warrior'],
       type: 'good',
-      spellName: 'Bless',
       name: 'power',
       value: 1,
     }],
@@ -230,12 +231,13 @@ const castleDeck = [
     cost: 2,
     description: 'Отнять 2 здоровья у воина и переместить его на прилегающую клетку',
     id: _.uniqueId(),
+    place: '',
     features: [
       {
-        place: '', type: 'bad', aim: ['warrior'], name: 'attack', value: 2,
+        attach: false, type: 'bad', aim: ['warrior'], name: 'attack', value: 2,
       },
       {
-        place: '', type: 'bad', aim: ['warrior'], name: 'moverow',
+        attach: false, type: 'bad', aim: ['warrior'], name: 'moverow',
       },
     ],
     img: RetaliationHammer,

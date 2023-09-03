@@ -5,6 +5,7 @@ import { actions as battleActions } from '../slices/battleSlice.js';
 import { actions as modalsActions } from '../slices/modalsSlice.js';
 import { maxActionPoints } from '../gameData/gameLimits';
 import functionContext from '../contexts/functionsContext.js';
+import abilityContext from '../contexts/abilityActions.js';
 import Menu from '../assets/Menu.svg';
 import './Header.css';
 
@@ -14,8 +15,9 @@ const Header = () => {
     thisPlayer, playerPoints, commonPoints, activeCardPlayer1, activeCardPlayer2, fieldCells,
   } = useSelector((state) => state.battleReducer);
   const {
-    deleteCardfromSource, handleAnimation, deleteOtherActiveCard,
+    handleAnimation, deleteOtherActiveCard,
   } = useContext(functionContext);
+  const { sendCardFromField } = useContext(abilityContext);
   const player1Points = playerPoints.find((item) => item.player === 'player1').points;
   const player2Points = playerPoints.find((item) => item.player === 'player2').points;
   const dispatch = useDispatch();
@@ -24,6 +26,13 @@ const Header = () => {
     const newPlayer = thisPlayer === 'player1' ? 'player2' : 'player1';
     const newCommonPoints = commonPoints < maxActionPoints ? commonPoints + 1 : maxActionPoints;
     const posponedCell = fieldCells.find((cell) => cell.type === 'postponed' && cell.player === thisPlayer);
+    const temporarySpells = fieldCells
+      .filter((cell) => cell.content.length !== 0 && cell.type !== 'postponed')
+      .reduce((arr, cell) => {
+        const spells = cell.content.filter((el) => el.subtype === 'temporary' && el.player === newPlayer);
+        arr = [...arr, ...spells];
+        return arr;
+      }, []);
     if (newPlayer === 'player2') {
       dispatch(battleActions.setPlayerPoints({ points: commonPoints, player: 'player2' }));
     } else {
@@ -34,8 +43,7 @@ const Header = () => {
     }
     if (posponedCell.status === 'face') {
       const card = posponedCell.content[0];
-      dispatch(battleActions.returnCard({ card }));
-      deleteCardfromSource(card);
+      sendCardFromField(card, 'return');
       dispatch(battleActions.deleteActiveCard({ player: thisPlayer }));
       deleteOtherActiveCard(activeCardPlayer1, activeCardPlayer2, thisPlayer);
     }
@@ -44,6 +52,7 @@ const Header = () => {
     dispatch(battleActions.drawCard({ player: newPlayer }));
     dispatch(battleActions.massTurnCards({ player: newPlayer }));
     dispatch(battleActions.changePlayer({ newPlayer }));
+    temporarySpells.forEach((spell) => sendCardFromField(spell, 'grave'));
   };
 
   const handlePointsClick = (player) => {

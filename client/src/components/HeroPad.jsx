@@ -22,7 +22,7 @@ const HeroPad = ({ type, player }) => {
     deleteCardfromSource, getActiveCard, handleAnimation, isAllowedCost,
   } = useContext(functionContext);
 
-  const { makeFeatureCast } = useContext(abilityContext);
+  const { makeFeatureAttach } = useContext(abilityContext);
 
   const {
     fieldCells, playerOneHand, playerTwoHand, thisPlayer, playerPoints,
@@ -47,12 +47,6 @@ const HeroPad = ({ type, player }) => {
     'hero-pad_2': type === 'second',
   });
 
-  // const heroCardClasses = cn({
-  //   'hero-pad__default-btn': true,
-  //   turn_1: heroData?.turn === 1,
-  //   turn_2: heroData?.turn === 2,
-  // });
-
   const cellsClasses = cn({
     'hero-pad__cells': true,
     'second-type': type === 'second',
@@ -67,26 +61,6 @@ const HeroPad = ({ type, player }) => {
     'hero-pad___animation_green': heroCell.animation === 'green',
     'hero-pad___animation_red': heroCell.animation === 'red',
   });
-
-  // const handleHeroClick = () => {
-  //   const activeCard = getActiveCard();
-  //   if (activeCard?.id === heroData[0].id) {
-  //     dispatch(battleActions.deleteActiveCard({ player: thisPlayer }));
-  //   } else if (activeCard?.type === 'spell') {
-  //     if (!isAllowedCost(activeCard)) {
-  //       return;
-  //     }
-  //     if (activeCard.status === 'hand') {
-  //       const newPoints = currentPoints - activeCard.cost;
-  //       dispatch(battleActions.setPlayerPoints({ points: newPoints, player: thisPlayer }));
-  //     }
-  //     deleteCardfromSource(activeCard);
-  //     dispatch(battleActions.addFieldContent({ activeCard, id: heroCell.id }));
-  //     dispatch(battleActions.deleteActiveCard({ player: thisPlayer }));
-  //   } else {
-  //     dispatch(battleActions.addActiveCard({ card: heroData[0], player: thisPlayer }));
-  //   }
-  // };
 
   const addPosponedCard = () => {
     const activeCard = getActiveCard();
@@ -104,8 +78,8 @@ const HeroPad = ({ type, player }) => {
       dispatch(battleActions.addFieldContent({ activeCard, id: postponedCell.id }));
       deleteCardfromSource(activeCard);
       dispatch(battleActions.deleteActiveCard({ player: thisPlayer }));
-      if (activeCard.type === 'spell' && activeCard.features[0].place === 'postponed') {
-        makeFeatureCast(activeCard.features[0], null);
+      if (activeCard.type === 'spell' && activeCard.place === 'postponed') {
+        activeCard.features.forEach((feature) => makeFeatureAttach(feature, postponedCell));
       }
     }
   };

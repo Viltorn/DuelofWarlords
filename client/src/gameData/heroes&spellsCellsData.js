@@ -21,25 +21,25 @@ export const bigSpell = [
 
 export const midSpells = [
   {
-    id: 'A', row: 1, player: 'player1', content: [], type: 'midSpell', animation: '', disabled: false,
+    id: 'A', row: '1', player: 'player1', content: [], type: 'midSpell', animation: '', disabled: false,
   },
   {
-    id: 'B', row: 2, player: 'player1', content: [], type: 'midSpell', animation: '', disabled: false,
+    id: 'B', row: '2', player: 'player1', content: [], type: 'midSpell', animation: '', disabled: false,
   },
   {
-    id: 'C', row: 3, player: 'player2', content: [], type: 'midSpell', animation: '', disabled: false,
+    id: 'C', row: '3', player: 'player2', content: [], type: 'midSpell', animation: '', disabled: false,
   },
   {
-    id: 'D', row: 4, player: 'player2', content: [], type: 'midSpell', animation: '', disabled: false,
+    id: 'D', row: '4', player: 'player2', content: [], type: 'midSpell', animation: '', disabled: false,
   },
 ];
 
 export const heroes = [
   {
-    id: 'hero1', player: 'player1', content: [], type: 'hero', animation: '', disabled: false,
+    id: 'hero1', player: 'player1', content: [], type: 'hero', animation: '', disabled: false, attachments: [],
   },
   {
-    id: 'hero2', player: 'player2', content: [], type: 'hero', animation: '', disabled: false,
+    id: 'hero2', player: 'player2', content: [], type: 'hero', animation: '', disabled: false, attachments: [],
   },
 ];
 

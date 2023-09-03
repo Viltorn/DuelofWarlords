@@ -1,6 +1,5 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-// import { useTranslation } from 'react-i18next';
 import cn from 'classnames';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import { actions as battleActions } from '../slices/battleSlice.js';
@@ -11,8 +10,10 @@ import abilityContext from '../contexts/abilityActions.js';
 
 const Cell = ({ props, id }) => {
   // const { t } = useTranslation();
+  const [cardSource, setCardSource] = useState('hand');
+  const [cardType, setCardType] = useState('');
   const {
-    thisPlayer, playerPoints,
+    thisPlayer, playerPoints, fieldCells,
   } = useSelector((state) => state.battleReducer);
   const dispatch = useDispatch();
   const { type, content, animation } = props;
@@ -23,9 +24,12 @@ const Cell = ({ props, id }) => {
     canBeMoved,
     handleAnimation,
     canBeCast,
+    isAllowedCost,
   } = useContext(functionContext);
-  const { makeFeatureCast } = useContext(abilityContext);
+  const [contLength, setContLength] = useState(content.length);
+  const { makeFeatureCast, makeFeatureAttach, findOnSpells } = useContext(abilityContext);
   const currentPoints = playerPoints.find((item) => item.player === thisPlayer).points;
+  const currentCell = fieldCells.find((cell) => cell.id === id);
 
   const classes = cn({
     'cell__default-size': true,
@@ -36,13 +40,21 @@ const Cell = ({ props, id }) => {
     cell__animation_red: animation === 'red',
   });
 
-  const isAllowedCost = (card) => {
-    const newCost = currentPoints - card.cost;
-    if ((card.status === 'hand' && newCost >= 0) || card.status !== 'hand') {
-      return true;
+  useEffect(() => {
+    console.log(contLength);
+    if (cardType === 'warrior') {
+      const warrior = currentCell.content.find((item) => item.type === 'warrior');
+      if (type === 'field' && warrior && cardSource === 'field') {
+        const onMoveSpells = findOnSpells(warrior, currentCell, 'onmove');
+        onMoveSpells.forEach((spell) => makeFeatureCast(spell, currentCell, warrior));
+      }
+      if (type === 'field' && warrior && cardSource === 'hand') {
+        const onPlaySpells = findOnSpells(warrior, currentCell, 'onplay');
+        onPlaySpells.forEach((spell) => makeFeatureCast(spell, currentCell, warrior));
+      }
     }
-    return false;
-  };
+  // eslint-disable-next-line
+  }, [cardType, contLength, cardSource]);
 
   const handleCellClick = () => {
     const activeCard = getActiveCard();
@@ -57,7 +69,14 @@ const Cell = ({ props, id }) => {
       deleteCardfromSource(activeCard);
       dispatch(battleActions.deleteActiveCard({ player: thisPlayer }));
       moveAttachedSpells(activeCard, id, 'move');
+      setContLength((prev) => prev + 1);
+      if (activeCard.type === 'warrior' && activeCard.status === 'hand') {
+        setCardSource('hand');
+        setCardType('warrior');
+      }
       if (activeCard.type === 'warrior' && activeCard.status === 'field') {
+        setCardSource('field');
+        setCardType('warrior');
         const movingAttachment = activeCard.attachments.find((feature) => feature.name === 'moving');
         const hasSwift = activeCard.features.swift
           || activeCard.attachments.find((feature) => feature.name === 'swift');
@@ -71,7 +90,13 @@ const Cell = ({ props, id }) => {
       }
       if (activeCard.type === 'spell') {
         activeCard.features
-          .forEach((feature) => setTimeout(() => makeFeatureCast(feature, null), 1000));
+          .forEach((feature) => setTimeout(() => {
+            if (!feature.condition && !feature.attach) {
+              makeFeatureCast(feature, currentCell);
+            } else if (feature.attach) {
+              makeFeatureAttach(feature, currentCell);
+            }
+          }, 1000));
       }
     };
 
@@ -98,6 +123,8 @@ const Cell = ({ props, id }) => {
                 item={item}
                 type={type}
                 content={content}
+                setCardType={setCardType}
+                setContLength={setContLength}
               />
             </CSSTransition>
           )))}

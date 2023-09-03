@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { actions as modalsActions } from '../slices/modalsSlice.js';
 import { actions as battleActions } from '../slices/battleSlice.js';
 import functionContext from '../contexts/functionsContext.js';
+import abilityContext from '../contexts/abilityActions.js';
 import { minCardTurns, maxCardTurns } from '../gameData/gameLimits.js';
 import './ActionButton.css';
 
@@ -13,8 +14,9 @@ const ActionButton = ({ type, card }) => {
   const store = useStore();
   const element = useRef();
   const {
-    deleteCardfromSource, handleAnimation, moveAttachedSpells, deleteOtherActiveCard,
+    handleAnimation, moveAttachedSpells, deleteOtherActiveCard,
   } = useContext(functionContext);
+  const { sendCardFromField } = useContext(abilityContext);
   const {
     id, cellId,
   } = card;
@@ -53,24 +55,16 @@ const ActionButton = ({ type, card }) => {
       case 'return':
         handleAnimation(card, 'delete');
         moveAttachedSpells(card, null, 'return');
-        dispatch(battleActions.returnCard({ card }));
-        deleteCardfromSource(card);
         dispatch(battleActions.deleteActiveCard({ player: thisPlayer }));
         deleteOtherActiveCard(activeCardPlayer1, activeCardPlayer2, thisPlayer);
-        if (card.type === 'spell') {
-          dispatch(battleActions.deleteAttachment({ spellId: card.id }));
-        }
+        sendCardFromField(card, 'return');
         break;
       case 'graveyard':
         handleAnimation(card, 'delete');
         moveAttachedSpells(card, null, 'kill');
-        deleteCardfromSource(card);
-        dispatch(battleActions.addToGraveyard({ card }));
         dispatch(battleActions.deleteActiveCard({ player: thisPlayer }));
         deleteOtherActiveCard(activeCardPlayer1, activeCardPlayer2, thisPlayer);
-        if (card.type === 'spell') {
-          dispatch(battleActions.deleteAttachment({ spellId: card.id }));
-        }
+        sendCardFromField(card, 'grave');
         break;
       default:
         break;

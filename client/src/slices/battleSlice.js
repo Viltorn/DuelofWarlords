@@ -41,7 +41,7 @@ const battleSlice = createSlice({
             cell.attachments = [...cell.attachments, feature];
           } else {
             cell.content.map((item) => {
-              if (item.type === 'warrior') {
+              if (item.type === 'warrior' || item.type === 'hero') {
                 item.attachments = [...item.attachments, feature];
               }
               return item;
@@ -58,9 +58,9 @@ const battleSlice = createSlice({
         if (cell.attachments) {
           cell.attachments = cell.attachments.filter((attach) => attach.id !== spellId);
         }
-        if (cell.type === 'field' && cell.content.length !== 0) {
+        if ((cell.type === 'field' || cell.type === 'hero') && cell.content.length !== 0) {
           cell.content.map((item) => {
-            if (item.type === 'warrior') {
+            if (item.type === 'warrior' || item.type === 'hero') {
               item.attachments = item.attachments.filter((attach) => attach.id !== spellId);
             }
             return item;
@@ -210,7 +210,9 @@ const battleSlice = createSlice({
 
     returnCard(state, { payload }) {
       const { card } = payload;
-      const changedCard = { ...card, status: 'hand', cellId: '' };
+      const { health } = card;
+      const changedBasic = { ...card, status: 'hand', cellId: '' };
+      const changedCard = card.type === 'warrior' ? { ...changedBasic, currentHP: health } : { ...changedBasic };
       const hand = changedCard.player === 'player1' ? 'playerOneHand' : 'playerTwoHand';
       state[hand] = [...state[hand], changedCard];
     },
