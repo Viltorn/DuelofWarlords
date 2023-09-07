@@ -27,7 +27,7 @@ const Cell = ({ props, id }) => {
     isAllowedCost,
   } = useContext(functionContext);
   const [contLength, setContLength] = useState(content.length);
-  const { makeFeatureCast, makeFeatureAttach, findOnSpells } = useContext(abilityContext);
+  const { makeFeatureCast, makeFeatureAttach, findTriggerSpells } = useContext(abilityContext);
   const currentPoints = playerPoints.find((item) => item.player === thisPlayer).points;
   const currentCell = fieldCells.find((cell) => cell.id === id);
 
@@ -41,16 +41,26 @@ const Cell = ({ props, id }) => {
   });
 
   useEffect(() => {
-    console.log(contLength);
     if (cardType === 'warrior') {
       const warrior = currentCell.content.find((item) => item.type === 'warrior');
       if (type === 'field' && warrior && cardSource === 'field') {
-        const onMoveSpells = findOnSpells(warrior, currentCell, 'onmove');
+        const onMoveSpells = findTriggerSpells(warrior, currentCell, 'onmove', 'warrior');
         onMoveSpells.forEach((spell) => makeFeatureCast(spell, currentCell, warrior));
       }
       if (type === 'field' && warrior && cardSource === 'hand') {
-        const onPlaySpells = findOnSpells(warrior, currentCell, 'onplay');
+        const onPlaySpells = findTriggerSpells(warrior, currentCell, 'onplay', 'warrior');
         onPlaySpells.forEach((spell) => makeFeatureCast(spell, currentCell, warrior));
+      }
+    }
+    if (cardType === 'spell') {
+      const spellCard = currentCell.content.find((item, i) => item.type === 'spell' && i === 0);
+      if (spellCard && cardSource === 'field') {
+        const onMoveSpells = findTriggerSpells(spellCard, currentCell, 'onmove', 'spell');
+        onMoveSpells.forEach((spell) => makeFeatureCast(spell, currentCell, spellCard));
+      }
+      if (spellCard && cardSource === 'hand') {
+        const onPlaySpells = findTriggerSpells(spellCard, currentCell, 'onplay', 'spell');
+        onPlaySpells.forEach((spell) => makeFeatureCast(spell, currentCell, spellCard));
       }
     }
   // eslint-disable-next-line
@@ -70,13 +80,9 @@ const Cell = ({ props, id }) => {
       dispatch(battleActions.deleteActiveCard({ player: thisPlayer }));
       moveAttachedSpells(activeCard, id, 'move');
       setContLength((prev) => prev + 1);
-      if (activeCard.type === 'warrior' && activeCard.status === 'hand') {
-        setCardSource('hand');
-        setCardType('warrior');
-      }
+      setCardSource(activeCard.status);
+      setCardType(activeCard.type);
       if (activeCard.type === 'warrior' && activeCard.status === 'field') {
-        setCardSource('field');
-        setCardType('warrior');
         const movingAttachment = activeCard.attachments.find((feature) => feature.name === 'moving');
         const hasSwift = activeCard.features.swift
           || activeCard.attachments.find((feature) => feature.name === 'swift');
@@ -125,6 +131,7 @@ const Cell = ({ props, id }) => {
                 content={content}
                 setCardType={setCardType}
                 setContLength={setContLength}
+                setCardSource={setCardSource}
               />
             </CSSTransition>
           )))}

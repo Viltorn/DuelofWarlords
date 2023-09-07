@@ -1,36 +1,36 @@
 export const topSpells = [
   {
-    id: '1', player: 'player1', content: [], type: 'topSpell', animation: '', disabled: false,
+    id: '1', player: 'player1', content: [], type: 'topSpell', animation: '', disabled: false, attachments: [],
   },
   {
-    id: '2', player: 'player1', content: [], type: 'topSpell', animation: '', disabled: false,
+    id: '2', player: 'player1', content: [], type: 'topSpell', animation: '', disabled: false, attachments: [],
   },
   {
-    id: '3', player: 'player2', content: [], type: 'topSpell', animation: '', disabled: false,
+    id: '3', player: 'player2', content: [], type: 'topSpell', animation: '', disabled: false, attachments: [],
   },
   {
-    id: '4', player: 'player2', content: [], type: 'topSpell', animation: '', disabled: false,
+    id: '4', player: 'player2', content: [], type: 'topSpell', animation: '', disabled: false, attachments: [],
   },
 ];
 
 export const bigSpell = [
   {
-    id: '5', content: [], type: 'bigSpell', animation: '', disabled: false,
+    id: '5', content: [], type: 'bigSpell', animation: '', disabled: false, attachments: [],
   },
 ];
 
 export const midSpells = [
   {
-    id: 'A', row: '1', player: 'player1', content: [], type: 'midSpell', animation: '', disabled: false,
+    id: 'A', row: '1', player: 'player1', content: [], type: 'midSpell', animation: '', disabled: false, attachments: [],
   },
   {
-    id: 'B', row: '2', player: 'player1', content: [], type: 'midSpell', animation: '', disabled: false,
+    id: 'B', row: '2', player: 'player1', content: [], type: 'midSpell', animation: '', disabled: false, attachments: [],
   },
   {
-    id: 'C', row: '3', player: 'player2', content: [], type: 'midSpell', animation: '', disabled: false,
+    id: 'C', row: '3', player: 'player2', content: [], type: 'midSpell', animation: '', disabled: false, attachments: [],
   },
   {
-    id: 'D', row: '4', player: 'player2', content: [], type: 'midSpell', animation: '', disabled: false,
+    id: 'D', row: '4', player: 'player2', content: [], type: 'midSpell', animation: '', disabled: false, attachments: [],
   },
 ];
 
@@ -54,10 +54,10 @@ export const postponed = [
 
 export const graveyard = [
   {
-    id: 'graveyard1', player: 'player1', content: [], type: 'graveyard', animation: '', disabled: false,
+    id: 'graveyard1', player: 'player1', content: [], type: 'graveyard', animation: '', disabled: false, attachments: [],
   },
   {
-    id: 'graveyard2', player: 'player2', content: [], type: 'graveyard', animation: '', disabled: false,
+    id: 'graveyard2', player: 'player2', content: [], type: 'graveyard', animation: '', disabled: false, attachments: [],
   },
 ];
 
@@ -66,3 +66,5 @@ export const fieldCells = {
   linesSideOne: ['2', '1'],
   linesSideTwo: ['3', '4'],
 };
+
+export const spellsCells = ['topSpell', 'bigSpell', 'midSpell'];

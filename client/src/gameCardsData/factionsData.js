@@ -13,10 +13,10 @@ export const factionsData = [
 
 export const heroes = [
   {
-    name: 'Zigfrid-Hero', type: 'hero', factionId: 'Castle', health: 20, currentHP: 20, description: 'Удар молотом: атаковать силой 1 не закрытого воина на поле боя и передвинуть его на соседнюю клетку в линии - 3д. Прилив сил: взять карту из колоды за 1д.', id: _.uniqueId(), cellId: '', attachments: [], features: {}, img: ZigfridHero, status: 'field', turn: 0,
+    name: 'Zigfrid-Hero', type: 'hero', factionId: 'Castle', health: 20, currentHP: 20, description: 'Удар молотом: атаковать силой 1 не закрытого воина на поле боя и передвинуть его на соседнюю клетку в линии - 3д. Прилив сил: взять карту из колоды за 1д.', id: _.uniqueId(), cellId: '', attachments: [], features: [], img: ZigfridHero, status: 'field', turn: 0,
   },
   {
-    name: 'Nala-Hero', type: 'hero', factionId: 'Academia', health: 20, currentHP: 20, description: 'Стрела магии: отнять 1 здоровье у воина на поле боя за 2д. Прилив сил: взять карту из колоды за 1д.', id: _.uniqueId(), cellId: '', attachments: [], features: {}, img: NalaHero, status: 'field', turn: 0,
+    name: 'Nala-Hero', type: 'hero', factionId: 'Academia', health: 20, currentHP: 20, description: 'Стрела магии: отнять 1 здоровье у воина на поле боя за 2д. Прилив сил: взять карту из колоды за 1д.', id: _.uniqueId(), cellId: '', attachments: [], features: [], img: NalaHero, status: 'field', turn: 0,
   },
 ];
 

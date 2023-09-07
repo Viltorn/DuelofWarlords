@@ -39,7 +39,7 @@ const ChangeCardStats = () => {
     onSubmit: ({ health }) => {
       try {
         dispatch(battleActions.changeHP({
-          health,
+          health: parseInt(health, 10),
           cardId: currentCard.id,
           cellId: currentCard.cellId,
         }));

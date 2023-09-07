@@ -28,6 +28,8 @@ export const FunctionProvider = ({ children }) => {
   useEffect(() => {
     const handleWindowResize = () => {
       setWindowWidth(window.innerWidth);
+      const value = `${window.innerWidth / 85}px`;
+      document.documentElement.style.setProperty('font-size', value);
     };
 
     window.addEventListener('resize', handleWindowResize);
@@ -54,7 +56,8 @@ export const FunctionProvider = ({ children }) => {
     const cellInvis = cell.attachments?.find((feat) => feat.name === 'invisible');
     const warrior = cell.content.find((item) => item.type === 'warrior');
     const cardInvis = warrior?.attachments.find((feat) => feat.name === 'invisible');
-    return cardInvis || cellInvis || warrior?.features.invisible;
+    const featureInvis = warrior?.features.find((feat) => feat.name === 'invisible');
+    return cardInvis || cellInvis || featureInvis;
   };
 
   const findEnemies = (card) => {
@@ -65,8 +68,8 @@ export const FunctionProvider = ({ children }) => {
     const attackingLines = line <= 2 ? ['3', '4'] : ['1', '2'];
     const attackingRowCells = fieldCells.filter((cell) => cell.row === row && !isInvisible(cell)
     && attackingLines.includes(cell.line) && cell.content.length !== 0 && !cell.disabled);
-
-    const attackingCells = !card.features.massAttack
+    const hasMassAttack = card.features.find((feat) => feat.name === 'massAttack');
+    const attackingCells = !hasMassAttack
       ? attackingRowCells
       : fieldCells.filter((cell) => cell.type === 'field' && cell.content.length !== 0 && attackingLines.includes(cell.line));
 
@@ -82,14 +85,14 @@ export const FunctionProvider = ({ children }) => {
       }
     }
     if (card.subtype === 'fighter' || card.subtype === 'flyer') {
-      if (attackingCells.length > 1 && !card.features.massAttack) {
+      if (attackingCells.length > 1 && !hasMassAttack) {
         const attackCell = attackingCells.find((cell) => attackingLines[0] === cell.line);
         dispatch(battleActions.addAnimation({ cell: attackCell, type: 'red' }));
         setAttackCells([attackCell.id]);
       } else if (attackingCells.length === 1) {
         dispatch(battleActions.addAnimation({ cell: attackingCells[0], type: 'red' }));
         setAttackCells([attackingCells[0].id]);
-      } else if (card.features.massAttack) {
+      } else if (hasMassAttack) {
         attackingCells.forEach((cell) => dispatch(battleActions.addAnimation({ cell, type: 'red' })));
         setAttackCells(attackingCells.map((cell) => cell.id));
       }
@@ -181,7 +184,7 @@ export const FunctionProvider = ({ children }) => {
       });
     } else if (place !== 'postponed') {
       fieldCells.forEach((cell) => {
-        if (place === cell.type && cell.content.length === 0 && !cell.disabled) {
+        if (place === cell.type && (cell.content.length === 0 || place === 'bigSpell') && !cell.disabled) {
           dispatch(battleActions.addAnimation({ cell, type: 'green' }));
           setCastCells((prev) => [...prev, cell.id]);
         }
@@ -189,29 +192,72 @@ export const FunctionProvider = ({ children }) => {
     }
   };
 
+  const findDependValue = (spell) => {
+    const { depend, dependValue, value } = spell;
+    if (depend === 'goodattachments') {
+      const goodAttach = fieldCells.filter((cell) => cell.content.length !== 0 && cell.type !== 'graveyard')
+        .reduce((acc, cell) => {
+          const goodContent = cell.content.filter((el) => el.type === 'spell' && el.player === thisPlayer);
+          acc = [...acc, ...goodContent];
+          return acc;
+        }, []);
+      return dependValue * goodAttach.length;
+    }
+    if (depend === 'warriorsdiff') {
+      const goodWarriors = fieldCells.filter((cell) => cell.content.length !== 0
+        && cell.type === 'field' && cell.player === thisPlayer).length;
+      const enemyPlayer = thisPlayer === 'player1' ? 'player2' : 'player1';
+      const badWarriors = fieldCells.filter((cell) => cell.content.length !== 0
+      && cell.type === 'field' && cell.player === enemyPlayer).length;
+      const diff = badWarriors - goodWarriors > 0 ? badWarriors - goodWarriors : 0;
+      return value + dependValue * diff;
+    }
+    if (depend === 'postponed') {
+      const cellWithFeatureType = fieldCells
+        .find((cell) => cell.content.find((item) => item.id === spell.id))?.type;
+      if (cellWithFeatureType === 'postponed') {
+        return dependValue;
+      }
+    }
+    return value;
+  };
+
   const getWarriorPower = (card) => {
     const { attachments, currentP } = card;
-    const powerAttachments = attachments.filter((spell) => spell.name === 'power');
-    const attachPowerValue = powerAttachments.reduce((acc, spell) => {
-      acc += spell.value;
+    const cardCell = fieldCells.find((cell) => cell.id === card.cellId);
+    const powerCellAttach = cardCell.attachments.filter((spell) => spell.name === 'power');
+    const powerCellValue = powerCellAttach.reduce((acc, spell) => {
+      const spellPower = spell.depend ? findDependValue(spell) : spell.value;
+      acc += spellPower;
       return acc;
     }, 0);
-    const totalPower = currentP + attachPowerValue;
+    const powerCardAttach = attachments.filter((spell) => spell.name === 'power');
+    const attachPowerValue = powerCardAttach.reduce((acc, spell) => {
+      const spellPower = spell.depend ? findDependValue(spell) : spell.value;
+      acc += spellPower;
+      return acc;
+    }, 0);
+    const totalPower = currentP + attachPowerValue + powerCellValue;
     return totalPower;
   };
 
-  const checkMeetCondition = (checking, spell, type) => {
+  const checkMeetCondition = (attacking, protecting, spell, type) => {
     const { condition, conditionValue } = spell;
     if (type === 'warrior') {
       if (condition && condition === 'minPower') {
-        const attackingPower = getWarriorPower(checking);
+        const attackingPower = getWarriorPower(attacking);
         const meetCondition = attackingPower >= conditionValue;
         return meetCondition;
       }
       if (condition && condition === 'maxPower') {
-        const attackingPower = getWarriorPower(checking);
+        const attackingPower = getWarriorPower(attacking);
         const meetCondition = attackingPower <= conditionValue;
         return meetCondition;
+      }
+      if (condition && condition === 'candie') {
+        const attackingPower = getWarriorPower(attacking);
+        const { currentHP } = protecting;
+        return currentHP - attackingPower <= 0;
       }
     }
     return true;
@@ -236,11 +282,11 @@ export const FunctionProvider = ({ children }) => {
       const cardImmobileAttachment = activeCard.attachments.find((feature) => feature.name === 'immobile' && checkMeetCondition(activeCard, feature, 'warrior'));
       const cellImmobileAttachment = currentCell?.attachments?.find((feature) => feature.name === 'immobile' && feature.aim.includes(activeCard.subtype) && checkMeetCondition(activeCard, feature, 'warrior'));
       const movingAttachment = activeCard.attachments.find((feature) => feature.name === 'moving' && checkMeetCondition(activeCard, feature, 'warrior'));
-      const canMove = (!cardImmobileAttachment && !activeCard.features.immobile
+      const canMove = (!cardImmobileAttachment && !activeCard.features.find((feature) => feature.name === 'immobile')
         && activeCard.turn === 0 && !cellImmobileAttachment) || movingAttachment;
       const cellUnarmedAttachment = currentCell?.attachments?.find((feature) => feature.name === 'unarmed' && feature.aim.includes(activeCard.subtype) && checkMeetCondition(activeCard, feature, 'warrior'));
       const cardUnarmedAttachment = activeCard.attachments.find((feature) => feature.name === 'unarmed' && checkMeetCondition(activeCard, feature, 'warrior'));
-      const canAttack = !activeCard.features.unarmed && activeCard.turn === 0
+      const canAttack = !activeCard.features.find((feature) => feature.name === 'unarmed') && activeCard.turn === 0
         && !cardUnarmedAttachment && !cellUnarmedAttachment;
       if (activeCard.status === 'hand' || isCardPostponed) {
         findFieldCells(activeCard);
@@ -253,13 +299,13 @@ export const FunctionProvider = ({ children }) => {
       }
     }
 
-    if (activeCard.type === 'spell' && activeCard.status === 'hand') {
+    if (activeCard.type === 'spell' && (activeCard.status === 'hand' || isCardPostponed)) {
       findCellsForCast(activeCard);
     }
 
-    const posponedCell = fieldCells.find((cell) => cell.type === 'postponed' && cell.player === thisPlayer);
-    if (activeCard.status === 'hand' && posponedCell.content.length === 0) {
-      dispatch(battleActions.addAnimation({ cell: posponedCell, type: 'green' }));
+    const postponedCell = fieldCells.find((cell) => cell.type === 'postponed' && cell.player === thisPlayer);
+    if (activeCard.status === 'hand' && postponedCell.content.length === 0) {
+      dispatch(battleActions.addAnimation({ cell: postponedCell, type: 'green' }));
     }
   };
 
@@ -327,8 +373,9 @@ export const FunctionProvider = ({ children }) => {
           dispatch(battleActions.addFieldContent({ activeCard: item, id: endCellId }));
           deleteCardfromSource(item);
         } else if (item.type === 'spell' && type === 'return') {
-          dispatch(battleActions.returnCard({ card: item }));
           deleteCardfromSource(item);
+          dispatch(battleActions.deleteAttachment({ spellId: item.id }));
+          dispatch(battleActions.returnCard({ card: item }));
         }
       });
     }
@@ -347,6 +394,7 @@ export const FunctionProvider = ({ children }) => {
     <FunctionContext.Provider value={{
       checkMeetCondition,
       setMoveCells,
+      setCastCells,
       getWarriorPower,
       isKilled,
       changeCardHP,
@@ -360,6 +408,7 @@ export const FunctionProvider = ({ children }) => {
       deleteCardfromSource,
       getActiveCard,
       windowWidth,
+      findDependValue,
     }}
     >
       {children}

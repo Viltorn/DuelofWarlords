@@ -33,6 +33,14 @@ const Header = () => {
         arr = [...arr, ...spells];
         return arr;
       }, []);
+    const turnSpells = fieldCells
+      .filter((cell) => cell.content.length !== 0 && cell.type !== 'postponed')
+      .reduce((arr, cell) => {
+        const spells = cell.content.filter((el) => el.subtype === 'turn' && el.player === thisPlayer);
+        arr = [...arr, ...spells];
+        return arr;
+      }, []);
+
     if (newPlayer === 'player2') {
       dispatch(battleActions.setPlayerPoints({ points: commonPoints, player: 'player2' }));
     } else {
@@ -52,7 +60,7 @@ const Header = () => {
     dispatch(battleActions.drawCard({ player: newPlayer }));
     dispatch(battleActions.massTurnCards({ player: newPlayer }));
     dispatch(battleActions.changePlayer({ newPlayer }));
-    temporarySpells.forEach((spell) => sendCardFromField(spell, 'grave'));
+    [...turnSpells, ...temporarySpells].forEach((spell) => sendCardFromField(spell, 'grave'));
   };
 
   const handlePointsClick = (player) => {

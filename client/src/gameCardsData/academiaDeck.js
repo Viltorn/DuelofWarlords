@@ -37,67 +37,67 @@ export const types = ['beforeturn', 'afterplay', 'protection', 'afterdeath'];
 
 const academiaDeck = [
   {
-    name: 'Living wall', type: 'warrior', subtype: 'fighter', power: 2, currentP: 2, health: 5, currentHP: 5, cost: 2, description: 'БОЕЦ. Не может передвигаться и атаковать в свой ход', id: _.uniqueId(), features: { immobile: true, unarmed: true }, attachments: [], img: LivingWall, status: 'hand', turn: 1,
+    name: 'Living wall', type: 'warrior', subtype: 'fighter', power: 2, currentP: 2, health: 5, currentHP: 5, cost: 2, description: 'БОЕЦ. Не может передвигаться и атаковать в свой ход', id: _.uniqueId(), features: [{ name: 'immobile' }, { name: 'unarmed' }], attachments: [], img: LivingWall, status: 'hand', turn: 1,
   },
   {
-    name: 'Mage apprentice', type: 'warrior', subtype: 'shooter', power: 2, currentP: 2, health: 4, currentHP: 4, cost: 3, description: 'СТРЕЛОК. Может атаковать любого воина на поле', id: _.uniqueId(), features: { massAttack: true }, attachments: [], img: MageApprentice, status: 'hand', turn: 1,
+    name: 'Mage apprentice', type: 'warrior', subtype: 'shooter', power: 2, currentP: 2, health: 4, currentHP: 4, cost: 3, description: 'СТРЕЛОК. Может атаковать любого воина на поле', id: _.uniqueId(), features: [{ name: 'massAttack' }], attachments: [], img: MageApprentice, status: 'hand', turn: 1,
   },
   {
-    name: 'Mage apprentice', type: 'warrior', subtype: 'shooter', power: 2, currentP: 2, health: 4, currentHP: 4, cost: 3, description: 'СТРЕЛОК. Может атаковать любого воина на поле', id: _.uniqueId(), features: { massAttack: true }, attachments: [], img: MageApprentice, status: 'hand', turn: 1,
+    name: 'Mage apprentice', type: 'warrior', subtype: 'shooter', power: 2, currentP: 2, health: 4, currentHP: 4, cost: 3, description: 'СТРЕЛОК. Может атаковать любого воина на поле', id: _.uniqueId(), features: [{ name: 'massAttack' }], attachments: [], img: MageApprentice, status: 'hand', turn: 1,
   },
   {
-    name: 'Gremlin shooter', type: 'warrior', subtype: 'shooter', power: 2, currentP: 2, health: 3, currentHP: 3, cost: 2, description: 'СТРЕЛОК. Имеет ответный удар стрелкам силой 1', id: _.uniqueId(), features: {}, attachments: [], img: GremlinShooter, status: 'hand', turn: 1,
+    name: 'Gremlin shooter', type: 'warrior', subtype: 'shooter', power: 2, currentP: 2, health: 3, currentHP: 3, cost: 2, description: 'СТРЕЛОК. Имеет ответный удар стрелкам силой 1', id: _.uniqueId(), features: [], attachments: [], img: GremlinShooter, status: 'hand', turn: 1,
   },
   {
-    name: 'Ice element', type: 'warrior', subtype: 'shooter', power: 2, currentP: 2, health: 4, currentHP: 4, cost: 3, description: 'СТРЕЛОК. Воин убивающий Элемент льда базовой атакой, получает ОГЛУШЕНИЕ после этой атаки.', id: _.uniqueId(), features: {}, attachments: [], img: IceElemental, status: 'hand', turn: 1,
+    name: 'Ice element', type: 'warrior', subtype: 'shooter', power: 2, currentP: 2, health: 4, currentHP: 4, cost: 3, description: 'СТРЕЛОК. Воин убивающий Элемент льда базовой атакой, получает ОГЛУШЕНИЕ после этой атаки.', id: _.uniqueId(), features: [], attachments: [], img: IceElemental, status: 'hand', turn: 1,
   },
   {
-    name: 'Ice element', type: 'warrior', subtype: 'shooter', power: 2, currentP: 2, health: 4, currentHP: 4, cost: 3, description: 'СТРЕЛОК. Воин убивающий Элемент льда базовой атакой, получает ОГЛУШЕНИЕ после этой атаки.', id: _.uniqueId(), features: {}, attachments: [], img: IceElemental, status: 'hand', turn: 1,
+    name: 'Ice element', type: 'warrior', subtype: 'shooter', power: 2, currentP: 2, health: 4, currentHP: 4, cost: 3, description: 'СТРЕЛОК. Воин убивающий Элемент льда базовой атакой, получает ОГЛУШЕНИЕ после этой атаки.', id: _.uniqueId(), features: [], attachments: [], img: IceElemental, status: 'hand', turn: 1,
   },
   {
-    name: 'Earth golem', type: 'warrior', subtype: 'fighter', power: 2, currentP: 2, health: 4, currentHP: 4, cost: 2, description: 'БОЕЦ. При входе в игру, вылечить 1 здоровье у прилегающих воинов.', id: _.uniqueId(), features: {}, attachments: [], img: EarthGolem, status: 'hand', turn: 1,
+    name: 'Earth golem', type: 'warrior', subtype: 'fighter', power: 2, currentP: 2, health: 4, currentHP: 4, cost: 2, description: 'БОЕЦ. При входе в игру, вылечить 1 здоровье у прилегающих воинов.', id: _.uniqueId(), features: [], attachments: [], img: EarthGolem, status: 'hand', turn: 1,
   },
   {
-    name: 'Earth golem', type: 'warrior', subtype: 'fighter', power: 2, currentP: 2, health: 4, currentHP: 4, cost: 2, description: 'БОЕЦ. При входе в игру, вылечить 1 здоровье у прилегающих воинов.', id: _.uniqueId(), features: {}, attachments: [], img: EarthGolem, status: 'hand', turn: 1,
+    name: 'Earth golem', type: 'warrior', subtype: 'fighter', power: 2, currentP: 2, health: 4, currentHP: 4, cost: 2, description: 'БОЕЦ. При входе в игру, вылечить 1 здоровье у прилегающих воинов.', id: _.uniqueId(), features: [], attachments: [], img: EarthGolem, status: 'hand', turn: 1,
   },
   {
-    name: 'Gargoyle', type: 'warrior', subtype: 'flyer', power: 2, currentP: 2, health: 4, currentHP: 4, cost: 2, description: 'Когда Бойцы в свой ход атакуют Гаргулью силой атаки более 1, урон от этих атак снижается на 1 единицу', id: _.uniqueId(), features: {}, attachments: [], img: Gargoyle, status: 'hand', turn: 1,
+    name: 'Gargoyle', type: 'warrior', subtype: 'flyer', power: 2, currentP: 2, health: 4, currentHP: 4, cost: 2, description: 'Когда Бойцы в свой ход атакуют Гаргулью силой атаки более 1, урон от этих атак снижается на 1 единицу', id: _.uniqueId(), features: [], attachments: [], img: Gargoyle, status: 'hand', turn: 1,
   },
   {
-    name: 'Gargoyle', type: 'warrior', subtype: 'flyer', power: 2, currentP: 2, health: 4, currentHP: 4, cost: 2, description: 'Когда Бойцы в свой ход атакуют Гаргулью силой атаки более 1, урон от этих атак снижается на 1 единицу', id: _.uniqueId(), features: {}, attachments: [], img: Gargoyle, status: 'hand', turn: 1,
+    name: 'Gargoyle', type: 'warrior', subtype: 'flyer', power: 2, currentP: 2, health: 4, currentHP: 4, cost: 2, description: 'Когда Бойцы в свой ход атакуют Гаргулью силой атаки более 1, урон от этих атак снижается на 1 единицу', id: _.uniqueId(), features: [], attachments: [], img: Gargoyle, status: 'hand', turn: 1,
   },
   {
-    name: 'Fire golem', type: 'warrior', subtype: 'fighter', power: 3, currentP: 3, health: 6, currentHP: 6, cost: 4, description: 'БОЕЦ. Перед смертью отнимает 1 здоровье у всех воинов в шеренге в которой он находился', id: _.uniqueId(), features: {}, attachments: [], img: FireGolem, status: 'hand', turn: 1,
+    name: 'Fire golem', type: 'warrior', subtype: 'fighter', power: 3, currentP: 3, health: 6, currentHP: 6, cost: 4, description: 'БОЕЦ. Перед смертью отнимает 1 здоровье у всех воинов в шеренге в которой он находился', id: _.uniqueId(), features: [], attachments: [], img: FireGolem, status: 'hand', turn: 1,
   },
   {
-    name: 'Fire golem', type: 'warrior', subtype: 'fighter', power: 3, currentP: 3, health: 6, currentHP: 6, cost: 4, description: 'БОЕЦ. Перед смертью отнимает 1 здоровье у всех воинов в шеренге в которой он находился', id: _.uniqueId(), features: {}, attachments: [], img: FireGolem, status: 'hand', turn: 1,
+    name: 'Fire golem', type: 'warrior', subtype: 'fighter', power: 3, currentP: 3, health: 6, currentHP: 6, cost: 4, description: 'БОЕЦ. Перед смертью отнимает 1 здоровье у всех воинов в шеренге в которой он находился', id: _.uniqueId(), features: [], attachments: [], img: FireGolem, status: 'hand', turn: 1,
   },
   {
-    name: 'Rakshasa', type: 'warrior', subtype: 'fighter', power: 2, currentP: 2, health: 6, currentHP: 6, cost: 3, description: 'Имеет УВОРОТ.', id: _.uniqueId(), features: {}, attachments: [], img: Rakshasa, status: 'hand', turn: 1,
+    name: 'Rakshasa', type: 'warrior', subtype: 'fighter', power: 2, currentP: 2, health: 6, currentHP: 6, cost: 3, description: 'Имеет УВОРОТ.', id: _.uniqueId(), features: [], attachments: [], img: Rakshasa, status: 'hand', turn: 1,
   },
   {
-    name: 'Rakshasa', type: 'warrior', subtype: 'fighter', power: 2, currentP: 2, health: 6, currentHP: 6, cost: 3, description: 'Имеет УВОРОТ.', id: _.uniqueId(), features: {}, attachments: [], img: Rakshasa, status: 'hand', turn: 1,
+    name: 'Rakshasa', type: 'warrior', subtype: 'fighter', power: 2, currentP: 2, health: 6, currentHP: 6, cost: 3, description: 'Имеет УВОРОТ.', id: _.uniqueId(), features: [], attachments: [], img: Rakshasa, status: 'hand', turn: 1,
   },
   {
-    name: 'Young genie', type: 'warrior', subtype: 'flyer', power: 3, currentP: 3, health: 4, currentHP: 4, cost: 3, description: 'ЛЕТАЮЩИЙ. Когда входит в игру, может переместить вражеского воина на поле на прилегающую клетку', id: _.uniqueId(), features: {}, attachments: [], img: YoungGenie, status: 'hand', turn: 1,
+    name: 'Young genie', type: 'warrior', subtype: 'flyer', power: 3, currentP: 3, health: 4, currentHP: 4, cost: 3, description: 'ЛЕТАЮЩИЙ. Когда входит в игру, может переместить вражеского воина на поле на прилегающую клетку', id: _.uniqueId(), features: [], attachments: [], img: YoungGenie, status: 'hand', turn: 1,
   },
   {
-    name: 'Young genie', type: 'warrior', subtype: 'flyer', power: 3, currentP: 3, health: 4, currentHP: 4, cost: 3, description: 'ЛЕТАЮЩИЙ. Когда входит в игру, может переместить вражеского воина на поле на прилегающую клетку', id: _.uniqueId(), features: {}, attachments: [], img: YoungGenie, status: 'hand', turn: 1,
+    name: 'Young genie', type: 'warrior', subtype: 'flyer', power: 3, currentP: 3, health: 4, currentHP: 4, cost: 3, description: 'ЛЕТАЮЩИЙ. Когда входит в игру, может переместить вражеского воина на поле на прилегающую клетку', id: _.uniqueId(), features: [], attachments: [], img: YoungGenie, status: 'hand', turn: 1,
   },
   {
-    name: 'Young genie', type: 'warrior', subtype: 'flyer', power: 3, currentP: 3, health: 4, currentHP: 4, cost: 3, description: 'ЛЕТАЮЩИЙ. Когда входит в игру, может переместить вражеского воина на поле на прилегающую клетку', id: _.uniqueId(), features: {}, attachments: [], img: YoungGenie, status: 'hand', turn: 1,
+    name: 'Young genie', type: 'warrior', subtype: 'flyer', power: 3, currentP: 3, health: 4, currentHP: 4, cost: 3, description: 'ЛЕТАЮЩИЙ. Когда входит в игру, может переместить вражеского воина на поле на прилегающую клетку', id: _.uniqueId(), features: [], attachments: [], img: YoungGenie, status: 'hand', turn: 1,
   },
   {
-    name: 'Energy elemental', type: 'warrior', subtype: 'shooter', power: 2, currentP: 2, health: 5, currentHP: 5, cost: 4, description: 'СТРЕЛОК. При атаке в свой ход по воину, отнимает 2 здоровья у другого вражеского воина в шеренге', id: _.uniqueId(), features: {}, attachments: [], img: EnergyElemental, status: 'hand', turn: 1,
+    name: 'Energy elemental', type: 'warrior', subtype: 'shooter', power: 2, currentP: 2, health: 5, currentHP: 5, cost: 4, description: 'СТРЕЛОК. При атаке в свой ход по воину, отнимает 2 здоровья у другого вражеского воина в шеренге', id: _.uniqueId(), features: [], attachments: [], img: EnergyElemental, status: 'hand', turn: 1,
   },
   {
-    name: 'Energy elemental', type: 'warrior', subtype: 'shooter', power: 2, currentP: 2, health: 5, currentHP: 5, cost: 4, description: 'СТРЕЛОК. При атаке в свой ход по воину, отнимает 2 здоровья у другого вражеского воина в шеренге', id: _.uniqueId(), features: {}, attachments: [], img: EnergyElemental, status: 'hand', turn: 1,
+    name: 'Energy elemental', type: 'warrior', subtype: 'shooter', power: 2, currentP: 2, health: 5, currentHP: 5, cost: 4, description: 'СТРЕЛОК. При атаке в свой ход по воину, отнимает 2 здоровья у другого вражеского воина в шеренге', id: _.uniqueId(), features: [], attachments: [], img: EnergyElemental, status: 'hand', turn: 1,
   },
   {
-    name: 'Ice giant', type: 'warrior', subtype: 'fighter', power: 4, currentP: 4, health: 8, currentHP: 8, cost: 6, description: 'БОЕЦ. При входе в игру оглушает всех вражеских воинов в шеренге', id: _.uniqueId(), features: {}, attachments: [], img: IceGiant, status: 'hand', turn: 1,
+    name: 'Ice giant', type: 'warrior', subtype: 'fighter', power: 4, currentP: 4, health: 8, currentHP: 8, cost: 6, description: 'БОЕЦ. При входе в игру оглушает всех вражеских воинов в шеренге', id: _.uniqueId(), features: [], attachments: [], img: IceGiant, status: 'hand', turn: 1,
   },
   {
-    name: 'Ice giant', type: 'warrior', subtype: 'fighter', power: 4, currentP: 4, health: 8, currentHP: 8, cost: 6, description: 'БОЕЦ. При входе в игру оглушает всех вражеских воинов в шеренге', id: _.uniqueId(), features: {}, attachments: [], img: IceGiant, status: 'hand', turn: 1,
+    name: 'Ice giant', type: 'warrior', subtype: 'fighter', power: 4, currentP: 4, health: 8, currentHP: 8, cost: 6, description: 'БОЕЦ. При входе в игру оглушает всех вражеских воинов в шеренге', id: _.uniqueId(), features: [], attachments: [], img: IceGiant, status: 'hand', turn: 1,
   },
   {
     name: 'Arcane armor',
@@ -108,7 +108,7 @@ const academiaDeck = [
     id: _.uniqueId(),
     place: 'postponed',
     features: [{
-      attach: true, aim: ['field', 'warrior', 'hero'], type: 'good', protectAim: ['warrior'], name: 'protection', value: 100, charges: 1, condition: 'minPower', conditionValue: 3,
+      attach: ['field', 'warrior', 'hero'], aim: ['warrior'], type: 'good', name: 'protection', value: { type: 'number', val: 100 }, charges: 1, condition: 'minPower', conditionValue: 3,
     }],
     img: ArcaneArmor,
     status: 'hand',
@@ -142,7 +142,7 @@ const academiaDeck = [
     place: 'warrior',
     features: [
       {
-        attach: true,
+        attach: ['warrior'],
         aim: ['warrior'],
         type: 'bad',
         condition: 'onattack',
@@ -163,7 +163,7 @@ const academiaDeck = [
     place: 'warrior',
     features: [
       {
-        attach: true,
+        attach: ['warrior'],
         aim: ['warrior'],
         type: 'bad',
         name: 'power',
@@ -182,10 +182,10 @@ const academiaDeck = [
     id: _.uniqueId(),
     place: 'postponed',
     features: [{
-      attach: true, aim: ['field', 'warrior'], name: 'return', condition: 'onplay', type: 'bad', charges: 1,
+      attach: ['field', 'warrior'], aim: ['warrior'], name: 'return', condition: 'onplay', type: 'bad', charges: 1,
     },
     {
-      attach: true, aim: ['field', 'warrior'], name: 'return', condition: 'onmove', type: 'bad', charges: 1,
+      attach: ['field', 'warrior'], aim: ['warrior'], name: 'return', condition: 'onmove', type: 'bad', charges: 1,
     }],
     img: FrostTrap,
     status: 'hand',
@@ -200,12 +200,12 @@ const academiaDeck = [
     place: 'warrior',
     features: [
       {
-        attach: true,
+        attach: ['hero'],
         aim: ['hero'],
         type: 'good',
-        protectAim: ['hero', 'warrior', 'spell'],
+        spellAim: ['hero', 'warrior', 'spell'],
         name: 'protection',
-        value: 100,
+        value: { type: 'number', val: 100 },
       },
     ],
     img: IceBlock,
@@ -235,9 +235,9 @@ const academiaDeck = [
     place: 'midSpell',
     features: [
       {
-        attach: true,
+        attach: ['row', 'warrior'],
         type: 'all',
-        aim: ['row', 'warrior', 'fighter', 'shooter'],
+        aim: ['warrior', 'fighter', 'shooter'],
         name: 'unarmed',
       }],
     img: IceWall,
@@ -252,7 +252,7 @@ const academiaDeck = [
     id: _.uniqueId(),
     place: 'warrior',
     features: [{
-      attach: true,
+      attach: ['warrior'],
       aim: ['warrior'],
       type: 'good',
       name: 'power',
@@ -271,14 +271,14 @@ const academiaDeck = [
     place: 'midSpell',
     features: [
       {
-        attach: true,
-        aim: ['row', 'fighter', 'shooter', 'flyer'],
+        attach: ['row', 'warrior'],
+        aim: ['fighter', 'shooter', 'flyer'],
         type: 'all',
         name: 'immobile',
       },
       {
-        attach: true,
-        aim: ['row', 'fighter', 'shooter', 'flyer'],
+        attach: ['row', 'warrior'],
+        aim: ['fighter', 'shooter', 'flyer'],
         type: 'all',
         name: 'unarmed',
       }],
@@ -294,7 +294,7 @@ const academiaDeck = [
     id: _.uniqueId(),
     place: 'warrior',
     features: [{
-      attach: true,
+      attach: ['warrior'],
       aim: ['warrior'],
       type: 'good',
       name: 'invisible',
@@ -325,7 +325,7 @@ const academiaDeck = [
     id: _.uniqueId(),
     place: 'warrior',
     features: [{
-      attach: true, type: 'good', aim: ['warrior'], name: 'moving',
+      attach: ['warrior'], type: 'good', aim: ['warrior'], name: 'moving',
     }],
     img: Teleport,
     status: 'hand',
@@ -369,7 +369,7 @@ const academiaDeck = [
     id: _.uniqueId(),
     place: '',
     features: [{
-      attach: false, type: 'all', aim: ['field', 'warrior', 'fighter', 'shooter'], name: 'attack', value: 7, depend: 'postponed',
+      attach: false, type: 'all', aim: ['field', 'warrior', 'fighter', 'shooter'], name: 'attack', value: 7, depend: 'postponed', dependValue: 8,
     }],
     img: Tsunami,
     status: 'hand',
@@ -383,7 +383,7 @@ const academiaDeck = [
     id: _.uniqueId(),
     place: 'bigSpell',
     features: [{
-      attach: true, aim: ['field', 'warrior', 'fighter', 'shooter', 'flyer'], type: 'all', name: 'unarmed', condition: 'maxPower', conditionValue: 2,
+      attach: ['field', 'warrior'], aim: ['warrior', 'fighter', 'shooter', 'flyer'], type: 'all', name: 'unarmed', condition: 'maxPower', conditionValue: 2,
     }],
     img: Waterfall,
     status: 'hand',
@@ -413,12 +413,11 @@ const academiaDeck = [
     id: _.uniqueId(),
     place: 'warrior',
     features: [{
-      attach: true,
-      aim: ['warrior', 'hero'],
-      protectAim: ['hero', 'warrior', 'spell'],
+      attach: ['warrior', 'hero'],
+      aim: ['warrior', 'hero', 'spell'],
       type: 'good',
       name: 'protection',
-      value: 1,
+      value: { type: 'number', val: 1 },
     }],
     img: IceArmor,
     status: 'hand',

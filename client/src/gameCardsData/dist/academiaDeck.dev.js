@@ -85,10 +85,11 @@ var academiaDeck = [{
   cost: 2,
   description: 'БОЕЦ. Не может передвигаться и атаковать в свой ход',
   id: _lodash["default"].uniqueId(),
-  features: {
-    immobile: true,
-    unarmed: true
-  },
+  features: [{
+    name: 'immobile'
+  }, {
+    name: 'unarmed'
+  }],
   attachments: [],
   img: _LivingWall["default"],
   status: 'hand',
@@ -104,9 +105,9 @@ var academiaDeck = [{
   cost: 3,
   description: 'СТРЕЛОК. Может атаковать любого воина на поле',
   id: _lodash["default"].uniqueId(),
-  features: {
-    massAttack: true
-  },
+  features: [{
+    name: 'massAttack'
+  }],
   attachments: [],
   img: _MageApprentice["default"],
   status: 'hand',
@@ -122,9 +123,9 @@ var academiaDeck = [{
   cost: 3,
   description: 'СТРЕЛОК. Может атаковать любого воина на поле',
   id: _lodash["default"].uniqueId(),
-  features: {
-    massAttack: true
-  },
+  features: [{
+    name: 'massAttack'
+  }],
   attachments: [],
   img: _MageApprentice["default"],
   status: 'hand',
@@ -140,7 +141,7 @@ var academiaDeck = [{
   cost: 2,
   description: 'СТРЕЛОК. Имеет ответный удар стрелкам силой 1',
   id: _lodash["default"].uniqueId(),
-  features: {},
+  features: [],
   attachments: [],
   img: _GremlinShooter["default"],
   status: 'hand',
@@ -156,7 +157,7 @@ var academiaDeck = [{
   cost: 3,
   description: 'СТРЕЛОК. Воин убивающий Элемент льда базовой атакой, получает ОГЛУШЕНИЕ после этой атаки.',
   id: _lodash["default"].uniqueId(),
-  features: {},
+  features: [],
   attachments: [],
   img: _IceElemental["default"],
   status: 'hand',
@@ -172,7 +173,7 @@ var academiaDeck = [{
   cost: 3,
   description: 'СТРЕЛОК. Воин убивающий Элемент льда базовой атакой, получает ОГЛУШЕНИЕ после этой атаки.',
   id: _lodash["default"].uniqueId(),
-  features: {},
+  features: [],
   attachments: [],
   img: _IceElemental["default"],
   status: 'hand',
@@ -188,7 +189,7 @@ var academiaDeck = [{
   cost: 2,
   description: 'БОЕЦ. При входе в игру, вылечить 1 здоровье у прилегающих воинов.',
   id: _lodash["default"].uniqueId(),
-  features: {},
+  features: [],
   attachments: [],
   img: _EarthGolem["default"],
   status: 'hand',
@@ -204,7 +205,7 @@ var academiaDeck = [{
   cost: 2,
   description: 'БОЕЦ. При входе в игру, вылечить 1 здоровье у прилегающих воинов.',
   id: _lodash["default"].uniqueId(),
-  features: {},
+  features: [],
   attachments: [],
   img: _EarthGolem["default"],
   status: 'hand',
@@ -220,7 +221,7 @@ var academiaDeck = [{
   cost: 2,
   description: 'Когда Бойцы в свой ход атакуют Гаргулью силой атаки более 1, урон от этих атак снижается на 1 единицу',
   id: _lodash["default"].uniqueId(),
-  features: {},
+  features: [],
   attachments: [],
   img: _Gargoyle["default"],
   status: 'hand',
@@ -236,7 +237,7 @@ var academiaDeck = [{
   cost: 2,
   description: 'Когда Бойцы в свой ход атакуют Гаргулью силой атаки более 1, урон от этих атак снижается на 1 единицу',
   id: _lodash["default"].uniqueId(),
-  features: {},
+  features: [],
   attachments: [],
   img: _Gargoyle["default"],
   status: 'hand',
@@ -252,7 +253,7 @@ var academiaDeck = [{
   cost: 4,
   description: 'БОЕЦ. Перед смертью отнимает 1 здоровье у всех воинов в шеренге в которой он находился',
   id: _lodash["default"].uniqueId(),
-  features: {},
+  features: [],
   attachments: [],
   img: _FireGolem["default"],
   status: 'hand',
@@ -268,7 +269,7 @@ var academiaDeck = [{
   cost: 4,
   description: 'БОЕЦ. Перед смертью отнимает 1 здоровье у всех воинов в шеренге в которой он находился',
   id: _lodash["default"].uniqueId(),
-  features: {},
+  features: [],
   attachments: [],
   img: _FireGolem["default"],
   status: 'hand',
@@ -284,7 +285,7 @@ var academiaDeck = [{
   cost: 3,
   description: 'Имеет УВОРОТ.',
   id: _lodash["default"].uniqueId(),
-  features: {},
+  features: [],
   attachments: [],
   img: _Rakshasa["default"],
   status: 'hand',
@@ -300,7 +301,7 @@ var academiaDeck = [{
   cost: 3,
   description: 'Имеет УВОРОТ.',
   id: _lodash["default"].uniqueId(),
-  features: {},
+  features: [],
   attachments: [],
   img: _Rakshasa["default"],
   status: 'hand',
@@ -316,7 +317,7 @@ var academiaDeck = [{
   cost: 3,
   description: 'ЛЕТАЮЩИЙ. Когда входит в игру, может переместить вражеского воина на поле на прилегающую клетку',
   id: _lodash["default"].uniqueId(),
-  features: {},
+  features: [],
   attachments: [],
   img: _YoungGenie["default"],
   status: 'hand',
@@ -332,7 +333,7 @@ var academiaDeck = [{
   cost: 3,
   description: 'ЛЕТАЮЩИЙ. Когда входит в игру, может переместить вражеского воина на поле на прилегающую клетку',
   id: _lodash["default"].uniqueId(),
-  features: {},
+  features: [],
   attachments: [],
   img: _YoungGenie["default"],
   status: 'hand',
@@ -348,7 +349,7 @@ var academiaDeck = [{
   cost: 3,
   description: 'ЛЕТАЮЩИЙ. Когда входит в игру, может переместить вражеского воина на поле на прилегающую клетку',
   id: _lodash["default"].uniqueId(),
-  features: {},
+  features: [],
   attachments: [],
   img: _YoungGenie["default"],
   status: 'hand',
@@ -364,7 +365,7 @@ var academiaDeck = [{
   cost: 4,
   description: 'СТРЕЛОК. При атаке в свой ход по воину, отнимает 2 здоровья у другого вражеского воина в шеренге',
   id: _lodash["default"].uniqueId(),
-  features: {},
+  features: [],
   attachments: [],
   img: _EnergyElemental["default"],
   status: 'hand',
@@ -380,7 +381,7 @@ var academiaDeck = [{
   cost: 4,
   description: 'СТРЕЛОК. При атаке в свой ход по воину, отнимает 2 здоровья у другого вражеского воина в шеренге',
   id: _lodash["default"].uniqueId(),
-  features: {},
+  features: [],
   attachments: [],
   img: _EnergyElemental["default"],
   status: 'hand',
@@ -396,7 +397,7 @@ var academiaDeck = [{
   cost: 6,
   description: 'БОЕЦ. При входе в игру оглушает всех вражеских воинов в шеренге',
   id: _lodash["default"].uniqueId(),
-  features: {},
+  features: [],
   attachments: [],
   img: _IceGiant["default"],
   status: 'hand',
@@ -412,7 +413,7 @@ var academiaDeck = [{
   cost: 6,
   description: 'БОЕЦ. При входе в игру оглушает всех вражеских воинов в шеренге',
   id: _lodash["default"].uniqueId(),
-  features: {},
+  features: [],
   attachments: [],
   img: _IceGiant["default"],
   status: 'hand',
@@ -426,12 +427,14 @@ var academiaDeck = [{
   id: _lodash["default"].uniqueId(),
   place: 'postponed',
   features: [{
-    attach: true,
-    aim: ['field', 'warrior', 'hero'],
+    attach: ['field', 'warrior', 'hero'],
+    aim: ['warrior'],
     type: 'good',
-    protectAim: ['warrior'],
     name: 'protection',
-    value: 100,
+    value: {
+      type: 'number',
+      val: 100
+    },
     charges: 1,
     condition: 'minPower',
     conditionValue: 3
@@ -471,7 +474,7 @@ var academiaDeck = [{
   id: _lodash["default"].uniqueId(),
   place: 'warrior',
   features: [{
-    attach: true,
+    attach: ['warrior'],
     aim: ['warrior'],
     type: 'bad',
     condition: 'onattack',
@@ -489,7 +492,7 @@ var academiaDeck = [{
   id: _lodash["default"].uniqueId(),
   place: 'warrior',
   features: [{
-    attach: true,
+    attach: ['warrior'],
     aim: ['warrior'],
     type: 'bad',
     name: 'power',
@@ -506,15 +509,15 @@ var academiaDeck = [{
   id: _lodash["default"].uniqueId(),
   place: 'postponed',
   features: [{
-    attach: true,
-    aim: ['field', 'warrior'],
+    attach: ['field', 'warrior'],
+    aim: ['warrior'],
     name: 'return',
     condition: 'onplay',
     type: 'bad',
     charges: 1
   }, {
-    attach: true,
-    aim: ['field', 'warrior'],
+    attach: ['field', 'warrior'],
+    aim: ['warrior'],
     name: 'return',
     condition: 'onmove',
     type: 'bad',
@@ -531,12 +534,15 @@ var academiaDeck = [{
   id: _lodash["default"].uniqueId(),
   place: 'warrior',
   features: [{
-    attach: true,
+    attach: ['hero'],
     aim: ['hero'],
     type: 'good',
-    protectAim: ['hero', 'warrior', 'spell'],
+    spellAim: ['hero', 'warrior', 'spell'],
     name: 'protection',
-    value: 100
+    value: {
+      type: 'number',
+      val: 100
+    }
   }],
   img: _IceBlock["default"],
   status: 'hand'
@@ -566,9 +572,9 @@ var academiaDeck = [{
   id: _lodash["default"].uniqueId(),
   place: 'midSpell',
   features: [{
-    attach: true,
+    attach: ['row', 'warrior'],
     type: 'all',
-    aim: ['row', 'warrior', 'fighter', 'shooter'],
+    aim: ['warrior', 'fighter', 'shooter'],
     name: 'unarmed'
   }],
   img: _IceWall["default"],
@@ -582,7 +588,7 @@ var academiaDeck = [{
   id: _lodash["default"].uniqueId(),
   place: 'warrior',
   features: [{
-    attach: true,
+    attach: ['warrior'],
     aim: ['warrior'],
     type: 'good',
     name: 'power',
@@ -599,13 +605,13 @@ var academiaDeck = [{
   id: _lodash["default"].uniqueId(),
   place: 'midSpell',
   features: [{
-    attach: true,
-    aim: ['row', 'fighter', 'shooter', 'flyer'],
+    attach: ['row', 'warrior'],
+    aim: ['fighter', 'shooter', 'flyer'],
     type: 'all',
     name: 'immobile'
   }, {
-    attach: true,
-    aim: ['row', 'fighter', 'shooter', 'flyer'],
+    attach: ['row', 'warrior'],
+    aim: ['fighter', 'shooter', 'flyer'],
     type: 'all',
     name: 'unarmed'
   }],
@@ -620,7 +626,7 @@ var academiaDeck = [{
   id: _lodash["default"].uniqueId(),
   place: 'warrior',
   features: [{
-    attach: true,
+    attach: ['warrior'],
     aim: ['warrior'],
     type: 'good',
     name: 'invisible'
@@ -653,7 +659,7 @@ var academiaDeck = [{
   id: _lodash["default"].uniqueId(),
   place: 'warrior',
   features: [{
-    attach: true,
+    attach: ['warrior'],
     type: 'good',
     aim: ['warrior'],
     name: 'moving'
@@ -711,7 +717,8 @@ var academiaDeck = [{
     aim: ['field', 'warrior', 'fighter', 'shooter'],
     name: 'attack',
     value: 7,
-    depend: 'postponed'
+    depend: 'postponed',
+    dependValue: 8
   }],
   img: _Tsunami["default"],
   status: 'hand'
@@ -724,8 +731,8 @@ var academiaDeck = [{
   id: _lodash["default"].uniqueId(),
   place: 'bigSpell',
   features: [{
-    attach: true,
-    aim: ['field', 'warrior', 'fighter', 'shooter', 'flyer'],
+    attach: ['field', 'warrior'],
+    aim: ['warrior', 'fighter', 'shooter', 'flyer'],
     type: 'all',
     name: 'unarmed',
     condition: 'maxPower',
@@ -764,12 +771,14 @@ var academiaDeck = [{
   id: _lodash["default"].uniqueId(),
   place: 'warrior',
   features: [{
-    attach: true,
-    aim: ['warrior', 'hero'],
-    protectAim: ['hero', 'warrior', 'spell'],
+    attach: ['warrior', 'hero'],
+    aim: ['warrior', 'hero', 'spell'],
     type: 'good',
     name: 'protection',
-    value: 1
+    value: {
+      type: 'number',
+      val: 1
+    }
   }],
   img: _IceArmor["default"],
   status: 'hand'
