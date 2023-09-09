@@ -43,6 +43,7 @@ const Cell = ({ props, id }) => {
   useEffect(() => {
     if (cardType === 'warrior') {
       const warrior = currentCell.content.find((item) => item.type === 'warrior');
+      console.log(warrior);
       if (type === 'field' && warrior && cardSource === 'field') {
         const onMoveSpells = findTriggerSpells(warrior, currentCell, 'onmove', 'warrior');
         onMoveSpells.forEach((spell) => makeFeatureCast(spell, currentCell, warrior));
@@ -75,24 +76,28 @@ const Cell = ({ props, id }) => {
         dispatch(battleActions.setPlayerPoints({ points: newPoints, player: thisPlayer }));
       }
       handleAnimation(activeCard, 'delete');
-      dispatch(battleActions.addFieldContent({ activeCard, id }));
       deleteCardfromSource(activeCard);
+      dispatch(battleActions.addFieldContent({ activeCard, id }));
       dispatch(battleActions.deleteActiveCard({ player: thisPlayer }));
       moveAttachedSpells(activeCard, id, 'move');
       setContLength((prev) => prev + 1);
       setCardSource(activeCard.status);
       setCardType(activeCard.type);
-      if (activeCard.type === 'warrior' && activeCard.status === 'field') {
-        const movingAttachment = activeCard.attachments.find((feature) => feature.name === 'moving');
-        const hasSwift = activeCard.features.swift
-          || activeCard.attachments.find((feature) => feature.name === 'swift');
-        if (!hasSwift && activeCard.player === thisPlayer && !movingAttachment) {
-          dispatch(battleActions.turnCardLeft({
-            cardId: activeCard.id,
-            cellId: id,
-            qty: 1,
-          }));
+      if (activeCard.type === 'warrior') {
+        if (activeCard.status === 'field') {
+          const movingAttachment = activeCard.attachments.find((feature) => feature.name === 'moving');
+          const hasSwift = activeCard.features.find((feat) => feat.name === 'swift')
+            || activeCard.attachments.find((feature) => feature.name === 'swift');
+          if (!hasSwift && activeCard.player === thisPlayer && !movingAttachment) {
+            dispatch(battleActions.turnCardLeft({
+              cardId: activeCard.id,
+              cellId: id,
+              qty: 1,
+            }));
+          }
         }
+        const attachSpells = activeCard.features.filter((feat) => feat.attach);
+        attachSpells.forEach((spell) => makeFeatureAttach(spell, currentCell));
       }
       if (activeCard.type === 'spell') {
         activeCard.features

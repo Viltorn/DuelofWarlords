@@ -37,7 +37,7 @@ const ChangePoints = () => {
     },
     onSubmit: ({ points }) => {
       try {
-        dispatch(battleActions.setPlayerPoints({ points, player }));
+        dispatch(battleActions.setPlayerPoints({ points: parseInt(points, 10), player }));
         handleClose();
       } catch (err) {
         console.log(err);

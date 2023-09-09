@@ -1,6 +1,7 @@
 import { createContext, useEffect, useState } from 'react';
 import { useDispatch, useStore, useSelector } from 'react-redux';
 import { actions as battleActions } from '../slices/battleSlice.js';
+import warSubtypes from '../gameData/warriorsSubtypes.js';
 
 const FunctionContext = createContext({});
 
@@ -25,11 +26,12 @@ export const FunctionProvider = ({ children }) => {
     });
   });
 
+  const fontValue = `${window.innerWidth / 85}px`;
+  document.documentElement.style.setProperty('font-size', fontValue);
+
   useEffect(() => {
     const handleWindowResize = () => {
       setWindowWidth(window.innerWidth);
-      const value = `${window.innerWidth / 85}px`;
-      document.documentElement.style.setProperty('font-size', value);
     };
 
     window.addEventListener('resize', handleWindowResize);
@@ -46,7 +48,8 @@ export const FunctionProvider = ({ children }) => {
 
   const isAllowedCost = (checkCard) => {
     const newCost = currentPoints - checkCard.cost;
-    if ((checkCard.status === 'hand' && newCost >= 0) || checkCard.status !== 'hand') {
+    const fieldCard = checkCard.status !== 'hand' && checkCard.type !== 'hero';
+    if (((checkCard.status === 'hand' || checkCard.type === 'hero') && newCost >= 0) || fieldCard) {
       return true;
     }
     return false;
@@ -243,7 +246,7 @@ export const FunctionProvider = ({ children }) => {
 
   const checkMeetCondition = (attacking, protecting, spell, type) => {
     const { condition, conditionValue } = spell;
-    if (type === 'warrior') {
+    if (type === 'warrior' || warSubtypes.includes(type)) {
       if (condition && condition === 'minPower') {
         const attackingPower = getWarriorPower(attacking);
         const meetCondition = attackingPower >= conditionValue;
@@ -254,44 +257,60 @@ export const FunctionProvider = ({ children }) => {
         const meetCondition = attackingPower <= conditionValue;
         return meetCondition;
       }
-      if (condition && condition === 'candie') {
+      if (condition && condition === 'canDie') {
         const attackingPower = getWarriorPower(attacking);
         const { currentHP } = protecting;
         return currentHP - attackingPower <= 0;
+      }
+      if (condition && condition === 'nextRowCell') {
+        const protectCell = fieldCells.find((cell) => cell.id === protecting.cellId);
+        const curRowNumber = parseInt(protectCell.row, 10);
+        const currentline = protectCell.line;
+        const topRowNumber = (curRowNumber - 1).toString();
+        const bottomRowNumber = (curRowNumber + 1).toString();
+        const topRowCell = fieldCells.find((cell) => cell.row === topRowNumber
+            && cell.line === currentline && cell.content.length === 0);
+        const bottomRowCell = fieldCells.find((cell) => cell.row === bottomRowNumber
+            && cell.line === currentline && cell.content.length === 0);
+        return (topRowCell || bottomRowCell) && protecting.turn !== 2;
       }
     }
     return true;
   };
 
-  const handleAnimation = (activeCard, status) => {
-    if (status === 'delete') {
+  const handleAnimation = (activeCard, option) => {
+    if (option === 'delete') {
       dispatch(battleActions.deleteAnimation());
       setMoveCells([]);
       setAttackCells([]);
       setCastCells([]);
       return;
     }
-    if (!isAllowedCost(activeCard) || activeCard.player !== thisPlayer) {
+    if (!isAllowedCost(activeCard) || activeCard.player !== thisPlayer || activeCard.disabled) {
       return;
     }
 
+    const {
+      type, status, attachments, turn,
+    } = activeCard;
+
     const isCardPostponed = activeCard.cellId === 'postponed1' || activeCard.cellId === 'postponed2';
 
-    if (activeCard.type === 'warrior') {
+    if (type === 'warrior') {
       const currentCell = fieldCells.find((cell) => cell.id === activeCard.cellId);
-      const cardImmobileAttachment = activeCard.attachments.find((feature) => feature.name === 'immobile' && checkMeetCondition(activeCard, feature, 'warrior'));
+      const cardImmobileAttachment = attachments.find((feature) => feature.name === 'immobile' && checkMeetCondition(activeCard, feature, 'warrior'));
       const cellImmobileAttachment = currentCell?.attachments?.find((feature) => feature.name === 'immobile' && feature.aim.includes(activeCard.subtype) && checkMeetCondition(activeCard, feature, 'warrior'));
-      const movingAttachment = activeCard.attachments.find((feature) => feature.name === 'moving' && checkMeetCondition(activeCard, feature, 'warrior'));
+      const movingAttachment = attachments.find((feature) => feature.name === 'moving' && checkMeetCondition(activeCard, feature, 'warrior'));
       const canMove = (!cardImmobileAttachment && !activeCard.features.find((feature) => feature.name === 'immobile')
-        && activeCard.turn === 0 && !cellImmobileAttachment) || movingAttachment;
+        && turn === 0 && !cellImmobileAttachment) || movingAttachment;
       const cellUnarmedAttachment = currentCell?.attachments?.find((feature) => feature.name === 'unarmed' && feature.aim.includes(activeCard.subtype) && checkMeetCondition(activeCard, feature, 'warrior'));
-      const cardUnarmedAttachment = activeCard.attachments.find((feature) => feature.name === 'unarmed' && checkMeetCondition(activeCard, feature, 'warrior'));
-      const canAttack = !activeCard.features.find((feature) => feature.name === 'unarmed') && activeCard.turn === 0
+      const cardUnarmedAttachment = attachments.find((feature) => feature.name === 'unarmed' && checkMeetCondition(activeCard, feature, 'warrior'));
+      const canAttack = !activeCard.features.find((feature) => feature.name === 'unarmed') && turn === 0
         && !cardUnarmedAttachment && !cellUnarmedAttachment;
-      if (activeCard.status === 'hand' || isCardPostponed) {
+      if (status === 'hand' || isCardPostponed) {
         findFieldCells(activeCard);
       }
-      if (activeCard.status === 'field' && canMove) {
+      if (status === 'field' && canMove) {
         findFieldCells(activeCard);
       }
       if (canAttack) {
@@ -299,12 +318,12 @@ export const FunctionProvider = ({ children }) => {
       }
     }
 
-    if (activeCard.type === 'spell' && (activeCard.status === 'hand' || isCardPostponed)) {
+    if ((type === 'spell' && (status === 'hand' || isCardPostponed)) || type === 'hero') {
       findCellsForCast(activeCard);
     }
 
     const postponedCell = fieldCells.find((cell) => cell.type === 'postponed' && cell.player === thisPlayer);
-    if (activeCard.status === 'hand' && postponedCell.content.length === 0) {
+    if (status === 'hand' && postponedCell.content.length === 0) {
       dispatch(battleActions.addAnimation({ cell: postponedCell, type: 'green' }));
     }
   };
@@ -327,6 +346,9 @@ export const FunctionProvider = ({ children }) => {
     }
     if (cellId === 'postponed1' || cellId === 'postponed2') {
       dispatch(battleActions.turnPostponed({ player, status: 'cover' }));
+    }
+    if (card.type === 'warrior') {
+      dispatch(battleActions.deleteAttachment({ spellId: card.id }));
     }
   };
 
@@ -370,8 +392,8 @@ export const FunctionProvider = ({ children }) => {
           dispatch(battleActions.deleteAttachment({ spellId: item.id }));
           dispatch(battleActions.addToGraveyard({ card: item }));
         } else if (item.type === 'spell' && type === 'move') {
-          dispatch(battleActions.addFieldContent({ activeCard: item, id: endCellId }));
           deleteCardfromSource(item);
+          dispatch(battleActions.addFieldContent({ activeCard: item, id: endCellId }));
         } else if (item.type === 'spell' && type === 'return') {
           deleteCardfromSource(item);
           dispatch(battleActions.deleteAttachment({ spellId: item.id }));

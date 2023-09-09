@@ -118,10 +118,10 @@ const battleSlice = createSlice({
       const { player1Hero, player2Hero } = payload;
       state.fieldCells = state.fieldCells.map((cell) => {
         if (cell.id === 'hero1') {
-          cell.content = [{ ...player1Hero, cellId: 'hero1' }];
+          cell.content = [{ ...player1Hero, cellId: 'hero1', player: 'player1' }];
         }
         if (cell.id === 'hero2') {
-          cell.content = [{ ...player2Hero, cellId: 'hero2' }];
+          cell.content = [{ ...player2Hero, cellId: 'hero2', player: 'player2' }];
         }
         return cell;
       });

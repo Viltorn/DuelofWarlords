@@ -15,6 +15,10 @@ const ActiveCard = ({ activeCard, playerType }) => {
     'active-card_block-2': playerType === 'player2',
   });
   const { isOpened } = useSelector((state) => state.modalsReducer);
+  const { thisPlayer, playerPoints } = useSelector((state) => state.battleReducer);
+  const currentPoints = playerPoints.find((item) => item.player === thisPlayer).points;
+  const insteadatk = activeCard.features.find((feat) => feat.condition === 'insteadatk');
+  const leftPoints = insteadatk?.cost ? currentPoints - insteadatk.cost : 0;
 
   return (
     <div className={cardClasses}>
@@ -25,6 +29,9 @@ const ActiveCard = ({ activeCard, playerType }) => {
             <ActionButton card={activeCard} type="turnLeft" />
             <ActionButton card={activeCard} type="turnRight" />
           </>
+          )}
+          {insteadatk && activeCard.turn === 0 && leftPoints >= 0 && (
+          <ActionButton card={activeCard} ability={insteadatk} type="ability" />
           )}
           {(status === 'field') && (type === 'warrior' || type === 'hero') && (
           <ActionButton card={activeCard} type="healthBar" />

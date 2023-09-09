@@ -5,6 +5,7 @@ import { actions as battleActions } from '../slices/battleSlice.js';
 import functionContext from '../contexts/functionsContext.js';
 import abilityContext from '../contexts/abilityActions.js';
 import AttackIcon from '../assets/battlefield/Sword.png';
+import Healed from '../assets/battlefield/Healing.svg';
 import './CellCard.css';
 
 const getTopMargin = (cardtype) => {
@@ -34,7 +35,7 @@ const CellCard = ({
   const {
     makeFeatureCast,
     findSpell,
-    findOnAttack,
+    findTriggerSpells,
     makeFeatureAttach,
     sendCardFromField,
     getProtectionVal,
@@ -58,40 +59,66 @@ const CellCard = ({
     turn_2: turn === 2,
   });
 
-  const makeFight = (card1, card2) => {
-    setTimeout(() => {
-      handleAnimation(card1, 'delete');
-    }, 2000);
+  const findOwnerOfSpell = (spellId) => {
+    const onwnerCell = fieldCells.find((cell) => cell.content
+      .find((el) => el.id === spellId.id));
+    return onwnerCell.content.find((el) => el.type === 'warrior');
+  };
 
+  const makeFight = (card1, card2) => {
+    // setTimeout(() => {
+    //   handleAnimation(card1, 'delete');
+    // }, 2000);
+
+    handleAnimation(card1, 'delete');
     const attackedCell = fieldCells.find((cell) => cell.id === card2.cellId);
     const attackingCell = fieldCells.find((cell) => cell.id === card1.cellId);
-    const onAttackSpells = findOnAttack(card1);
+    const onAttackSpells = findTriggerSpells(card1, currentCell, 'onattack', 'warrior');
 
-    onAttackSpells.forEach((spell) => makeFeatureCast(spell, attackingCell));
+    onAttackSpells.forEach((spell) => {
+      if (spell.type === 'bad') {
+        makeFeatureCast(spell, attackedCell);
+      } else {
+        makeFeatureCast(spell, attackingCell);
+      }
+    });
 
     const makeCounterStrike = (
       strikeCard,
       recieveCard,
       retaliate,
       attachretaliate,
-      cardretaliate,
     ) => {
       dispatch(battleActions.addAnimation({ cell: attackedCell, type: 'makeattack' }));
       const strikePower = retaliate ? getWarriorPower(strikeCard) : 0;
       const attachPower = attachretaliate ? attachretaliate.value : 0;
-      const cardFeaturePower = cardretaliate ? cardretaliate.value : 0;
-      const totalStrikePower = strikePower + attachPower + cardFeaturePower;
+      const totalStrikePower = strikePower + attachPower;
       const recieveHealth = recieveCard.currentHP;
       if (isKilled(totalStrikePower, recieveHealth)) {
-        deleteCardfromSource(recieveCard);
-        dispatch(battleActions.addToGraveyard({ card: recieveCard }));
+        sendCardFromField(recieveCard, 'grave');
         moveAttachedSpells(recieveCard, null, 'kill');
       } else {
         changeCardHP(totalStrikePower, recieveHealth, recieveCard);
       }
+      const powerSpells = strikeCard.attachments.filter((spell) => spell.name === 'power');
+      powerSpells.forEach((spell) => {
+        if (spell.charges === 1) {
+          const spellCard = fieldCells.reduce((acc, cell) => {
+            const searchingCard = cell.content.find((el) => el.id === spell.id);
+            if (searchingCard) {
+              acc = searchingCard;
+            }
+            return acc;
+          }, null);
+          if (spellCard) {
+            sendCardFromField(spellCard, 'grave');
+          } else {
+            dispatch(battleActions.deleteAttachment({ spellId: spell.id }));
+          }
+        }
+      });
     };
 
-    handleAnimation(card1, 'delete');
     dispatch(battleActions.deleteActiveCard({ player: thisPlayer }));
     dispatch(battleActions.turnCardLeft({
       cardId: card1.id,
@@ -100,18 +127,29 @@ const CellCard = ({
     }));
 
     dispatch(battleActions.addAnimation({ cell: attackingCell, type: 'makeattack' }));
+    const evade = findSpell(card1, card2, 'warrior', 'evade');
+    if (evade) {
+      makeFeatureCast(evade, attackedCell);
+      return;
+    }
+
     dispatch(battleActions.addAnimation({ cell: attackedCell, type: 'attacked' }));
 
     const attackingPower = getWarriorPower(card1, 'power');
     const attackedHealth = card2.currentHP;
-    const protection = findSpell(card1, card2, 'warrior', 'protection');
+    const protection = findSpell(card1, card2, card1.subtype, 'protection');
     const protectionVal = protection
       ? getProtectionVal(attackingPower, protection, attackedHealth) : 0;
-    const retaliatAttachFeature = findSpell(card1, card2, 'warrior', 'retaliation');
-    const retaliatCardFeature = card2.features.find((feat) => feat.name === 'retaliation');
-    const canRetaliate = card2.subtype !== 'shooter' && card2.type !== 'hero' && card1.subtype !== 'shooter';
 
-    const calculatedPower = attackingPower - protectionVal > 0 ? attackingPower - protectionVal : 0;
+    const attackedCard = protectionVal === 'redirectowner' ? findOwnerOfSpell(protection) : card2;
+    const newAttackedHealth = attackedCard.currentHP;
+    const newProtectionVal = protectionVal === 'redirectowner' ? 0 : protectionVal;
+
+    const retaliatAttachFeature = findSpell(card1, attackedCard, card1.subtype, 'retaliation');
+    const canRetaliate = attackedCard.subtype !== 'shooter' && attackedCard.type !== 'hero' && card1.subtype !== 'shooter';
+
+    const calculatedPower = attackingPower - newProtectionVal > 0
+      ? attackingPower - newProtectionVal : 0;
 
     const powerSpells = card1.attachments.filter((spell) => spell.name === 'power');
     powerSpells.forEach((spell) => {
@@ -122,8 +160,12 @@ const CellCard = ({
             acc = searchingCard;
           }
           return acc;
-        }, {});
-        sendCardFromField(spellCard, 'grave');
+        }, null);
+        if (spellCard) {
+          sendCardFromField(spellCard, 'grave');
+        } else {
+          dispatch(battleActions.deleteAttachment({ spellId: spell.id }));
+        }
       }
     });
 
@@ -140,19 +182,19 @@ const CellCard = ({
       dispatch(battleActions.addToGraveyard({ card: protectionCard }));
     }
 
-    if (isKilled(calculatedPower, attackedHealth)) {
-      deleteCardfromSource(card2);
-      dispatch(battleActions.addToGraveyard({ card: card2 }));
-      moveAttachedSpells(card2, null, 'kill');
+    if (isKilled(calculatedPower, newAttackedHealth)) {
+      sendCardFromField(attackedCard, 'grave');
+      moveAttachedSpells(attackedCard, null, 'kill');
     } else {
-      changeCardHP(calculatedPower, attackedHealth, card2);
-      if (canRetaliate || retaliatAttachFeature || retaliatCardFeature) {
-        makeCounterStrike(card2, card1, canRetaliate, retaliatAttachFeature, retaliatCardFeature);
+      changeCardHP(calculatedPower, newAttackedHealth, attackedCard);
+      if (canRetaliate || retaliatAttachFeature) {
+        makeCounterStrike(attackedCard, card1, canRetaliate, retaliatAttachFeature);
       }
     }
   };
 
   const castSpell = async (spell, receiveCell) => {
+    dispatch(battleActions.deleteActiveCard({ player: thisPlayer }));
     const makeCast = async () => {
       await Promise.all(spell.features.map((feature) => new Promise((resolve) => {
         setTimeout(() => {
@@ -175,14 +217,21 @@ const CellCard = ({
     await makeCast();
 
     console.log('delete');
-    dispatch(battleActions.deleteActiveCard({ player: thisPlayer }));
-    if (spell.name !== 'fake') {
+
+    if (spell.name !== 'fake' && spell.type !== 'hero') {
       deleteCardfromSource(spell);
       if (spell.subtype === 'instant') {
         dispatch(battleActions.addToGraveyard({ card: spell }));
       } else {
         dispatch(battleActions.addFieldContent({ activeCard: spell, id: receiveCell.id }));
       }
+    }
+    if (spell.type === 'hero') {
+      dispatch(battleActions.turnCardLeft({
+        cardId: spell.id,
+        cellId: spell.cellId,
+        qty: 1,
+      }));
     }
   };
 
@@ -194,12 +243,14 @@ const CellCard = ({
       dispatch(battleActions.deleteActiveCard({ player: thisPlayer }));
       handleAnimation(activeCard, 'delete');
     } else if (canBeCast(cellId)) {
-      if (activeCard.status === 'hand') {
+      if (activeCard.status === 'hand' || activeCard.type === 'hero') {
         const newPoints = currentPoints - activeCard.cost;
         dispatch(battleActions.setPlayerPoints({ points: newPoints, player: thisPlayer }));
       }
+      if (activeCard.type !== 'hero') {
+        deleteCardfromSource(activeCard);
+      }
       handleAnimation(activeCard, 'delete');
-      deleteCardfromSource(activeCard);
       castSpell(activeCard, currentCell);
     } else if (canBeAttacked(item)) {
       makeFight(activeCard, item);
@@ -241,6 +292,13 @@ const CellCard = ({
           className="cell-container__attack-icon"
           src={AttackIcon}
           alt="attack icon"
+        />
+      )}
+      {currentCell.animation === 'healed' && (
+        <img
+          className="cell-container__heal-icon"
+          src={Healed}
+          alt="heal icon"
         />
       )}
 

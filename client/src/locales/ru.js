@@ -47,6 +47,7 @@ export default {
     turnLeft: 'ПОВЕРНУТЬ',
     turnRight: 'ПОВЕРНУТЬ',
     return: 'ВОЗВРАТИТЬ',
+    ability: 'СПОСОБНОСТЬ',
     graveyard: 'В СТОК',
     Close: 'ЗАКРЫТЬ',
     Change: 'ИЗМЕНИТЬ',

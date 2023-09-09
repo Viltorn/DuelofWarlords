@@ -17,7 +17,7 @@ const Header = () => {
   const {
     handleAnimation, deleteOtherActiveCard,
   } = useContext(functionContext);
-  const { sendCardFromField } = useContext(abilityContext);
+  const { sendCardFromField, findTriggerSpells, makeFeatureCast } = useContext(abilityContext);
   const player1Points = playerPoints.find((item) => item.player === 'player1').points;
   const player2Points = playerPoints.find((item) => item.player === 'player2').points;
   const dispatch = useDispatch();
@@ -61,6 +61,14 @@ const Header = () => {
     dispatch(battleActions.massTurnCards({ player: newPlayer }));
     dispatch(battleActions.changePlayer({ newPlayer }));
     [...turnSpells, ...temporarySpells].forEach((spell) => sendCardFromField(spell, 'grave'));
+
+    fieldCells
+      .filter((cell) => cell.content.length !== 0 && cell.type === 'field' && cell.player === newPlayer)
+      .forEach((cell) => {
+        const warrior = cell.content.find((el) => el.type === 'warrior');
+        const onTurnStartSpells = findTriggerSpells(warrior, cell, 'onturnstart', 'warrior');
+        onTurnStartSpells.forEach((spell) => makeFeatureCast(spell, cell));
+      });
   };
 
   const handlePointsClick = (player) => {

@@ -8,7 +8,7 @@ import abilityContext from '../contexts/abilityActions.js';
 import { minCardTurns, maxCardTurns } from '../gameData/gameLimits.js';
 import './ActionButton.css';
 
-const ActionButton = ({ type, card }) => {
+const ActionButton = ({ type, card, ability }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const store = useStore();
@@ -16,7 +16,7 @@ const ActionButton = ({ type, card }) => {
   const {
     handleAnimation, moveAttachedSpells, deleteOtherActiveCard,
   } = useContext(functionContext);
-  const { sendCardFromField } = useContext(abilityContext);
+  const { sendCardFromField, makeFeatureCast } = useContext(abilityContext);
   const {
     id, cellId,
   } = card;
@@ -25,11 +25,13 @@ const ActionButton = ({ type, card }) => {
     activeCardPlayer1,
     activeCardPlayer2,
     thisPlayer,
+    fieldCells,
   } = useSelector((state) => state.battleReducer);
+  const currentCell = fieldCells.find((item) => item.id === cellId);
 
   const makeTurn = (direction) => {
-    const { fieldCells } = store.getState().battleReducer;
-    const cell = fieldCells.find((item) => item.id === cellId);
+    const newfieldCells = store.getState().battleReducer.fieldCells;
+    const cell = newfieldCells.find((item) => item.id === cellId);
     const currentCard = cell.content.find((item) => item.id === id);
     const currentTurn = currentCard.turn;
     if (direction === 'turnLeft') {
@@ -65,6 +67,12 @@ const ActionButton = ({ type, card }) => {
         dispatch(battleActions.deleteActiveCard({ player: thisPlayer }));
         deleteOtherActiveCard(activeCardPlayer1, activeCardPlayer2, thisPlayer);
         sendCardFromField(card, 'grave');
+        break;
+      case 'ability':
+        handleAnimation(card, 'delete');
+        dispatch(battleActions.deleteActiveCard({ player: thisPlayer }));
+        makeFeatureCast(ability, currentCell);
+        makeTurn('turnLeft');
         break;
       default:
         break;
