@@ -14,7 +14,7 @@ const ActionButton = ({ type, card, ability }) => {
   const store = useStore();
   const element = useRef();
   const {
-    handleAnimation, moveAttachedSpells, deleteOtherActiveCard,
+    handleAnimation, moveAttachedSpells, deleteOtherActiveCard, deleteCardfromSource,
   } = useContext(functionContext);
   const { sendCardFromField, makeFeatureCast } = useContext(abilityContext);
   const {
@@ -72,7 +72,12 @@ const ActionButton = ({ type, card, ability }) => {
         handleAnimation(card, 'delete');
         dispatch(battleActions.deleteActiveCard({ player: thisPlayer }));
         makeFeatureCast(ability, currentCell);
-        makeTurn('turnLeft');
+        if (card.type === 'spell') {
+          deleteCardfromSource(card);
+          dispatch(battleActions.addToGraveyard({ card }));
+        } else {
+          makeTurn('turnLeft');
+        }
         break;
       default:
         break;

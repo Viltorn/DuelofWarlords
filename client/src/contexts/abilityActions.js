@@ -79,7 +79,7 @@ export const AbilityProvider = ({ children }) => {
   };
 
   const findTriggerSpells = (card, cell, spelltype, cardtype) => {
-    const triggerCellAttach = cell.attachments?.filter((spell) => spell.condition === spelltype
+    const triggerCellAttach = cell?.attachments?.filter((spell) => spell.condition === spelltype
       && spell.aim.includes(cardtype)) ?? [];
     const triggerCardAttach = card.attachments?.filter((spell) => spell.condition === spelltype
       && spell.aim.includes(cardtype)) ?? [];
@@ -131,7 +131,7 @@ export const AbilityProvider = ({ children }) => {
     const {
       value, aim, name, cost,
     } = feature;
-    const { player, turn } = aimCard;
+    const { player, turn } = aimCard ?? { player: 'player1', turn: 0 };
     if (name === 'attack') {
       dispatch(battleActions.addAnimation({ cell: aimCell, type: 'attacked' }));
       makeCardAttack(feature, aimCard);
@@ -233,6 +233,9 @@ export const AbilityProvider = ({ children }) => {
         const newPoints = currentPoints - cost;
         dispatch(battleActions.setPlayerPoints({ points: newPoints, player: thisPlayer }));
       }
+    } else if (name === 'increasepoints') {
+      const newPoints = currentPoints + value;
+      dispatch(battleActions.setPlayerPoints({ points: newPoints, player: thisPlayer }));
     }
   };
 
@@ -264,8 +267,8 @@ export const AbilityProvider = ({ children }) => {
 
   const makeFeatureCast = (feature, aimCell, applyingCard) => {
     const newfieldCells = store.getState().battleReducer.fieldCells;
-    const newAimCell = newfieldCells.find((cell) => cell.id === aimCell.id);
-    const aimCard = applyingCard ?? newAimCell.content.find((item) => item.type === 'warrior' || item.type === 'hero');
+    const newAimCell = newfieldCells.find((cell) => cell.id === aimCell?.id);
+    const aimCard = applyingCard ?? newAimCell?.content?.find((item) => item.type === 'warrior' || item.type === 'hero');
     const {
       type, aim, charges, id, name,
     } = feature;

@@ -79,12 +79,14 @@ export const FunctionProvider = ({ children }) => {
     const attackingHero = fieldCells.find((cell) => cell.type === 'hero' && cell.player !== thisPlayer);
     if (card.subtype === 'shooter') {
       if (attackingCells.length !== 0) {
-        attackingCells.forEach((cell) => dispatch(battleActions.addAnimation({ cell, type: 'red' })));
-        setAttackCells(attackingCells.map((cell) => cell.id));
+        attackingCells.forEach((cell) => {
+          dispatch(battleActions.addAnimation({ cell, type: 'red' }));
+          setAttackCells((prev) => [...prev, cell.id]);
+        });
       }
       if (attackingRowCells.length === 0 && !attackingHero.disabled) {
         dispatch(battleActions.addAnimation({ cell: attackingHero, type: 'red' }));
-        setAttackCells([attackingHero.id]);
+        setAttackCells((prev) => [...prev, attackingHero.id]);
       }
     }
     if (card.subtype === 'fighter' || card.subtype === 'flyer') {
@@ -101,7 +103,7 @@ export const FunctionProvider = ({ children }) => {
       }
       if (attackingRowCells.length === 0 && !attackingHero.disabled) {
         dispatch(battleActions.addAnimation({ cell: attackingHero, type: 'red' }));
-        setAttackCells([attackingHero.id]);
+        setAttackCells((prev) => [...prev, attackingHero.id]);
       }
     }
   };
@@ -255,6 +257,7 @@ export const FunctionProvider = ({ children }) => {
       if (condition && condition === 'maxPower') {
         const attackingPower = getWarriorPower(attacking);
         const meetCondition = attackingPower <= conditionValue;
+        console.log(meetCondition);
         return meetCondition;
       }
       if (condition && condition === 'canDie') {
@@ -299,12 +302,12 @@ export const FunctionProvider = ({ children }) => {
     if (type === 'warrior') {
       const currentCell = fieldCells.find((cell) => cell.id === activeCard.cellId);
       const cardImmobileAttachment = attachments.find((feature) => feature.name === 'immobile' && checkMeetCondition(activeCard, feature, 'warrior'));
-      const cellImmobileAttachment = currentCell?.attachments?.find((feature) => feature.name === 'immobile' && feature.aim.includes(activeCard.subtype) && checkMeetCondition(activeCard, feature, 'warrior'));
-      const movingAttachment = attachments.find((feature) => feature.name === 'moving' && checkMeetCondition(activeCard, feature, 'warrior'));
+      const cellImmobileAttachment = currentCell?.attachments?.find((feature) => feature.name === 'immobile' && feature.aim.includes(activeCard.subtype) && checkMeetCondition(activeCard, null, feature, 'warrior'));
+      const movingAttachment = attachments.find((feature) => feature.name === 'moving' && checkMeetCondition(activeCard, null, feature, 'warrior'));
       const canMove = (!cardImmobileAttachment && !activeCard.features.find((feature) => feature.name === 'immobile')
         && turn === 0 && !cellImmobileAttachment) || movingAttachment;
-      const cellUnarmedAttachment = currentCell?.attachments?.find((feature) => feature.name === 'unarmed' && feature.aim.includes(activeCard.subtype) && checkMeetCondition(activeCard, feature, 'warrior'));
-      const cardUnarmedAttachment = attachments.find((feature) => feature.name === 'unarmed' && checkMeetCondition(activeCard, feature, 'warrior'));
+      const cellUnarmedAttachment = currentCell?.attachments?.find((feature) => feature.name === 'unarmed' && feature.aim.includes(activeCard.subtype) && checkMeetCondition(activeCard, null, feature, 'warrior'));
+      const cardUnarmedAttachment = attachments.find((feature) => feature.name === 'unarmed' && checkMeetCondition(activeCard, null, feature, 'warrior'));
       const canAttack = !activeCard.features.find((feature) => feature.name === 'unarmed') && turn === 0
         && !cardUnarmedAttachment && !cellUnarmedAttachment;
       if (status === 'hand' || isCardPostponed) {
@@ -353,6 +356,7 @@ export const FunctionProvider = ({ children }) => {
   };
 
   const canBeAttacked = (cellcard) => {
+    console.log(attackCells);
     if (attackCells.includes(cellcard.cellId) && (cellcard.type === 'warrior' || cellcard.type === 'hero')) {
       return true;
     }

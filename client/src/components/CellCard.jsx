@@ -76,7 +76,7 @@ const CellCard = ({
     const onAttackSpells = findTriggerSpells(card1, currentCell, 'onattack', 'warrior');
 
     onAttackSpells.forEach((spell) => {
-      if (spell.type === 'bad') {
+      if (spell.type === 'bad' && spell.player === thisPlayer) {
         makeFeatureCast(spell, attackedCell);
       } else {
         makeFeatureCast(spell, attackingCell);
