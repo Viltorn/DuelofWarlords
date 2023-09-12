@@ -251,19 +251,22 @@ export const FunctionProvider = ({ children }) => {
     if (type === 'warrior' || warSubtypes.includes(type)) {
       if (condition && condition === 'minPower') {
         const attackingPower = getWarriorPower(attacking);
-        const meetCondition = attackingPower >= conditionValue;
-        return meetCondition;
+        const attackingPowerFeature = attacking.features.find((feat) => feat.name === 'power' && feat.aim.includes(protecting.subtype));
+        const attackingAddPower = attackingPowerFeature?.value || 0;
+        return (attackingPower + attackingAddPower) >= conditionValue;
       }
       if (condition && condition === 'maxPower') {
         const attackingPower = getWarriorPower(attacking);
-        const meetCondition = attackingPower <= conditionValue;
-        console.log(meetCondition);
-        return meetCondition;
+        const attackingPowerFeature = attacking.features.find((feat) => feat.name === 'power' && feat.aim.includes(protecting.subtype));
+        const attackingAddPower = attackingPowerFeature?.value || 0;
+        return (attackingPower + attackingAddPower) <= conditionValue;
       }
       if (condition && condition === 'canDie') {
         const attackingPower = getWarriorPower(attacking);
+        const attackingPowerFeature = attacking.features.find((feat) => feat.name === 'power' && feat.aim.includes(protecting.subtype));
+        const attackingAddPower = attackingPowerFeature?.value || 0;
         const { currentHP } = protecting;
-        return currentHP - attackingPower <= 0;
+        return currentHP - (attackingPower + attackingAddPower) <= 0;
       }
       if (condition && condition === 'nextRowCell') {
         const protectCell = fieldCells.find((cell) => cell.id === protecting.cellId);
@@ -342,6 +345,9 @@ export const FunctionProvider = ({ children }) => {
         dispatch(battleActions.deleteFieldCard({ cardId, cellId }));
         break;
       case 'graveyard':
+        dispatch(battleActions.deleteFieldCard({ cardId, cellId }));
+        break;
+      case 'postponed':
         dispatch(battleActions.deleteFieldCard({ cardId, cellId }));
         break;
       default:

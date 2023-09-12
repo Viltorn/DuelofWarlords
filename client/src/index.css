@@ -30,6 +30,11 @@ code {
     monospace;
 }
 
+.visually-hidden {
+  display: none;
+}
+
+
 :root {
   /* colors */
   --main-background: linear-gradient(180deg, rgba(233, 205, 191, 0.8) 0%, rgb(224, 169, 127) 100%);

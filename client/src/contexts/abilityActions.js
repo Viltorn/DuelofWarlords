@@ -499,7 +499,6 @@ export const AbilityProvider = ({ children }) => {
     const { type } = card;
     const cardCell = fieldCells.find((cell) => cell.id === card.cellId);
     const lastSpells = type === 'warrior' ? findTriggerSpells(card, cardCell, 'lastcall', 'warrior') : findTriggerSpells(card, cardCell, 'lastcall', 'spell');
-    console.log(lastSpells);
     if (lastSpells && destination === 'grave') {
       lastSpells.forEach((spell) => makeFeatureCast(spell, cardCell, card));
     }

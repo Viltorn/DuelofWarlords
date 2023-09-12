@@ -76,7 +76,7 @@ const CellCard = ({
     const onAttackSpells = findTriggerSpells(card1, currentCell, 'onattack', 'warrior');
 
     onAttackSpells.forEach((spell) => {
-      if (spell.type === 'bad' && spell.player === thisPlayer) {
+      if (spell.apply === 'attacked') {
         makeFeatureCast(spell, attackedCell);
       } else {
         makeFeatureCast(spell, attackingCell);
@@ -135,7 +135,10 @@ const CellCard = ({
 
     dispatch(battleActions.addAnimation({ cell: attackedCell, type: 'attacked' }));
 
-    const attackingPower = getWarriorPower(card1, 'power');
+    const attackingInitPower = getWarriorPower(card1, 'power');
+    const attackingPowerFeature = card1.features.find((feat) => feat.name === 'power' && feat.aim.includes(card2.subtype));
+    const attackingAddPower = attackingPowerFeature?.value || 0;
+    const attackingPower = attackingInitPower + attackingAddPower;
     const attackedHealth = card2.currentHP;
     const protection = findSpell(card1, card2, card1.subtype, 'protection');
     const protectionVal = protection

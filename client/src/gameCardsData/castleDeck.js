@@ -231,10 +231,10 @@ const castleDeck = [
     name: 'Defender', type: 'warrior', subtype: 'fighter', power: 2, currentP: 2, health: 6, currentHP: 6, cost: 3, description: 'БОЕЦ. Имеет ЩИТ МАГИИ', id: _.uniqueId(), features: [{ name: 'protection', value: { type: 'percent', val: 0.5 }, aim: ['spell'] }], attachments: [], img: Defender, status: 'hand', turn: 1, disabled: false,
   },
   {
-    name: 'Righeous Fighter', type: 'warrior', subtype: 'fighter', power: 3, currentP: 3, health: 4, currentHP: 4, cost: 3, description: 'БОЕЦ. Имеет ответную атаку силой 4', id: _.uniqueId(), features: [{ name: 'retaliation', value: 1, aim: ['warrior'] }], attachments: [], img: RighteousFighter, status: 'hand', turn: 1, disabled: false,
+    name: 'Righeous Fighter', type: 'warrior', subtype: 'fighter', power: 3, currentP: 3, health: 4, currentHP: 4, cost: 3, description: 'БОЕЦ. Получает +1 к атаке по герою', id: _.uniqueId(), features: [{ name: 'power', value: 1, aim: ['hero'] }], attachments: [], img: RighteousFighter, status: 'hand', turn: 1, disabled: false,
   },
   {
-    name: 'Righeous Fighter', type: 'warrior', subtype: 'fighter', power: 3, currentP: 3, health: 4, currentHP: 4, cost: 3, description: 'БОЕЦ. Имеет ответную атаку силой 4', id: _.uniqueId(), features: [{ name: 'retaliation', value: 1, aim: ['warrior'] }], attachments: [], img: RighteousFighter, status: 'hand', turn: 1, disabled: false,
+    name: 'Righeous Fighter', type: 'warrior', subtype: 'fighter', power: 3, currentP: 3, health: 4, currentHP: 4, cost: 3, description: 'БОЕЦ. Получает +1 к атаке по герою', id: _.uniqueId(), features: [{ name: 'power', value: 1, aim: ['hero'] }], attachments: [], img: RighteousFighter, status: 'hand', turn: 1, disabled: false,
   },
   {
     name: 'Knight Guardian',
@@ -265,10 +265,10 @@ const castleDeck = [
     health: 7,
     currentHP: 7,
     cost: 4,
-    description: 'ЛЕТАЮЩИЙ. Когда атакует в свой ход, отнимает также 1 здоровье у второго вражеского воина в шеренге',
+    description: 'ЛЕТАЮЩИЙ. Имеет +1 к ответному удару против Бойцов',
     id: _.uniqueId(),
     features: [{
-      name: 'attack', condition: 'onattack', type: 'bad', aim: ['nextrowcell', 'warrior'], value: 1,
+      name: 'retaliation', value: 1, aim: ['warrior', 'fighter'],
     }],
     attachments: [],
     img: ImperialGriffon,
@@ -285,10 +285,10 @@ const castleDeck = [
     health: 7,
     currentHP: 7,
     cost: 4,
-    description: 'ЛЕТАЮЩИЙ. Когда атакует в свой ход, отнимает также 1 здоровье у второго вражеского воина в шеренге',
+    description: 'ЛЕТАЮЩИЙ. Имеет +1 к ответному удару против Бойцов',
     id: _.uniqueId(),
     features: [{
-      attach: false, name: 'attack', condition: 'onattack', type: 'bad', aim: ['nextrowcell', 'warrior'], value: 1,
+      name: 'retaliation', value: 1, aim: ['warrior', 'fighter'],
     }],
     attachments: [],
     img: ImperialGriffon,
@@ -327,7 +327,7 @@ const castleDeck = [
       condition: 'onplay',
     },
     {
-      name: 'attack', condition: 'onattack', type: 'bad', aim: ['nextrowcell', 'warrior'], value: 2,
+      name: 'attack', condition: 'onattack', type: 'bad', aim: ['nextrowcell', 'warrior'], value: 2, apply: 'attacked',
     }],
     attachments: [],
     img: TemplarChampion,
@@ -366,7 +366,7 @@ const castleDeck = [
       condition: 'onplay',
     },
     {
-      name: 'attack', condition: 'onattack', type: 'bad', aim: ['nextrowcell', 'warrior'], value: 2,
+      name: 'attack', condition: 'onattack', type: 'bad', aim: ['nextrowcell', 'warrior'], value: 2, apply: 'attacked',
     }],
     attachments: [],
     img: TemplarChampion,

@@ -40,17 +40,25 @@ const Cell = ({ props, id }) => {
     cell__animation_red: animation === 'red',
   });
 
+  const playTriggers = (card, thisCell, spellType, cardclass) => {
+    const onTriggerSpells = findTriggerSpells(card, thisCell, spellType, cardclass);
+    const returnSpell = onTriggerSpells.find((spell) => spell.name === 'return');
+    if (returnSpell) {
+      makeFeatureCast(returnSpell, thisCell, card);
+    } else {
+      onTriggerSpells.forEach((spell) => makeFeatureCast(spell, thisCell, card));
+    }
+  };
+
   useEffect(() => {
     if (cardType === 'warrior') {
       const warrior = currentCell.content.find((item) => item.type === 'warrior');
       console.log(warrior);
       if (type === 'field' && warrior && cardSource === 'field') {
-        const onMoveSpells = findTriggerSpells(warrior, currentCell, 'onmove', 'warrior');
-        onMoveSpells.forEach((spell) => makeFeatureCast(spell, currentCell, warrior));
+        playTriggers(warrior, currentCell, 'onmove', 'warrior');
       }
-      if (type === 'field' && warrior && cardSource === 'hand') {
-        const onPlaySpells = findTriggerSpells(warrior, currentCell, 'onplay', 'warrior');
-        onPlaySpells.forEach((spell) => makeFeatureCast(spell, currentCell, warrior));
+      if (type === 'field' && warrior && (cardSource === 'hand' || cardSource === 'postponed')) {
+        playTriggers(warrior, currentCell, 'onplay', 'warrior');
       }
     }
     if (cardType === 'spell') {
@@ -59,7 +67,7 @@ const Cell = ({ props, id }) => {
         const onMoveSpells = findTriggerSpells(spellCard, currentCell, 'onmove', 'spell');
         onMoveSpells.forEach((spell) => makeFeatureCast(spell, currentCell, spellCard));
       }
-      if (spellCard && cardSource === 'hand') {
+      if (spellCard && (cardSource === 'hand' || cardSource === 'postponed')) {
         const onPlaySpells = findTriggerSpells(spellCard, currentCell, 'onplay', 'spell');
         onPlaySpells.forEach((spell) => makeFeatureCast(spell, currentCell, spellCard));
       }

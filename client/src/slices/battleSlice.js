@@ -187,7 +187,8 @@ const battleSlice = createSlice({
 
     addFieldContent(state, { payload }) {
       const { activeCard, id } = payload;
-      const changedActiveCard = { ...activeCard, status: 'field', cellId: id };
+      const status = id !== 'postponed1' && id !== 'postponed2' ? 'field' : 'postponed';
+      const changedActiveCard = { ...activeCard, status, cellId: id };
       const newFieldCells = state.fieldCells.map((cell) => {
         if (cell.id === id) {
           cell.content = [changedActiveCard, ...cell.content];
@@ -212,7 +213,9 @@ const battleSlice = createSlice({
       const { card } = payload;
       const { health } = card;
       const changedBasic = { ...card, status: 'hand', cellId: '' };
-      const changedCard = card.type === 'warrior' ? { ...changedBasic, currentHP: health } : { ...changedBasic };
+      const changedCard = card.type === 'warrior' ? {
+        ...changedBasic, currentHP: health, turn: 1, attachments: [],
+      } : { ...changedBasic };
       const hand = changedCard.player === 'player1' ? 'playerOneHand' : 'playerTwoHand';
       state[hand] = [...state[hand], changedCard];
     },

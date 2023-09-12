@@ -15,6 +15,7 @@ export const heroes = [
   {
     name: 'Zigfrid-Hero',
     type: 'hero',
+    subtype: 'hero',
     factionId: 'Castle',
     health: 20,
     currentHP: 20,
@@ -40,6 +41,7 @@ export const heroes = [
   {
     name: 'Nala-Hero',
     type: 'hero',
+    subtype: 'hero',
     factionId: 'Academia',
     health: 20,
     currentHP: 20,

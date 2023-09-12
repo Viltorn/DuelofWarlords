@@ -367,7 +367,7 @@ const academiaDeck = [
     description: 'СТРЕЛОК. При атаке в свой ход по воину, отнимает 2 здоровья у другого вражеского воина в шеренге',
     id: _.uniqueId(),
     features: [{
-      name: 'attack', condition: 'onattack', type: 'bad', aim: ['nextrowcell', 'warrior'], value: 2,
+      name: 'attack', condition: 'onattack', type: 'bad', aim: ['nextrowcell', 'warrior'], value: 2, apply: 'attacked',
     }],
     attachments: [],
     img: EnergyElemental,
@@ -386,7 +386,7 @@ const academiaDeck = [
     description: 'СТРЕЛОК. При атаке в свой ход по воину, отнимает 2 здоровья у другого вражеского воина в шеренге',
     id: _.uniqueId(),
     features: [{
-      name: 'attack', condition: 'onattack', type: 'bad', aim: ['nextrowcell', 'warrior'], value: 2,
+      name: 'attack', condition: 'onattack', type: 'bad', aim: ['nextrowcell', 'warrior'], value: 2, apply: 'attacked',
     }],
     attachments: [],
     img: EnergyElemental,
@@ -480,6 +480,7 @@ const academiaDeck = [
         condition: 'onattack',
         name: 'selfheroattack',
         value: 'power',
+        apply: 'attacker',
       },
     ],
     img: CursedShackle,
@@ -510,7 +511,7 @@ const academiaDeck = [
     type: 'spell',
     subtype: 'instant',
     cost: 2,
-    description: 'РЕАКЦИЯ: вражеский воин, который только сделал шаг или вошел в игру, отправляется в руку к владельцу и восстанавливает здоровье (если на на воине был эффект, то он возвращается в руку владельцу)',
+    description: 'РЕАКЦИЯ: вражеский воин, который только сделал шаг или вошел в игру, а также наложенные заклинания отправляются в руки к владельцам в изначальном состоянии',
     id: _.uniqueId(),
     place: 'postponed',
     features: [{

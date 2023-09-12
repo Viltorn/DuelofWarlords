@@ -1,0 +1,95 @@
+.container {
+  display: flex;
+  justify-content: space-between;
+  margin: 3rem 0 3rem 0;
+  align-items: center;
+  gap: 3rem;
+}
+
+.containerR {
+  display: flex;
+  justify-content: space-between;
+  flex-direction: row-reverse;
+  align-items: center;
+  margin: 3rem 0 3rem 0;
+  gap: 3rem;
+}
+
+.title {
+  text-align: center;
+  font-size: 2rem;
+  color: var(--light-gray);
+}
+
+.featuresSet {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  width: 100%;
+  gap: 2rem;
+}
+
+.featureImg {
+  width: 20rem;
+  height: 20rem;
+}
+
+.featureText {
+  margin: 0;
+  padding: 0;
+  line-height: 2.5rem;
+  font-size: 1.5rem;
+  flex-grow: 2;
+  vertical-align: top;
+  color: var(--light-gray);
+}
+
+@media screen and (max-width: 767px) {
+  .title {
+    font-size: 20px;
+    line-height: 50px;
+  }
+
+  .featureText {
+    text-justify: inter-word;
+    font-size: 16px;
+    line-height:25px;
+  }
+
+  .featuresSet {
+    gap: 10px;
+  }
+
+  .container {
+    margin-top: 30px;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .containerR {
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .featureImg {
+    width: 130px;
+    height: 130px;
+  }
+
+}
+
+@media screen and (min-width: 1600px) {
+  .title  {
+    font-size: 40px;
+    line-height: 70px;
+  }
+
+  .featureText {
+    text-justify: inter-word;
+    font-size: 28px;
+    line-height: 45px;
+  }
+
+}
