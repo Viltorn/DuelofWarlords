@@ -10,6 +10,7 @@
   justify-content: center;
   align-items: center;
   background-color: transparent;
+  position: relative;
 }
 
 .header__title {
@@ -53,6 +54,7 @@
   align-items: center;
   gap: 1.5rem;
   border-radius: 0 0 0.3rem 0.3rem;
+  z-index: 2;
 }
 
 .header__endturn-btn {
@@ -73,6 +75,7 @@
   width: 3rem;
   height: 3rem;
   cursor: pointer;
+  transition: all 0.3s linear;
 }
 
 .header__menu-btn > img {

@@ -60,7 +60,7 @@ const academiaDeck = [
     description: 'СТРЕЛОК. Перед смертью, оглушает случайного вражеского воина в шеренге где он стоял',
     id: _.uniqueId(),
     features: [{
-      attach: false, type: 'bad', aim: ['closeowcell', 'warrior'], name: 'stun', condition: 'lastcall',
+      attach: false, type: 'bad', aim: ['closerowcell', 'warrior'], name: 'stun', condition: 'lastcall',
     }],
     attachments: [],
     img: IceElemental,
@@ -450,7 +450,7 @@ const academiaDeck = [
     type: 'spell',
     subtype: 'temporary',
     cost: 2,
-    description: 'Накладывается на центральную клетку. Отнимает 2 здоровье у всех воинов в этой шеренге. ПОДГОТОВКА: отнять 2 здоровья у всех воинов в шеренге',
+    description: 'Накладывается на центральную клетку. Отнимает 2 здоровье у всех воинов в этой шеренге. СТАРТ ХОДА: отнять 2 здоровья у всех воинов в шеренге',
     id: _.uniqueId(),
     place: 'midSpell',
     features: [

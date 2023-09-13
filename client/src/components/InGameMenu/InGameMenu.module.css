@@ -1,0 +1,65 @@
+.container {
+  top: 0;
+  left: auto;
+  right: auto;
+  position: absolute;
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 4rem;
+  width: 84rem;
+  height: 33rem;
+  z-index: 1;
+  padding: 7rem 3rem 2rem  3rem;
+  background-color: var(--white-color);
+  box-sizing: border-box;
+  transition: all 0.3s linear;
+  border-radius: 0 0 0.3rem 0.3rem;
+}
+
+.menubar {
+  display: flex;
+  flex-direction: column;
+  width: 15rem;
+  gap: 2rem;
+  position: relative;
+}
+
+.menubar::after {
+  content: " ";
+  background: #333333;
+  width: 0.1rem;
+  height: 100%;
+  right: -2rem;
+  position: absolute;
+}
+
+.menuItem {
+  font-size: 1rem;
+  list-style-type: none;
+}
+
+.resetBtn {
+  text-align: start;
+  text-decoration: underline;
+  border: none;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+.tipsBlock {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  gap: 1.5rem;
+}
+
+.tips {
+  display: flex;
+  flex-wrap: wrap;
+  width: 100%;
+  gap: 1rem;
+}
+
+.tip {
+  width: 10rem;
+}

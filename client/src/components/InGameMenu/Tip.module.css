@@ -1,0 +1,15 @@
+.container {
+  width: 15rem;
+}
+
+.title {
+  font-size: 0.8rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.text {
+  font-size: 0.7rem;
+  font-weight: 600;
+  line-height: 1rem;
+}

@@ -58,7 +58,7 @@ const castleDeck = [
     health: 4,
     currentHP: 4,
     cost: 2,
-    description: 'СТРЕЛОК. Вылечивает 1 здоровье у случайного прилегающего союзного воина в начале своего хода',
+    description: 'СТРЕЛОК. СТАРТ ХОДА: Вылечивает 1 здоровье у случайного прилегающего союзного воина',
     id: _.uniqueId(),
     features: [{
       name: 'heal', condition: 'onturnstart', aim: ['oneadjacent', 'warrior'], value: 1,
@@ -78,7 +78,7 @@ const castleDeck = [
     health: 4,
     currentHP: 4,
     cost: 2,
-    description: 'СТРЕЛОК. Вылечивает 1 здоровье у случайного прилегающего союзного воина в начале своего хода',
+    description: 'СТРЕЛОК. СТАРТ ХОДА: Вылечивает 1 здоровье у случайного прилегающего союзного воина',
     id: _.uniqueId(),
     features: [{
       name: 'heal', condition: 'onturnstart', aim: ['oneadjacent', 'warrior'], value: 1,
@@ -98,7 +98,7 @@ const castleDeck = [
     health: 4,
     currentHP: 4,
     cost: 2,
-    description: 'СТРЕЛОК. Вылечивает 1 здоровье у случайного прилегающего союзного воина в начале своего хода',
+    description: 'СТРЕЛОК. СТАРТ ХОДА: Вылечивает 1 здоровье у случайного прилегающего союзного воина',
     id: _.uniqueId(),
     features: [{
       name: 'heal', condition: 'onturnstart', aim: ['oneadjacent', 'warrior'], value: 1,
@@ -479,7 +479,7 @@ const castleDeck = [
     place: 'warrior',
     features: [{
       attach: ['warrior'],
-      aim: ['warrior'],
+      aim: ['warrior', 'fighter', 'shooter', 'flyer'],
       type: 'good',
       name: 'retaliation',
       value: 2,

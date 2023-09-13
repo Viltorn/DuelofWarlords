@@ -26,7 +26,7 @@ export const FunctionProvider = ({ children }) => {
     });
   });
 
-  const fontValue = `${window.innerWidth / 85}px`;
+  const fontValue = `${window.innerWidth / 88}px`;
   document.documentElement.style.setProperty('font-size', fontValue);
 
   useEffect(() => {

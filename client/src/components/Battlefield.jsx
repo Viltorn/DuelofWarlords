@@ -1,5 +1,5 @@
 /* eslint-disable object-curly-newline */
-import React, { useContext, useEffect } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import Cell from './Cell.jsx';
 import HeroPad from './HeroPad.jsx';
@@ -7,6 +7,7 @@ import Card from './Card.jsx';
 import Header from './Header.jsx';
 import RotateScreen from './RotateScreen.jsx';
 import ActiveCard from './ActiveCard.jsx';
+import InGameMenu from './InGameMenu/InGameMenu.jsx';
 import './Battlefield.css';
 import getModal from '../modals/index.js';
 import functionContext from '../contexts/functionsContext.js';
@@ -23,6 +24,7 @@ const Battlefield = () => {
     playerTwoHand,
     thisPlayer,
   } = useSelector((state) => state.battleReducer);
+  const [isOpenMenu, setOpenMenu] = useState(false);
   const { isOpened, type } = useSelector((state) => state.modalsReducer);
   const cellsPlayer1 = fieldCells.filter((cell) => cell.player === 'player1' && cell.type === 'field');
   const cellsPlayer2 = fieldCells.filter((cell) => cell.player === 'player2' && cell.type === 'field');
@@ -53,7 +55,7 @@ const Battlefield = () => {
           <div className="battlefield__main">
             {thisPlayer === 'player1' ? (
               <div className="battlefield__hands-container">
-                <Header />
+                <Header setOpenMenu={setOpenMenu} isOpenMenu={isOpenMenu} />
                 <div className="battlefield__heropad-1">
                   {activeCardPlayer1 && (
                   <ActiveCard activeCard={activeCardPlayer1} playerType="player1" />
@@ -160,7 +162,7 @@ const Battlefield = () => {
             </div>
             {thisPlayer === 'player2' ? (
               <div className="battlefield__hands-container">
-                <Header />
+                <Header setOpenMenu={setOpenMenu} isOpenMenu={isOpenMenu} />
                 <div className="battlefield__heropad-2">
                   <HeroPad type="first" player={thisPlayer} />
                   {activeCardPlayer2 && (
@@ -181,6 +183,7 @@ const Battlefield = () => {
             ) : (<HeroPad type="second" player="player2" />)}
           </div>
           {renderModal(isOpened, type)}
+          <InGameMenu isOpenMenu={isOpenMenu} />
         </>
       )}
     </div>

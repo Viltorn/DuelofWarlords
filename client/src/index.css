@@ -71,13 +71,13 @@ code {
 @font-face {
   font-weight: 400; /* Соответствует значению normal */
   font-family: Almendra;
-  src: url("./fonts/Almendra-Regular.ttf");
+  src: url("./assets/fonts/Almendra-Regular.ttf");
 }
 
 @font-face {
   font-weight: 700; /* Соответствует значению bold */
   font-family: Almendra;
-  src: url("./fonts/Almendra-Bold.ttf");
+  src: url("./assets/fonts/Almendra-Bold.ttf");
 }
 
 

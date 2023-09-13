@@ -274,7 +274,7 @@ export const AbilityProvider = ({ children }) => {
     } = feature;
     if (aim.includes('field')) {
       if (type === 'all') {
-        fieldCells
+        newfieldCells
           .filter((cell) => cell.content.length !== 0 && cell.type === 'field')
           .forEach((cell) => {
             const warriorCard = cell.content.find((item) => item.type === 'warrior' && aim.includes(item.subtype));
@@ -285,7 +285,7 @@ export const AbilityProvider = ({ children }) => {
       }
     } else if (aim.includes('line')) {
       const { line } = aimCell;
-      fieldCells
+      newfieldCells
         .filter((cell) => cell.line === line && cell.content.length !== 0 && cell.type === 'field')
         .forEach((cell) => {
           const warriorCard = cell.content.find((item) => item.type === 'warrior');
@@ -294,7 +294,7 @@ export const AbilityProvider = ({ children }) => {
     } else if (aim.includes('row')) {
       if (type === 'all') {
         const { row } = aimCell;
-        fieldCells
+        newfieldCells
           .filter((cell) => cell.row === row && cell.content.length !== 0 && cell.type === 'field')
           .forEach((cell) => {
             const warriorCard = cell.content.find((item) => item.type === 'warrior');
@@ -303,7 +303,7 @@ export const AbilityProvider = ({ children }) => {
       }
       if (type === 'bad') {
         const { row } = aimCell;
-        fieldCells
+        newfieldCells
           .filter((cell) => cell.row === row && cell.content.length !== 0
             && cell.type === 'field' && cell.player !== thisPlayer)
           .forEach((cell) => {
@@ -337,7 +337,7 @@ export const AbilityProvider = ({ children }) => {
           applySpellEffect(feature, warrior, foundCell, newfieldCells);
         }
       }
-    } else if (aim.includes('closeowcell')) {
+    } else if (aim.includes('closerowcell')) {
       if (type === 'bad') {
         const foundCell = newfieldCells.find((cell) => cell.player !== aimCell.player
         && cell.row === aimCell.row && cell.content.length !== 0);

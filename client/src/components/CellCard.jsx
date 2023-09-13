@@ -135,7 +135,7 @@ const CellCard = ({
 
     dispatch(battleActions.addAnimation({ cell: attackedCell, type: 'attacked' }));
 
-    const attackingInitPower = getWarriorPower(card1, 'power');
+    const attackingInitPower = getWarriorPower(card1);
     const attackingPowerFeature = card1.features.find((feat) => feat.name === 'power' && feat.aim.includes(card2.subtype));
     const attackingAddPower = attackingPowerFeature?.value || 0;
     const attackingPower = attackingInitPower + attackingAddPower;

@@ -9,7 +9,7 @@ import abilityContext from '../contexts/abilityActions.js';
 import Menu from '../assets/Menu.svg';
 import './Header.css';
 
-const Header = () => {
+const Header = ({ setOpenMenu, isOpenMenu }) => {
   const { t } = useTranslation();
   const {
     thisPlayer, playerPoints, commonPoints, activeCardPlayer1, activeCardPlayer2, fieldCells,
@@ -76,15 +76,14 @@ const Header = () => {
   };
 
   const handleResetClick = () => {
-    dispatch(battleActions.resetState());
-    dispatch(modalsActions.openModal({ type: 'openHotSeatMenu' }));
+    setOpenMenu((prev) => !prev);
   };
 
   return (
     <div className="header" style={thisPlayer === 'player1' ? { left: 0 } : { right: 0 }}>
       <div className="header__central-block">
         {thisPlayer === 'player1' && (
-          <button type="button" onClick={handleResetClick} className="header__menu-btn">
+          <button style={{ transform: isOpenMenu ? 'rotate(90deg)' : 'rotate(0)' }} type="button" onClick={handleResetClick} className="header__menu-btn">
             <img src={Menu} alt="menu" />
           </button>
         )}
@@ -118,7 +117,7 @@ const Header = () => {
           </h3>
         </div>
         {thisPlayer === 'player2' && (
-          <button type="button" onClick={handleResetClick} className="header__menu-btn">
+          <button type="button" style={{ transform: isOpenMenu ? 'rotate(90deg)' : 'rotate(0)' }} onClick={handleResetClick} className="header__menu-btn">
             <img src={Menu} alt="menu" />
           </button>
         )}
