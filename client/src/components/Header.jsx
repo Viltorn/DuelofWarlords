@@ -14,6 +14,7 @@ const Header = ({ setOpenMenu, isOpenMenu }) => {
   const {
     thisPlayer, playerPoints, commonPoints, activeCardPlayer1, activeCardPlayer2, fieldCells,
   } = useSelector((state) => state.battleReducer);
+  const { gameMode } = useSelector((state) => state.gameReducer);
   const {
     handleAnimation, deleteOtherActiveCard,
   } = useContext(functionContext);
@@ -75,7 +76,7 @@ const Header = ({ setOpenMenu, isOpenMenu }) => {
     dispatch(modalsActions.openModal({ type: 'openPointsCounter', player }));
   };
 
-  const handleResetClick = () => {
+  const handleMenuClick = () => {
     setOpenMenu((prev) => !prev);
   };
 
@@ -83,7 +84,7 @@ const Header = ({ setOpenMenu, isOpenMenu }) => {
     <div className="header" style={thisPlayer === 'player1' ? { left: 0 } : { right: 0 }}>
       <div className="header__central-block">
         {thisPlayer === 'player1' && (
-          <button style={{ transform: isOpenMenu ? 'rotate(90deg)' : 'rotate(0)' }} type="button" onClick={handleResetClick} className="header__menu-btn">
+          <button style={{ transform: isOpenMenu ? 'rotate(90deg)' : 'rotate(0)' }} type="button" onClick={handleMenuClick} className="header__menu-btn">
             <img src={Menu} alt="menu" />
           </button>
         )}
@@ -96,15 +97,15 @@ const Header = ({ setOpenMenu, isOpenMenu }) => {
             {' '}
             Viktor
           </h3>
-          <button type="button" onClick={() => handlePointsClick('player1')} className="header__counter">
+          <button type="button" onClick={() => handlePointsClick('player1')} disabled={gameMode !== 'hotseat'} className="header__counter">
             <h3 className="header__counter_num">{player1Points}</h3>
           </button>
         </div>
-        <button className="header__endturn-btn" type="button" onClick={hadleEndTurnClick}>
+        <button className="header__endturn-btn" type="button" disabled={commonPoints === 0} onClick={hadleEndTurnClick}>
           {t('EndTurn')}
         </button>
         <div className="header__players-info">
-          <button type="button" onClick={() => handlePointsClick('player2')} className="header__counter">
+          <button type="button" onClick={() => handlePointsClick('player2')} disabled={gameMode !== 'hotseat'} className="header__counter">
             <h3 className="header__counter_num">{player2Points}</h3>
           </button>
           <h3 className="header__title">
@@ -117,7 +118,7 @@ const Header = ({ setOpenMenu, isOpenMenu }) => {
           </h3>
         </div>
         {thisPlayer === 'player2' && (
-          <button type="button" style={{ transform: isOpenMenu ? 'rotate(90deg)' : 'rotate(0)' }} onClick={handleResetClick} className="header__menu-btn">
+          <button type="button" style={{ transform: isOpenMenu ? 'rotate(90deg)' : 'rotate(0)' }} onClick={handleMenuClick} className="header__menu-btn">
             <img src={Menu} alt="menu" />
           </button>
         )}

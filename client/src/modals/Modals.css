@@ -36,15 +36,14 @@
   align-items: center;
   grid-template-columns: 1fr 1fr;
   gap: 0;
-  width: 60%;
+  width: 90%;
   height: 25rem;
   margin-bottom: 0;
 }
 
 .modal-window__hand {
   min-height: 15rem;
-  width: 40rem;
-  min-width: 25rem;
+  width: 70rem;
   border: 0.2rem solid var(--dark-color);
   border-radius: 0.3rem;
   padding: 1rem;
@@ -67,7 +66,7 @@
   gap: 2rem;
 }
 
-.modal-winodw__input {
+.modal-window__input {
   height: 2.5rem;
   min-height: 50px;
   width: 4rem;
@@ -80,7 +79,7 @@
   text-align: center;
 }
 
-.modal-winodw__input_black {
+.modal-window__input_black {
   height: 2.5rem;
   min-height: 50px;
   width: 4rem;
@@ -93,7 +92,7 @@
   background-color: var(--dark-color);
 }
 
-.modal-winodw__buttons {
+.modal-window__buttons {
   display: flex;
   flex-direction: row;
   gap: 1.5rem;

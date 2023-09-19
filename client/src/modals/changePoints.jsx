@@ -51,11 +51,11 @@ const ChangePoints = () => {
     <dialog className="modal-window">
       <div className="modal-window__content">
         <h2 className="modal-window__header">{t('ChangeHP')}</h2>
-        <form className="modal-winodw__form" onSubmit={formik.handleSubmit}>
-          <fieldset className="modal-winodw__fieldset" disabled={formik.isSubmitting}>
+        <form className="modal-window__form" onSubmit={formik.handleSubmit}>
+          <fieldset className="modal-window__fieldset" disabled={formik.isSubmitting}>
             <input
               onKeyDown={(e) => handleKeyDown(e)}
-              className="modal-winodw__input_black"
+              className="modal-window__input_black"
               id="points"
               type="text"
               ref={inputEl}
@@ -69,7 +69,7 @@ const ChangePoints = () => {
               <div className="invalid-feedback">{t(`errors.${formik.errors.points}`)}</div>
             ) : null}
             <label htmlFor="points" className="visually-hidden">{t('ChangePoints')}</label>
-            <div className="modal-winodw__buttons">
+            <div className="modal-window__buttons">
               <PrimaryButton
                 showIcon={false}
                 state="default"

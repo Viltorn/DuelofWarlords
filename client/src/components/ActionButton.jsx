@@ -5,10 +5,12 @@ import { actions as modalsActions } from '../slices/modalsSlice.js';
 import { actions as battleActions } from '../slices/battleSlice.js';
 import functionContext from '../contexts/functionsContext.js';
 import abilityContext from '../contexts/abilityActions.js';
-import { minCardTurns, maxCardTurns } from '../gameData/gameLimits.js';
+import { minCardTurn, maxCardTurn } from '../gameData/gameLimits.js';
 import './ActionButton.css';
 
-const ActionButton = ({ type, card, ability }) => {
+const ActionButton = ({
+  type, card, ability, ressurect,
+}) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const store = useStore();
@@ -16,10 +18,12 @@ const ActionButton = ({ type, card, ability }) => {
   const {
     handleAnimation, moveAttachedSpells, deleteOtherActiveCard, deleteCardfromSource,
   } = useContext(functionContext);
-  const { sendCardFromField, makeFeatureCast } = useContext(abilityContext);
+  const { sendCardFromField, makeFeatureCast, makeFeatureAttach } = useContext(abilityContext);
   const {
     id, cellId,
   } = card;
+
+  const cost = ressurect?.resCost ?? card.cost;
 
   const {
     activeCardPlayer1,
@@ -34,12 +38,18 @@ const ActionButton = ({ type, card, ability }) => {
     const cell = newfieldCells.find((item) => item.id === cellId);
     const currentCard = cell.content.find((item) => item.id === id);
     const currentTurn = currentCard.turn;
-    if (direction === 'turnLeft') {
-      if (currentTurn < maxCardTurns) {
-        dispatch(battleActions.turnCardLeft({ cardId: id, cellId, qty: 1 }));
-      }
-    } else if (currentTurn > minCardTurns) {
+    if (direction === 'turnLeft' && currentTurn < maxCardTurn) {
+      dispatch(battleActions.turnCardLeft({ cardId: id, cellId, qty: 1 }));
+    } else if (currentTurn > minCardTurn) {
       dispatch(battleActions.turnCardRight({ cardId: id, cellId, qty: 1 }));
+    }
+  };
+
+  const makeSpellCast = (spell, cell) => {
+    if (!spell.attach) {
+      makeFeatureCast(spell, cell);
+    } else if (spell.attach) {
+      makeFeatureAttach(spell, cell);
     }
   };
 
@@ -59,7 +69,8 @@ const ActionButton = ({ type, card, ability }) => {
         moveAttachedSpells(card, null, 'return');
         dispatch(battleActions.deleteActiveCard({ player: thisPlayer }));
         deleteOtherActiveCard(activeCardPlayer1, activeCardPlayer2, thisPlayer);
-        sendCardFromField(card, 'return');
+        sendCardFromField(card, 'return', cost);
+        dispatch(battleActions.deleteAttachment({ spellId: ressurect?.id }));
         break;
       case 'graveyard':
         handleAnimation(card, 'delete');
@@ -71,13 +82,19 @@ const ActionButton = ({ type, card, ability }) => {
       case 'ability':
         handleAnimation(card, 'delete');
         dispatch(battleActions.deleteActiveCard({ player: thisPlayer }));
-        makeFeatureCast(ability, currentCell);
+        makeSpellCast(ability, currentCell);
         if (card.type === 'spell') {
           deleteCardfromSource(card);
           dispatch(battleActions.addToGraveyard({ card }));
         } else {
           makeTurn('turnLeft');
         }
+        break;
+      case 'deckreturn':
+        handleAnimation(card, 'delete');
+        dispatch(battleActions.sendCardtoDeck({ activeCard: card }));
+        deleteCardfromSource(card);
+        dispatch(battleActions.deleteActiveCard({ player: thisPlayer }));
         break;
       default:
         break;
@@ -107,6 +124,9 @@ const ActionButton = ({ type, card, ability }) => {
         break;
       case 'z':
         performClick('graveyard');
+        break;
+      case 'd':
+        performClick('deckreturn');
         break;
       default:
         break;

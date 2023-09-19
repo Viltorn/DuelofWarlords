@@ -22,10 +22,11 @@ const Card = ({
     name,
     id,
     player,
+    cost,
   } = card;
   const { getActiveCard, handleAnimation } = useContext(functionContext);
 
-  const marginRight = active !== 'active' ? content.length * 0.5 : 0; /*  empirical number */
+  const marginRight = active !== 'active' ? Math.min(content.length * 0.5, 5.6) : 0; /*  empirical number */
 
   const classes = cn({
     'card-block': true,
@@ -74,6 +75,9 @@ const Card = ({
           <h3 className={cn('card-block__warrior-power', { active: active === 'active' })}>{power}</h3>
           <h3 className={cn('card-block__warrior-health', { active: active === 'active' })}>{health}</h3>
         </>
+        )}
+        {type !== 'hero' && (
+          <h3 className={cn('card-block__warrior-cost', { active: active === 'active' })}>{cost}</h3>
         )}
         {type === 'hero' && (
           <h3 className="card-block__hero-health">{health}</h3>

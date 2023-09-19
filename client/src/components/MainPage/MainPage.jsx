@@ -53,7 +53,7 @@ const MainPage = () => {
           <p className={styles.descriptionBig}>
             {t('mainDescription')}
           </p>
-          <a href="/" className={styles.textMute}>
+          <a href="https://ru.wikipedia.org/wiki/Might_%26_Magic:_Duel_of_Champions" target="_blank" className={styles.textMute} rel="noreferrer">
             &gt;&gt;
             {' '}
             {t('moreAboutMMdoc')}

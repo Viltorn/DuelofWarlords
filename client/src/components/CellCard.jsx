@@ -282,6 +282,9 @@ const CellCard = ({
           <h3 className="cell-container__warrior-health">{item.currentHP}</h3>
         </>
       )}
+      {item.type !== 'hero' && (
+        <h3 className="cell-container__cost">{item.cost}</h3>
+      )}
       {item.type === 'hero' && (
         <h3 className="cell-container__hero-health">{item.currentHP}</h3>
       )}

@@ -41,18 +41,20 @@
   display: flex;
   flex-direction: row;
   justify-content: flex-end;
+  height: 22rem;
   gap: 1rem;
-  align-items: flex-end;
+  align-items: flex-start;
   padding: 1rem 0 1rem 0;
 }
 
 .battlefield__heropad-2 {
   width: 100%;
   display: flex;
+  height: 22rem;
   flex-direction: row;
   justify-content: flex-start;
   gap: 1rem;
-  align-items: flex-end;
+  align-items: flex-start;
   padding: 1rem 0 1rem 0;
 }
 
@@ -110,12 +112,13 @@
   justify-items: center;
 }
 
-/* .hero-pad {
-  min-height: 15rem;
-}
 
-.active-card {
-  height: 100%;
-  min-height: 15rem;
-  padding: 1rem;
+/* @media (min-width: 0) and (max-width: 767px) {
+  .battlefield__heropad-1 {
+    height: 22rem;
+  }
+
+  .battlefield__heropad-2 {
+    height: 22rem;
+  }
 } */

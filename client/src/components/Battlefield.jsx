@@ -24,6 +24,7 @@ const Battlefield = () => {
     playerTwoHand,
     thisPlayer,
   } = useSelector((state) => state.battleReducer);
+  const { gameMode } = useSelector((state) => state.gameReducer);
   const [isOpenMenu, setOpenMenu] = useState(false);
   const { isOpened, type } = useSelector((state) => state.modalsReducer);
   const cellsPlayer1 = fieldCells.filter((cell) => cell.player === 'player1' && cell.type === 'field');
@@ -42,9 +43,13 @@ const Battlefield = () => {
   };
 
   useEffect(() => {
-    dispatch(modalsActions.openModal({ type: 'openHotSeatMenu' }));
+    if (gameMode === 'hotseat') {
+      dispatch(modalsActions.openModal({ type: 'openHotSeatMenu' }));
+    } else if (gameMode === 'tutorial') {
+      dispatch(modalsActions.openModal({ type: 'tutorial' }));
+    }
   // eslint-disable-next-line
-  }, []);
+  }, [gameMode]);
 
   return (
     <div className="battlefield__container">
@@ -183,7 +188,7 @@ const Battlefield = () => {
             ) : (<HeroPad type="second" player="player2" />)}
           </div>
           {renderModal(isOpened, type)}
-          <InGameMenu isOpenMenu={isOpenMenu} />
+          <InGameMenu isOpenMenu={isOpenMenu} setOpenMenu={setOpenMenu} />
         </>
       )}
     </div>

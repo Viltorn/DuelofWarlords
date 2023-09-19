@@ -458,7 +458,7 @@ const academiaDeck = [
         attach: false, type: 'all', aim: ['row'], value: 2, name: 'attack',
       },
       {
-        attach: false, type: 'all', aim: ['row'], value: 2, name: 'attack', condition: 'lastcall',
+        attach: false, type: 'all', aim: ['row', 'spell'], value: 2, name: 'attack', condition: 'lastcall',
       },
     ],
     img: Blizzard,

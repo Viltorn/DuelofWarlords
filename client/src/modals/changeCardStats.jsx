@@ -56,11 +56,11 @@ const ChangeCardStats = () => {
     <dialog className="modal-window">
       <div className="modal-window__content">
         <h2 className="modal-window__header">{t('ChangeHP')}</h2>
-        <form className="modal-winodw__form" onSubmit={formik.handleSubmit}>
-          <fieldset className="modal-winodw__fieldset" disabled={formik.isSubmitting}>
+        <form className="modal-window__form" onSubmit={formik.handleSubmit}>
+          <fieldset className="modal-window__fieldset" disabled={formik.isSubmitting}>
             <input
               onKeyDown={(e) => handleKeyDown(e)}
-              className="modal-winodw__input"
+              className="modal-window__input"
               id="health"
               type="text"
               ref={inputEl}
@@ -74,7 +74,7 @@ const ChangeCardStats = () => {
               <div className="invalid-feedback">{t(`errors.${formik.errors.phone}`)}</div>
             ) : null}
             <label htmlFor="health" className="visually-hidden">{t('ChangeHP')}</label>
-            <div className="modal-winodw__buttons">
+            <div className="modal-window__buttons">
               <PrimaryButton
                 showIcon={false}
                 state="default"

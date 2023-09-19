@@ -1,6 +1,6 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { Link } from 'react-router-dom';
+
 import MenuBtn from './MenuBtn';
 import './ChooseGame.css';
 
@@ -31,12 +31,8 @@ const ChooseGame = () => {
         <MenuBtn text={t('Install')} type="secondary" handleClick={handleInstallClick} />
         <hr className="choose-gamehr__hr" />
         <h2 className="choose-game__header">{t('ChooseGame')}</h2>
-        <Link to="/tutorial" className="link">
-          <MenuBtn text={t('Tutorial')} type="primary" handleClick={null} />
-        </Link>
-        <Link to="/hotseat" className="link">
-          <MenuBtn text={t('HotSeat')} type="primary" handleClick={null} />
-        </Link>
+        <MenuBtn text={t('Tutorial')} data="tutorial" type="primary" />
+        <MenuBtn text={t('HotSeat')} data="hotseat" type="primary" />
       </div>
     </div>
   );

@@ -441,7 +441,7 @@ const castleDeck = [
     place: 'grave',
     turn: 0,
     features: [{
-      attach: ['grave'], type: 'good', aim: ['warrior'], name: 'ressurect', condition: 'insteadatk', cost: 4,
+      attach: ['grave'], type: 'good', aim: ['warrior'], name: 'ressurect', condition: 'insteadatk', cost: 4, resCost: 0,
     }],
     img: Resurrection,
     status: 'hand',
@@ -690,11 +690,11 @@ const castleDeck = [
     type: 'spell',
     subtype: 'instant',
     cost: 1,
-    description: 'РЕАКЦИЯ. Только что убитый союзный воин во время хода противника возрождается с 1 здоровьем',
+    description: 'РЕАКЦИЯ. При нанесении смертельного урона атакой вражеским воином вашему воину, ваш воин не умирает, а остается на поле с 1 здровьем',
     id: _.uniqueId(),
     place: 'postponed',
     features: [{
-      attach: ['field', 'warrior'], type: 'good', aim: ['warrior', 'spell', 'fighter', 'shooter', 'flyer'], name: 'protection', condition: 'canDie', value: { type: 'immortal', val: 0 }, charges: 1,
+      attach: ['field', 'warrior'], type: 'good', aim: ['warrior', 'fighter', 'shooter', 'flyer'], name: 'protection', condition: 'canDie', value: { type: 'immortal', val: 0 }, charges: 1,
     }],
     img: LastChance,
     status: 'hand',

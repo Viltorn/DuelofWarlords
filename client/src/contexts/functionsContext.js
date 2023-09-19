@@ -262,7 +262,7 @@ export const FunctionProvider = ({ children }) => {
         return (attackingPower + attackingAddPower) <= conditionValue;
       }
       if (condition && condition === 'canDie') {
-        const attackingPower = getWarriorPower(attacking);
+        const attackingPower = attacking.type === 'warrior' ? getWarriorPower(attacking) : attacking.value;
         const attackingPowerFeature = attacking.features.find((feat) => feat.name === 'power' && feat.aim.includes(protecting.subtype));
         const attackingAddPower = attackingPowerFeature?.value || 0;
         const { currentHP } = protecting;
@@ -295,6 +295,8 @@ export const FunctionProvider = ({ children }) => {
     if (!isAllowedCost(activeCard) || activeCard.player !== thisPlayer || activeCard.disabled) {
       return;
     }
+
+    console.log(2);
 
     const {
       type, status, attachments, turn,

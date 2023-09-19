@@ -5,7 +5,7 @@
   grid-template-columns: repeat(2, auto);
   grid-template-rows: repeat(2, auto);
   gap: 1.3rem;
-  margin-bottom: 2rem;
+  margin-top: 2.5rem;
 }
 
 .hero-pad_2 {

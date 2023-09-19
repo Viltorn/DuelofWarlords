@@ -25,8 +25,9 @@ const HeroPad = ({ type, player }) => {
   const { makeFeatureAttach } = useContext(abilityContext);
 
   const {
-    fieldCells, playerOneHand, playerTwoHand, thisPlayer, playerPoints,
+    fieldCells, playerOneHand, playerTwoHand, thisPlayer, playerPoints, commonPoints, players,
   } = useSelector((state) => state.battleReducer);
+  const { gameMode } = useSelector((state) => state.gameReducer);
 
   const currentPoints = playerPoints.find((data) => data.player === thisPlayer).points;
 
@@ -99,15 +100,11 @@ const HeroPad = ({ type, player }) => {
   };
 
   const handleDeckClick = () => {
-    const activeCard = getActiveCard();
     const deckOwner = deck.current.dataset.player;
-    if (activeCard && player === activeCard.player) {
-      handleAnimation(activeCard, 'delete');
-      dispatch(battleActions.sendCardtoDeck({ activeCard }));
-      deleteCardfromSource(activeCard);
-      dispatch(battleActions.deleteActiveCard({ player: thisPlayer }));
-    } else if (deckOwner === thisPlayer) {
-      dispatch(battleActions.drawCard({ player: thisPlayer }));
+    const firstRound = commonPoints === 1;
+    const drawStatus = players[thisPlayer].cardsdrawn;
+    if ((deckOwner === thisPlayer && firstRound && !drawStatus && gameMode !== 'tutorial') || gameMode === 'hotseat') {
+      dispatch(modalsActions.openModal({ type: 'drawCards', player: thisPlayer }));
     }
   };
 

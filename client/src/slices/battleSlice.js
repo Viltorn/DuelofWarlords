@@ -6,9 +6,9 @@ import {
 } from '../gameData/heroes&spellsCellsData.js';
 
 const initialState = {
-  commonPoints: 1,
+  commonPoints: 0,
   playerPoints: [{ player: 'player1', points: 1 }, { player: 'player2', points: 1 }],
-  players: { player1: { name: 'Viktor', id: 'player1' }, player2: { name: 'AI', id: 'player2' } },
+  players: { player1: { name: 'Viktor', id: 'player1', cardsdrawn: false }, player2: { name: 'AI', id: 'player2', cardsdrawn: false } },
   thisPlayer: 'player1',
   playerOneDeck: [],
   playerOneHand: [],
@@ -85,6 +85,11 @@ const battleSlice = createSlice({
         cellItem.animation = '';
         return cellItem;
       });
+    },
+
+    setCardDrawStatus(state, { payload }) {
+      const { player, status } = payload;
+      state.players[player].cardsdrawn = status;
     },
 
     turnPostponed(state, { payload }) {
@@ -210,9 +215,11 @@ const battleSlice = createSlice({
     },
 
     returnCard(state, { payload }) {
-      const { card } = payload;
+      const { card, cost } = payload;
       const { health } = card;
-      const changedBasic = { ...card, status: 'hand', cellId: '' };
+      const changedBasic = {
+        ...card, status: 'hand', cellId: '', cost,
+      };
       const changedCard = card.type === 'warrior' ? {
         ...changedBasic, currentHP: health, turn: 1, attachments: [],
       } : { ...changedBasic };
@@ -238,7 +245,7 @@ const battleSlice = createSlice({
       const newState = state.fieldCells.map((cell) => {
         if (cell.id === cellId) {
           cell.content = cell.content.map((card) => {
-            if (card.id === cardId) {
+            if (card.id === cardId && card.turn < 2) {
               card.turn += qty;
             }
             return card;
@@ -254,7 +261,7 @@ const battleSlice = createSlice({
       const newState = state.fieldCells.map((cell) => {
         if (cell.id === cellId) {
           cell.content = cell.content.map((card) => {
-            if (card.id === cardId) {
+            if (card.id === cardId && card.turn > 0) {
               card.turn -= qty;
             }
             return card;

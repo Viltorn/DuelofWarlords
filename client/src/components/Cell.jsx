@@ -152,7 +152,13 @@ const Cell = ({ props, id }) => {
       <TransitionGroup component={null} exit={false}>
         {content.length === 0 && (
           <CSSTransition in timeout={500} classNames="cellanimation">
-            <button type="button" className="cell__default-btn" aria-label="field cell" onClick={handleCellClick} />
+            <button
+              type="button"
+              className="cell__default-btn"
+              aria-label="field cell"
+              style={{ cursor: `${animation !== '' ? 'pointer' : ''}` }}
+              onClick={handleCellClick}
+            />
           </CSSTransition>
         )}
       </TransitionGroup>

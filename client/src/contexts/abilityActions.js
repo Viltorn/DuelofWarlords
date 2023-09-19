@@ -3,6 +3,7 @@ import {
 } from 'react';
 import { useDispatch, useSelector, useStore } from 'react-redux';
 import { spellsCells } from '../gameData/heroes&spellsCellsData';
+import { actions as modalsActions } from '../slices/modalsSlice.js';
 import { actions as battleActions } from '../slices/battleSlice.js';
 import functionContext from './functionsContext.js';
 
@@ -88,157 +89,6 @@ export const AbilityProvider = ({ children }) => {
     return [...triggerCellAttach, ...triggerCardAttach, ...triggerCardFeatures];
   };
 
-  const makeCardAttack = (cast, attackedCard) => {
-    const receivedHealth = attackedCard.currentHP;
-    const spellPower = findDependValue(cast);
-    const protection = findSpell(cast, attackedCard, 'spell', 'protection');
-    const protectionVal = protection ? getProtectionVal(spellPower, protection, receivedHealth) : 0;
-    const calculatedPower = spellPower - protectionVal > 0 ? spellPower - protectionVal : 0;
-    if (isKilled(calculatedPower, receivedHealth)) {
-      deleteCardfromSource(attackedCard);
-      dispatch(battleActions.addToGraveyard({ card: attackedCard }));
-      moveAttachedSpells(attackedCard, null, 'kill');
-    } else {
-      changeCardHP(calculatedPower, receivedHealth, attackedCard);
-      if (protection && protection.charges === 1) {
-        const protectionCard = fieldCells.reduce((acc, cell) => {
-          const searchingCard = cell.content.find((el) => el.id === protection.id);
-          if (searchingCard) {
-            acc = searchingCard;
-          }
-          return acc;
-        }, {});
-        dispatch(battleActions.deleteAttachment({ spellId: protection.id }));
-        deleteCardfromSource(protectionCard);
-        dispatch(battleActions.addToGraveyard({ card: protectionCard }));
-      }
-    }
-  };
-
-  const applySpellEffect = (feature, aimCard, aimCell, cellsfield) => {
-    const findNextRows = (fieldCell) => {
-      const currentRowNumber = parseInt(fieldCell.row, 10);
-      const currentline = fieldCell.line;
-      const topRowNumber = (currentRowNumber - 1).toString();
-      const bottomRowNumber = (currentRowNumber + 1).toString();
-      const topRowCell = cellsfield.find((cell) => cell.row === topRowNumber
-              && cell.line === currentline && cell.content.length === 0);
-      const bottomRowCell = cellsfield.find((cell) => cell.row === bottomRowNumber
-              && cell.line === currentline && cell.content.length === 0);
-      return { topRowCell, bottomRowCell };
-    };
-
-    const {
-      value, aim, name, cost,
-    } = feature;
-    const { player, turn } = aimCard ?? { player: 'player1', turn: 0 };
-    if (name === 'attack') {
-      dispatch(battleActions.addAnimation({ cell: aimCell, type: 'attacked' }));
-      makeCardAttack(feature, aimCard);
-    } else if (name === 'selfheroattack') {
-      const heroCell = fieldCells.find((cell) => cell.type === 'hero' && cell.player === player);
-      const heroCard = heroCell.content.find((el) => el.type === 'hero');
-      const receivedHealth = heroCard.currentHP;
-      if (value === 'power') {
-        const attackingPower = getWarriorPower(aimCard);
-        dispatch(battleActions.addAnimation({ cell: heroCell, type: 'attacked' }));
-        changeCardHP(attackingPower, receivedHealth, heroCard);
-      }
-    } else if (name === 'moverow' && aimCard?.status === 'field') {
-      const { topRowCell, bottomRowCell } = findNextRows(aimCell);
-      setMoveCells([topRowCell?.id, bottomRowCell?.id]);
-      dispatch(battleActions.addAnimation({ cell: topRowCell, type: 'green' }));
-      dispatch(battleActions.addAnimation({ cell: bottomRowCell, type: 'green' }));
-      const currentCell = cellsfield.find((cell) => cell.id === aimCard.cellId);
-      const movingCard = currentCell.content.find((item) => item.type === 'warrior');
-      dispatch(battleActions.addActiveCard({ card: movingCard, player: thisPlayer }));
-    } else if (name === 'evade') {
-      const { topRowCell, bottomRowCell } = findNextRows(aimCell);
-      const normTopCell = topRowCell || {};
-      const normBotCell = bottomRowCell || {};
-      const cellsArr = [topRowCell, bottomRowCell];
-      const choosenCell = topRowCell && bottomRowCell
-        ? cellsArr[getRandomIndex(2)] : { ...normTopCell, ...normBotCell };
-      const turnQty = turn === 0 ? 2 : 1;
-      deleteCardfromSource(aimCard);
-      dispatch(battleActions.addFieldContent({ activeCard: aimCard, id: choosenCell.id }));
-      dispatch(battleActions.turnCardLeft({
-        cardId: aimCard.id,
-        cellId: choosenCell.id,
-        qty: turnQty,
-      }));
-      moveAttachedSpells(aimCard, choosenCell.id, 'move');
-    } else if (name === 'stun') {
-      const newTurn = turn === 0 ? 2 : 1;
-      dispatch(battleActions.turnCardLeft({
-        cardId: aimCard.id,
-        cellId: aimCard.cellId,
-        qty: newTurn,
-      }));
-    } else if (name === 'return') {
-      if (aim.includes('warrior') && aimCard.type === 'warrior') {
-        handleAnimation(aimCard, 'delete');
-        moveAttachedSpells(aimCard, null, 'return');
-        deleteCardfromSource(aimCard);
-        dispatch(battleActions.returnCard({ card: aimCard }));
-        dispatch(battleActions.deleteActiveCard({ player: aimCard.player }));
-      }
-    } else if (name === 'heal') {
-      const spellPower = findDependValue(feature);
-      const newHealth = (aimCard.currentHP + spellPower) >= aimCard.health
-        ? aimCard.health : aimCard.currentHP + spellPower;
-      dispatch(battleActions.addAnimation({ cell: aimCell, type: 'healed' }));
-      dispatch(battleActions.changeHP({
-        health: newHealth,
-        cardId: aimCard.id,
-        cellId: aimCard.cellId,
-      }));
-    } else if (name === 'enemyheroheal') {
-      const enemyPlayer = player === 'player1' ? 'player2' : 'player1';
-      const heroCell = fieldCells.find((cell) => cell.type === 'hero' && cell.player === enemyPlayer);
-      const heroCard = heroCell.content.find((el) => el.type === 'hero');
-      const newHealth = (heroCard.currentHP + feature.value) >= heroCard.health
-        ? heroCard.health : heroCard.currentHP + feature.value;
-      dispatch(battleActions.addAnimation({ cell: heroCell, type: 'healed' }));
-      dispatch(battleActions.changeHP({
-        health: newHealth,
-        cardId: heroCard.id,
-        cellId: heroCard.cellId,
-      }));
-    } else if (name === 'heroheal') {
-      const heroCell = fieldCells.find((cell) => cell.type === 'hero' && cell.player === thisPlayer);
-      const heroCard = heroCell.content.find((el) => el.type === 'hero');
-      const newHealth = (heroCard.currentHP + feature.value) >= heroCard.health
-        ? heroCard.health : heroCard.currentHP + feature.value;
-      dispatch(battleActions.addAnimation({ cell: heroCell, type: 'healed' }));
-      dispatch(battleActions.changeHP({
-        health: newHealth,
-        cardId: heroCard.id,
-        cellId: heroCard.cellId,
-      }));
-    } else if (name === 'health') {
-      const newHealth = aimCard.currentHP + findDependValue(feature);
-      dispatch(battleActions.changeHP({
-        health: newHealth,
-        cardId: aimCard.id,
-        cellId: aimCard.cellId,
-      }));
-    } else if (name === 'invoke') {
-      const spellCard = { ...value, player: thisPlayer };
-      dispatch(battleActions.addActiveCard({ card: spellCard, player: thisPlayer }));
-      handleAnimation(spellCard, 'add');
-    } else if (name === 'drawcard') {
-      dispatch(battleActions.drawCard({ player: thisPlayer }));
-      if (cost) {
-        const newPoints = currentPoints - cost;
-        dispatch(battleActions.setPlayerPoints({ points: newPoints, player: thisPlayer }));
-      }
-    } else if (name === 'increasepoints') {
-      const newPoints = currentPoints + value;
-      dispatch(battleActions.setPlayerPoints({ points: newPoints, player: thisPlayer }));
-    }
-  };
-
   const findAdjasentLine = (num, direct) => {
     if (num === '1') {
       return direct === 'right' ? '3' : '2';
@@ -266,6 +116,160 @@ export const AbilityProvider = ({ children }) => {
   };
 
   const makeFeatureCast = (feature, aimCell, applyingCard) => {
+    const applySpellEffect = (spell, aimCard, applyingCell, cellsfield) => {
+      const findNextRows = (fieldCell) => {
+        const currentRowNumber = parseInt(fieldCell.row, 10);
+        const currentline = fieldCell.line;
+        const topRowNumber = (currentRowNumber - 1).toString();
+        const bottomRowNumber = (currentRowNumber + 1).toString();
+        const topRowCell = cellsfield.find((cell) => cell.row === topRowNumber
+                && cell.line === currentline && cell.content.length === 0);
+        const bottomRowCell = cellsfield.find((cell) => cell.row === bottomRowNumber
+                && cell.line === currentline && cell.content.length === 0);
+        return { topRowCell, bottomRowCell };
+      };
+      const makeCardAttack = (cast, attackedCard) => {
+        const receivedHealth = attackedCard.currentHP;
+        const spellPower = findDependValue(cast);
+        const protection = findSpell(cast, attackedCard, 'spell', 'protection');
+        const protectionVal = protection
+          ? getProtectionVal(spellPower, protection, receivedHealth) : 0;
+        const calculatedPower = spellPower - protectionVal > 0 ? spellPower - protectionVal : 0;
+        if (isKilled(calculatedPower, receivedHealth)) {
+          const cardCell = fieldCells.find((cell) => cell.id === attackedCard.cellId);
+          const lastSpells = findTriggerSpells(attackedCard, cardCell, 'lastcall', 'warrior');
+          deleteCardfromSource(attackedCard);
+          dispatch(battleActions.addToGraveyard({ card: attackedCard }));
+          moveAttachedSpells(attackedCard, null, 'kill');
+          lastSpells.forEach((feat) => makeFeatureCast(feat, cardCell));
+        } else {
+          changeCardHP(calculatedPower, receivedHealth, attackedCard);
+          if (protection && protection.charges === 1) {
+            const protectionCard = fieldCells.reduce((acc, cell) => {
+              const searchingCard = cell.content.find((el) => el.id === protection.id);
+              if (searchingCard) {
+                acc = searchingCard;
+              }
+              return acc;
+            }, {});
+            dispatch(battleActions.deleteAttachment({ spellId: protection.id }));
+            deleteCardfromSource(protectionCard);
+            dispatch(battleActions.addToGraveyard({ card: protectionCard }));
+          }
+        }
+      };
+
+      const {
+        value, aim, name, cost,
+      } = spell;
+      const { player, turn } = aimCard ?? { player: 'player1', turn: 0 };
+      if (name === 'attack') {
+        dispatch(battleActions.addAnimation({ cell: applyingCell, type: 'attacked' }));
+        makeCardAttack(feature, aimCard);
+      } else if (name === 'selfheroattack') {
+        const heroCell = fieldCells.find((cell) => cell.type === 'hero' && cell.player === player);
+        const heroCard = heroCell.content.find((el) => el.type === 'hero');
+        const receivedHealth = heroCard.currentHP;
+        if (value === 'power') {
+          const attackingPower = getWarriorPower(aimCard);
+          dispatch(battleActions.addAnimation({ cell: heroCell, type: 'attacked' }));
+          changeCardHP(attackingPower, receivedHealth, heroCard);
+        }
+      } else if (name === 'moverow' && aimCard?.status === 'field') {
+        const { topRowCell, bottomRowCell } = findNextRows(aimCell);
+        setMoveCells([topRowCell?.id, bottomRowCell?.id]);
+        dispatch(battleActions.addAnimation({ cell: topRowCell, type: 'green' }));
+        dispatch(battleActions.addAnimation({ cell: bottomRowCell, type: 'green' }));
+        const currentCell = cellsfield.find((cell) => cell.id === aimCard.cellId);
+        const movingCard = currentCell.content.find((item) => item.type === 'warrior');
+        dispatch(battleActions.addActiveCard({ card: movingCard, player: thisPlayer }));
+      } else if (name === 'evade') {
+        const { topRowCell, bottomRowCell } = findNextRows(aimCell);
+        const normTopCell = topRowCell || {};
+        const normBotCell = bottomRowCell || {};
+        const cellsArr = [topRowCell, bottomRowCell];
+        const choosenCell = topRowCell && bottomRowCell
+          ? cellsArr[getRandomIndex(2)] : { ...normTopCell, ...normBotCell };
+        const turnQty = turn === 0 ? 2 : 1;
+        deleteCardfromSource(aimCard);
+        dispatch(battleActions.addFieldContent({ activeCard: aimCard, id: choosenCell.id }));
+        dispatch(battleActions.turnCardLeft({
+          cardId: aimCard.id,
+          cellId: choosenCell.id,
+          qty: turnQty,
+        }));
+        moveAttachedSpells(aimCard, choosenCell.id, 'move');
+      } else if (name === 'stun') {
+        const newTurn = turn === 0 ? 2 : 1;
+        dispatch(battleActions.turnCardLeft({
+          cardId: aimCard.id,
+          cellId: aimCard.cellId,
+          qty: newTurn,
+        }));
+      } else if (name === 'return') {
+        if (aim.includes('warrior') && aimCard.type === 'warrior') {
+          handleAnimation(aimCard, 'delete');
+          moveAttachedSpells(aimCard, null, 'return');
+          deleteCardfromSource(aimCard);
+          dispatch(battleActions.returnCard({ card: aimCard, cost: aimCard.cost }));
+          dispatch(battleActions.deleteActiveCard({ player: aimCard.player }));
+        }
+      } else if (name === 'heal') {
+        const spellPower = findDependValue(feature);
+        const newHealth = (aimCard.currentHP + spellPower) >= aimCard.health
+          ? aimCard.health : aimCard.currentHP + spellPower;
+        dispatch(battleActions.addAnimation({ cell: aimCell, type: 'healed' }));
+        dispatch(battleActions.changeHP({
+          health: newHealth,
+          cardId: aimCard.id,
+          cellId: aimCard.cellId,
+        }));
+      } else if (name === 'enemyheroheal') {
+        const enemyPlayer = player === 'player1' ? 'player2' : 'player1';
+        const heroCell = fieldCells.find((cell) => cell.type === 'hero' && cell.player === enemyPlayer);
+        const heroCard = heroCell.content.find((el) => el.type === 'hero');
+        const newHealth = (heroCard.currentHP + feature.value) >= heroCard.health
+          ? heroCard.health : heroCard.currentHP + feature.value;
+        dispatch(battleActions.addAnimation({ cell: heroCell, type: 'healed' }));
+        dispatch(battleActions.changeHP({
+          health: newHealth,
+          cardId: heroCard.id,
+          cellId: heroCard.cellId,
+        }));
+      } else if (name === 'heroheal') {
+        const heroCell = fieldCells.find((cell) => cell.type === 'hero' && cell.player === thisPlayer);
+        const heroCard = heroCell.content.find((el) => el.type === 'hero');
+        const newHealth = (heroCard.currentHP + feature.value) >= heroCard.health
+          ? heroCard.health : heroCard.currentHP + feature.value;
+        dispatch(battleActions.addAnimation({ cell: heroCell, type: 'healed' }));
+        dispatch(battleActions.changeHP({
+          health: newHealth,
+          cardId: heroCard.id,
+          cellId: heroCard.cellId,
+        }));
+      } else if (name === 'health') {
+        const newHealth = aimCard.currentHP + findDependValue(feature);
+        dispatch(battleActions.changeHP({
+          health: newHealth,
+          cardId: aimCard.id,
+          cellId: aimCard.cellId,
+        }));
+      } else if (name === 'invoke') {
+        const spellCard = { ...value, player: thisPlayer };
+        dispatch(battleActions.addActiveCard({ card: spellCard, player: thisPlayer }));
+        handleAnimation(spellCard, 'add');
+      } else if (name === 'drawcard') {
+        dispatch(battleActions.drawCard({ player: thisPlayer }));
+        if (cost) {
+          const newPoints = currentPoints - cost;
+          dispatch(battleActions.setPlayerPoints({ points: newPoints, player: thisPlayer }));
+        }
+      } else if (name === 'increasepoints') {
+        const newPoints = currentPoints + value;
+        dispatch(battleActions.setPlayerPoints({ points: newPoints, player: thisPlayer }));
+      }
+    };
+
     const newfieldCells = store.getState().battleReducer.fieldCells;
     const newAimCell = newfieldCells.find((cell) => cell.id === aimCell?.id);
     const aimCard = applyingCard ?? newAimCell?.content?.find((item) => item.type === 'warrior' || item.type === 'hero');
@@ -409,8 +413,8 @@ export const AbilityProvider = ({ children }) => {
 
   const makeFeatureAttach = (feature, aimCell) => {
     const currentfieldCells = store.getState().battleReducer.fieldCells;
-    const currentAimCell = currentfieldCells.find((cell) => cell.id === aimCell.id);
-    const aimCard = currentAimCell.content.find((item) => item.type === 'warrior' || item.type === 'hero');
+    const currentAimCell = currentfieldCells.find((cell) => cell.id === aimCell?.id);
+    const aimCard = currentAimCell?.content?.find((item) => item.type === 'warrior' || item.type === 'hero');
     const {
       name, type, aim, attach,
     } = feature;
@@ -477,6 +481,13 @@ export const AbilityProvider = ({ children }) => {
         .filter((cell) => cell.line === aimCell.line)
         .map((cell) => cell.id);
       filtered.forEach((id) => dispatch(battleActions.addAttachment({ cellId: id, feature, type: 'cell' })));
+    } else if (attach.includes('grave')) {
+      if (type === 'good') {
+        const cellId = fieldCells
+          .find((cell) => cell.type === 'graveyard' && cell.player === thisPlayer).id;
+        dispatch(battleActions.addAttachment({ cellId, feature, type: 'cell' }));
+        dispatch(modalsActions.openModal({ type: 'openGraveyard', player: thisPlayer }));
+      }
     } else if (type === 'good') {
       if (name === 'moving') {
         dispatch(battleActions.addAttachment({ cellId: aimCell.id, feature }));
@@ -495,7 +506,7 @@ export const AbilityProvider = ({ children }) => {
     }
   };
 
-  const sendCardFromField = (card, destination) => {
+  const sendCardFromField = (card, destination, cardCost) => {
     const { type } = card;
     const cardCell = fieldCells.find((cell) => cell.id === card.cellId);
     const lastSpells = type === 'warrior' ? findTriggerSpells(card, cardCell, 'lastcall', 'warrior') : findTriggerSpells(card, cardCell, 'lastcall', 'spell');
@@ -509,7 +520,8 @@ export const AbilityProvider = ({ children }) => {
     if (destination === 'grave') {
       dispatch(battleActions.addToGraveyard({ card }));
     } else {
-      dispatch(battleActions.returnCard({ card }));
+      const cost = cardCost ?? card.cost;
+      dispatch(battleActions.returnCard({ card, cost }));
     }
   };
 

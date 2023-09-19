@@ -115,6 +115,10 @@
 }
 
 @media screen and (max-width: 767px) {
+  .main {
+    gap: 40px;
+  }
+
   .textMute {
     font-size: 14px;
   }

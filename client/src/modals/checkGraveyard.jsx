@@ -24,7 +24,7 @@ const Graveyard = () => {
     <dialog className="modal-window modal-window-bottom">
       <div className="modal-window__content modal-big">
         <h2 className="modal-window__header">{t('PlayedCards')}</h2>
-        <div className="modal-winodw__buttons">
+        <div className="modal-window__buttons">
           <PrimaryButton
             showIcon={false}
             state="default"

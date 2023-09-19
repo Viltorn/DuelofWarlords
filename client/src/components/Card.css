@@ -24,8 +24,8 @@
 }
 
 .card-block_active {
-  width: calc((var(--hand-card-width)) * 1.43);
-  height: calc((var(--hand-card-width)) * 1.6 * 1.43);
+  width: calc((var(--hand-card-width)) * 1.6);
+  height: calc((var(--hand-card-width)) * 1.6 * 1.6);
 }
 
 .card-block_active:hover {
@@ -74,8 +74,18 @@
 }
 
 .card-block__warrior-health.active {
-  left: 0.6rem;
-  top: 2.8rem;
+  left: 0.5rem;
+  top: 25%;
+}
+
+.card-block__warrior-cost {
+  left: 0.3rem;
+  top: 6.4rem;
+}
+
+.card-block__warrior-cost.active {
+  left: 0.5rem;
+  top: 82%;
 }
 
 .card-block__hero-health {
@@ -103,17 +113,22 @@
 }
 
 .card-block__font-active {
-  font-size: 0.7rem;
-  font-weight: 600;
-  line-height: 0.8rem;
   text-align: start;
+  font-size: 0.8rem;
+  font-weight: 600;
+  line-height: 1rem;
   margin: 0.1rem;
 }
 
+/* @media (min-width: 0) and (max-width: 767px) {
+  .card-block_active {
+    width: calc((var(--hand-card-width)) * 1.6);
+    height: calc((var(--hand-card-width)) * 1.6 * 1.6);
+  }
 
-
-/* .card-back {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
+  .card-block__font-active {
+    font-size: 0.8rem;
+    font-weight: 600;
+    line-height: 1rem;
+  }
 } */
