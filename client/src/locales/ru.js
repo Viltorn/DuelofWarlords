@@ -57,7 +57,7 @@ export default {
     ChangePoints: 'ИЗМЕНИТЬ ОЧКИ ДЕЙСТВИЯ',
     ChooseGame: 'ВЫБЕРИТЕ ИГРУ',
     Tutorial: 'ОБУЧЕНИЕ',
-    HotSeat: '"HOT SEAT"',
+    HotSeat: 'ТРЕНИРОВКА',
     ChooseFactions: 'ВЫБЕРИТЕ ФРАКЦИЮ И ГЕРОЯ',
     Start: 'НАЧАТЬ',
     Back: 'НАЗАД',

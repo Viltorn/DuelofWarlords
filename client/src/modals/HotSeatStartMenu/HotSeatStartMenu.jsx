@@ -74,18 +74,13 @@ const HotSeatMenu = () => {
         const player2FullDeck = createDeckForPLayer(makeShaffledDeck(values.player2Deck), 'player2');
         const player2Hand = [...player2FullDeck.slice(0, startCardsNumber2), dummyCard];
         const player2Deck = player2FullDeck.slice(startCardsNumber2);
-        dispatch(battleActions.setHeroes({
-          player1Hero: values.player1Hero,
-          player2Hero: values.player2Hero,
-        }));
-        dispatch(battleActions.setPlayersDecks({
-          player1Deck,
-          player2Deck,
-        }));
-        dispatch(battleActions.setPlayersHands({
-          player1Hand,
-          player2Hand,
-        }));
+        dispatch(battleActions.setHero({ hero: values.player1Hero, player: 'player1' }));
+        dispatch(battleActions.setHero({ hero: values.player2Hero, player: 'player2' }));
+        dispatch(battleActions.setPlayersDeck({ deck: player1Deck, player: 'player1' }));
+        dispatch(battleActions.setPlayersDeck({ deck: player2Deck, player: 'player2' }));
+        dispatch(battleActions.setPlayersHand({ hand: player1Hand, player: 'player1' }));
+        dispatch(battleActions.setPlayersHand({ hand: player2Hand, player: 'player2' }));
+        dispatch(battleActions.addCommonPoint());
         handleClose();
       } catch (err) {
         console.log(err);

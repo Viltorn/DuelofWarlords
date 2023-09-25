@@ -2,6 +2,8 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch } from 'react-redux';
 import { actions as modalActions } from '../../slices/modalsSlice.js';
+import { actions as battleActions } from '../../slices/battleSlice.js';
+import { heroes } from '../../gameCardsData/factionsData';
 import PrimaryButton from '../../components/PrimaryButton';
 import styles from './greetingWindow.module.css';
 
@@ -11,6 +13,10 @@ const GreetingWindow = () => {
 
   const handleContinue = () => {
     dispatch(modalActions.closeModal());
+    dispatch(battleActions.disableCells({ ids: ['graveyard1', 'graveyard2'] }));
+    dispatch(battleActions.changePlayer({ newPlayer: 'player1' }));
+    dispatch(battleActions.setHero({ hero: heroes[0], player: 'player1' }));
+    dispatch(battleActions.setHero({ hero: heroes[1], player: 'player2' }));
     dispatch(modalActions.openModal({ type: 'tutorialSteps' }));
   };
 

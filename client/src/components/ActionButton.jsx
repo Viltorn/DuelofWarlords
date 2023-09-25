@@ -30,7 +30,9 @@ const ActionButton = ({
     activeCardPlayer2,
     thisPlayer,
     fieldCells,
+    playerPoints,
   } = useSelector((state) => state.battleReducer);
+  const currentPoints = playerPoints.find((item) => item.player === thisPlayer).points;
   const currentCell = fieldCells.find((item) => item.id === cellId);
 
   const makeTurn = (direction) => {
@@ -46,6 +48,8 @@ const ActionButton = ({
   };
 
   const makeSpellCast = (spell, cell) => {
+    const newPoints = currentPoints - ability.cost;
+    dispatch(battleActions.setPlayerPoints({ points: newPoints, player: thisPlayer }));
     if (!spell.attach) {
       makeFeatureCast(spell, cell);
     } else if (spell.attach) {

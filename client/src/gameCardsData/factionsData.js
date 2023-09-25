@@ -23,6 +23,7 @@ export const heroes = [
     id: _.uniqueId(),
     cellId: '',
     cost: 4,
+    currentC: 4,
     place: '',
     attachments: [],
     features: [{
@@ -49,6 +50,7 @@ export const heroes = [
     id: _.uniqueId(),
     cellId: '',
     cost: 2,
+    currentC: 2,
     place: '',
     attachments: [],
     features: [{

@@ -12,6 +12,7 @@ export const FunctionProvider = ({ children }) => {
   const [attackCells, setAttackCells] = useState([]);
   const [castCells, setCastCells] = useState([]);
   const [moveCells, setMoveCells] = useState([]);
+  const [tutorStep, changeTutorStep] = useState(0);
   const currentPoints = playerPoints.find((item) => item.player === thisPlayer).points;
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
 
@@ -47,7 +48,7 @@ export const FunctionProvider = ({ children }) => {
   };
 
   const isAllowedCost = (checkCard) => {
-    const newCost = currentPoints - checkCard.cost;
+    const newCost = currentPoints - checkCard.currentC;
     const fieldCard = checkCard.status !== 'hand' && checkCard.type !== 'hero';
     if (((checkCard.status === 'hand' || checkCard.type === 'hero') && newCost >= 0) || fieldCard) {
       return true;
@@ -296,8 +297,6 @@ export const FunctionProvider = ({ children }) => {
       return;
     }
 
-    console.log(2);
-
     const {
       type, status, attachments, turn,
     } = activeCard;
@@ -339,6 +338,7 @@ export const FunctionProvider = ({ children }) => {
   const deleteCardfromSource = (card) => {
     const { player, status, cellId } = card;
     const cardId = card.id;
+    console.log(card);
     switch (status) {
       case 'hand':
         dispatch(battleActions.deleteHandCard({ cardId, player }));
@@ -364,7 +364,6 @@ export const FunctionProvider = ({ children }) => {
   };
 
   const canBeAttacked = (cellcard) => {
-    console.log(attackCells);
     if (attackCells.includes(cellcard.cellId) && (cellcard.type === 'warrior' || cellcard.type === 'hero')) {
       return true;
     }
@@ -409,7 +408,7 @@ export const FunctionProvider = ({ children }) => {
         } else if (item.type === 'spell' && type === 'return') {
           deleteCardfromSource(item);
           dispatch(battleActions.deleteAttachment({ spellId: item.id }));
-          dispatch(battleActions.returnCard({ card: item }));
+          dispatch(battleActions.returnCard({ card: item, cost: item.cost }));
         }
       });
     }
@@ -443,6 +442,8 @@ export const FunctionProvider = ({ children }) => {
       getActiveCard,
       windowWidth,
       findDependValue,
+      tutorStep,
+      changeTutorStep,
     }}
     >
       {children}

@@ -20,8 +20,7 @@ const Battlefield = () => {
     activeCardPlayer1,
     activeCardPlayer2,
     fieldCells,
-    playerOneHand,
-    playerTwoHand,
+    playersHands,
     thisPlayer,
   } = useSelector((state) => state.battleReducer);
   const { gameMode } = useSelector((state) => state.gameReducer);
@@ -68,10 +67,10 @@ const Battlefield = () => {
                   <HeroPad type="first" player={thisPlayer} />
                 </div>
                 <div className="battlefield__player-hand">
-                  {playerOneHand.map((card) => (
+                  {playersHands[thisPlayer].map((card) => (
                     <Card
                       key={card.id}
-                      content={playerOneHand}
+                      content={playersHands[thisPlayer]}
                       card={card}
                       activeCard={activeCardPlayer1}
                     />
@@ -175,10 +174,10 @@ const Battlefield = () => {
                   )}
                 </div>
                 <div className="battlefield__player-hand">
-                  {playerTwoHand.map((card) => (
+                  {playersHands[thisPlayer].map((card) => (
                     <Card
                       key={card.id}
-                      content={playerTwoHand}
+                      content={playersHands[thisPlayer]}
                       card={card}
                       activeCard={activeCardPlayer2}
                     />

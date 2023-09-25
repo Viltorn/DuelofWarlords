@@ -25,7 +25,10 @@ const Cell = ({ props, id }) => {
     handleAnimation,
     canBeCast,
     isAllowedCost,
+    changeTutorStep,
   } = useContext(functionContext);
+
+  const { gameMode } = useSelector((state) => state.gameReducer);
   const [contLength, setContLength] = useState(content.length);
   const { makeFeatureCast, makeFeatureAttach, findTriggerSpells } = useContext(abilityContext);
   const currentPoints = playerPoints.find((item) => item.player === thisPlayer).points;
@@ -79,8 +82,11 @@ const Cell = ({ props, id }) => {
     const activeCard = getActiveCard();
 
     const addCardToField = () => {
+      if (gameMode === 'tutorial') {
+        changeTutorStep((prev) => prev + 1);
+      }
       if (activeCard.status === 'hand') {
-        const newPoints = currentPoints - activeCard.cost;
+        const newPoints = currentPoints - activeCard.currentC;
         dispatch(battleActions.setPlayerPoints({ points: newPoints, player: thisPlayer }));
       }
       handleAnimation(activeCard, 'delete');

@@ -16,7 +16,7 @@ const Header = ({ setOpenMenu, isOpenMenu }) => {
   } = useSelector((state) => state.battleReducer);
   const { gameMode } = useSelector((state) => state.gameReducer);
   const {
-    handleAnimation, deleteOtherActiveCard,
+    handleAnimation, deleteOtherActiveCard, changeTutorStep,
   } = useContext(functionContext);
   const { sendCardFromField, findTriggerSpells, makeFeatureCast } = useContext(abilityContext);
   const player1Points = playerPoints.find((item) => item.player === 'player1').points;
@@ -26,6 +26,12 @@ const Header = ({ setOpenMenu, isOpenMenu }) => {
   const hadleEndTurnClick = () => {
     const newPlayer = thisPlayer === 'player1' ? 'player2' : 'player1';
     const newCommonPoints = commonPoints < maxActionPoints ? commonPoints + 1 : maxActionPoints;
+    if (gameMode === 'tutorial') {
+      dispatch(battleActions.setPlayerPoints({ points: newCommonPoints, player: 'player1' }));
+      dispatch(battleActions.addCommonPoint());
+      changeTutorStep((prev) => prev + 1);
+      return;
+    }
     const posponedCell = fieldCells.find((cell) => cell.type === 'postponed' && cell.player === thisPlayer);
     const temporarySpells = fieldCells
       .filter((cell) => cell.content.length !== 0 && cell.type !== 'postponed')

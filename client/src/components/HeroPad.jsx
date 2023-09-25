@@ -25,7 +25,7 @@ const HeroPad = ({ type, player }) => {
   const { makeFeatureAttach } = useContext(abilityContext);
 
   const {
-    fieldCells, playerOneHand, playerTwoHand, thisPlayer, playerPoints, commonPoints, players,
+    fieldCells, playersHands, thisPlayer, playerPoints, commonPoints, players,
   } = useSelector((state) => state.battleReducer);
   const { gameMode } = useSelector((state) => state.gameReducer);
 
@@ -35,12 +35,13 @@ const HeroPad = ({ type, player }) => {
   const hero2Cell = fieldCells.find((cell) => cell.id === 'hero2');
   const postponedCell1 = fieldCells.find((cell) => cell.id === 'postponed1');
   const postponedCell2 = fieldCells.find((cell) => cell.id === 'postponed2');
-  const cardsCount = thisPlayer === 'player1' ? playerTwoHand.length : playerOneHand.length;
+  const cardsCount = thisPlayer === 'player1' ? playersHands.player2.length : playersHands.player1.length;
   const postponedCell = player === 'player1' ? postponedCell1 : postponedCell2;
   const postponedContentData = postponedCell.content[0];
   const heroCell = player === 'player1' ? hero1Cell : hero2Cell;
   const heroData = heroCell.content;
-  const graveyardContent = fieldCells.find((cell) => cell.player === player && cell.type === 'graveyard').content;
+  const graveCell = fieldCells.find((cell) => cell.player === player && cell.type === 'graveyard');
+  const graveyardContent = graveCell.content;
   const lastItem = graveyardContent[0];
 
   const classesContainer = cn({
@@ -109,7 +110,9 @@ const HeroPad = ({ type, player }) => {
   };
 
   const checkGraveyard = () => {
-    dispatch(modalsActions.openModal({ type: 'openGraveyard', player }));
+    if (!graveCell.disabled) {
+      dispatch(modalsActions.openModal({ type: 'openGraveyard', player }));
+    }
   };
 
   return (

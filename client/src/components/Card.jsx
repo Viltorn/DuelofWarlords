@@ -22,7 +22,7 @@ const Card = ({
     name,
     id,
     player,
-    cost,
+    currentC,
   } = card;
   const { getActiveCard, handleAnimation } = useContext(functionContext);
 
@@ -77,7 +77,7 @@ const Card = ({
         </>
         )}
         {type !== 'hero' && (
-          <h3 className={cn('card-block__warrior-cost', { active: active === 'active' })}>{cost}</h3>
+          <h3 className={cn('card-block__warrior-cost', { active: active === 'active' })}>{currentC}</h3>
         )}
         {type === 'hero' && (
           <h3 className="card-block__hero-health">{health}</h3>

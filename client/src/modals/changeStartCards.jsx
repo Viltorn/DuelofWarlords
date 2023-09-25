@@ -11,9 +11,9 @@ const ChangeStartCards = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
 
-  const { playerOneHand, playerTwoHand } = useSelector((state) => state.battleReducer);
+  const { playersHands } = useSelector((state) => state.battleReducer);
   const { player } = useSelector((state) => state.modalsReducer);
-  const thisHand = player === 'player1' ? playerOneHand : playerTwoHand;
+  const thisHand = playersHands[player];
   const handSize = player === 'player1' ? startCardsNumber1 : startCards2AfterDraw;
   const diffSize = handSize - thisHand.length;
 

@@ -10,10 +10,8 @@ const initialState = {
   playerPoints: [{ player: 'player1', points: 1 }, { player: 'player2', points: 1 }],
   players: { player1: { name: 'Viktor', id: 'player1', cardsdrawn: false }, player2: { name: 'AI', id: 'player2', cardsdrawn: false } },
   thisPlayer: 'player1',
-  playerOneDeck: [],
-  playerOneHand: [],
-  playerTwoHand: [],
-  playerTwoDeck: [],
+  playersDecks: { player1: [], player2: [] },
+  playersHands: { player1: [], player2: [] },
   fieldCells: [
     ...createFieldCells(fieldCells),
     ...bigSpell,
@@ -47,6 +45,26 @@ const battleSlice = createSlice({
               return item;
             });
           }
+        }
+        return cell;
+      });
+    },
+
+    activateCells(state, { payload }) {
+      const { ids } = payload;
+      state.fieldCells = state.fieldCells.map((cell) => {
+        if (ids.includes(cell.id)) {
+          cell.disabled = false;
+        }
+        return cell;
+      });
+    },
+
+    disableCells(state, { payload }) {
+      const { ids } = payload;
+      state.fieldCells = state.fieldCells.map((cell) => {
+        if (ids.includes(cell.id)) {
+          cell.disabled = true;
         }
         return cell;
       });
@@ -119,45 +137,38 @@ const battleSlice = createSlice({
       state.fieldCells = [...changedCells];
     },
 
-    setHeroes(state, { payload }) {
-      const { player1Hero, player2Hero } = payload;
+    setHero(state, { payload }) {
+      const { hero, player } = payload;
       state.fieldCells = state.fieldCells.map((cell) => {
-        if (cell.id === 'hero1') {
-          cell.content = [{ ...player1Hero, cellId: 'hero1', player: 'player1' }];
-        }
-        if (cell.id === 'hero2') {
-          cell.content = [{ ...player2Hero, cellId: 'hero2', player: 'player2' }];
+        if (cell.type === 'hero' && cell.player === player) {
+          cell.content = [{ ...hero, cellId: cell.id, player }];
         }
         return cell;
       });
     },
 
-    setPlayersDecks(state, { payload }) {
-      const { player1Deck, player2Deck } = payload;
-      state.playerOneDeck = player1Deck;
-      state.playerTwoDeck = player2Deck;
+    setPlayersDeck(state, { payload }) {
+      const { deck, player } = payload;
+      state.playersDecks[player] = deck;
     },
 
-    setPlayersHands(state, { payload }) {
-      const { player1Hand, player2Hand } = payload;
-      state.playerOneHand = player1Hand;
-      state.playerTwoHand = player2Hand;
+    setPlayersHand(state, { payload }) {
+      const { hand, player } = payload;
+      state.playersHands[player] = hand;
     },
 
     drawCard(state, { payload }) {
       const { player } = payload;
-      const hand = player === 'player1' ? 'playerOneHand' : 'playerTwoHand';
-      const deck = player === 'player1' ? 'playerOneDeck' : 'playerTwoDeck';
-      if (state[deck].length !== 0) {
-        const card = state[deck].shift();
-        state[hand] = [card, ...state[hand]];
+      if (state.playersDecks[player].length !== 0) {
+        const card = state.playersDecks[player].shift();
+        state.playersHands[player] = [card, ...state.playersHands[player]];
       }
     },
 
     sendCardtoDeck(state, { payload }) {
       const { activeCard } = payload;
-      const deck = activeCard.player === 'player1' ? 'playerOneDeck' : 'playerTwoDeck';
-      state[deck] = [...state[deck], activeCard];
+      const { player } = activeCard;
+      state.playersDecks[player] = [...state.playersDecks[player], activeCard];
     },
 
     changePlayer(state, { payload }) {
@@ -216,15 +227,14 @@ const battleSlice = createSlice({
 
     returnCard(state, { payload }) {
       const { card, cost } = payload;
-      const { health } = card;
+      const { health, player } = card;
       const changedBasic = {
-        ...card, status: 'hand', cellId: '', cost,
+        ...card, status: 'hand', cellId: '', currentC: cost,
       };
       const changedCard = card.type === 'warrior' ? {
         ...changedBasic, currentHP: health, turn: 1, attachments: [],
       } : { ...changedBasic };
-      const hand = changedCard.player === 'player1' ? 'playerOneHand' : 'playerTwoHand';
-      state[hand] = [...state[hand], changedCard];
+      state.playersHands[player] = [...state.playersHands[player], changedCard];
     },
 
     addToGraveyard(state, { payload }) {
@@ -274,8 +284,7 @@ const battleSlice = createSlice({
 
     deleteHandCard(state, { payload }) {
       const { player, cardId } = payload;
-      const hand = player === 'player1' ? 'playerOneHand' : 'playerTwoHand';
-      state[hand] = state[hand].filter((card) => card.id !== cardId);
+      state.playersHands[player] = state.playersHands[player].filter((card) => card.id !== cardId);
     },
 
     changeHP(state, { payload }) {
