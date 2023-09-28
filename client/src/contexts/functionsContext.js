@@ -325,7 +325,11 @@ export const FunctionProvider = ({ children }) => {
       }
     }
 
-    if ((type === 'spell' && (status === 'hand' || isCardPostponed)) || type === 'hero') {
+    if (type === 'hero' && turn === 0) {
+      findCellsForCast(activeCard);
+    }
+
+    if (type === 'spell' && (status === 'hand' || isCardPostponed)) {
       findCellsForCast(activeCard);
     }
 

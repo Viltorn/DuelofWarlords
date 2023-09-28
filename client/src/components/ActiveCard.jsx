@@ -15,7 +15,7 @@ const ActiveCard = ({ activeCard, playerType }) => {
     'active-card_block-2': playerType === 'player2',
   });
   const { gameMode } = useSelector((state) => state.gameReducer);
-  const { isOpened } = useSelector((state) => state.modalsReducer);
+  // const { isOpened } = useSelector((state) => state.modalsReducer);
   const {
     thisPlayer, playerPoints, fieldCells, commonPoints,
   } = useSelector((state) => state.battleReducer);
@@ -29,31 +29,29 @@ const ActiveCard = ({ activeCard, playerType }) => {
 
   return (
     <div className={cardClasses}>
-      {!isOpened && (
-        <div className="active-card__buttons">
-          {(status === 'field') && (type === 'warrior' || type === 'hero') && gameMode === 'hotseat' && (
+      <div className="active-card__buttons">
+        {(status === 'field') && (type === 'warrior' || type === 'hero') && gameMode === 'hotseat' && (
           <>
             <ActionButton card={activeCard} type="turnLeft" />
             <ActionButton card={activeCard} type="turnRight" />
           </>
-          )}
-          {((firstRound && thisPlayer === activeCard.player) || gameMode === 'hotseat') && (type !== 'hero') && (
-            <ActionButton card={activeCard} ability={insteadatk} type="deckreturn" />
-          )}
-          {insteadatk && activeCard.turn === 0 && leftPoints >= 0 && (
+        )}
+        {((firstRound && thisPlayer === activeCard.player) || gameMode === 'hotseat') && (type !== 'hero') && (
+        <ActionButton card={activeCard} ability={insteadatk} type="deckreturn" />
+        )}
+        {insteadatk && activeCard.turn === 0 && leftPoints >= 0 && (
           <ActionButton card={activeCard} ability={insteadatk} type="ability" />
-          )}
-          {(status === 'field') && (type === 'warrior' || type === 'hero') && gameMode === 'hotseat' && (
+        )}
+        {(status === 'field') && (type === 'warrior' || type === 'hero') && gameMode === 'hotseat' && (
           <ActionButton card={activeCard} type="healthBar" />
-          )}
-          {((status !== 'hand' && (type !== 'hero') && ressurect && activeCard.status === 'graveyard') || gameMode === 'hotseat') && (
+        )}
+        {((status !== 'hand' && (type !== 'hero') && ressurect && activeCard.status === 'graveyard') || gameMode === 'hotseat') && (
           <ActionButton card={activeCard} type="return" ressurect={ressurect} />
-          )}
-          {type !== 'hero' && status !== 'graveyard' && gameMode === 'hotseat' && (
+        )}
+        {type !== 'hero' && status !== 'graveyard' && gameMode === 'hotseat' && (
           <ActionButton card={activeCard} type="graveyard" />
-          )}
-        </div>
-      )}
+        )}
+      </div>
       <Card card={activeCard} activeCard={activeCard} active="active" />
     </div>
   );

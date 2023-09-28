@@ -29,6 +29,8 @@ const Header = ({ setOpenMenu, isOpenMenu }) => {
     if (gameMode === 'tutorial') {
       dispatch(battleActions.setPlayerPoints({ points: newCommonPoints, player: 'player1' }));
       dispatch(battleActions.addCommonPoint());
+      dispatch(battleActions.drawCard({ player: 'player1' }));
+      dispatch(battleActions.turnPostponed({ player: 'player1', status: 'face' }));
       changeTutorStep((prev) => prev + 1);
       return;
     }

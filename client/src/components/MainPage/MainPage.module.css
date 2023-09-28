@@ -114,6 +114,10 @@
   width: 100%;
 }
 
+.devider {
+  border: 0.1rem solid var(--golden);
+}
+
 @media screen and (max-width: 767px) {
   .main {
     gap: 40px;

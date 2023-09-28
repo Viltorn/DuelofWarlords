@@ -89,10 +89,12 @@ const MainPage = () => {
             {t('GameFeaturesTitle')}
           </h2>
           <GameFeature img={BattlefieldTactics} direction="normal" h1={t('Battlefield')} p={t('BattlefieldDescription')} />
+          <hr className={styles.devider} />
           <GameFeature img={HeroPower} direction="reverse" h1={t('Heroes')} p={t('HeroPowerDescription')} />
+          <hr className={styles.devider} />
           <GameFeature img={SpellCast} direction="normal" h1={t('Spells')} p={t('SpellsDescription')} />
         </div>
-        <Link to="/battle" className={styles.link}>
+        <Link to="/choose" className={styles.link}>
           <PrimaryButton showIcon={false} state="default" text="ИГРАТЬ" variant="primary" />
         </Link>
       </section>

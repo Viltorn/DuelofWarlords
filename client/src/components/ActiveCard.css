@@ -5,6 +5,7 @@
   justify-content: flex-end;
   align-items: flex-start;
   gap: 0.5rem;
+  z-index: 3;
 }
 
 .active-card_block-2 {
@@ -13,6 +14,7 @@
   justify-content: flex-end;
   align-items: flex-start;
   gap: 0.5rem;
+  z-index: 3;
 }
 
 .active-card__buttons {

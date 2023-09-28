@@ -164,6 +164,10 @@ export const AbilityProvider = ({ children }) => {
         }
       };
 
+      if (gameMode === 'tutorial') {
+        changeTutorStep((prev) => prev + 1);
+      }
+
       const {
         value, aim, name,
       } = spell;

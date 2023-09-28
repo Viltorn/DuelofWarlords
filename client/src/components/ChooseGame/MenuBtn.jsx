@@ -36,10 +36,8 @@ const MenuBtn = ({
 
   const handleOptionClick = () => {
     const gameMode = option.current.dataset.type;
-    if (gameMode === 'tutorial') {
-      dispatch(battleActions.resetState());
-      changeTutorStep(0);
-    }
+    dispatch(battleActions.resetState());
+    changeTutorStep(0);
     dispatch(gameActions.setGameMode({ gameMode }));
     navigate('/hotseat');
   };

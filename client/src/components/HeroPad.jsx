@@ -19,7 +19,7 @@ const HeroPad = ({ type, player }) => {
   const deck = useRef();
   const dispatch = useDispatch();
   const {
-    deleteCardfromSource, getActiveCard, handleAnimation, isAllowedCost,
+    deleteCardfromSource, getActiveCard, handleAnimation, isAllowedCost, changeTutorStep,
   } = useContext(functionContext);
 
   const { makeFeatureAttach } = useContext(abilityContext);
@@ -72,6 +72,9 @@ const HeroPad = ({ type, player }) => {
     }
 
     if (activeCard && player === activeCard.player) {
+      if (gameMode === 'tutorial') {
+        changeTutorStep((prev) => prev + 1);
+      }
       if (activeCard.status === 'hand') {
         const newPoints = currentPoints - activeCard.cost;
         dispatch(battleActions.setPlayerPoints({ points: newPoints, player: thisPlayer }));

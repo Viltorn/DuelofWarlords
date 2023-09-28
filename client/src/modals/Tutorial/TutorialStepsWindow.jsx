@@ -1,11 +1,13 @@
 import React, { useEffect, useContext } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { actions as battleActions } from '../../slices/battleSlice.js';
+import { actions as modalActions } from '../../slices/modalsSlice.js';
 import styles from './TutorialStepsWindow.module.css';
 import castleDeck from '../../gameCardsData/castleDeck.js';
 import academiaDeck from '../../gameCardsData/academiaDeck.js';
 import { spellsCells } from '../../gameData/heroes&spellsCellsData.js';
 import tutorialStepsData from '../../gameData/tutorialStepsData';
+import makeDeckForPLayer from '../../utils/makeDeckForPlayer.js';
 import abilityContext from '../../contexts/abilityActions.js';
 import functionContext from '../../contexts/functionsContext.js';
 
@@ -13,26 +15,35 @@ const TutorialStepsWindow = () => {
   const dispatch = useDispatch();
   const { fieldCells, thisPlayer } = useSelector((state) => state.battleReducer);
 
-  const { makeFight } = useContext(abilityContext);
+  const { makeFight, sendCardFromField } = useContext(abilityContext);
   const { deleteCardfromSource, tutorStep, changeTutorStep } = useContext(functionContext);
+
+  const madeCastleDeck = makeDeckForPLayer(castleDeck, 'player1');
+  const madeAcademiaDeck = makeDeckForPLayer(academiaDeck, 'player2');
 
   const heroCells = fieldCells.filter((cell) => cell.type === 'hero');
   const linesAndRows = fieldCells.filter((cell) => cell.type === 'field' && (cell.row === '1' || cell.line === '2'));
   const enemyLine3 = fieldCells.filter((cell) => cell.type === 'field' && cell.line === '3');
   const enemyCells = fieldCells.filter((cell) => cell.type === 'field' && cell.player === 'player2');
+  const playersCells = fieldCells.filter((cell) => cell.type === 'field' && cell.player === 'player1');
   const cellsForSpells = fieldCells.filter((cell) => spellsCells.includes(cell.type));
-  const shooter = { ...castleDeck.find((el) => el.name === 'Imperial Shooter'), player: 'player1' };
-  const knight = { ...castleDeck.find((el) => el.name === 'Warrior Of Light'), player: 'player1' };
-  const griffon = { ...castleDeck.find((el) => el.name === 'Imperial Griffon'), player: 'player1', currentC: 3 };
-  const gargoyle = { ...academiaDeck.find((el) => el.name === 'Gargoyle'), player: 'player2', currentHP: 2 };
-  const earthGolem = { ...academiaDeck.find((el) => el.name === 'Earth golem'), player: 'player2' };
-  const iceElement = { ...academiaDeck.find((el) => el.name === 'Ice element'), player: 'player2' };
-  const thunderBlast = { ...castleDeck.find((el) => el.name === 'Thunder Blast'), player: 'player1' };
-  const hammer = { ...castleDeck.find((el) => el.name === 'Righteous Hammer'), player: 'player1' };
-  const retribution = { ...castleDeck.find((el) => el.name === 'Retribution'), player: 'player1' };
-  const bless = { ...castleDeck.find((el) => el.name === 'Bless'), player: 'player1' };
+
+  const shooter = madeCastleDeck.find((el) => el.name === 'Imperial Shooter');
+  const knight = madeCastleDeck.find((el) => el.name === 'Warrior Of Light');
+  const griffon = { ...madeCastleDeck.find((el) => el.name === 'Imperial Griffon'), currentC: 3 };
+  const gargoyle = { ...madeAcademiaDeck.find((el) => el.name === 'Gargoyle'), currentHP: 2 };
+  const earthGolem = { ...madeAcademiaDeck.find((el) => el.name === 'Earth golem'), id: 'one' };
+  const earthGolem2 = { ...madeAcademiaDeck.find((el) => el.name === 'Earth golem'), id: 'two' };
+  const fireGolem = { ...madeAcademiaDeck.find((el) => el.name === 'Fire golem'), currentHP: 4 };
+  const mage = { ...madeAcademiaDeck.find((el) => el.name === 'Mage apprentice'), turn: 0 };
+  const iceElement = madeAcademiaDeck.find((el) => el.name === 'Ice element');
+  const thunderBlast = madeCastleDeck.find((el) => el.name === 'Thunder Blast');
+  const hammer = madeCastleDeck.find((el) => el.name === 'Righteous Hammer');
+  const holyland = madeCastleDeck.find((el) => el.name === 'Holy Land');
+  const lightShield = madeCastleDeck.find((el) => el.name === 'LightShield');
+  const lastChance = madeCastleDeck.find((el) => el.name === 'Last Chance');
   const warriorsDeck = [shooter, knight, griffon];
-  const spellsDeck = [hammer, thunderBlast, retribution, bless];
+  const spellsDeck = [hammer, holyland, lightShield, thunderBlast, lastChance];
   const fieldCellsIds = fieldCells
     .filter((cell) => cell.type === 'field')
     .map((cell) => cell.id);
@@ -84,6 +95,7 @@ const TutorialStepsWindow = () => {
         const { id } = fieldCells.find((cell) => cell.content.find((item) => item.name === 'Imperial Griffon'));
         dispatch(battleActions.turnCardRight({ cardId: griffon.id, cellId: id, qty: 1 }));
       },
+      massTurn: () => dispatch(battleActions.massTurnCards({ player: 'player1' })),
       returnGriffonAndKnight: () => {
         const curKnight = fieldCells
           .find((cell) => cell.content
@@ -106,7 +118,37 @@ const TutorialStepsWindow = () => {
         dispatch(battleActions.addFieldContent({ activeCard: earthGolem, id: `${row}.3` }));
         dispatch(battleActions.addFieldContent({ activeCard: iceElement, id: `${row}.4` }));
       },
+      removeFireGolem: () => {
+        const curFireGolem = fieldCells
+          .find((cell) => cell.content
+            .find((item) => item.name === 'Fire golem'))
+          .content.find((item) => item.name === 'Fire golem');
+        deleteCardfromSource(curFireGolem);
+      },
+      addSecondEarthGolem: () => {
+        const { row } = fieldCells.find((cell) => cell.content.find((item) => item.name === 'Warrior Of Light'));
+        const row2 = fieldCells.find((cell) => cell.content.find((item) => item.name === 'Imperial Griffon')).row;
+        dispatch(battleActions.addFieldContent({ activeCard: mage, id: `${row2}.4` }));
+        dispatch(battleActions.addFieldContent({ activeCard: earthGolem2, id: `${row}.3` }));
+      },
+      addFireGolem: () => {
+        const { row } = fieldCells.find((cell) => cell.content.find((item) => item.name === 'Imperial Griffon'));
+        const { id } = heroCells.find((cell) => cell.id === 'hero1').content[0];
+        dispatch(battleActions.addFieldContent({ activeCard: fireGolem, id: `${row}.3` }));
+        dispatch(battleActions.turnCardRight({ cardId: id, cellId: 'hero1', qty: 1 }));
+      },
+      sendHolyLandToGrave: () => {
+        const holyLand = fieldCells
+          .find((cell) => cell.content
+            .find((item) => item.name === 'Holy Land'))
+          .content.find((item) => item.name === 'Holy Land');
+        sendCardFromField(holyLand, 'grave');
+      },
       disableCells: () => dispatch(battleActions.disableCells({ ids: [...fieldCellsIds] })),
+      disableSpellCells: () => {
+        const ids = cellsForSpells.map((cell) => cell.id);
+        dispatch(battleActions.disableCells({ ids: [...ids] }));
+      },
       drawCard: () => dispatch(battleActions.drawCard({ player: thisPlayer })),
       addCommonPoint: () => dispatch(battleActions.addCommonPoint()),
       activeShooterCells: () => dispatch(battleActions.activateCells({ ids: ['1.2', '2.2', '3.2', '4.2'] })),
@@ -117,6 +159,8 @@ const TutorialStepsWindow = () => {
       },
       addGolemsForShoot: () => {
         const { row } = fieldCells.find((cell) => cell.content.find((item) => item.name === 'Imperial Shooter'));
+        const ids = playersCells.map((cell) => cell.id);
+        dispatch(battleActions.disableCells({ ids: [...ids] }));
         dispatch(battleActions.addFieldContent({ activeCard: earthGolem, id: `${row}.3` }));
         dispatch(battleActions.addFieldContent({ activeCard: iceElement, id: `${row}.4` }));
       },
@@ -125,16 +169,43 @@ const TutorialStepsWindow = () => {
         const ids = enemyLine3.map((cell) => cell.id);
         dispatch(battleActions.activateCells({ ids: [...ids] }));
       },
+      activatePlayersCells: () => {
+        const ids = playersCells.map((cell) => cell.id);
+        dispatch(battleActions.activateCells({ ids: [...ids] }));
+      },
+      activatePlayersHero: () => dispatch(battleActions.activateCells({ ids: ['hero1'] })),
       addWarriorsToDeck: () => dispatch(battleActions.setPlayersDeck({ deck: warriorsDeck, player: 'player1' })),
       addSpellsToDeck: () => dispatch(battleActions.setPlayersDeck({ deck: spellsDeck, player: 'player1' })),
       attackGriffon: () => makeFight({ ...gargoyle, cellId: '3.3', status: 'field' }, { ...griffon, cellId: '3.1' }),
+      attackShooter: () => {
+        const curMage = fieldCells.reduce((acc, cell) => {
+          const mageItem = cell.content.find((item) => item.name === 'Mage apprentice');
+          acc = mageItem ?? acc;
+          return acc;
+        }, {});
+        const curShooter = fieldCells.reduce((acc, cell) => {
+          const shootItem = cell.content.find((item) => item.name === 'Imperial Shooter');
+          acc = shootItem ?? acc;
+          return acc;
+        }, {});
+        makeFight(curMage, curShooter);
+      },
       activateEnemyCells: () => {
         const ids = enemyCells.map((cell) => cell.id);
-        console.log(ids);
         dispatch(battleActions.activateCells({ ids: [...ids, 'hero2'] }));
+      },
+      disableEnemyCells: () => {
+        const ids = enemyCells.map((cell) => cell.id);
+        dispatch(battleActions.disableCells({ ids: [...ids, 'hero2'] }));
+      },
+      activateSpellCellForGriffon: () => {
+        const { row } = fieldCells.find((cell) => cell.content.find((item) => item.name === 'Imperial Griffon'));
+        const { id } = cellsForSpells.find((cell) => cell.row === row);
+        dispatch(battleActions.activateCells({ ids: [id] }));
       },
       linesRowsAnimation: () => linesAndRows.forEach((cell) => dispatch(battleActions.addAnimation({ cell, type: 'green' }))),
       spellCellsAnimation: () => cellsForSpells.forEach((cell) => dispatch(battleActions.addAnimation({ cell, type: 'green' }))),
+      openLastStep: () => dispatch(modalActions.openModal({ type: 'tutorialFinish' })),
     };
     const func = stepFunctions[tutorialStepsData[tutorStep].func];
     if (func) {
