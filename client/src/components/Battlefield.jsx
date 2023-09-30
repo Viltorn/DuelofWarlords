@@ -8,7 +8,7 @@ import Header from './Header.jsx';
 import RotateScreen from './RotateScreen.jsx';
 import ActiveCard from './ActiveCard.jsx';
 import InGameMenu from './InGameMenu/InGameMenu.jsx';
-import './Battlefield.css';
+import styles from './Battlefield.module.css';
 import getModal from '../modals/index.js';
 import functionContext from '../contexts/functionsContext.js';
 import { actions as modalsActions } from '../slices/modalsSlice.js';
@@ -51,22 +51,22 @@ const Battlefield = () => {
   }, [gameMode]);
 
   return (
-    <div className="battlefield__container">
+    <div className={styles.container}>
       {windowWidth < 700 ? (
         <RotateScreen />
       ) : (
         <>
-          <div className="battlefield__main">
+          <div className={styles.main}>
             {thisPlayer === 'player1' ? (
-              <div className="battlefield__hands-container">
+              <div className={styles.handsContainer}>
                 <Header setOpenMenu={setOpenMenu} isOpenMenu={isOpenMenu} />
-                <div className="battlefield__heropad-1">
+                <div className={styles.heropad1}>
                   {activeCardPlayer1 && (
                   <ActiveCard activeCard={activeCardPlayer1} playerType="player1" />
                   )}
                   <HeroPad type="first" player={thisPlayer} />
                 </div>
-                <div className="battlefield__player-hand">
+                <div className={styles.playerHand}>
                   {playersHands[thisPlayer].map((card) => (
                     <Card
                       key={card.id}
@@ -78,8 +78,8 @@ const Battlefield = () => {
                 </div>
               </div>
             ) : (<HeroPad type="second" player="player1" />)}
-            <div className="battlefield__core">
-              <div className="battlefield__topspells">
+            <div className={styles.core}>
+              <div className={styles.topspells}>
                 {topSpellsPlayer1.map((spell) => (
                   <Cell
                     key={spell.id}
@@ -115,8 +115,8 @@ const Battlefield = () => {
                   />
                 ))}
               </div>
-              <div className="battlefield__middle-cells">
-                <div className="battlefield__middle-fieldcells">
+              <div className={styles.middleCells}>
+                <div className={styles.middleFieldcells}>
                   {cellsPlayer1.map((cell) => (
                     <Cell
                       key={cell.id}
@@ -132,7 +132,7 @@ const Battlefield = () => {
                     />
                   ))}
                 </div>
-                <div className="battlefield__middle-spells">
+                <div className={styles.middleSpells}>
                   {midPells.map((spell) => (
                     <Cell
                       key={spell.id}
@@ -146,7 +146,7 @@ const Battlefield = () => {
                     />
                   ))}
                 </div>
-                <div className="battlefield__middle-fieldcells">
+                <div className={styles.middleFieldcells}>
                   {cellsPlayer2.map((cell) => (
                     <Cell
                       key={cell.id}
@@ -165,15 +165,15 @@ const Battlefield = () => {
               </div>
             </div>
             {thisPlayer === 'player2' ? (
-              <div className="battlefield__hands-container">
+              <div className={styles.handsContainer}>
                 <Header setOpenMenu={setOpenMenu} isOpenMenu={isOpenMenu} />
-                <div className="battlefield__heropad-2">
+                <div className={styles.heropad2}>
                   <HeroPad type="first" player={thisPlayer} />
                   {activeCardPlayer2 && (
                   <ActiveCard activeCard={activeCardPlayer2} playerType="player2" />
                   )}
                 </div>
-                <div className="battlefield__player-hand">
+                <div className={styles.playerHand}>
                   {playersHands[thisPlayer].map((card) => (
                     <Card
                       key={card.id}

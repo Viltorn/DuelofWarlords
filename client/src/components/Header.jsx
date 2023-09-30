@@ -4,6 +4,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { actions as battleActions } from '../slices/battleSlice.js';
 import { actions as modalsActions } from '../slices/modalsSlice.js';
 import { maxActionPoints } from '../gameData/gameLimits';
+import tutorialStepsData from '../gameData/tutorialStepsData';
 import functionContext from '../contexts/functionsContext.js';
 import abilityContext from '../contexts/abilityActions.js';
 import Menu from '../assets/Menu.svg';
@@ -16,12 +17,13 @@ const Header = ({ setOpenMenu, isOpenMenu }) => {
   } = useSelector((state) => state.battleReducer);
   const { gameMode } = useSelector((state) => state.gameReducer);
   const {
-    handleAnimation, deleteOtherActiveCard, changeTutorStep,
+    handleAnimation, deleteOtherActiveCard, changeTutorStep, tutorStep,
   } = useContext(functionContext);
   const { sendCardFromField, findTriggerSpells, makeFeatureCast } = useContext(abilityContext);
   const player1Points = playerPoints.find((item) => item.player === 'player1').points;
   const player2Points = playerPoints.find((item) => item.player === 'player2').points;
   const dispatch = useDispatch();
+  const { disEndTurn } = tutorialStepsData[tutorStep];
 
   const hadleEndTurnClick = () => {
     const newPlayer = thisPlayer === 'player1' ? 'player2' : 'player1';
@@ -109,7 +111,7 @@ const Header = ({ setOpenMenu, isOpenMenu }) => {
             <h3 className="header__counter_num">{player1Points}</h3>
           </button>
         </div>
-        <button className="header__endturn-btn" type="button" disabled={commonPoints === 0} onClick={hadleEndTurnClick}>
+        <button className="header__endturn-btn" type="button" disabled={disEndTurn && gameMode === 'tutorial'} onClick={hadleEndTurnClick}>
           {t('EndTurn')}
         </button>
         <div className="header__players-info">

@@ -220,7 +220,7 @@ const TutorialStepsWindow = () => {
         <h2 className={styles.title}>{tutorialStepsData[tutorStep].text}</h2>
         <div className={styles.btnBlock}>
           {tutorialStepsData[tutorStep].back && (<button className={styles.btn} type="button" onClick={() => handleClick(-1)}>НАЗАД</button>)}
-          {tutorialStepsData[tutorStep].next && (<button className={styles.btn} type="button" onClick={() => handleClick(1)}>ДАЛЬШЕ</button>)}
+          {tutorialStepsData[tutorStep].next && (<button className={styles.btn} type="button" onClick={() => handleClick(1)}>ДАЛЕЕ</button>)}
         </div>
       </div>
     </div>

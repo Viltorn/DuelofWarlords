@@ -1,6 +1,6 @@
 /* ActionButton */
 
-.action-btn {
+.btn {
   display: inline-flex;
   height: 2.5rem;
   width: 7rem;
@@ -15,11 +15,11 @@
   cursor: pointer;
 }
 
-.action-btn:hover {
+.btn:hover {
   transform: scale(1.1);
 }
 
-.action-btn__label {
+.btnLabel {
   color: var(--golden);
   text-align: center;
   font-family: Roboto;
@@ -29,7 +29,7 @@
   line-height: 1.5rem;
 }
 
-.action-btn__icon {
+.btnIcon {
   color: var(--golden);
   width: 1.25rem;
   height: 1.25rem;

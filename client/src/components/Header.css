@@ -11,6 +11,7 @@
   align-items: center;
   background-color: transparent;
   position: relative;
+  z-index: 5;
 }
 
 .header__title {
@@ -66,6 +67,11 @@
   font-size: 0.5rem;
   color: var(--white-color);
   cursor: pointer;
+  transition: all 0.3s ease-in-out;
+}
+
+.header__endturn-btn:hover {
+  transform: scale(1.2);
 }
 
 .header__menu-btn {

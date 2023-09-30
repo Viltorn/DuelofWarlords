@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux';
 import cn from 'classnames';
 import ActionButton from './ActionButton';
 import Card from './Card';
-import './ActiveCard.css';
+import styles from './ActiveCard.module.css';
 
 const ActiveCard = ({ activeCard, playerType }) => {
   const {
@@ -11,8 +11,8 @@ const ActiveCard = ({ activeCard, playerType }) => {
   } = activeCard;
 
   const cardClasses = cn({
-    'active-card_block-1': playerType === 'player1',
-    'active-card_block-2': playerType === 'player2',
+    block1: playerType === 'player1',
+    block2: playerType === 'player2',
   });
   const { gameMode } = useSelector((state) => state.gameReducer);
   // const { isOpened } = useSelector((state) => state.modalsReducer);
@@ -28,8 +28,8 @@ const ActiveCard = ({ activeCard, playerType }) => {
   const leftPoints = insteadatk?.cost ? currentPoints - insteadatk.cost : 0;
 
   return (
-    <div className={cardClasses}>
-      <div className="active-card__buttons">
+    <div className={styles[cardClasses]}>
+      <div className={styles.buttons}>
         {(status === 'field') && (type === 'warrior' || type === 'hero') && gameMode === 'hotseat' && (
           <>
             <ActionButton card={activeCard} type="turnLeft" />

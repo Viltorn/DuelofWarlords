@@ -1,6 +1,6 @@
 /* Battlfield */
 
-.battlefield__container {
+.container {
   display: flex;
   flex-direction: row;
   flex-wrap: nowrap;
@@ -14,7 +14,7 @@
   padding: 0;
 }
 
-.battlefield__main {
+.main {
   display: flex;
   flex-direction: row;
   flex-wrap: nowrap;
@@ -26,7 +26,7 @@
   margin-top: 0;
 }
 
-.battlefield__hands-container {
+.handsContainer {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -36,7 +36,7 @@
   gap: 0;
 }
 
-.battlefield__heropad-1 {
+.heropad1 {
   width: 100%;
   display: flex;
   flex-direction: row;
@@ -47,7 +47,7 @@
   padding: 1rem 0 1rem 0;
 }
 
-.battlefield__heropad-2 {
+.heropad2 {
   width: 100%;
   display: flex;
   height: 22rem;
@@ -58,7 +58,7 @@
   padding: 1rem 0 1rem 0;
 }
 
-.battlefield__player-hand {
+.playerHand {
   min-height: 15rem;
   width: 37rem;
   min-width: 25rem;
@@ -71,7 +71,7 @@
   align-items: center;
 }
 
-.battlefield__core {
+.core {
   display: flex;
   flex-direction: column;
   flex-wrap: nowrap;
@@ -81,13 +81,13 @@
   margin-top: 0.3rem;
 }
 
-.battlefield__topspells {
+.topspells {
   display: flex;
   justify-content: center;
   grid-column-gap: 0.8rem;
 }
 
-.battlefield__middle-cells {
+.middleCells {
   display: flex;
   flex-direction: row;
   flex-wrap: nowrap;
@@ -96,14 +96,14 @@
   gap: 1rem;
 }
 
-.battlefield__middle-fieldcells {
+.middleFieldcells {
   display: grid;
   grid-template-columns: repeat(2, auto);
   grid-template-rows: repeat(4, auto);
   grid-gap: 0.2rem;
 }
 
-.battlefield__middle-spells {
+.middleSpells {
   display: flex;
   flex-direction: column;
   flex-wrap: nowrap;

@@ -498,7 +498,7 @@ const castleDeck = [
       attach: ['warrior'],
       aim: ['warrior', 'fighter', 'shooter', 'flyer'],
       type: 'good',
-      name: 'retaliation',
+      name: 'retaliatestrike',
       value: 2,
     }],
     img: HolyShield,
@@ -603,7 +603,7 @@ const castleDeck = [
     subtype: 'temporary',
     cost: 1,
     currentC: 1,
-    description: 'Кладется на центральную клетку. Отнимает у каждого противника 2 здоровья, который перемещается или входит в игру в шеренге, где святая земля',
+    description: 'Кладется на центральную клетку. У каждого воина, который перемещается или входит в игру в шеренгу, где есть святая земля, отнимается 2 здоровья',
     id: _.uniqueId(),
     place: 'midSpell',
     features: [{
@@ -719,7 +719,7 @@ const castleDeck = [
     subtype: 'instant',
     cost: 2,
     currentC: 2,
-    description: 'РЕАКЦИЯ. При нанесении смертельного урона атакой вражеским воином вашему воину, ваш воин не умирает, а остается на поле с 1 здровьем',
+    description: 'РЕАКЦИЯ. При нанесении смертельного урона атакой вражеским воином вашему воину, ваш воин не умирает, а остается на поле с 1 здоровьем',
     id: _.uniqueId(),
     place: 'postponed',
     features: [{

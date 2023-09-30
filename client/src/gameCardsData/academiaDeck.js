@@ -281,7 +281,7 @@ const academiaDeck = [
         name: 'fake',
         type: 'spell',
         subtype: 'instant',
-        cost: 0,
+        currentC: 0,
         description: 'Выбрать воина для пермещения',
         place: '',
         features: [{
@@ -317,7 +317,7 @@ const academiaDeck = [
         name: 'fake',
         type: 'spell',
         subtype: 'instant',
-        cost: 0,
+        currentC: 0,
         description: 'Выбрать воина для пермещения',
         place: '',
         features: [{
@@ -353,7 +353,7 @@ const academiaDeck = [
         name: 'fake',
         type: 'spell',
         subtype: 'instant',
-        cost: 0,
+        currentC: 0,
         description: 'Выбрать воина для пермещения',
         place: '',
         features: [{

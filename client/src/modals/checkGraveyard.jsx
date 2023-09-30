@@ -5,7 +5,7 @@ import { actions as modalActions } from '../slices/modalsSlice.js';
 // import { actions as battleActions } from '../slices/battleSlice.js';
 import Card from '../components/Card.jsx';
 import PrimaryButton from '../components/PrimaryButton.jsx';
-import './Modals.css';
+import styles from './checkGraveyard.module.css';
 
 const Graveyard = () => {
   const { t } = useTranslation();
@@ -21,10 +21,10 @@ const Graveyard = () => {
   };
 
   return (
-    <dialog className="modal-window modal-window-bottom">
-      <div className="modal-window__content modal-big">
-        <h2 className="modal-window__header">{t('PlayedCards')}</h2>
-        <div className="modal-window__buttons">
+    <dialog className={styles.window}>
+      <div className={styles.container}>
+        <h2 className={styles.header}>{t('PlayedCards')}</h2>
+        <div className={styles.buttons}>
           <PrimaryButton
             showIcon={false}
             state="default"
@@ -33,7 +33,7 @@ const Graveyard = () => {
             onClick={handleClose}
           />
         </div>
-        <div className="player-hand modal-window__hand">
+        <div className={styles.hand}>
           {graveyardContent.map((card) => (
             <Card
               key={card.id}

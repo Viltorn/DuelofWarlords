@@ -2,7 +2,7 @@
   position: fixed; 
   display: flex;
   justify-content: center;
-  align-items: top;
+  align-items: flex-start;
   z-index: 100;
   left: 0;
   top: 0;
@@ -17,7 +17,7 @@
   align-items: flex-start;
   gap: 1.2rem;
   background-color: var(--dark-blue);
-  margin: 15rem auto; /* 15% from the top and centered */
+  margin: 5rem auto; /* 15% from the top and centered */
   padding: 2rem 4rem;
   border: 1px solid #888;
   width: 40rem; /* Could be more or less, depending on screen size */

@@ -622,7 +622,8 @@ export const AbilityProvider = ({ children }) => {
     const newAttackedHealth = attackedCard.currentHP;
     const newProtectionVal = protectionVal === 'redirectowner' ? 0 : protectionVal;
 
-    const retaliatAttachFeature = findSpell(card1, attackedCard, card1.subtype, 'retaliation');
+    const retaliateAttachFeature = findSpell(card1, attackedCard, card1.subtype, 'retaliation');
+    const retaliateStrike = findSpell(card1, attackedCard, card1.subtype, 'retaliatestrike');
     const canRetaliate = attackedCard.subtype !== 'shooter' && attackedCard.type !== 'hero' && card1.subtype !== 'shooter';
 
     const calculatedPower = attackingPower - newProtectionVal > 0
@@ -664,9 +665,13 @@ export const AbilityProvider = ({ children }) => {
       moveAttachedSpells(attackedCard, null, 'kill');
     } else {
       changeCardHP(calculatedPower, newAttackedHealth, attackedCard);
-      if (canRetaliate || retaliatAttachFeature) {
-        makeCounterStrike(attackedCard, card1, canRetaliate, retaliatAttachFeature);
+      if (canRetaliate || retaliateAttachFeature) {
+        makeCounterStrike(attackedCard, card1, canRetaliate, retaliateAttachFeature);
       }
+    }
+
+    if (retaliateStrike) {
+      makeCounterStrike(attackedCard, card1, null, retaliateStrike);
     }
   };
 

@@ -6,7 +6,7 @@ import { actions as battleActions } from '../slices/battleSlice.js';
 import functionContext from '../contexts/functionsContext.js';
 import abilityContext from '../contexts/abilityActions.js';
 import { minCardTurn, maxCardTurn } from '../gameData/gameLimits.js';
-import './ActionButton.css';
+import styles from './ActionButton.module.css';
 
 const ActionButton = ({
   type, card, ability, ressurect,
@@ -146,12 +146,12 @@ const ActionButton = ({
 
   return (
     <button
-      className="action-btn"
+      className={styles.btn}
       type="button"
       ref={element}
       onClick={handleButtonClick}
     >
-      <div className="action-btn__label">{t(type)}</div>
+      <div className={styles.btnLabel}>{t(type)}</div>
       {type === 'turnLeft' && (
         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
           <path d="M16.875 10L3.125 10M3.125 10L8.75 15.625M3.125 10L8.75 4.375" stroke="#FBB270" strokeWidth="1.66667" strokeLinecap="round" strokeLinejoin="round" />
@@ -164,7 +164,7 @@ const ActionButton = ({
       )}
       {type === 'healthBar' && (
       <svg
-        className="action-btn__icon"
+        className={styles.btnIcon}
         version="1.1"
         xmlns="http://www.w3.org/2000/svg"
         x="0px"
