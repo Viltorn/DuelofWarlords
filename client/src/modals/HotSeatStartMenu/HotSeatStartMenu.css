@@ -96,4 +96,7 @@
   .modal-slider__player {
     font-size: 20px;
   }
+  .modal-slider__fieldset {
+    gap: 1rem;
+  }
 }

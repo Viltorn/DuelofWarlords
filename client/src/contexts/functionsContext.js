@@ -27,7 +27,8 @@ export const FunctionProvider = ({ children }) => {
     });
   });
 
-  const fontValue = `${window.innerWidth / 88}px`;
+  const windowAspectRatio = window.innerWidth / window.innerHeight;
+  const fontValue = windowAspectRatio <= 2 ? `${window.innerWidth / 88}px` : `${window.innerHeight / 44}px`;
   document.documentElement.style.setProperty('font-size', fontValue);
 
   useEffect(() => {
@@ -252,19 +253,19 @@ export const FunctionProvider = ({ children }) => {
     if (type === 'warrior' || warSubtypes.includes(type)) {
       if (condition && condition === 'minPower') {
         const attackingPower = getWarriorPower(attacking);
-        const attackingPowerFeature = attacking.features.find((feat) => feat.name === 'power' && feat.aim.includes(protecting.subtype));
+        const attackingPowerFeature = attacking.features.find((feat) => feat.name === 'power' && (protecting ? feat.aim.includes(protecting.subtype) : true));
         const attackingAddPower = attackingPowerFeature?.value || 0;
         return (attackingPower + attackingAddPower) >= conditionValue;
       }
       if (condition && condition === 'maxPower') {
         const attackingPower = getWarriorPower(attacking);
-        const attackingPowerFeature = attacking.features.find((feat) => feat.name === 'power' && feat.aim.includes(protecting.subtype));
+        const attackingPowerFeature = attacking.features.find((feat) => feat.name === 'power' && (protecting ? feat.aim.includes(protecting.subtype) : true));
         const attackingAddPower = attackingPowerFeature?.value || 0;
         return (attackingPower + attackingAddPower) <= conditionValue;
       }
       if (condition && condition === 'canDie') {
         const attackingPower = attacking.type === 'warrior' ? getWarriorPower(attacking) : attacking.value;
-        const attackingPowerFeature = attacking.features.find((feat) => feat.name === 'power' && feat.aim.includes(protecting.subtype));
+        const attackingPowerFeature = attacking.features.find((feat) => feat.name === 'power' && (protecting ? feat.aim.includes(protecting.subtype) : true));
         const attackingAddPower = attackingPowerFeature?.value || 0;
         const { currentHP } = protecting;
         return currentHP - (attackingPower + attackingAddPower) <= 0;

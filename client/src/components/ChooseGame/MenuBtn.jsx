@@ -5,7 +5,7 @@ import cn from 'classnames';
 import { actions as battleActions } from '../../slices/battleSlice.js';
 import functionContext from '../../contexts/functionsContext.js';
 import { actions as gameActions } from '../../slices/gameSlice';
-import './MenuBtn.css';
+import styles from './MenuBtn.module.css';
 
 const MenuBtn = ({
   text, type, data,
@@ -46,7 +46,7 @@ const MenuBtn = ({
     <button
       ref={option}
       data-type={data}
-      className={cn('choose-game__btn', { primary: type === 'primary', secondary: type === 'secondary' })}
+      className={cn(styles.btn, { [styles.primary]: type === 'primary', [styles.secondary]: type === 'secondary' })}
       type="button"
       onClick={() => (data === 'install' ? askForInstall() : handleOptionClick())}
     >

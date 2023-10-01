@@ -1,4 +1,4 @@
-.choose-game__btn {
+.btn {
   border: 0.2rem solid var(--dark-golden);
   width: 160px;
   height: 45px;
@@ -8,14 +8,19 @@
   letter-spacing: 0;
   line-height: 24px;
   cursor: pointer;
+  transition: all 0.3s ease-in-out;
 }
 
-.choose-game__btn.primary {
+.btn:hover {
+  transform: scale(1.1);
+}
+
+.primary {
   background-color: var(--dark-red-color);
   color: var(--light-gray);
 }
 
-.choose-game__btn.secondary {
+.secondary {
   background-color: var(--golden);
   color: var(--dark-color);
 }

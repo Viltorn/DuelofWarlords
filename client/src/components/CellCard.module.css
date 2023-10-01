@@ -1,13 +1,14 @@
-.cell-container__content-item {
+.contentItem {
   position: relative;
   width: var(--cell-content-width);
   height: var(--cell-content-width);
   border: none;
   border-radius: 0.5rem;
   cursor: pointer;
+  transition: scale 0.3s ease-in-out;
 }
 
-.cell-container__hero-cell-item {
+.heroCellItem {
   position: relative;
   width: calc(var(--cell-width) - 0.8rem);
   height: calc((var(--cell-width) - 0.8rem) * 1.14);
@@ -16,11 +17,11 @@
   cursor: pointer;
 }
 
-.cell-container__content-item:first-child {
+.contentItem:first-child {
   margin-top: 0;
 }
 
-.cell-container__image {
+.image {
   width: 100%;
   height: 100%;
   object-fit: cover;
@@ -32,7 +33,7 @@
   border: none;
 }
 
-.cell-container__warrior-power {
+.warriorPower {
   color: var(--white-color);
   font-family: "Roboto-Bold", Helvetica;
   text-shadow: 1px 0 0 var(--dark-color),0 1px 0 var(--dark-color), -1px 0 0 var(--dark-color),0 -1px 0 var(--dark-color);
@@ -42,7 +43,7 @@
   left: 0.4rem;
 }
 
-.cell-container__warrior-health {
+.warriorHealth {
   color: var(--white-color);
   font-family: "Roboto-Bold", Helvetica;
   text-shadow: 1px 0 0 var(--dark-color),0 1px 0 var(--dark-color), -1px 0 0 var(--dark-color),0 -1px 0 var(--dark-color);
@@ -52,7 +53,7 @@
   left: 0.4rem;
 }
 
-.cell-container__cost {
+.cost {
   color: var(--white-color);
   font-family: "Roboto-Bold", Helvetica;
   text-shadow: 1px 0 0 var(--dark-color),0 1px 0 var(--dark-color), -1px 0 0 var(--dark-color),0 -1px 0 var(--dark-color);
@@ -62,7 +63,7 @@
   left: 0.4rem;
 }
 
-.cell-container__hero-health {
+.heroHealth {
   color: var(--white-color);
   font-family: "Roboto-Bold", Helvetica;
   text-shadow: 1px 0 0 var(--dark-color),0 1px 0 var(--dark-color), -1px 0 0 var(--dark-color),0 -1px 0 var(--dark-color);
@@ -72,30 +73,19 @@
   right: 0.5rem;
 }
 
-.turn_1 {
+.turn1 {
   transform: rotate(-45deg);
 }
 
-.turn_2 {
+.turn2 {
   transform: rotate(-90deg);
 }
 
-.cell-container__makeattack-animation {
+.makeAttackAnimation {
   animation: 1s 1 alternate makeattack;
 }
 
-
-@keyframes makeattack {
-  from {
-    transform: scale(1);
-  }
-
-  to {
-    transform: scale(1.5);
-  }
-}
-
-.cell-container__attack-icon {
+.attackIcon {
   position: absolute;
   left: 0;
   right: 0;
@@ -106,7 +96,7 @@
   animation: 1s 1 normal attacked;
   opacity: 0;
 }
-.cell-container__heal-icon {
+.healIcon {
   position: absolute;
   left: 0;
   right: 0;
@@ -116,6 +106,16 @@
   height: 5rem;
   animation: 1.2s 1 normal healed;
   opacity: 0;
+}
+
+@keyframes makeattack {
+  from {
+    transform: scale(1);
+  }
+
+  to {
+    transform: scale(1.5);
+  }
 }
 
 @keyframes attacked {

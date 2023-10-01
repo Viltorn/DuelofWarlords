@@ -1,4 +1,4 @@
-.choose-game {
+.container {
   display: flex;
   flex-direction: row;
   flex-wrap: nowrap;
@@ -11,7 +11,7 @@
   height: 100vh;
 }
 
-.choose-game__options {
+.options {
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
@@ -29,13 +29,13 @@
   border-radius: 0.5rem;
 }
 
-.choose-game__header {
+.header {
   text-align: center;
   color: var(--dark-golden);
   font-size: 20px;
 }
 
-.choose-gamehr__hr {
+.divider {
   color: var(--dark-golden);
   border: none;
   border-top: 2px solid var(--dark-golden);
@@ -44,7 +44,7 @@
 }
 
 @media (max-width: 500px) {
-  .choose-game__options {
+  .options {
     height: 380px;
     width: 270px;
   }

@@ -96,8 +96,9 @@
   color: var(--dark-gray);
 }
 
-@media screen and (max-width: 767px) {
+@media screen and (max-width: 800px) {
   .primary-button {
-    height: 45px;
+    height: 40px;
+    padding: 12px 15px;
   }
 }

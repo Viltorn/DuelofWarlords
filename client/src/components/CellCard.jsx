@@ -6,7 +6,7 @@ import functionContext from '../contexts/functionsContext.js';
 import abilityContext from '../contexts/abilityActions.js';
 import AttackIcon from '../assets/battlefield/Sword.png';
 import Healed from '../assets/battlefield/Healing.svg';
-import './CellCard.css';
+import styles from './CellCard.module.css';
 
 const getTopMargin = (cardtype) => {
   if (cardtype === 'field') {
@@ -46,11 +46,11 @@ const CellCard = ({
   const marginRight = type === 'bigSpell' ? 0.5 : 0;
 
   const cardStyles = cn({
-    'cell-container__content-item': type !== 'hero',
-    'cell-container__hero-cell-item': type === 'hero',
-    'cell-container__makeattack-animation': currentCell.animation === 'makeattack',
-    turn_1: turn === 1,
-    turn_2: turn === 2,
+    [styles.contentItem]: type !== 'hero',
+    [styles.heroCellItem]: type === 'hero',
+    [styles.makeAttackAnimation]: currentCell.animation === 'makeattack',
+    [styles.turn1]: turn === 1,
+    [styles.turn2]: turn === 2,
   });
 
   const castSpell = async (spell, receiveCell) => {
@@ -135,31 +135,31 @@ const CellCard = ({
     >
       {item.type === 'warrior' && (
         <>
-          <h3 className="cell-container__warrior-power">{getWarriorPower(item)}</h3>
-          <h3 className="cell-container__warrior-health">{item.currentHP}</h3>
+          <h3 className={styles.warriorPower}>{getWarriorPower(item)}</h3>
+          <h3 className={styles.warriorHealth}>{item.currentHP}</h3>
         </>
       )}
       {item.type !== 'hero' && (
-        <h3 className="cell-container__cost">{item.currentC}</h3>
+        <h3 className={styles.cost}>{item.currentC}</h3>
       )}
       {item.type === 'hero' && (
-        <h3 className="cell-container__hero-health">{item.currentHP}</h3>
+        <h3 className={styles.heroHealth}>{item.currentHP}</h3>
       )}
       <img
-        className="cell-container__image"
+        className={styles.image}
         src={item.img}
         alt={item.name}
       />
       {currentCell.animation === 'attacked' && (
         <img
-          className="cell-container__attack-icon"
+          className={styles.attackIcon}
           src={AttackIcon}
           alt="attack icon"
         />
       )}
       {currentCell.animation === 'healed' && (
         <img
-          className="cell-container__heal-icon"
+          className={styles.healIcon}
           src={Healed}
           alt="heal icon"
         />
