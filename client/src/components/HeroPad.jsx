@@ -12,7 +12,7 @@ import CardCounter from '../assets/battlefield/CardCounter.png';
 import functionContext from '../contexts/functionsContext.js';
 import abilityContext from '../contexts/abilityActions.js';
 import CellCard from './CellCard.jsx';
-import './HeroPad.css';
+import styles from './HeroPad.module.css';
 
 const HeroPad = ({ type, player }) => {
   const { t } = useTranslation();
@@ -45,23 +45,23 @@ const HeroPad = ({ type, player }) => {
   const lastItem = graveyardContent[0];
 
   const classesContainer = cn({
-    'hero-pad_1': type === 'first',
-    'hero-pad_2': type === 'second',
+    [styles.heroPad1]: type === 'first',
+    [styles.heroPad2]: type === 'second',
   });
 
   const cellsClasses = cn({
-    'hero-pad__cells': true,
-    'second-type': type === 'second',
-    'second-player': type === 'first' && player === 'player2',
+    [styles.cells]: true,
+    [styles.secondType]: type === 'second',
+    [styles.secondPlayer]: type === 'first' && player === 'player2',
   });
 
   const postPonedAnima = cn({
-    'hero-pad___animation_green': postponedCell.animation === 'green',
+    [styles.animationGreen]: postponedCell.animation === 'green',
   });
 
   const heroAnima = cn({
-    'hero-pad___animation_green': heroCell.animation === 'green',
-    'hero-pad___animation_red': heroCell.animation === 'red',
+    [styles.animationGreen]: heroCell.animation === 'green',
+    [styles.animationRed]: heroCell.animation === 'red',
   });
 
   const addPosponedCard = () => {
@@ -121,17 +121,17 @@ const HeroPad = ({ type, player }) => {
   return (
     <div className={classesContainer}>
       {type === 'second' && (
-        <div className="hero-pad__cells hero-pad__cells_no-border">
-          <h3 className="hero-pad__cards-count">{cardsCount}</h3>
-          <img className="hero-pad__image  hero-pad__image_no-border" src={CardCounter} alt="cards counter" />
+        <div className={`${styles.cells} ${styles.noBorder}`}>
+          <h3 className={styles.cardsCount}>{cardsCount}</h3>
+          <img className={`${styles.image} ${styles.noBorder}`} src={CardCounter} alt="cards counter" />
         </div>
       )}
-      <div className={`${cellsClasses} hero-pad__cells_no-border`}>
-        <button className="hero-pad__default-btn" ref={deck} data-player={player} type="button" onClick={handleDeckClick}>
-          <img className="hero-pad__image hero-pad__image_no-border" src={DeckCover} alt="deck cover" />
+      <div className={`${cellsClasses} ${styles.noBorder}`}>
+        <button className={styles.defaultBtn} ref={deck} data-player={player} type="button" onClick={handleDeckClick}>
+          <img className={`${styles.image} ${styles.noBorder}`} src={DeckCover} alt="deck cover" />
         </button>
       </div>
-      <div className={`${cellsClasses} ${heroAnima} hero-pad__cells_no-border`}>
+      <div className={`${cellsClasses} ${heroAnima} ${styles.noBorder}`}>
         {heroData.length > 0 && (
           heroData.map((item) => (
             <CellCard
@@ -146,36 +146,52 @@ const HeroPad = ({ type, player }) => {
       <div className={cellsClasses}>
         <TransitionGroup component={null}>
           {graveyardContent.length !== 0 && (
-          <CSSTransition timeout={500} classNames="cardanimation">
-            <button className="hero-pad__default-btn" type="button" onClick={checkGraveyard}>
-              <img className="hero-pad__image" src={lastItem.img} alt={lastItem.name} />
+          <CSSTransition
+            timeout={500}
+            classNames={{
+              enter: styles.cardAnimationEnter,
+              enterActive: styles.cardAnimationActive,
+              exit: styles.cardAnimationExit,
+              exitActive: styles.cardAnimationExitActive,
+            }}
+          >
+            <button className={styles.defaultBtn} type="button" onClick={checkGraveyard}>
+              <img className={styles.image} src={lastItem.img} alt={lastItem.name} />
             </button>
           </CSSTransition>
           )}
         </TransitionGroup>
         {graveyardContent.length === 0 && (
-          <button className="hero-pad__default-btn" onClick={checkGraveyard} type="button">
-            <h3 className="hero-pad__default-title">{t('Graveyard')}</h3>
+          <button className={styles.defaultBtn} onClick={checkGraveyard} type="button">
+            <h3 className={styles.defaultTitle}>{t('Graveyard')}</h3>
           </button>
         )}
       </div>
       <div className={`${cellsClasses} ${postPonedAnima}`}>
         <TransitionGroup component={null}>
           {postponedCell.content.length !== 0 && (
-            <CSSTransition timeout={500} classNames="cardanimation">
-              <button className="hero-pad__default-btn hero-pad__posponed_active" id={postponedCell.id} onClick={handlePostCardClick} type="button">
+            <CSSTransition
+              timeout={500}
+              classNames={{
+                enter: styles.cardAnimationEnter,
+                enterActive: styles.cardAnimationActive,
+                exit: styles.cardAnimationExit,
+                exitActive: styles.cardAnimationExitActive,
+              }}
+            >
+              <button className={`${styles.defaultBtn} ${styles.posponedActive}`} id={postponedCell.id} onClick={handlePostCardClick} type="button">
                 {postponedCell.status === 'face' ? (
-                  <img className="hero-pad__image" src={postponedContentData.img} alt={postponedContentData.name} />
+                  <img className={styles.image} src={postponedContentData.img} alt={postponedContentData.name} />
                 ) : (
-                  <img className="hero-pad__image" src={CardCover} alt="cards cover" />
+                  <img className={styles.image} src={CardCover} alt="cards cover" />
                 )}
               </button>
             </CSSTransition>
           )}
         </TransitionGroup>
         {postponedCell.content.length === 0 && (
-        <button className="hero-pad__default-btn" id={postponedCell.id} onClick={addPosponedCard} type="button">
-          <h3 className="hero-pad__default-title">{t('PostponedSpell')}</h3>
+        <button className={styles.defaultBtn} id={postponedCell.id} onClick={addPosponedCard} type="button">
+          <h3 className={styles.defaultTitle}>{t('PostponedSpell')}</h3>
         </button>
         )}
       </div>

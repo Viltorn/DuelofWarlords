@@ -32,21 +32,22 @@ import Tsunami from '../assets/AcademiaDeck/Tsunami.png';
 import Waterfall from '../assets/AcademiaDeck/Waterfall.png';
 import IceArrow from '../assets/AcademiaDeck/IceArrow.png';
 import IceArmor from '../assets/AcademiaDeck/IceArmor.png';
+import academiaInfo from './academiaCardsInfo';
 
 export const types = ['beforeturn', 'afterplay', 'protection', 'afterdeath'];
 
 const academiaDeck = [
   {
-    name: 'Living wall', type: 'warrior', subtype: 'fighter', power: 2, currentP: 2, health: 5, currentHP: 5, cost: 2, currentC: 2, description: 'БОЕЦ. Не может передвигаться и атаковать в свой ход', id: _.uniqueId(), features: [{ name: 'immobile' }, { name: 'unarmed' }], attachments: [], img: LivingWall, status: 'hand', turn: 1,
+    name: 'Living wall', type: 'warrior', subtype: 'fighter', power: 2, currentP: 2, health: 5, currentHP: 5, cost: 2, currentC: 2, description: academiaInfo.LivingWall, id: _.uniqueId(), features: [{ name: 'immobile' }, { name: 'unarmed' }], attachments: [], img: LivingWall, status: 'hand', turn: 1,
   },
   {
-    name: 'Mage apprentice', type: 'warrior', subtype: 'shooter', power: 2, currentP: 2, health: 4, currentHP: 4, cost: 3, currentC: 3, description: 'СТРЕЛОК. Может атаковать любого воина на поле', id: _.uniqueId(), features: [{ name: 'massAttack' }], attachments: [], img: MageApprentice, status: 'hand', turn: 1,
+    name: 'Mage apprentice', type: 'warrior', subtype: 'shooter', power: 2, currentP: 2, health: 4, currentHP: 4, cost: 3, currentC: 3, description: academiaInfo.MageApprentice, id: _.uniqueId(), features: [{ name: 'massAttack' }], attachments: [], img: MageApprentice, status: 'hand', turn: 1,
   },
   {
-    name: 'Mage apprentice', type: 'warrior', subtype: 'shooter', power: 2, currentP: 2, health: 4, currentHP: 4, cost: 3, currentC: 3, description: 'СТРЕЛОК. Может атаковать любого воина на поле', id: _.uniqueId(), features: [{ name: 'massAttack' }], attachments: [], img: MageApprentice, status: 'hand', turn: 1,
+    name: 'Mage apprentice', type: 'warrior', subtype: 'shooter', power: 2, currentP: 2, health: 4, currentHP: 4, cost: 3, currentC: 3, description: academiaInfo.MageApprentice, id: _.uniqueId(), features: [{ name: 'massAttack' }], attachments: [], img: MageApprentice, status: 'hand', turn: 1,
   },
   {
-    name: 'Gremlin shooter', type: 'warrior', subtype: 'shooter', power: 2, currentP: 2, health: 3, currentHP: 3, cost: 2, currentC: 2, description: 'СТРЕЛОК. Имеет ответный удар стрелкам силой 1', id: _.uniqueId(), features: [{ name: 'retaliation', value: 1, aim: ['shooter'] }], attachments: [], img: GremlinShooter, status: 'hand', turn: 1,
+    name: 'Gremlin shooter', type: 'warrior', subtype: 'shooter', power: 2, currentP: 2, health: 3, currentHP: 3, cost: 2, currentC: 2, description: academiaInfo.GremlinShooter, id: _.uniqueId(), features: [{ name: 'retaliation', value: 1, aim: ['shooter'] }], attachments: [], img: GremlinShooter, status: 'hand', turn: 1,
   },
   {
     name: 'Ice element',
@@ -58,7 +59,7 @@ const academiaDeck = [
     currentHP: 4,
     cost: 3,
     currentC: 3,
-    description: 'СТРЕЛОК. Перед смертью, оглушает случайного вражеского воина в шеренге где он стоял',
+    description: academiaInfo.IceElement,
     id: _.uniqueId(),
     features: [{
       attach: false, type: 'bad', aim: ['closerowcell', 'warrior'], name: 'stun', condition: 'lastcall',
@@ -78,7 +79,7 @@ const academiaDeck = [
     currentHP: 4,
     cost: 3,
     currentC: 3,
-    description: 'СТРЕЛОК. Перед смертью, оглушает случайного вражеского воина в шеренге где он стоял',
+    description: academiaInfo.IceElement,
     id: _.uniqueId(),
     features: [{
       attach: false, type: 'bad', aim: ['closerowcell', 'warrior'], name: 'stun', condition: 'lastcall',
@@ -98,7 +99,7 @@ const academiaDeck = [
     currentHP: 4,
     cost: 2,
     currentC: 2,
-    description: 'БОЕЦ. При входе в игру, вылечить 1 здоровье у прилегающих воинов.',
+    description: academiaInfo.EarthGolem,
     id: _.uniqueId(),
     features: [{
       attach: false, type: 'good', aim: ['adjacent', 'warrior'], name: 'heal', value: 1, condition: 'onplay',
@@ -118,7 +119,7 @@ const academiaDeck = [
     currentHP: 4,
     cost: 2,
     currentC: 2,
-    description: 'БОЕЦ. При входе в игру, вылечить 1 здоровье у прилегающих воинов.',
+    description: academiaInfo.EarthGolem,
     id: _.uniqueId(),
     features: [{
       attach: false, type: 'good', aim: ['adjacent', 'warrior'], name: 'heal', value: 1, condition: 'onplay',
@@ -138,11 +139,11 @@ const academiaDeck = [
     currentHP: 4,
     cost: 2,
     currentC: 2,
-    description: 'Когда Бойцы в свой ход атакуют Гаргулью силой атаки более 1, урон от этих атак снижается на 1 единицу',
+    description: academiaInfo.Gargoyle,
     id: _.uniqueId(),
     features: [{
       attach: false,
-      aim: ['fighter', 'warrior'],
+      aim: ['shooter', 'warrior'],
       type: 'good',
       name: 'protection',
       value: { type: 'number', val: 1 },
@@ -164,11 +165,11 @@ const academiaDeck = [
     currentHP: 4,
     cost: 2,
     currentC: 2,
-    description: 'Когда Бойцы в свой ход атакуют Гаргулью силой атаки более 1, урон от этих атак снижается на 1 единицу',
+    description: academiaInfo.Gargoyle,
     id: _.uniqueId(),
     features: [{
       attach: false,
-      aim: ['fighter', 'warrior'],
+      aim: ['shooter', 'warrior'],
       type: 'good',
       name: 'protection',
       value: { type: 'number', val: 1 },
@@ -190,7 +191,7 @@ const academiaDeck = [
     currentHP: 6,
     cost: 4,
     currentC: 4,
-    description: 'БОЕЦ. Перед смертью отнимает 1 здоровье у всех воинов в шеренге в которой он находился',
+    description: academiaInfo.FireGolem,
     id: _.uniqueId(),
     features: [{
       attach: false, type: 'all', aim: ['row', 'warrior'], name: 'attack', condition: 'lastcall', value: 1,
@@ -210,7 +211,7 @@ const academiaDeck = [
     currentHP: 6,
     cost: 4,
     currentC: 4,
-    description: 'БОЕЦ. Перед смертью отнимает 1 здоровье у всех воинов в шеренге в которой он находился',
+    description: academiaInfo.FireGolem,
     id: _.uniqueId(),
     features: [{
       attach: false, type: 'all', aim: ['row', 'warrior'], name: 'attack', condition: 'lastcall', value: 1,
@@ -230,7 +231,7 @@ const academiaDeck = [
     currentHP: 6,
     cost: 3,
     currentC: 3,
-    description: 'Имеет УВОРОТ.',
+    description: academiaInfo.Rakshasa,
     id: _.uniqueId(),
     features: [{
       attach: false, type: 'good', aim: ['warrior'], name: 'evade', condition: 'nextRowCell',
@@ -250,7 +251,7 @@ const academiaDeck = [
     currentHP: 6,
     cost: 3,
     currentC: 3,
-    description: 'Имеет УВОРОТ.',
+    description: academiaInfo.Rakshasa,
     id: _.uniqueId(),
     features: [{
       attach: false, type: 'good', aim: ['warrior'], name: 'evade', condition: 'nextRowCell',
@@ -270,7 +271,7 @@ const academiaDeck = [
     currentHP: 4,
     cost: 3,
     currentC: 3,
-    description: 'ЛЕТАЮЩИЙ. Когда входит в игру, может переместить вражеского воина на поле на соседнюю клетку',
+    description: academiaInfo.YoungGenie,
     id: _.uniqueId(),
     features: [{
       name: 'invoke',
@@ -282,7 +283,7 @@ const academiaDeck = [
         type: 'spell',
         subtype: 'instant',
         currentC: 0,
-        description: 'Выбрать воина для пермещения',
+        description: academiaInfo.YoungGenieCast,
         place: '',
         features: [{
           attach: false, type: 'bad', aim: ['warrior'], name: 'moverow',
@@ -306,7 +307,7 @@ const academiaDeck = [
     currentHP: 4,
     cost: 3,
     currentC: 3,
-    description: 'ЛЕТАЮЩИЙ. Когда входит в игру, может переместить вражеского воина на поле на соседнюю клетку',
+    description: academiaInfo.YoungGenie,
     id: _.uniqueId(),
     features: [{
       name: 'invoke',
@@ -318,7 +319,7 @@ const academiaDeck = [
         type: 'spell',
         subtype: 'instant',
         currentC: 0,
-        description: 'Выбрать воина для пермещения',
+        description: academiaInfo.YoungGenieCast,
         place: '',
         features: [{
           attach: false, type: 'bad', aim: ['warrior'], name: 'moverow',
@@ -342,7 +343,7 @@ const academiaDeck = [
     currentHP: 4,
     cost: 3,
     currentC: 3,
-    description: 'ЛЕТАЮЩИЙ. Когда входит в игру, может переместить вражеского воина на поле на соседнюю клетку',
+    description: academiaInfo.YoungGenie,
     id: _.uniqueId(),
     features: [{
       name: 'invoke',
@@ -354,7 +355,7 @@ const academiaDeck = [
         type: 'spell',
         subtype: 'instant',
         currentC: 0,
-        description: 'Выбрать воина для пермещения',
+        description: academiaInfo.YoungGenieCast,
         place: '',
         features: [{
           attach: false, type: 'bad', aim: ['warrior'], name: 'moverow',
@@ -378,7 +379,7 @@ const academiaDeck = [
     currentHP: 5,
     cost: 4,
     currentC: 4,
-    description: 'СТРЕЛОК. При атаке в свой ход по воину, отнимает 2 здоровья у другого вражеского воина в шеренге',
+    description: academiaInfo.EnergyElemental,
     id: _.uniqueId(),
     features: [{
       name: 'attack', condition: 'onattack', type: 'bad', aim: ['nextrowcell', 'warrior'], value: 2, apply: 'attacked',
@@ -398,7 +399,7 @@ const academiaDeck = [
     currentHP: 5,
     cost: 4,
     currentC: 4,
-    description: 'СТРЕЛОК. При атаке в свой ход по воину, отнимает 2 здоровья у другого вражеского воина в шеренге',
+    description: academiaInfo.EnergyElemental,
     id: _.uniqueId(),
     features: [{
       name: 'attack', condition: 'onattack', type: 'bad', aim: ['nextrowcell', 'warrior'], value: 2, apply: 'attacked',
@@ -418,7 +419,7 @@ const academiaDeck = [
     currentHP: 8,
     cost: 6,
     currentC: 6,
-    description: 'БОЕЦ. При входе в игру оглушает всех вражеских воинов в шеренге',
+    description: academiaInfo.IceGiant,
     id: _.uniqueId(),
     features: [{
       attach: false, type: 'bad', aim: ['row', 'warrior', 'fighter', 'shooter', 'flyer'], name: 'stun', condition: 'onplay',
@@ -438,7 +439,7 @@ const academiaDeck = [
     currentHP: 8,
     cost: 6,
     currentC: 6,
-    description: 'БОЕЦ. При входе в игру оглушает всех вражеских воинов в шеренге',
+    description: academiaInfo.IceGiant,
     id: _.uniqueId(),
     features: [{
       attach: false, type: 'bad', aim: ['row', 'warrior', 'fighter', 'shooter', 'flyer'], name: 'stun', condition: 'onplay',
@@ -454,7 +455,7 @@ const academiaDeck = [
     subtype: 'instant',
     cost: 1,
     currentC: 1,
-    description: 'РЕАКЦИЯ: Отменить первый урон от базовой атаки в ходу по вашему воину или герою (что будет первым) силой 3 и более',
+    description: academiaInfo.ArcaneArmor,
     id: _.uniqueId(),
     place: 'postponed',
     features: [{
@@ -469,7 +470,7 @@ const academiaDeck = [
     subtype: 'temporary',
     cost: 2,
     currentC: 2,
-    description: 'Накладывается на центральную клетку. Отнимает 2 здоровье у всех воинов в этой шеренге. СТАРТ ХОДА: отнять 2 здоровья у всех воинов в шеренге',
+    description: academiaInfo.Blizzard,
     id: _.uniqueId(),
     place: 'midSpell',
     features: [
@@ -489,7 +490,7 @@ const academiaDeck = [
     subtype: 'permanent',
     cost: 3,
     currentC: 3,
-    description: 'Накладывается на вражеского воина. После того как этот воин нанес урон в свой ход, нанести такой же урон вражескому герою',
+    description: academiaInfo.CursedChackle,
     id: _.uniqueId(),
     place: 'warrior',
     features: [
@@ -512,7 +513,7 @@ const academiaDeck = [
     subtype: 'permanent',
     cost: 2,
     currentC: 2,
-    description: 'Накладывается на воина и отнимает у него -2 базовой атаки',
+    description: academiaInfo.Frostbite,
     id: _.uniqueId(),
     place: 'warrior',
     features: [
@@ -533,7 +534,7 @@ const academiaDeck = [
     subtype: 'instant',
     cost: 2,
     currentC: 2,
-    description: 'РЕАКЦИЯ: вражеский воин, который только сделал шаг или вошел в игру, а также наложенные заклинания отправляются в руки к владельцам в изначальном состоянии',
+    description: academiaInfo.FrostTrap,
     id: _.uniqueId(),
     place: 'postponed',
     features: [{
@@ -551,7 +552,7 @@ const academiaDeck = [
     subtype: 'temporary',
     cost: 3,
     currentC: 3,
-    description: 'Кладется рядом с полем боя. Поглощает весь урон по герою в течение хода, если поглотился урон в прошлом ходу врага, то ледяной блок отправляется в сток в начале вашего хода',
+    description: academiaInfo.IceBlock,
     id: _.uniqueId(),
     place: 'warrior',
     features: [
@@ -572,7 +573,7 @@ const academiaDeck = [
     subtype: 'instant',
     cost: 3,
     currentC: 3,
-    description: 'Отнять 2 здоровья у всех воинов на целевой линии',
+    description: academiaInfo.IceSpikes,
     id: _.uniqueId(),
     place: '',
     features: [{
@@ -587,7 +588,7 @@ const academiaDeck = [
     subtype: 'temporary',
     cost: 1,
     currentC: 1,
-    description: 'Кладется центральную клетку. Стрелки и Бойцы в этой шеренге не могут атаковать в свой ход',
+    description: academiaInfo.IceWall,
     id: _.uniqueId(),
     place: 'midSpell',
     features: [
@@ -606,7 +607,7 @@ const academiaDeck = [
     subtype: 'permanent',
     cost: 4,
     currentC: 4,
-    description: 'Накладывается на воина. Он получает +2 к базовой атаке',
+    description: academiaInfo.IceWeapon,
     id: _.uniqueId(),
     place: 'warrior',
     features: [{
@@ -625,7 +626,7 @@ const academiaDeck = [
     subtype: 'temporary',
     cost: 2,
     currentC: 2,
-    description: 'Кладется на центральную клетку. Воины в этой шеренге не могут передвигаться и атаковать в свой ход',
+    description: academiaInfo.Icing,
     id: _.uniqueId(),
     place: 'midSpell',
     features: [
@@ -650,7 +651,7 @@ const academiaDeck = [
     subtype: 'temporary',
     cost: 1,
     currentC: 1,
-    description: 'Накладывается на воина. Он получает НЕВИДИМОСТЬ',
+    description: academiaInfo.InvisibilityCloak,
     id: _.uniqueId(),
     place: 'warrior',
     features: [{
@@ -668,7 +669,7 @@ const academiaDeck = [
     subtype: 'instant',
     cost: 5,
     currentC: 5,
-    description: 'Уничтожить вражеского воина на поле боя',
+    description: academiaInfo.SoulDrain,
     id: _.uniqueId(),
     place: '',
     features: [{
@@ -683,7 +684,7 @@ const academiaDeck = [
     subtype: 'temporary',
     cost: 1,
     currentC: 1,
-    description: 'Переместить союзного воина на любую свободную клетку (подходящую ему)',
+    description: academiaInfo.Teleport,
     id: _.uniqueId(),
     place: 'warrior',
     features: [{
@@ -698,7 +699,7 @@ const academiaDeck = [
     subtype: 'instant',
     cost: 3,
     currentC: 3,
-    description: 'Вражеский воин отправляется в руку к владельцу и восстанавливает здоровье (если на воине был эффект, то он возвращается в руку владельцу)',
+    description: academiaInfo.TownPortal,
     id: _.uniqueId(),
     place: '',
     features: [{
@@ -713,7 +714,7 @@ const academiaDeck = [
     subtype: 'instant',
     cost: 1,
     currentC: 1,
-    description: 'Воин получает ОГЛУШЕНИЕ и вы можете передвинуть его на соседню клетку',
+    description: academiaInfo.Transformation,
     id: _.uniqueId(),
     place: '',
     features: [{
@@ -730,7 +731,7 @@ const academiaDeck = [
     subtype: 'instant',
     cost: 7,
     currentC: 7,
-    description: 'Отнять 7 здоровья у всех не летающих воинов на поле боя или 8, если это отложенная способность',
+    description: academiaInfo.Tsunami,
     id: _.uniqueId(),
     place: '',
     features: [{
@@ -745,7 +746,7 @@ const academiaDeck = [
     subtype: 'temporary',
     cost: 2,
     currentC: 2,
-    description: 'Кладется рядом с полем боя. Все воины с текущей базовой атакой 2 или меньше не могут атаковать в свой ход',
+    description: academiaInfo.Waterfall,
     id: _.uniqueId(),
     place: 'bigSpell',
     features: [{
@@ -760,7 +761,7 @@ const academiaDeck = [
     subtype: 'instant',
     cost: 2,
     currentC: 2,
-    description: 'Отнять 2 здоровья у воина, этот воин получает ОГЛУШЕНИЕ',
+    description: academiaInfo.IceArrow,
     id: _.uniqueId(),
     place: '',
     features: [{
@@ -777,7 +778,7 @@ const academiaDeck = [
     subtype: 'temporary',
     cost: 1,
     currentC: 1,
-    description: 'Накладывается на союзного воина или героя. Во время хода врага, урон от всех атак по этому воину или герою снижается на 1',
+    description: academiaInfo.IceArmor,
     id: _.uniqueId(),
     place: 'warrior',
     features: [{

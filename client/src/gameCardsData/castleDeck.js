@@ -32,22 +32,23 @@ import SaintWord from '../assets/CastleDeck/SaintWord.png';
 import Swift from '../assets/CastleDeck/Swift.png';
 import ThunderBlast from '../assets/CastleDeck/ThunderBlast.png';
 import YouthFountain from '../assets/CastleDeck/YouthFountain.png';
+import cardsInfo from './castleCardsInfo';
 
 const castleDeck = [
   {
-    name: 'Imperial Shooter', type: 'warrior', subtype: 'shooter', power: 1, currentP: 1, health: 2, currentHP: 2, cost: 1, currentC: 1, description: 'СТРЕЛОК.', id: _.uniqueId(), features: [{}], attachments: [], img: ImperialShooter, status: 'hand', turn: 1, disabled: false,
+    name: 'Imperial Shooter', type: 'warrior', subtype: 'shooter', power: 1, currentP: 1, health: 2, currentHP: 2, cost: 1, currentC: 1, description: cardsInfo.ImperialShooter, id: _.uniqueId(), features: [{}], attachments: [], img: ImperialShooter, status: 'hand', turn: 1, disabled: false,
   },
   {
-    name: 'Imperial Shooter', type: 'warrior', subtype: 'shooter', power: 1, currentP: 1, health: 2, currentHP: 2, cost: 1, currentC: 1, description: 'СТРЕЛОК.', id: _.uniqueId(), features: [{}], attachments: [], img: ImperialShooter, status: 'hand', turn: 1, disabled: false,
+    name: 'Imperial Shooter', type: 'warrior', subtype: 'shooter', power: 1, currentP: 1, health: 2, currentHP: 2, cost: 1, currentC: 1, description: cardsInfo.ImperialShooter, id: _.uniqueId(), features: [{}], attachments: [], img: ImperialShooter, status: 'hand', turn: 1, disabled: false,
   },
   {
-    name: 'Master Shooter', type: 'warrior', subtype: 'shooter', power: 2, currentP: 2, health: 4, currentHP: 4, cost: 3, currentC: 3, description: 'СТРЕЛОК. Имеет ответный удар силой 1', id: _.uniqueId(), features: [{ name: 'retaliation', value: 1, aim: ['warrior', 'fighter', 'shooter', 'flyer'] }], attachments: [], img: MasterShooter, status: 'hand', turn: 1, disabled: false,
+    name: 'Master Shooter', type: 'warrior', subtype: 'shooter', power: 2, currentP: 2, health: 4, currentHP: 4, cost: 3, currentC: 3, description: cardsInfo.MasterShooter, id: _.uniqueId(), features: [{ name: 'retaliation', value: 1, aim: ['warrior', 'fighter', 'shooter', 'flyer'] }], attachments: [], img: MasterShooter, status: 'hand', turn: 1, disabled: false,
   },
   {
-    name: 'Master Shooter', type: 'warrior', subtype: 'shooter', power: 2, currentP: 2, health: 4, currentHP: 4, cost: 3, currentC: 3, description: 'СТРЕЛОК. Имеет ответный удар силой 1', id: _.uniqueId(), features: [{ name: 'retaliation', value: 1, aim: ['warrior', 'fighter', 'shooter', 'flyer'] }], attachments: [], img: MasterShooter, status: 'hand', turn: 1, disabled: false,
+    name: 'Master Shooter', type: 'warrior', subtype: 'shooter', power: 2, currentP: 2, health: 4, currentHP: 4, cost: 3, currentC: 3, description: cardsInfo.MasterShooter, id: _.uniqueId(), features: [{ name: 'retaliation', value: 1, aim: ['warrior', 'fighter', 'shooter', 'flyer'] }], attachments: [], img: MasterShooter, status: 'hand', turn: 1, disabled: false,
   },
   {
-    name: 'Master Shooter', type: 'warrior', subtype: 'shooter', power: 2, currentP: 2, health: 4, currentHP: 4, cost: 3, currentC: 3, description: 'СТРЕЛОК. Имеет ответный удар силой 1', id: _.uniqueId(), features: [{ name: 'retaliation', value: 1, aim: ['warrior', 'fighter', 'shooter', 'flyer'] }], attachments: [], img: MasterShooter, status: 'hand', turn: 1, disabled: false,
+    name: 'Master Shooter', type: 'warrior', subtype: 'shooter', power: 2, currentP: 2, health: 4, currentHP: 4, cost: 3, currentC: 3, description: cardsInfo.MasterShooter, id: _.uniqueId(), features: [{ name: 'retaliation', value: 1, aim: ['warrior', 'fighter', 'shooter', 'flyer'] }], attachments: [], img: MasterShooter, status: 'hand', turn: 1, disabled: false,
   },
   {
     name: 'Young Priestess',
@@ -59,7 +60,7 @@ const castleDeck = [
     currentHP: 4,
     cost: 2,
     currentC: 2,
-    description: 'СТРЕЛОК. СТАРТ ХОДА: Вылечивает 1 здоровье у случайного прилегающего союзного воина',
+    description: cardsInfo.YoungPriestess,
     id: _.uniqueId(),
     features: [{
       name: 'heal', condition: 'onturnstart', aim: ['oneadjacent', 'warrior'], value: 1,
@@ -80,7 +81,7 @@ const castleDeck = [
     currentHP: 4,
     cost: 2,
     currentC: 2,
-    description: 'СТРЕЛОК. СТАРТ ХОДА: Вылечивает 1 здоровье у случайного прилегающего союзного воина',
+    description: cardsInfo.YoungPriestess,
     id: _.uniqueId(),
     features: [{
       name: 'heal', condition: 'onturnstart', aim: ['oneadjacent', 'warrior'], value: 1,
@@ -101,7 +102,7 @@ const castleDeck = [
     currentHP: 4,
     cost: 2,
     currentC: 2,
-    description: 'СТРЕЛОК. СТАРТ ХОДА: Вылечивает 1 здоровье у случайного прилегающего союзного воина',
+    description: cardsInfo.YoungPriestess,
     id: _.uniqueId(),
     features: [{
       name: 'heal', condition: 'onturnstart', aim: ['oneadjacent', 'warrior'], value: 1,
@@ -113,10 +114,10 @@ const castleDeck = [
     disabled: false,
   },
   {
-    name: 'Warrior Of Light', type: 'warrior', subtype: 'fighter', power: 2, currentP: 2, health: 4, currentHP: 4, cost: 2, currentC: 2, description: 'БОЕЦ. Может сходить и атаковать в одном ходу', id: _.uniqueId(), features: [{ name: 'swift' }], attachments: [], img: WarriorOfLight, status: 'hand', turn: 1, disabled: false,
+    name: 'Warrior Of Light', type: 'warrior', subtype: 'fighter', power: 2, currentP: 2, health: 4, currentHP: 4, cost: 2, currentC: 2, description: cardsInfo.WarriorOfLight, id: _.uniqueId(), features: [{ name: 'swift' }], attachments: [], img: WarriorOfLight, status: 'hand', turn: 1, disabled: false,
   },
   {
-    name: 'Warrior Of Light', type: 'warrior', subtype: 'fighter', power: 2, currentP: 2, health: 4, currentHP: 4, cost: 2, currentC: 2, description: 'БОЕЦ. Может сходить и атаковать в одном ходу', id: _.uniqueId(), features: [{ name: 'swift' }], attachments: [], img: WarriorOfLight, status: 'hand', turn: 1, disabled: false,
+    name: 'Warrior Of Light', type: 'warrior', subtype: 'fighter', power: 2, currentP: 2, health: 4, currentHP: 4, cost: 2, currentC: 2, description: cardsInfo.WarriorOfLight, id: _.uniqueId(), features: [{ name: 'swift' }], attachments: [], img: WarriorOfLight, status: 'hand', turn: 1, disabled: false,
   },
   {
     name: 'Valor Knight',
@@ -128,7 +129,7 @@ const castleDeck = [
     currentHP: 6,
     cost: 3,
     currentC: 3,
-    description: 'БОЕЦ. Вылечивает 1 здоровье у союзных воинов в соседних клетках на линии при атаке в свой ход.',
+    description: cardsInfo.ValorKnight,
     id: _.uniqueId(),
     features: [{
       name: 'heal', condition: 'onattack', type: 'good', aim: ['nextcells', 'warrior'], value: 1,
@@ -149,7 +150,7 @@ const castleDeck = [
     currentHP: 6,
     cost: 3,
     currentC: 3,
-    description: 'БОЕЦ. Вылечивает 1 здоровье у союзных воинов в соседних клетках на линии при атаке в свой ход.',
+    description: cardsInfo.ValorKnight,
     id: _.uniqueId(),
     features: [{
       name: 'heal', condition: 'onattack', type: 'good', aim: ['nextcells', 'warrior'], value: 1,
@@ -170,7 +171,7 @@ const castleDeck = [
     currentHP: 5,
     cost: 3,
     currentC: 3,
-    description: 'БОЕЦ. Когда входит в игру, прибавить союзному воину на поле + 2 к атаке на один ответный удар или атаку',
+    description: cardsInfo.Bannerman,
     id: _.uniqueId(),
     attachments: [],
     features: [{
@@ -183,7 +184,7 @@ const castleDeck = [
         type: 'spell',
         subtype: 'instant',
         currentC: 0,
-        description: 'Выбрать воина для увеличения атаки',
+        description: cardsInfo.BannermanCast,
         place: '',
         features: [{
           attach: ['warrior'], aim: ['warrior', 'fighter', 'shooter', 'flyer'], type: 'good', name: 'power', value: 2, charges: 1, id: _.uniqueId(),
@@ -207,7 +208,7 @@ const castleDeck = [
     currentHP: 5,
     cost: 3,
     currentC: 3,
-    description: 'БОЕЦ. Когда входит в игру, прибавить союзному воину на поле + 2 к атаке на один ответный удар или атаку',
+    description: cardsInfo.Bannerman,
     id: _.uniqueId(),
     attachments: [],
     features: [{
@@ -220,7 +221,7 @@ const castleDeck = [
         type: 'spell',
         subtype: 'instant',
         currentC: 0,
-        description: 'Выбрать воина для увеличения атаки',
+        description: cardsInfo.BannermanCast,
         place: '',
         features: [{
           attach: ['warrior'], aim: ['warrior', 'fighter', 'shooter', 'flyer'], type: 'good', name: 'power', value: 2, charges: 1, id: _.uniqueId(),
@@ -235,13 +236,32 @@ const castleDeck = [
     disabled: false,
   },
   {
-    name: 'Defender', type: 'warrior', subtype: 'fighter', power: 2, currentP: 2, health: 6, currentHP: 6, cost: 3, currentC: 3, description: 'БОЕЦ. Имеет ЩИТ МАГИИ', id: _.uniqueId(), features: [{ name: 'protection', value: { type: 'percent', val: 0.5 }, aim: ['spell'] }], attachments: [], img: Defender, status: 'hand', turn: 1, disabled: false,
+    name: 'Defender',
+    type: 'warrior',
+    subtype: 'fighter',
+    power: 2,
+    currentP: 2,
+    health: 5,
+    currentHP: 5,
+    cost: 3,
+    currentC: 3,
+    description: cardsInfo.Defender,
+    id: _.uniqueId(),
+    features: [{ name: 'protection', value: { type: 'percent', val: 0.5 }, aim: ['spell'] },
+      {
+        attach: ['row'], type: 'good', name: 'redirect', aim: ['warrior', 'fighter', 'shooter', 'flyer'],
+      }],
+    attachments: [],
+    img: Defender,
+    status: 'hand',
+    turn: 1,
+    disabled: false,
   },
   {
-    name: 'Righeous Fighter', type: 'warrior', subtype: 'fighter', power: 3, currentP: 3, health: 4, currentHP: 4, cost: 3, currentC: 3, description: 'БОЕЦ. Получает +1 к атаке по герою', id: _.uniqueId(), features: [{ name: 'power', value: 1, aim: ['hero'] }], attachments: [], img: RighteousFighter, status: 'hand', turn: 1, disabled: false,
+    name: 'Righeous Fighter', type: 'warrior', subtype: 'fighter', power: 3, currentP: 3, health: 4, currentHP: 4, cost: 3, currentC: 3, description: cardsInfo.RigheousFighter, id: _.uniqueId(), features: [{ name: 'power', value: 1, aim: ['hero'] }], attachments: [], img: RighteousFighter, status: 'hand', turn: 1, disabled: false,
   },
   {
-    name: 'Righeous Fighter', type: 'warrior', subtype: 'fighter', power: 3, currentP: 3, health: 4, currentHP: 4, cost: 3, currentC: 3, description: 'БОЕЦ. Получает +1 к атаке по герою', id: _.uniqueId(), features: [{ name: 'power', value: 1, aim: ['hero'] }], attachments: [], img: RighteousFighter, status: 'hand', turn: 1, disabled: false,
+    name: 'Righeous Fighter', type: 'warrior', subtype: 'fighter', power: 3, currentP: 3, health: 4, currentHP: 4, cost: 3, currentC: 3, description: cardsInfo.RigheousFighter, id: _.uniqueId(), features: [{ name: 'power', value: 1, aim: ['hero'] }], attachments: [], img: RighteousFighter, status: 'hand', turn: 1, disabled: false,
   },
   {
     name: 'Knight Guardian',
@@ -253,10 +273,10 @@ const castleDeck = [
     currentHP: 8,
     cost: 4,
     currentC: 4,
-    description: 'БОЕЦ. Переводит атаки вражеских воинов по воинам на соседних клетках на себя',
+    description: cardsInfo.KnightGuardian,
     id: _.uniqueId(),
     features: [{
-      attach: ['nextcells'], type: 'good', name: 'protection', value: { type: 'redirect', val: 'owner' }, aim: ['warrior', 'fighter', 'shooter', 'flyer'],
+      attach: ['nextcells'], type: 'good', name: 'redirect', aim: ['warrior', 'fighter', 'shooter', 'flyer'],
     }],
     attachments: [],
     img: KnightGuardian,
@@ -274,7 +294,7 @@ const castleDeck = [
     currentHP: 7,
     cost: 4,
     currentC: 4,
-    description: 'ЛЕТАЮЩИЙ. Имеет +1 к ответному удару против Бойцов',
+    description: cardsInfo.ImperialGriffon,
     id: _.uniqueId(),
     features: [{
       name: 'retaliation', value: 1, aim: ['warrior', 'fighter'],
@@ -295,7 +315,7 @@ const castleDeck = [
     currentHP: 7,
     cost: 4,
     currentC: 4,
-    description: 'ЛЕТАЮЩИЙ. Имеет +1 к ответному удару против Бойцов',
+    description: cardsInfo.ImperialGriffon,
     id: _.uniqueId(),
     features: [{
       name: 'retaliation', value: 1, aim: ['warrior', 'fighter'],
@@ -316,7 +336,7 @@ const castleDeck = [
     currentHP: 7,
     cost: 5,
     currentC: 5,
-    description: 'БОЕЦ. Когда входит в игру, вылечить 3 здоровья у союзного воина на поле. При атаке в свой ход, отнимает также 2 здоровья у второго воина в шеренге',
+    description: cardsInfo.TemplarChampion,
     id: _.uniqueId(),
     features: [{
       name: 'invoke',
@@ -328,7 +348,7 @@ const castleDeck = [
         type: 'spell',
         subtype: 'instant',
         currentC: 0,
-        description: 'Выбрать воина для лечения',
+        description: cardsInfo.TemplarChampCast,
         place: '',
         features: [{
           attach: false, aim: ['warrior'], type: 'good', name: 'heal', value: 3,
@@ -356,7 +376,7 @@ const castleDeck = [
     currentHP: 7,
     cost: 5,
     currentC: 5,
-    description: 'БОЕЦ. Когда входит в игру, вылечить 3 здоровья у союзного воина на поле. При атаке в свой ход, отнимает также 2 здоровья у второго воина в шеренге',
+    description: cardsInfo.TemplarChampion,
     id: _.uniqueId(),
     features: [{
       name: 'invoke',
@@ -368,7 +388,7 @@ const castleDeck = [
         type: 'spell',
         subtype: 'instant',
         currentC: 0,
-        description: 'Выбрать воина для лечения',
+        description: cardsInfo.TemplarChampCast,
         place: '',
         features: [{
           attach: false, aim: ['warrior'], type: 'good', name: 'heal', value: 3,
@@ -396,10 +416,10 @@ const castleDeck = [
     currentHP: 9,
     cost: 7,
     currentC: 7,
-    description: 'БОЕЦ. В свой ход, вместо базовой атаки, может отнять 2 здоровья у 2-х воинов в шеренге не получая ответного удара',
+    description: cardsInfo.MasterOfLight,
     id: _.uniqueId(),
     features: [{
-      attach: false, type: 'bad', aim: ['row', 'warrior'], value: 2, name: 'attack', condition: 'insteadatk',
+      attach: false, type: 'bad', aim: ['row', 'warrior'], value: 2, name: 'attack', condition: 'insteadatk', cost: 0,
     }],
     attachments: [],
     img: MasterOfLight,
@@ -413,7 +433,7 @@ const castleDeck = [
     subtype: 'instant',
     cost: 4,
     currentC: 4,
-    description: 'Отнять у воина 3 здоровья или 4, если это отложенная карта, и оглушить всех прилегающих к цели других воинов.',
+    description: cardsInfo.ThunderBlast,
     id: _.uniqueId(),
     place: '',
     features: [{
@@ -432,7 +452,7 @@ const castleDeck = [
     subtype: 'permanent',
     cost: 2,
     currentC: 2,
-    description: 'Накладывается на воина. Он может атаковать и ходить в один ход',
+    description: cardsInfo.Swift,
     id: _.uniqueId(),
     place: 'warrior',
     features: [{
@@ -451,7 +471,7 @@ const castleDeck = [
     subtype: 'instant',
     cost: 4,
     currentC: 4,
-    description: 'Взять карту воина из вашего стока и разыграть ее бесплатно',
+    description: cardsInfo.Resurrection,
     id: _.uniqueId(),
     place: 'grave',
     turn: 0,
@@ -468,7 +488,7 @@ const castleDeck = [
     subtype: 'temporary',
     cost: 1,
     currentC: 1,
-    description: 'Воин получает +1 к атаке в свой ход, и + 1 к атаке за каждый положительный эффект на ваших воинах или на поле боя',
+    description: cardsInfo.Retribution,
     id: _.uniqueId(),
     place: 'warrior',
     features: [{
@@ -491,7 +511,7 @@ const castleDeck = [
     subtype: 'permanent',
     cost: 2,
     currentC: 2,
-    description: 'Кладется на воина. Противники теряют 2 здоровья за каждую атаку которую наносят по этому воину в свой ход.',
+    description: cardsInfo.HolyShield,
     id: _.uniqueId(),
     place: 'warrior',
     features: [{
@@ -511,7 +531,7 @@ const castleDeck = [
     subtype: 'instant',
     cost: 1,
     currentC: 1,
-    description: 'Вылечить 3 здоровья у воина, и 4 здоровья, если это отложенная карта',
+    description: cardsInfo.HealingLight,
     id: _.uniqueId(),
     place: '',
     features: [{
@@ -527,7 +547,7 @@ const castleDeck = [
     subtype: 'temporary',
     cost: 2,
     currentC: 2,
-    description: 'Положить рядом с полем. Когда другой игрок выкладывает или перемещает карту воина на поле - вылечить 2 здоровья у вашего героя',
+    description: cardsInfo.YouthFountain,
     id: _.uniqueId(),
     place: 'bigSpell',
     features: [{
@@ -546,7 +566,7 @@ const castleDeck = [
     subtype: 'turn',
     cost: 2,
     currentC: 2,
-    description: 'Кладется рядом с полем боя, Все ваши воины получают + 1 к атаке в свой ход.',
+    description: cardsInfo.Enlightenment,
     id: _.uniqueId(),
     place: 'bigSpell',
     features: [{
@@ -562,7 +582,7 @@ const castleDeck = [
     subtype: 'temporary',
     cost: 1,
     currentC: 1,
-    description: 'Кладется на союзного воина. Поглощает первый урон по воину от базовой атаки других воинов, после этого Божественная защита отправляется в сток',
+    description: cardsInfo.HeavenProtection,
     id: _.uniqueId(),
     place: 'warrior',
     features: [{
@@ -583,7 +603,7 @@ const castleDeck = [
     subtype: 'permanent',
     cost: 2,
     currentC: 2,
-    description: 'Кладется на вашего воина - он получает + 1 к базовой атаке',
+    description: cardsInfo.Bless,
     id: _.uniqueId(),
     place: 'warrior',
     features: [{
@@ -603,7 +623,7 @@ const castleDeck = [
     subtype: 'temporary',
     cost: 1,
     currentC: 1,
-    description: 'Кладется на центральную клетку. У каждого воина, который перемещается или входит в игру в шеренгу, где есть святая земля, отнимается 2 здоровья',
+    description: cardsInfo.HolyLand,
     id: _.uniqueId(),
     place: 'midSpell',
     features: [{
@@ -622,7 +642,7 @@ const castleDeck = [
     subtype: 'instant',
     cost: 2,
     currentC: 2,
-    description: 'Отнять 2 здоровья у воина на поле и вылечить 2 здоровья у вашего героя',
+    description: cardsInfo.HeavenShock,
     id: _.uniqueId(),
     place: '',
     features: [{
@@ -642,7 +662,7 @@ const castleDeck = [
     subtype: 'instant',
     cost: 4,
     currentC: 4,
-    description: 'Атаковать силой 2 или силой 3, если отложенная карта, всех вражеских воинов в шеренге, а также силой 2 вражеских воинов в cлучайной соседней шеренге',
+    description: cardsInfo.SaintWord,
     id: _.uniqueId(),
     place: '',
     features: [{
@@ -662,7 +682,7 @@ const castleDeck = [
     subtype: 'instant',
     cost: 2,
     currentC: 2,
-    description: 'Отнять у воина 3 здоровья и + 1 здоровье за разницу в количестве воинов у вас и противника на поле',
+    description: cardsInfo.RighteousHammer,
     id: _.uniqueId(),
     place: '',
     features: [{
@@ -678,7 +698,7 @@ const castleDeck = [
     subtype: 'instant',
     cost: 2,
     currentC: 2,
-    description: 'Отнять 2 здоровья у воина и переместить его на прилегающую клетку',
+    description: cardsInfo.RetaliationHammer,
     id: _.uniqueId(),
     place: '',
     features: [
@@ -699,7 +719,7 @@ const castleDeck = [
     subtype: 'permanent',
     cost: 1,
     currentC: 1,
-    description: 'Кладется на вашего воина. Он получает +2 к здоровью.',
+    description: cardsInfo.LightShield,
     id: _.uniqueId(),
     place: 'warrior',
     features: [{
@@ -719,7 +739,7 @@ const castleDeck = [
     subtype: 'instant',
     cost: 2,
     currentC: 2,
-    description: 'РЕАКЦИЯ. При нанесении смертельного урона атакой вражеским воином вашему воину, ваш воин не умирает, а остается на поле с 1 здоровьем',
+    description: cardsInfo.LastChance,
     id: _.uniqueId(),
     place: 'postponed',
     features: [{
@@ -735,7 +755,7 @@ const castleDeck = [
     subtype: 'temporary',
     cost: 5,
     currentC: 5,
-    description: 'Кладется рядом с полем боя. Предотвращает любой урон по вашим воинам и герою во время хода противника.',
+    description: cardsInfo.Conciliation,
     id: _.uniqueId(),
     place: 'bigSpell',
     features: [{

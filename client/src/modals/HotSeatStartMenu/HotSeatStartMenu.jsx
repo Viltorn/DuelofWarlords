@@ -8,7 +8,7 @@ import PrimaryButton from '../../components/PrimaryButton.jsx';
 import { factionsData, heroes, decks } from '../../gameCardsData/factionsData.js';
 import { startCardsNumber1, startCardsNumber2 } from '../../gameData/gameLimits.js';
 import { actions as modalsActions } from '../../slices/modalsSlice.js';
-import './HotSeatStartMenu.css';
+import styles from './HotSeatStartMenu.module.css';
 import MenuSlider from './MenuSlider.jsx';
 import makeShaffledDeck from '../../utils/makeShaffledDeck.js';
 import createDeckForPLayer from '../../utils/makeDeckForPlayer.js';
@@ -92,15 +92,15 @@ const HotSeatMenu = () => {
   });
 
   return (
-    <dialog className="modal-slider">
+    <dialog className={styles.container}>
       {windowWidth < 700 ? (
         <RotateScreen />
       ) : (
-        <div className="modal-slider__content_dark">
-          <form className="modal-slider__hotseat-form" onSubmit={formik.handleSubmit}>
-            <fieldset className="modal-slider__fieldset" disabled={formik.isSubmitting}>
-              <div className="modal-slider__header-block">
-                <h2 className="modal-slider__header_light">{t('ChooseFactions')}</h2>
+        <div className={styles.contentDark}>
+          <form className={styles.hotseatForm} onSubmit={formik.handleSubmit}>
+            <fieldset className={styles.fieldset} disabled={formik.isSubmitting}>
+              <div className={styles.headerBlock}>
+                <h2 className={styles.headerLight}>{t('ChooseFactions')}</h2>
                 <PrimaryButton
                   showIcon={false}
                   state="default"
@@ -116,7 +116,7 @@ const HotSeatMenu = () => {
                   variant="primary"
                   type="submit"
                 />
-                <Link to="/choose" className="link">
+                <Link to="/choose" className={styles.link}>
                   <PrimaryButton
                     showIcon={false}
                     state="default"
@@ -125,14 +125,14 @@ const HotSeatMenu = () => {
                   />
                 </Link>
               </div>
-              <div className="modal-slider__player-slides">
-                <h3 className="modal-slider__player">
+              <div className={styles.playerSlides}>
+                <h3 className={styles.player}>
                   {t('Player1')}
                 </h3>
-                <div className="modal-slider__slide-block">
+                <div className={styles.slideBlock}>
                   <MenuSlider item={player1Faction} player="player1" changeSlide={changeFaction} />
                   <input
-                    className="modal-slider__slide-input"
+                    className={styles.slideInput}
                     id="player1Faction"
                     type="text"
                     ref={inputEl}
@@ -142,12 +142,12 @@ const HotSeatMenu = () => {
                     data-testid="input-body"
                     name="player1Faction"
                   />
-                  <label htmlFor="player1Faction" className="visually-hidden">{t('ChangeHP')}</label>
+                  <label htmlFor="player1Faction" className={styles.label}>{player1Faction.id}</label>
                 </div>
-                <div className="modal-slider__slide-block">
+                <div className={styles.slideBlock}>
                   <MenuSlider item={player1Heroes[heroNumber.player1]} player="player1" changeSlide={changeHero} />
                   <input
-                    className="modal-slider__slide-input"
+                    className={styles.slideInput}
                     id="player1Hero"
                     type="text"
                     ref={inputEl}
@@ -157,18 +157,18 @@ const HotSeatMenu = () => {
                     data-testid="input-body"
                     name="player1Hero"
                   />
-                  <label htmlFor="player1Hero" className="visually-hidden">{t('ChangeHP')}</label>
+                  <label htmlFor="player1Hero" className={styles.label}>{player1Heroes[heroNumber.player1].name}</label>
                 </div>
               </div>
-              <hr className="modal-slider_hr" />
-              <div className="modal-slider__player-slides">
-                <h3 className="modal-slider__player">
+              <hr className={styles.hr} />
+              <div className={styles.playerSlides}>
+                <h3 className={styles.player}>
                   {t('Player2')}
                 </h3>
-                <div className="modal-slider__slide-block">
+                <div className={styles.slideBlock}>
                   <MenuSlider item={player2Faction} player="player2" changeSlide={changeFaction} />
                   <input
-                    className="modal-slider__slide-input"
+                    className={styles.slideInput}
                     id="player1Faction"
                     type="text"
                     ref={inputEl}
@@ -178,12 +178,12 @@ const HotSeatMenu = () => {
                     data-testid="input-body"
                     name="player1Faction"
                   />
-                  <label htmlFor="player1Faction" className="visually-hidden">{t('ChangeHP')}</label>
+                  <label htmlFor="player1Faction" className={styles.label}>{player2Faction.id}</label>
                 </div>
-                <div className="modal-slider__slide-block">
+                <div className={styles.slideBlock}>
                   <MenuSlider item={player2Heroes[heroNumber.player2]} player="player2" changeSlide={changeHero} />
                   <input
-                    className="modal-slider__slide-input"
+                    className={styles.slideInput}
                     id="player1Hero"
                     type="text"
                     ref={inputEl}
@@ -193,7 +193,7 @@ const HotSeatMenu = () => {
                     data-testid="input-body"
                     name="player1Hero"
                   />
-                  <label htmlFor="player1Hero" className="visually-hidden">{t('ChangeHP')}</label>
+                  <label htmlFor="player1Hero" className={styles.label}>{player2Heroes[heroNumber.player2].name}</label>
                 </div>
               </div>
             </fieldset>

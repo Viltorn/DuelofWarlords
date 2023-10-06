@@ -4,7 +4,7 @@ import cn from 'classnames';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import { actions as battleActions } from '../slices/battleSlice.js';
 import CellCard from './CellCard.jsx';
-import './Cell.css';
+import styles from './Cell.module.css';
 import functionContext from '../contexts/functionsContext.js';
 import abilityContext from '../contexts/abilityActions.js';
 
@@ -35,12 +35,12 @@ const Cell = ({ props, id }) => {
   const currentCell = fieldCells.find((cell) => cell.id === id);
 
   const classes = cn({
-    'cell__default-size': true,
-    cell__spell: type === 'midSpell' || type === 'topSpell',
-    'cell__big-spell': type === 'bigSpell',
-    cell__field: type === 'field',
-    cell__animation_green: animation === 'green',
-    cell__animation_red: animation === 'red',
+    [styles.defaultSize]: true,
+    [styles.spell]: type === 'midSpell' || type === 'topSpell',
+    [styles.bigSpell]: type === 'bigSpell',
+    [styles.field]: type === 'field',
+    [styles.animationGreen]: animation === 'green',
+    [styles.animationRed]: animation === 'red',
   });
 
   const playTriggers = (card, thisCell, spellType, cardclass) => {
@@ -142,7 +142,16 @@ const Cell = ({ props, id }) => {
       <TransitionGroup component={null} exit>
         {content.length !== 0 && (
           content.map((item) => (
-            <CSSTransition key={item.id} timeout={500} classNames="cardanimation">
+            <CSSTransition
+              key={item.id}
+              timeout={500}
+              classNames={{
+                enter: styles.cardAnimationEnter,
+                enterActive: styles.cardAnimationActive,
+                exit: styles.cardAnimationExit,
+                exitActive: styles.cardAnimationExitActive,
+              }}
+            >
               <CellCard
                 key={item.id}
                 item={item}
@@ -157,10 +166,21 @@ const Cell = ({ props, id }) => {
       </TransitionGroup>
       <TransitionGroup component={null} exit={false}>
         {content.length === 0 && (
-          <CSSTransition in timeout={500} classNames="cellanimation">
+          <CSSTransition
+            in
+            appear
+            timeout={500}
+            classNames={{
+              enter: styles.cellAnimationEnter,
+              enterActive: styles.cellAnimationActive,
+              enterDone: styles.cellAnimationDone,
+              exit: styles.cellAnimationExit,
+              exitActive: styles.cellAnimationExitActive,
+            }}
+          >
             <button
               type="button"
-              className="cell__default-btn"
+              className={styles.defaultBtn}
               aria-label="field cell"
               style={{ cursor: `${animation !== '' ? 'pointer' : ''}` }}
               onClick={handleCellClick}

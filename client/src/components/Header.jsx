@@ -8,7 +8,7 @@ import tutorialStepsData from '../gameData/tutorialStepsData';
 import functionContext from '../contexts/functionsContext.js';
 import abilityContext from '../contexts/abilityActions.js';
 import Menu from '../assets/Menu.svg';
-import './Header.css';
+import styles from './Header.module.css';
 
 const Header = ({ setOpenMenu, isOpenMenu }) => {
   const { t } = useTranslation();
@@ -91,44 +91,44 @@ const Header = ({ setOpenMenu, isOpenMenu }) => {
   };
 
   return (
-    <div className="header" style={thisPlayer === 'player1' ? { left: 0 } : { right: 0 }}>
-      <div className="header__central-block">
+    <div className={styles.container} style={thisPlayer === 'player1' ? { left: 0 } : { right: 0 }}>
+      <div className={styles.centralBlock}>
         {thisPlayer === 'player1' && (
-          <button style={{ transform: isOpenMenu ? 'rotate(90deg)' : 'rotate(0)' }} type="button" onClick={handleMenuClick} className="header__menu-btn">
+          <button style={{ transform: isOpenMenu ? 'rotate(90deg)' : 'rotate(0)' }} type="button" onClick={handleMenuClick} className={styles.menuBtn}>
             <img src={Menu} alt="menu" />
           </button>
         )}
-        <div className="header__players-info">
-          <h3 className="header__title">
+        <div className={styles.playersInfo}>
+          <h3 className={styles.title}>
             {t('Player1')}
             :
           </h3>
-          <h3 className="header__title">
+          <h3 className={styles.title}>
             {' '}
             Viktor
           </h3>
-          <button type="button" onClick={() => handlePointsClick('player1')} disabled={gameMode !== 'hotseat'} className="header__counter">
-            <h3 className="header__counter_num">{player1Points}</h3>
+          <button type="button" onClick={() => handlePointsClick('player1')} disabled={gameMode !== 'hotseat'} className={styles.counter}>
+            <h3 className={styles.counterNum}>{player1Points}</h3>
           </button>
         </div>
-        <button className="header__endturn-btn" type="button" disabled={disEndTurn && gameMode === 'tutorial'} onClick={hadleEndTurnClick}>
+        <button className={styles.endturnBtn} type="button" disabled={disEndTurn && gameMode === 'tutorial'} onClick={hadleEndTurnClick}>
           {t('EndTurn')}
         </button>
-        <div className="header__players-info">
-          <button type="button" onClick={() => handlePointsClick('player2')} disabled={gameMode !== 'hotseat'} className="header__counter">
-            <h3 className="header__counter_num">{player2Points}</h3>
+        <div className={styles.playersInfo}>
+          <button type="button" onClick={() => handlePointsClick('player2')} disabled={gameMode !== 'hotseat'} className={styles.counter}>
+            <h3 className={styles.counterNum}>{player2Points}</h3>
           </button>
-          <h3 className="header__title">
+          <h3 className={styles.title}>
             {t('Player2')}
             :
           </h3>
-          <h3 className="header__title">
+          <h3 className={styles.title}>
             {' '}
             AI
           </h3>
         </div>
         {thisPlayer === 'player2' && (
-          <button type="button" style={{ transform: isOpenMenu ? 'rotate(90deg)' : 'rotate(0)' }} onClick={handleMenuClick} className="header__menu-btn">
+          <button type="button" style={{ transform: isOpenMenu ? 'rotate(90deg)' : 'rotate(0)' }} onClick={handleMenuClick} className={styles.menuBtn}>
             <img src={Menu} alt="menu" />
           </button>
         )}

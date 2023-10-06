@@ -1,11 +1,11 @@
 /* Cell */
 
-.cell__default-size {
+.defaultSize {
   width: calc(var(--cell-width) - 0.8rem);
   height: calc(var(--cell-width) - 0.8rem); 
 }
 
-.cell__title-default {
+.titleDefault {
   font-family: "Roboto-Bold", Helvetica;
   font-size: 0.6rem;
   word-break: break-word;
@@ -13,7 +13,7 @@
   margin: 0.5rem;
 }
 
-.cell__spell {
+.spell {
   display: flex;
   justify-content: center;
   border: 0.2rem solid var(--dark-color);
@@ -23,7 +23,7 @@
   padding: 0;
 }
 
-.cell__big-spell {
+.bigSpell {
   display: flex;
   justify-content: center;
   border: 0.2rem solid var(--dark-color);
@@ -34,14 +34,14 @@
   padding: 0;
 }
 
-.cell__default-btn {
+.defaultBtn {
   width: 100%;
   height: 100%;
   background: transparent;
   border: none;
 }
 
-.cell__field {
+.field {
   background-image: url('../assets/battlefield/WarriorCell_square_withback.png');
   background-color: transparent;
   position: relative;
@@ -58,7 +58,7 @@
   justify-content: flex-end;
 }
 
-.cell__animation_green {
+.animationGreen {
   animation: 1.5s infinite alternate greenglowing;
 }
 
@@ -72,7 +72,7 @@
   }
 }
 
-.cell__animation_red {
+.animationRed {
   animation: 1.5s infinite alternate redglowing;
 }
 
@@ -86,45 +86,52 @@
   }
 }
 
-.cardanimation-enter {
+.cardAnimationEnter {
   opacity: 1;
   transform: scale(1.3);
 }
-.cardanimation-active {
+.cardAnimationActive {
   opacity: 1;
   transform: scale(1);
   transition: opacity 500ms ease-in, transform 500ms ease-in;
 }
-.cardanimation-exit {
+.cardAnimationExit {
   transform: scale(1.3);
   transform: translate(0);
   opacity: 1;
 }
-.cardanimation-exit-active {
+.cardAnimationExitActive {
   opacity: 0;
   transform: scale(1.3);
   transition: opacity 500ms ease-in, transform 500ms ease-in;
 }
 
-.cellanimation-enter {
+.cellAnimationEnter {
   opacity: 0;
-  max-height: 0;
-  max-width: 0;
+  height: 0;
+  width: 0;
   transform: translateY(-100%);
 }
 
-.cellanimation-active {
+.cellAnimationActive {
   opacity: 0;
-  max-height: 100%;
-  max-width: 100%;
+  height: 0;
+  width: 0;
+  transform: translateY(-100%);
+}
+
+.cellAnimationDone {
+  opacity: 1;
+  height: 100%;
+  width: 100%;
   transform: translateY(0);
   transition: opacity 500ms ease-in, transform 500ms ease-in;
 }
 
-.cellanimation-exit {
+.cellAnimationExit {
   opacity: 1;
 }
-.cellanimation-exit-active {
+.cellAnimationExitActive {
   opacity: 0;
   transition: opacity 0ms ease-in, transform 0ms ease-in;
 }

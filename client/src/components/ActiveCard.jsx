@@ -52,7 +52,7 @@ const ActiveCard = ({ activeCard, playerType }) => {
           <ActionButton card={activeCard} type="graveyard" />
         )}
       </div>
-      <Card card={activeCard} activeCard={activeCard} active="active" />
+      <Card card={activeCard} activeCard={activeCard} active />
     </div>
   );
 };

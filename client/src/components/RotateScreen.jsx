@@ -1,14 +1,14 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import RotateScreenImg from '../assets/battlefield/RotateScreen.png';
-import './RotateScreen.css';
+import styles from './RotateScreen.module.css';
 
 const RotateScreen = () => {
   const { t } = useTranslation();
   return (
-    <div className="rotate-screen">
+    <div className={styles.container}>
       <h2>{t('RotateScreen')}</h2>
-      <img className="rotate-screen__img" src={RotateScreenImg} alt="rotate screen" />
+      <img className={styles.img} src={RotateScreenImg} alt="rotate screen" />
     </div>
   );
 };

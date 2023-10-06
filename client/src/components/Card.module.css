@@ -1,6 +1,6 @@
 /* Card */
 
-.card-block {
+.cardBlock {
   width: var(--hand-card-width);
   height: calc(var(--hand-card-width) * 1.6);
   position: relative;
@@ -18,33 +18,33 @@
   cursor: pointer;
 }
 
-.card-block:hover {
+.cardBlock:hover {
   transform: scale(1.3);
   z-index: 100;
 }
 
-.card-block_active {
+.cardBlock_active {
   width: calc((var(--hand-card-width)) * 1.6);
   height: calc((var(--hand-card-width)) * 1.6 * 1.6);
 }
 
-.card-block_active:hover {
+.cardBlock_active:hover {
   transform: none;
 }
 
-.card-block__image-container {
+.imageContainer {
   position: relative;
   width: 100%;
   height: 70%;
 }
 
-.card-block__main-image {
+.mainImage {
   width: 100%;
   height: 100%;
   object-fit: cover;
 }
 
-.card-block__image-container h3 {
+.imageContainer h3 {
   color: var(--white-color);
   font-family: "Roboto-Bold", Helvetica;
   text-shadow: 1px 0 0 var(--dark-color),0 1px 0 var(--dark-color), -1px 0 0 var(--dark-color),0 -1px 0 var(--dark-color);
@@ -52,49 +52,49 @@
   position: absolute;
 }
 
-.card-block__image-container.active h3 {
+.imageContainer.active h3 {
   font-size: 1.9rem;
   text-shadow: 1px 0 0 var(--dark-color),0 1px 0 var(--dark-color), -1px 0 0 var(--dark-color),0 -1px 0 var(--dark-color);
 }
 
-.card-block__warrior-power {
+.warriorPower {
   left: 0.35rem;
   top: 0.13rem;
 }
 
-.card-block__warrior-power.active {
-  left: 0.5rem;
+.warriorPower.active {
+  left: 0.6rem;
   top: 0.15rem;
 }
 
-.card-block__warrior-health {
+.warriorHealth {
   left: 0.4rem;
   top: 2rem;
   text-align: center;
 }
 
-.card-block__warrior-health.active {
-  left: 0.5rem;
+.warriorHealth.active {
+  left: 0.6rem;
   top: 25%;
 }
 
-.card-block__warrior-cost {
+.warriorCost {
   left: 0.3rem;
   top: 6.4rem;
 }
 
-.card-block__warrior-cost.active {
+.warriorCost.active {
   left: 0.5rem;
   top: 82%;
 }
 
-.card-block__hero-health {
+.heroHealth {
   right: 0.5rem;
   top: 0.4rem;
   text-align: center;
 }
 
-.card-block__description {
+.description {
   display: flex;
   padding: 0.15rem;
   margin: 0;
@@ -105,14 +105,14 @@
   overflow: hidden;
 }
 
-.card-block__font {
+.font {
   font-size: 0.5rem;
   font-weight: 400;
   line-height: 0.6rem;
   text-align: start;
 }
 
-.card-block__font-active {
+.fontActive {
   text-align: start;
   font-size: 0.8rem;
   font-weight: 600;

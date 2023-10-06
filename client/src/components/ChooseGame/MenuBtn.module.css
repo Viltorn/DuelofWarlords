@@ -24,3 +24,11 @@
   background-color: var(--golden);
   color: var(--dark-color);
 }
+
+@media (max-width: 500px) {
+  .btn {
+    font-size: 12px;
+    height: 35px;
+    width: 120px;
+  }
+}

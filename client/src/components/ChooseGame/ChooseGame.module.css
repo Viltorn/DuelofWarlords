@@ -1,5 +1,6 @@
 .container {
   display: flex;
+  position: relative;
   flex-direction: row;
   flex-wrap: nowrap;
   justify-content: center;
@@ -43,9 +44,20 @@
   width: 90%;
 }
 
+.version {
+  font-size: 1.5rem;
+  color: var(--light-gray);
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+}
+
 @media (max-width: 500px) {
+  .header {
+    font-size: 14px;
+  }
   .options {
-    height: 380px;
-    width: 270px;
+    height: 350px;
+    width: 240px;
   }
 }

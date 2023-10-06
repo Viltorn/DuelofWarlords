@@ -24,7 +24,7 @@ const GreetingWindow = () => {
     <dialog className={styles.window}>
       <div className={styles.content}>
         <h2 className={styles.title}>{t('TutorialWelcome')}</h2>
-        <p className={styles.description}>Здесь вы изучите основы игры Duel of Warlords</p>
+        <p className={styles.description}>{t('TutorialDescription')}</p>
         <PrimaryButton
           showIcon={false}
           state="default"

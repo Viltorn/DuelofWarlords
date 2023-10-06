@@ -65,18 +65,34 @@ export const FunctionProvider = ({ children }) => {
     return cardInvis || cellInvis || featureInvis;
   };
 
+  const findCellByContentId = (id) => fieldCells
+    .find((cell) => cell.content.find((el) => el.id === id));
+
+  const changeToRedirect = (checkingCell, card) => {
+    const redirectSpell = checkingCell.attachments?.find((feat) => feat.name === 'redirect');
+    const cardType = card.type === 'spell' ? 'spell' : card.subtype;
+    if (redirectSpell && redirectSpell.aim.includes(cardType)) {
+      return findCellByContentId(redirectSpell.id);
+    }
+    return checkingCell;
+  };
+
   const findEnemies = (card) => {
     const { cellId } = card;
     const cellArr = cellId.split('.');
     const row = cellArr[0];
     const line = cellArr[1];
     const attackingLines = line <= 2 ? ['3', '4'] : ['1', '2'];
-    const attackingRowCells = fieldCells.filter((cell) => cell.row === row && !isInvisible(cell)
-    && attackingLines.includes(cell.line) && cell.content.length !== 0 && !cell.disabled);
+    const attackingRowCells = fieldCells
+      .filter((cell) => cell.row === row && !isInvisible(cell)
+        && attackingLines.includes(cell.line) && cell.content.length !== 0 && !cell.disabled)
+      .map((cell) => changeToRedirect(cell, card));
     const hasMassAttack = card.features.find((feat) => feat.name === 'massAttack');
     const attackingCells = !hasMassAttack
       ? attackingRowCells
-      : fieldCells.filter((cell) => cell.type === 'field' && cell.content.length !== 0 && attackingLines.includes(cell.line));
+      : fieldCells
+        .filter((cell) => cell.type === 'field' && cell.content.length !== 0 && attackingLines.includes(cell.line))
+        .map((cell) => changeToRedirect(cell, card));
 
     const attackingHero = fieldCells.find((cell) => cell.type === 'hero' && cell.player !== thisPlayer);
     if (card.subtype === 'shooter') {

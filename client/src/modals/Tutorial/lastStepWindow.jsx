@@ -17,24 +17,20 @@ const GreetingWindow = () => {
       <div className={styles.content}>
         <h2 className={styles.title}>{t('TutorialFinish')}</h2>
         <p className={styles.description}>
-          Ниже дополнительная информация, которую необходимо знать в обычной игре
+          {t('TutorialTips')}
         </p>
         <ul className={styles.tipsBlock}>
           <li className={styles.tip}>
-            Вы всегда можете нажать на сток карт, чтобы посмотреть карты,
-            сыгранные вами или вашим оппонентом
+            {t('Tip1')}
           </li>
           <li className={styles.tip}>
-            В первом раунде игры вы можете скинуть любое количество карт из руки в конец колоды
-            и взять столько же взамен из вашей колоды сверху
+            {t('Tip2')}
           </li>
           <li className={styles.tip}>
-            Смотрите на описание способностей ваших воинов
-            - они помогут вам правильно применять их в бою
+            {t('Tip3')}
           </li>
           <li className={styles.tip}>
-            В верхнем правом углу игрового поля отображается
-            текущее количество карт в руке оппонента
+            {t('Tip4')}
           </li>
         </ul>
         <PrimaryButton

@@ -1,12 +1,12 @@
 import { useTranslation } from 'react-i18next';
 import logoMini from '../assets/Logo_Mini.png';
-import './ErrorPage.css';
+import styles from './ErrorPage.module.css';
 
 const ErrorPage = () => {
   const { t } = useTranslation();
 
   return (
-    <div className="error-page" id="error-page">
+    <div className={styles.container} id="error-page">
       <img
         alt="page not found"
         style={{ height: '200px', width: '200px' }}
