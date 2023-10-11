@@ -1,5 +1,6 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
+import gameVersion from '../../gameData/currentGameVer';
 
 import MenuBtn from './MenuBtn';
 import styles from './ChooseGame.module.css';
@@ -9,7 +10,7 @@ const ChooseGame = () => {
 
   return (
     <div className={styles.container}>
-      <p className={styles.version}>v0.52</p>
+      <p className={styles.version}>{gameVersion}</p>
       <div className={styles.options}>
         <MenuBtn text={t('Install')} data="install" type="secondary" />
         <hr className={styles.divider} />
