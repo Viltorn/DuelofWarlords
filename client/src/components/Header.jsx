@@ -13,7 +13,13 @@ import styles from './Header.module.css';
 const Header = ({ setOpenMenu, isOpenMenu }) => {
   const { t } = useTranslation();
   const {
-    thisPlayer, playerPoints, commonPoints, activeCardPlayer1, activeCardPlayer2, fieldCells,
+    thisPlayer,
+    playerPoints,
+    commonPoints,
+    activeCardPlayer1,
+    activeCardPlayer2,
+    fieldCells,
+    players,
   } = useSelector((state) => state.battleReducer);
   const { gameMode } = useSelector((state) => state.gameReducer);
   const {
@@ -99,14 +105,16 @@ const Header = ({ setOpenMenu, isOpenMenu }) => {
           </button>
         )}
         <div className={styles.playersInfo}>
-          <h3 className={styles.title}>
-            {t('Player1')}
-            :
-          </h3>
-          <h3 className={styles.title}>
-            {' '}
-            Viktor
-          </h3>
+          <div className={styles.titleBlock}>
+            <h3 className={styles.title}>
+              {t('Player1')}
+              :
+            </h3>
+            <h3 className={styles.title}>
+              {' '}
+              {players.player1.name}
+            </h3>
+          </div>
           <button type="button" onClick={() => handlePointsClick('player1')} disabled={gameMode !== 'hotseat'} className={styles.counter}>
             <h3 className={styles.counterNum}>{player1Points}</h3>
           </button>
@@ -118,14 +126,16 @@ const Header = ({ setOpenMenu, isOpenMenu }) => {
           <button type="button" onClick={() => handlePointsClick('player2')} disabled={gameMode !== 'hotseat'} className={styles.counter}>
             <h3 className={styles.counterNum}>{player2Points}</h3>
           </button>
-          <h3 className={styles.title}>
-            {t('Player2')}
-            :
-          </h3>
-          <h3 className={styles.title}>
-            {' '}
-            AI
-          </h3>
+          <div className={styles.titleBlock}>
+            <h3 className={styles.title}>
+              {t('Player2')}
+              :
+            </h3>
+            <h3 className={styles.title}>
+              {' '}
+              {players.player2.name}
+            </h3>
+          </div>
         </div>
         {thisPlayer === 'player2' && (
           <button type="button" style={{ transform: isOpenMenu ? 'rotate(90deg)' : 'rotate(0)' }} onClick={handleMenuClick} className={styles.menuBtn}>

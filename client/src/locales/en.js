@@ -5,9 +5,9 @@ export default {
       it become simplier but new features were also added in order to make it still exciting to play, and overall allows new game to be made as board game alongside with electronic version.`,
     gameDescription: `The game is a 2-player tactical duel in a fantasy world inspired by the Heroes of Might and Magic series of games.
     Each of the players controls one of the unique warlord in the game belonging to the chosen faction.
-    During the game, opponents take turns playing spell and warrior cards, as well as moving them around the battlefield to achieve the main goal - to reduce the enemy hero's health to 0 points`,
+    During the game, opponents take turns playing spells and warriors cards, as well as moving them around the battlefield to achieve the main goal - to reduce the enemy warlord's health to 0 points`,
     gameFactions: `Choose one of the 4 available factions in the game:
-    The castle - strong warriors of light, the Academy - powerful wizards, the Dungeon - dangerous killers, the Forest - adherents of the magic of nature.`,
+    The Castle - strong warriors of the light, the Academy - powerful wizards, the Dungeon - dangerous killers, the Forest - adherents of the magic of nature.`,
     hoverPictures: '(move the cursor over the images)',
     moreAboutMMdoc: 'More about MMDoc',
     Battlefield: 'BATTLEFIELD',
@@ -15,9 +15,9 @@ export default {
     Spells: 'SPELLS',
     BattlefieldDescription: `There are 3 classes of warriors in the game: melee fighters, flying and shooters.
     You need to place them correctly on the battlefield to take advantage of each class.
-    Move the warriors around the battlefield to prevent the enemy from attacking your hero!`,
+    Move the warriors around the battlefield to prevent the enemy from attacking your warlord!`,
     HeroPowerDescription: `Warlords are directly involved in the battle: they attack the enemy or use useful spells!
-    Each hero has a standard ability and a unique one that should be taken into account when assembling the deck of cards.`,
+    Each warlord has a standard ability and a unique one that should be taken into account when assembling the deck of cards.`,
     SpellsDescription: `6 types of spell schools and three classes:i nstant, temporary and permanent will allow you to come up with different combinations to achieve success in battle.
     The game has the ability to enhance individual spells, as well as apply "reaction" spells that act unexpectedly for the enemy!`,
     GameDescriptTitle: 'GAME DESCRIPTION',
@@ -54,12 +54,12 @@ export default {
     Tutorial: 'TUTORIAL',
     HotSeat: 'TRAINING',
     ChooseFactions: 'CHOOSE FACTION AND WARLORD',
-    Start: 'BEGIN',
-    Back: 'BACK',
+    START: 'BEGIN',
+    BACK: 'BACK',
     DrawCards: 'DRAW CARD TO FULL HAND?',
     DrawCard: 'DRAW',
     ResetBtn: 'RESET',
-    Continue: 'CONTINUE',
+    CONTINUE: 'CONTINUE',
     Install: 'INSTALL',
     EndTurn: 'END TURN',
     Exit: 'EXIT',
@@ -67,6 +67,10 @@ export default {
     TutorialDescription: 'Here you will learn the basics of the Duel of Warlords game',
     TutorialFinish: 'Gongratulations! You have completed Duels of Warlords tutorial',
     TutorialTips: 'Below is additional tips that you need to know in a normal game mode',
+    MAIN: 'MAIN PAGE',
+    GAMECHOOSE: 'CHOOSE GAME',
+    RESETGAME: 'RESET GAME',
+    Tips: 'TIPS',
     Tip1: 'You can always click on the graveyard to see the cards played by you or your opponent',
     Tip2: 'In the first round of the game, you can throw any number of cards from your hand to the end of the deck and take the same number in return from top of your deck',
     Tip3: 'Look at the description of the abilities of your warriors - they will help you to use them correctly in battle',

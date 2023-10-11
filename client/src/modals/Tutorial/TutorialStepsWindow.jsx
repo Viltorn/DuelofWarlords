@@ -1,5 +1,6 @@
 import React, { useEffect, useContext } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 import { actions as battleActions } from '../../slices/battleSlice.js';
 import { actions as modalActions } from '../../slices/modalsSlice.js';
 import styles from './TutorialStepsWindow.module.css';
@@ -12,6 +13,7 @@ import abilityContext from '../../contexts/abilityActions.js';
 import functionContext from '../../contexts/functionsContext.js';
 
 const TutorialStepsWindow = () => {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const { fieldCells, thisPlayer } = useSelector((state) => state.battleReducer);
 
@@ -219,8 +221,8 @@ const TutorialStepsWindow = () => {
       <div className={styles.container}>
         <h2 className={styles.title}>{tutorialStepsData[tutorStep].text}</h2>
         <div className={styles.btnBlock}>
-          {tutorialStepsData[tutorStep].back && (<button className={styles.btn} type="button" onClick={() => handleClick(-1)}>НАЗАД</button>)}
-          {tutorialStepsData[tutorStep].next && (<button className={styles.btn} type="button" onClick={() => handleClick(1)}>ДАЛЕЕ</button>)}
+          {tutorialStepsData[tutorStep].back && (<button className={styles.btn} type="button" onClick={() => handleClick(-1)}>{t('BACK')}</button>)}
+          {tutorialStepsData[tutorStep].next && (<button className={styles.btn} type="button" onClick={() => handleClick(1)}>{t('CONTINUE')}</button>)}
         </div>
       </div>
     </div>

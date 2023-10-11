@@ -8,7 +8,7 @@ import {
 const initialState = {
   commonPoints: 0,
   playerPoints: [{ player: 'player1', points: 1 }, { player: 'player2', points: 1 }],
-  players: { player1: { name: 'Viktor', id: 'player1', cardsdrawn: false }, player2: { name: 'AI', id: 'player2', cardsdrawn: false } },
+  players: { player1: { name: 'Player1', id: 'player1', cardsdrawn: false }, player2: { name: 'Player2', id: 'player2', cardsdrawn: false } },
   thisPlayer: 'player1',
   playersDecks: { player1: [], player2: [] },
   playersHands: { player1: [], player2: [] },

@@ -9,7 +9,7 @@ const ChooseGame = () => {
 
   return (
     <div className={styles.container}>
-      <p className={styles.version}>v0.51</p>
+      <p className={styles.version}>v0.52</p>
       <div className={styles.options}>
         <MenuBtn text={t('Install')} data="install" type="secondary" />
         <hr className={styles.divider} />

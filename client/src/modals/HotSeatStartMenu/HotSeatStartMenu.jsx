@@ -104,7 +104,7 @@ const HotSeatMenu = () => {
                 <PrimaryButton
                   showIcon={false}
                   state="default"
-                  text={t('Start')}
+                  text={t('START')}
                   variant="primary"
                   type="submit"
                 />
@@ -112,7 +112,7 @@ const HotSeatMenu = () => {
                   onClick={handleClose}
                   showIcon={false}
                   state="default"
-                  text={t('Continue')}
+                  text={t('CONTINUE')}
                   variant="primary"
                   type="submit"
                 />
@@ -120,7 +120,7 @@ const HotSeatMenu = () => {
                   <PrimaryButton
                     showIcon={false}
                     state="default"
-                    text={t('Back')}
+                    text={t('BACK')}
                     variant="secondary"
                   />
                 </Link>

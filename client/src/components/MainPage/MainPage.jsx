@@ -30,7 +30,7 @@ const MainPage = () => {
               <PrimaryButton
                 showIcon={false}
                 state="default"
-                text="ПОДРОБНЕЕ"
+                text={t('FEATURES')}
                 variant="primary"
               />
             </a>
@@ -38,7 +38,7 @@ const MainPage = () => {
               <PrimaryButton
                 showIcon={false}
                 state="default"
-                text="ИГРАТЬ"
+                text={t('PLAY')}
                 variant="secondary"
               />
             </Link>
@@ -95,7 +95,7 @@ const MainPage = () => {
           <GameFeature img={SpellCast} direction="normal" h1={t('Spells')} p={t('SpellsDescription')} />
         </div>
         <Link to="/choose" className={styles.link}>
-          <PrimaryButton showIcon={false} state="default" text="ИГРАТЬ" variant="primary" />
+          <PrimaryButton showIcon={false} state="default" text={t('PLAY')} variant="primary" />
         </Link>
       </section>
     </div>

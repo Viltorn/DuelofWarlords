@@ -52,12 +52,15 @@
   right: 1rem;
 }
 
-@media (max-width: 500px) {
+@media (max-width: 767px) {
   .header {
     font-size: 14px;
   }
   .options {
     height: 350px;
     width: 240px;
+  }
+  .version {
+    font-size: 12px;
   }
 }
