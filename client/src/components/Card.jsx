@@ -1,5 +1,3 @@
-/* eslint-disable functional/no-loop-statements */
-/* eslint-disable functional/no-let */
 import React, { useRef, useContext } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import cn from 'classnames';

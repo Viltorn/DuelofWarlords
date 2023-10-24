@@ -7,8 +7,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "cd server && node server && cd .. && serve -s ./client/build",
     "start-local": "npm run start-server && npm run serve-build",
-    "serve-build": "serve -s ./client/build && cd ..",
-    "start-server": "cd server && PORT=8080 node server && cd ..",
+    "serve-build": "serve -s ./client/build",
+    "start-server": "cd server && PORT=8080 node server",
     "build-client": "cd client && npm run build && cd .."
   },
   "repository": {
