@@ -1,11 +1,11 @@
-const express = require('express');
-const { Server } = require("socket.io");
-const { v4: uuidV4 } = require('uuid');
-const http = require('http');
+import express from 'express';
+import { Server } from "socket.io";
+import { v4 as uuidV4 } from 'uuid';
+import { createServer } from 'http';
 
 const app = express(); // initialize express
 
-const server = http.createServer(app);
+const server = createServer(app);
 
 // set port to value received from environment variable or 8080 if null
 const port = process.env.PORT || 80 
@@ -96,6 +96,8 @@ io.on('connection', (socket) => {
     // respond to the client with the room details.
     // emit an 'opponentJoined' event to the room to tell the other player that an opponent has joined
     socket.to(room).emit('opponentJoined', roomUpdate);
+    const gameRooms = Array.from(rooms.values());
+    io.emit('rooms', gameRooms);
     callback(roomUpdate);
   });
 
