@@ -6,7 +6,9 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon server.js"
+    "start": "npm run build-client && node server",
+    "start-local": "npm run build-client && PORT=8080 nodemon server",
+    "build-client": "cd ../client && npm run build && cd .."
   },
   "keywords": [],
   "author": "",

@@ -169,34 +169,6 @@ const Battlefield = () => {
       makeMove[move](data);
     });
 
-    // socket.on('endTurn', (data) => {
-    //   const {
-    //     newPlayer,
-    //     commonPoints,
-    //     newCommonPoints,
-    //     posponedCell,
-    //     temporarySpells,
-    //     turnSpells,
-    //   } = data;
-    //   endTurn(newPlayer, commonPoints, newCommonPoints, posponedCell,
-    //  temporarySpells, turnSpells);
-    // });
-
-    // socket.on('castSpell', (data) => {
-    //   const { card, player, points, cell } = data;
-    //   castSpell(card, player, points, cell);
-    // });
-
-    // socket.on('makeFight', (data) => {
-    //   const { card1, card2 } = data;
-    //   makeFight(card1, card2);
-    // });
-
-    // socket.on('drawCards', (data) => {
-    //   const { player, number } = data;
-    //   drawCards(player, number);
-    // });
-
     return () => {
       socket.off('makeMove');
     };

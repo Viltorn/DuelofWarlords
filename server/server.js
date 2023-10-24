@@ -1,7 +1,12 @@
 import express from 'express';
+import path from 'path';
+import { fileURLToPath } from 'url';
 import { Server } from "socket.io";
 import { v4 as uuidV4 } from 'uuid';
 import { createServer } from 'http';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const app = express(); // initialize express
 
@@ -9,6 +14,12 @@ const server = createServer(app);
 
 // set port to value received from environment variable or 8080 if null
 const port = process.env.PORT || 80 
+
+app.use(express.static(path.join(__dirname, "../client/build")));
+
+app.get("/", function(req, res) {
+  res.sendFile(path.join(__dirname, "../client/build", "index.html"));
+});
 
 // upgrade http server to websocket server
 const io = new Server(server, {
@@ -123,26 +134,6 @@ io.on('connection', (socket) => {
   socket.on('makeMove', (data) => {
     socket.to(data.room).emit('makeMove', data);
   });
-
-  // socket.on('addCardToField', (data) => {
-  //   socket.to(data.room).emit('addCardToField', data);
-  // });
-  
-  // socket.on('endTurn', (data) => {
-  //   socket.to(data.room).emit('endTurn', data);
-  // });
-
-  // socket.on('castSpell', (data) => {
-  //   socket.to(data.room).emit('castSpell', data);
-  // });
-
-  // socket.on('makeFight', (data) => {
-  //   socket.to(data.room).emit('makeFight', data);
-  // });
-
-  // socket.on('drawCards', (data) => {
-  //   socket.to(data.room).emit('drawCards', data);
-  // });
 
   socket.on('closeRoom', async (data, callback) => {
     const { roomId, name } = data;
