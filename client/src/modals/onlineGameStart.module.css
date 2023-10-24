@@ -1,0 +1,138 @@
+.container {
+  position: fixed; /* Stay in place */
+  display: flex;
+  justify-content: center;
+  align-items: top;
+  z-index: 100; /* Sit on top */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+.contentDark {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 40px;
+  background-color: var(--purple);
+  margin: auto; /* 15% from the top and centered */
+  padding: 30px 30px;
+  border: 1px solid #888;
+  width: 30rem; /* Could be more or less, depending on screen size */
+  min-width: 600px;
+  height: 600px;
+  min-height: 375px;
+  border-radius: 0.5rem;
+  color: var(--light-gray);
+}
+
+.headerLight {
+  color: var(--light-gray);
+  font-size: 30px;
+  text-align: center;
+}
+
+.hotseatForm {
+  height: 100%;
+}
+
+.fieldset {
+  height: 100%;
+  border: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 40px;
+  justify-content: center;
+}
+
+.playerSlides {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.slideBlock {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  align-items: center;
+}
+
+.slideInput {
+  display: none;
+}
+
+.label {
+  height: 2rem;
+  min-height: 10px;
+  width: 4rem;
+  font-weight: 600;
+  font-size: 30px;
+  background-color: transparent;
+  color: var(--light-gray);
+  border: none;
+  text-align: center;
+  width: 100%;
+  padding: 0;
+  line-height: 1.5rem;
+}
+
+.player {
+  color: var(--golden);
+  font-size: 30px;
+  width: 10rem;
+}
+
+.link {
+  text-decoration: none;
+}
+
+.roomsOwner {
+  color: var(--dark-golden);
+  font-weight: 600;
+  font-size: 25px;
+}
+
+.btnBlock {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: 2rem;
+}
+
+.invalidFeedback {
+  color: var(--red-light);
+  font-size: 20px;
+}
+
+@media (max-width: 900px) {
+  .contentDark {
+    height: 400px;
+    width: 400px;
+  }
+
+  .headerLight {
+    font-size: 25px;
+  }
+
+  .player {
+    font-size: 18px;
+  }
+  .roomsOwner {
+    font-size: 20px;
+  }
+
+  .label {
+    font-size: 20px;
+  }
+
+  .fieldset {
+    gap: 30px;
+    justify-content: start;
+  }
+}

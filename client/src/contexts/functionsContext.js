@@ -8,11 +8,14 @@ const FunctionContext = createContext({});
 export const FunctionProvider = ({ children }) => {
   const dispatch = useDispatch();
   const store = useStore();
-  const { thisPlayer, fieldCells, playerPoints } = useSelector((state) => state.battleReducer);
+  const {
+    thisPlayer, fieldCells, playerPoints, gameTurn,
+  } = useSelector((state) => state.battleReducer);
   const [attackCells, setAttackCells] = useState([]);
   const [castCells, setCastCells] = useState([]);
   const [moveCells, setMoveCells] = useState([]);
   const [tutorStep, changeTutorStep] = useState(0);
+  const [isOpenMenu, setOpenMenu] = useState(false);
   const currentPoints = playerPoints.find((item) => item.player === thisPlayer).points;
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
 
@@ -46,6 +49,10 @@ export const FunctionProvider = ({ children }) => {
   const getActiveCard = () => {
     const { activeCardPlayer1, activeCardPlayer2 } = store.getState().battleReducer;
     return thisPlayer === 'player1' ? activeCardPlayer1 : activeCardPlayer2;
+  };
+
+  const addActiveCard = (card, player) => {
+    dispatch(battleActions.addActiveCard({ card, player }));
   };
 
   const isAllowedCost = (checkCard) => {
@@ -247,7 +254,8 @@ export const FunctionProvider = ({ children }) => {
 
   const getWarriorPower = (card) => {
     const { attachments, currentP } = card;
-    const cardCell = fieldCells.find((cell) => cell.id === card.cellId);
+    const newField = store.getState().battleReducer.fieldCells;
+    const cardCell = newField.find((cell) => cell.id === card.cellId);
     const powerCellAttach = cardCell.attachments.filter((spell) => spell.name === 'power');
     const powerCellValue = powerCellAttach.reduce((acc, spell) => {
       const spellPower = spell.depend ? findDependValue(spell) : spell.value;
@@ -310,7 +318,8 @@ export const FunctionProvider = ({ children }) => {
       setCastCells([]);
       return;
     }
-    if (!isAllowedCost(activeCard) || activeCard.player !== thisPlayer || activeCard.disabled) {
+    if (!isAllowedCost(activeCard) || activeCard.player !== thisPlayer
+      || activeCard.disabled || gameTurn !== thisPlayer) {
       return;
     }
 
@@ -415,24 +424,24 @@ export const FunctionProvider = ({ children }) => {
     }));
   };
 
-  const moveAttachedSpells = (movingCard, endCellId, type) => {
-    if (movingCard.type === 'warrior' && movingCard.status === 'field') {
-      const activeCell = fieldCells.find((cell) => cell.id === movingCard.cellId);
-      activeCell.content.forEach((item) => {
-        if (item.type === 'spell' && type === 'kill') {
-          deleteCardfromSource(item);
-          dispatch(battleActions.deleteAttachment({ spellId: item.id }));
-          dispatch(battleActions.addToGraveyard({ card: item }));
-        } else if (item.type === 'spell' && type === 'move') {
-          deleteCardfromSource(item);
-          dispatch(battleActions.addFieldContent({ activeCard: item, id: endCellId }));
-        } else if (item.type === 'spell' && type === 'return') {
-          deleteCardfromSource(item);
-          dispatch(battleActions.deleteAttachment({ spellId: item.id }));
-          dispatch(battleActions.returnCard({ card: item, cost: item.cost }));
-        }
-      });
-    }
+  const moveAttachedSpells = (cellId, endCellId, type) => {
+    const currentField = store.getState().battleReducer.fieldCells;
+    const activeCell = currentField.find((cell) => cell.id === cellId);
+    console.log(activeCell);
+    activeCell.content.forEach((item) => {
+      if (item.type === 'spell' && type === 'kill') {
+        deleteCardfromSource(item);
+        dispatch(battleActions.deleteAttachment({ spellId: item.id }));
+        dispatch(battleActions.addToGraveyard({ card: item }));
+      } else if (item.type === 'spell' && type === 'move') {
+        deleteCardfromSource(item);
+        dispatch(battleActions.addFieldContent({ card: item, id: endCellId }));
+      } else if (item.type === 'spell' && type === 'return') {
+        deleteCardfromSource(item);
+        dispatch(battleActions.deleteAttachment({ spellId: item.id }));
+        dispatch(battleActions.returnCard({ card: item, cost: item.cost }));
+      }
+    });
   };
 
   const deleteOtherActiveCard = (card1, card2, thisplayer) => {
@@ -461,10 +470,13 @@ export const FunctionProvider = ({ children }) => {
       handleAnimation,
       deleteCardfromSource,
       getActiveCard,
+      addActiveCard,
       windowWidth,
       findDependValue,
       tutorStep,
       changeTutorStep,
+      isOpenMenu,
+      setOpenMenu,
     }}
     >
       {children}

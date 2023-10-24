@@ -1,0 +1,38 @@
+.window {
+  position: fixed; 
+  display: flex;
+  justify-content: center;
+  align-items: top;
+  z-index: 2;
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 3rem;
+  background-color: var(--dark-blue);
+  margin: 15rem auto; /* 15% from the top and centered */
+  padding: 2rem 4rem;
+  border: 1px solid #888;
+  width: 20rem; /* Could be more or less, depending on screen size */
+  min-width: 600px;
+  height: 10rem;
+  border-radius: 0.5rem;
+}
+
+.title {
+  color: var(--light-gray);
+  font-size: 1.5rem;
+}
+
+.description {
+  color: var(--light-gray);
+  font-size: 1.2rem;
+}

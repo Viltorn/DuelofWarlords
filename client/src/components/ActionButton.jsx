@@ -1,24 +1,25 @@
 import React, { useEffect, useContext, useRef } from 'react';
-import { useDispatch, useSelector, useStore } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { actions as modalsActions } from '../slices/modalsSlice.js';
 import { actions as battleActions } from '../slices/battleSlice.js';
 import functionContext from '../contexts/functionsContext.js';
 import abilityContext from '../contexts/abilityActions.js';
-import { minCardTurn, maxCardTurn } from '../gameData/gameLimits.js';
 import styles from './ActionButton.module.css';
+import socket from '../socket.js';
 
 const ActionButton = ({
   type, card, ability, ressurect,
 }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
-  const store = useStore();
   const element = useRef();
   const {
-    handleAnimation, moveAttachedSpells, deleteOtherActiveCard, deleteCardfromSource,
+    handleAnimation, moveAttachedSpells, deleteOtherActiveCard,
   } = useContext(functionContext);
-  const { sendCardFromField, makeFeatureCast, makeFeatureAttach } = useContext(abilityContext);
+  const {
+    sendCardFromField, returnCardToHand, makeAbilityCast, makeTurn, returnCardToDeck,
+  } = useContext(abilityContext);
   const {
     id, cellId,
   } = card;
@@ -32,30 +33,9 @@ const ActionButton = ({
     fieldCells,
     playerPoints,
   } = useSelector((state) => state.battleReducer);
+  const { gameMode, curRoom } = useSelector((state) => state.gameReducer);
   const currentPoints = playerPoints.find((item) => item.player === thisPlayer).points;
   const currentCell = fieldCells.find((item) => item.id === cellId);
-
-  const makeTurn = (direction) => {
-    const newfieldCells = store.getState().battleReducer.fieldCells;
-    const cell = newfieldCells.find((item) => item.id === cellId);
-    const currentCard = cell.content.find((item) => item.id === id);
-    const currentTurn = currentCard.turn;
-    if (direction === 'turnLeft' && currentTurn < maxCardTurn) {
-      dispatch(battleActions.turnCardLeft({ cardId: id, cellId, qty: 1 }));
-    } else if (currentTurn > minCardTurn) {
-      dispatch(battleActions.turnCardRight({ cardId: id, cellId, qty: 1 }));
-    }
-  };
-
-  const makeSpellCast = (spell, cell) => {
-    const newPoints = currentPoints - ability.cost;
-    dispatch(battleActions.setPlayerPoints({ points: newPoints, player: thisPlayer }));
-    if (!spell.attach) {
-      makeFeatureCast(spell, cell);
-    } else if (spell.attach) {
-      makeFeatureAttach(spell, cell);
-    }
-  };
 
   const performClick = (btnType) => {
     switch (btnType) {
@@ -69,12 +49,17 @@ const ActionButton = ({
         makeTurn('turnRight');
         break;
       case 'return':
-        handleAnimation(card, 'delete');
-        moveAttachedSpells(card, null, 'return');
-        dispatch(battleActions.deleteActiveCard({ player: thisPlayer }));
-        deleteOtherActiveCard(activeCardPlayer1, activeCardPlayer2, thisPlayer);
-        sendCardFromField(card, 'return', cost);
-        dispatch(battleActions.deleteAttachment({ spellId: ressurect?.id }));
+        returnCardToHand(card, thisPlayer, cost, ressurect?.id);
+        if (gameMode === 'online') {
+          socket.emit('makeMove', {
+            move: 'returnCardToHand',
+            room: curRoom,
+            card,
+            player: thisPlayer,
+            cost,
+            spellId: ressurect?.id,
+          });
+        }
         break;
       case 'graveyard':
         handleAnimation(card, 'delete');
@@ -84,21 +69,30 @@ const ActionButton = ({
         sendCardFromField(card, 'grave');
         break;
       case 'ability':
-        handleAnimation(card, 'delete');
-        dispatch(battleActions.deleteActiveCard({ player: thisPlayer }));
-        makeSpellCast(ability, currentCell);
-        if (card.type === 'spell') {
-          deleteCardfromSource(card);
-          dispatch(battleActions.addToGraveyard({ card }));
-        } else {
-          makeTurn('turnLeft');
+        makeAbilityCast(card, thisPlayer, currentPoints, currentCell, ability);
+        if (gameMode === 'online') {
+          socket.emit('makeMove', {
+            move: 'makeAbilityCast',
+            room: curRoom,
+            card,
+            player: thisPlayer,
+            points: currentPoints,
+            cell: currentCell,
+            ability,
+          });
+          console.log('ability');
         }
         break;
       case 'deckreturn':
-        handleAnimation(card, 'delete');
-        dispatch(battleActions.sendCardtoDeck({ activeCard: card }));
-        deleteCardfromSource(card);
-        dispatch(battleActions.deleteActiveCard({ player: thisPlayer }));
+        returnCardToDeck(card, thisPlayer);
+        if (gameMode === 'online') {
+          socket.emit('makeMove', {
+            move: 'returnCardToDeck',
+            room: curRoom,
+            card,
+            player: thisPlayer,
+          });
+        }
         break;
       default:
         break;

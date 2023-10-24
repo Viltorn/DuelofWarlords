@@ -13,21 +13,22 @@ import functionContext from '../contexts/functionsContext.js';
 import abilityContext from '../contexts/abilityActions.js';
 import CellCard from './CellCard.jsx';
 import styles from './HeroPad.module.css';
+import socket from '../socket.js';
 
 const HeroPad = ({ type, player }) => {
   const { t } = useTranslation();
   const deck = useRef();
   const dispatch = useDispatch();
   const {
-    deleteCardfromSource, getActiveCard, handleAnimation, isAllowedCost, changeTutorStep,
+    getActiveCard, handleAnimation, isAllowedCost,
   } = useContext(functionContext);
 
-  const { makeFeatureAttach } = useContext(abilityContext);
+  const { addCardToField } = useContext(abilityContext);
 
   const {
     fieldCells, playersHands, thisPlayer, playerPoints, commonPoints, players,
   } = useSelector((state) => state.battleReducer);
-  const { gameMode } = useSelector((state) => state.gameReducer);
+  const { gameMode, curRoom } = useSelector((state) => state.gameReducer);
 
   const currentPoints = playerPoints.find((data) => data.player === thisPlayer).points;
 
@@ -72,20 +73,24 @@ const HeroPad = ({ type, player }) => {
     }
 
     if (activeCard && player === activeCard.player) {
-      if (gameMode === 'tutorial') {
-        changeTutorStep((prev) => prev + 1);
-      }
-      if (activeCard.status === 'hand') {
-        const newPoints = currentPoints - activeCard.cost;
-        dispatch(battleActions.setPlayerPoints({ points: newPoints, player: thisPlayer }));
-      }
-      handleAnimation(activeCard, 'delete');
-      dispatch(battleActions.addFieldContent({ activeCard, id: postponedCell.id }));
-      deleteCardfromSource(activeCard);
-      dispatch(battleActions.deleteActiveCard({ player: thisPlayer }));
-      if (activeCard.type === 'spell' && activeCard.place === 'postponed') {
-        activeCard.features.forEach((feature) => makeFeatureAttach(feature, postponedCell));
-      }
+      addCardToField(activeCard, player, currentPoints, postponedCell);
+      socket.emit('makeMove', {
+        move: 'addCardToField', room: curRoom, card: activeCard, player, points: currentPoints, cell: postponedCell,
+      });
+      // if (gameMode === 'tutorial') {
+      //   changeTutorStep((prev) => prev + 1);
+      // }
+      // if (activeCard.status === 'hand') {
+      //   const newPoints = currentPoints - activeCard.cost;
+      //   dispatch(battleActions.setPlayerPoints({ points: newPoints, player: thisPlayer }));
+      // }
+      // handleAnimation(activeCard, 'delete');
+      // dispatch(battleActions.addFieldContent({ activeCard, id: postponedCell.id }));
+      // deleteCardfromSource(activeCard);
+      // dispatch(battleActions.deleteActiveCard({ player: thisPlayer }));
+      // if (activeCard.type === 'spell' && activeCard.place === 'postponed') {
+      //   activeCard.features.forEach((feature) => makeFeatureAttach(feature, postponedCell));
+      // }
     }
   };
 

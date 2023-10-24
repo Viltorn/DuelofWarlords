@@ -1,8 +1,7 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useSelector, useDispatch } from 'react-redux';
 import { actions as modalActions } from '../slices/modalsSlice.js';
-// import { actions as battleActions } from '../slices/battleSlice.js';
 import Card from '../components/Card.jsx';
 import PrimaryButton from '../components/PrimaryButton.jsx';
 import styles from './checkGraveyard.module.css';
@@ -16,19 +15,27 @@ const Graveyard = () => {
   const currentGraveyard = fieldCells.find((cell) => cell.player === player && cell.type === 'graveyard');
   const graveyardContent = currentGraveyard.content;
 
+  const [isShowAnimation, setShowAnimation] = useState(false);
+
+  useEffect(() => {
+    setTimeout(() => setShowAnimation(true), 0);
+  }, []);
+
+  const appear = { transform: 'translateY(0)' };
+
   const handleClose = () => {
     dispatch(modalActions.closeModal());
   };
 
   return (
-    <dialog className={styles.window}>
+    <dialog className={styles.window} style={isShowAnimation ? appear : {}}>
       <div className={styles.container}>
         <h2 className={styles.header}>{t('PlayedCards')}</h2>
         <div className={styles.buttons}>
           <PrimaryButton
             showIcon={false}
             state="default"
-            text={t('Close')}
+            text={t('CLOSE')}
             variant="secondary"
             onClick={handleClose}
           />

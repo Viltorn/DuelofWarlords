@@ -112,13 +112,22 @@
   justify-items: center;
 }
 
-
-/* @media (min-width: 0) and (max-width: 767px) {
-  .battlefield__heropad-1 {
-    height: 22rem;
-  }
-
-  .battlefield__heropad-2 {
-    height: 22rem;
-  }
-} */
+.cardAnimationEnter {
+  opacity: 1;
+  transform: scale(1.3);
+}
+.cardAnimationActive {
+  opacity: 1;
+  transform: scale(1);
+  transition: opacity 500ms ease-in, transform 500ms ease-in;
+}
+.cardAnimationExit {
+  transform: scale(1.3);
+  transform: translate(0);
+  opacity: 1;
+}
+.cardAnimationExitActive {
+  opacity: 0;
+  transform: scale(1.3);
+  transition: opacity 500ms ease-in, transform 500ms ease-in;
+}

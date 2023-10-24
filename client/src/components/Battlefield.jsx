@@ -1,6 +1,9 @@
 /* eslint-disable object-curly-newline */
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect, useMemo } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import { CSSTransition, TransitionGroup } from 'react-transition-group';
+import { useNavigate } from 'react-router-dom';
+import socket from '../socket';
 import Cell from './Cell.jsx';
 import HeroPad from './HeroPad.jsx';
 import Card from './Card.jsx';
@@ -12,26 +15,84 @@ import styles from './Battlefield.module.css';
 import getModal from '../modals/index.js';
 import functionContext from '../contexts/functionsContext.js';
 import { actions as modalsActions } from '../slices/modalsSlice.js';
+import { actions as battleActions } from '../slices/battleSlice.js';
+import { actions as gameActions } from '../slices/gameSlice';
+import AbilitiesContext from '../contexts/abilityActions';
 
 const Battlefield = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { windowWidth } = useContext(functionContext);
+  const {
+    cellData,
+    addCardToField,
+    endTurn,
+    drawCards,
+    castSpell,
+    makeFight,
+    returnCardToHand,
+    returnCardToDeck,
+    makeAbilityCast,
+  } = useContext(AbilitiesContext);
   const {
     activeCardPlayer1,
     activeCardPlayer2,
     fieldCells,
     playersHands,
     thisPlayer,
+    players,
   } = useSelector((state) => state.battleReducer);
-  const { gameMode } = useSelector((state) => state.gameReducer);
-  const [isOpenMenu, setOpenMenu] = useState(false);
+  const { gameMode, curRoom } = useSelector((state) => state.gameReducer);
   const { isOpened, type } = useSelector((state) => state.modalsReducer);
-  const cellsPlayer1 = fieldCells.filter((cell) => cell.player === 'player1' && cell.type === 'field');
-  const cellsPlayer2 = fieldCells.filter((cell) => cell.player === 'player2' && cell.type === 'field');
-  const topSpellsPlayer1 = fieldCells.filter((cell) => cell.player === 'player1' && cell.type === 'topSpell');
-  const topSpellsPlayer2 = fieldCells.filter((cell) => cell.player === 'player2' && cell.type === 'topSpell');
-  const bigSpell = fieldCells.find((cell) => cell.type === 'bigSpell');
-  const midPells = fieldCells.filter((cell) => cell.type === 'midSpell');
+  const cellsPlayer1 = useMemo(() => fieldCells.filter((cell) => cell.player === 'player1' && cell.type === 'field'), [fieldCells]);
+  const cellsPlayer2 = useMemo(() => fieldCells.filter((cell) => cell.player === 'player2' && cell.type === 'field'), [fieldCells]);
+  const topSpellsPlayer1 = useMemo(() => fieldCells.filter((cell) => cell.player === 'player1' && cell.type === 'topSpell'), [fieldCells]);
+  const topSpellsPlayer2 = useMemo(() => fieldCells.filter((cell) => cell.player === 'player2' && cell.type === 'topSpell'), [fieldCells]);
+  const bigSpell = useMemo(() => fieldCells.find((cell) => cell.type === 'bigSpell'), [fieldCells]);
+  const midPells = useMemo(() => fieldCells.filter((cell) => cell.type === 'midSpell'), [fieldCells]);
+
+  const makeMove = useMemo(() => ({
+    addCardToField: (data) => {
+      const { card, player, points, cell } = data;
+      addCardToField(card, player, points, cell);
+    },
+    endTurn: (data) => {
+      const {
+        newPlayer,
+        commonPoints,
+        newCommonPoints,
+        posponedCell,
+        temporarySpells,
+        turnSpells,
+      } = data;
+      endTurn(newPlayer, commonPoints, newCommonPoints, posponedCell, temporarySpells, turnSpells);
+    },
+    castSpell: (data) => {
+      const { card, player, points, cell } = data;
+      castSpell(card, player, points, cell);
+    },
+    makeFight: (data) => {
+      const { card1, card2 } = data;
+      makeFight(card1, card2);
+    },
+    drawCards: (data) => {
+      const { player, number } = data;
+      drawCards(player, number);
+    },
+    returnCardToHand: (data) => {
+      const { card, player, cost, spellId } = data;
+      returnCardToHand(card, player, cost, spellId);
+    },
+    returnCardToDeck: (data) => {
+      const { card, player } = data;
+      returnCardToDeck(card, player);
+    },
+    makeAbilityCast: (data) => {
+      const { card, player, points, cell, ability } = data;
+      makeAbilityCast(card, player, points, cell, ability);
+    },
+    // eslint-disable-next-line
+  }), []);
 
   const renderModal = (status, option) => {
     if (!status) {
@@ -44,11 +105,102 @@ const Battlefield = () => {
   useEffect(() => {
     if (gameMode === 'hotseat') {
       dispatch(modalsActions.openModal({ type: 'openHotSeatMenu' }));
-    } else if (gameMode === 'tutorial') {
+    }
+    if (gameMode === 'tutorial') {
       dispatch(modalsActions.openModal({ type: 'tutorial' }));
     }
   // eslint-disable-next-line
   }, [gameMode]);
+
+  useEffect(() => {
+    if (gameMode === 'online' && curRoom !== '') {
+      const playerName = players.player2.name;
+      if (playerName === '') {
+        dispatch(modalsActions.openModal({ type: 'waitForPlayer' }));
+      } else {
+        dispatch(modalsActions.closeModal());
+      }
+    }
+  }, [players.player2.name, dispatch, gameMode, curRoom]);
+
+  useEffect(() => {
+    socket.on('opponentJoined', (roomData) => {
+      console.log('roomData', roomData);
+      const { roomId } = roomData;
+      const player1 = roomData.players[0];
+      const player2 = roomData.players[1];
+      dispatch(battleActions.setHero({ hero: player1.hero, player: 'player1' }));
+      dispatch(battleActions.setHero({ hero: player2.hero, player: 'player2' }));
+      dispatch(battleActions.setPlayersDeck({ deck: player1.deck, player: 'player1' }));
+      dispatch(battleActions.setPlayersDeck({ deck: player2.deck, player: 'player2' }));
+      dispatch(battleActions.setPlayersHand({ hand: player1.hand, player: 'player1' }));
+      dispatch(battleActions.setPlayersHand({ hand: player2.hand, player: 'player2' }));
+      dispatch(battleActions.setPlayerName({ name: player1.username, player: 'player1' }));
+      dispatch(battleActions.setPlayerName({ name: player2.username, player: 'player2' }));
+      dispatch(gameActions.setCurrentRoom({ room: roomId }));
+    });
+    socket.on('playerDisconnected', (player) => {
+      dispatch(modalsActions.openModal({ type: 'playerDisconnected', player: player.username, roomId: curRoom }));
+      navigate('/lobby');
+    });
+    socket.on('disconnect', () => {
+      dispatch(modalsActions.openModal({ type: 'playerDisconnected', player: null, roomId: curRoom }));
+      navigate('/lobby');
+    });
+
+    socket.on('closeRoom', ({ roomId, name }) => {
+      if (roomId === curRoom) {
+        dispatch(modalsActions.openModal({ type: 'playerDisconnected', player: name, roomId: curRoom }));
+        navigate('/lobby', { replace: true });
+      }
+    });
+
+    return () => {
+      socket.off('opponentJoined');
+      socket.off('playerDisconnected');
+      socket.off('disconnect');
+      socket.off('closeRoom');
+    };
+  }, [dispatch, navigate, curRoom, addCardToField, endTurn]);
+
+  useEffect(() => {
+    socket.on('makeMove', (data) => {
+      const { move } = data;
+      makeMove[move](data);
+    });
+
+    // socket.on('endTurn', (data) => {
+    //   const {
+    //     newPlayer,
+    //     commonPoints,
+    //     newCommonPoints,
+    //     posponedCell,
+    //     temporarySpells,
+    //     turnSpells,
+    //   } = data;
+    //   endTurn(newPlayer, commonPoints, newCommonPoints, posponedCell,
+    //  temporarySpells, turnSpells);
+    // });
+
+    // socket.on('castSpell', (data) => {
+    //   const { card, player, points, cell } = data;
+    //   castSpell(card, player, points, cell);
+    // });
+
+    // socket.on('makeFight', (data) => {
+    //   const { card1, card2 } = data;
+    //   makeFight(card1, card2);
+    // });
+
+    // socket.on('drawCards', (data) => {
+    //   const { player, number } = data;
+    //   drawCards(player, number);
+    // });
+
+    return () => {
+      socket.off('makeMove');
+    };
+  }, [makeMove]);
 
   return (
     <div className={styles.container}>
@@ -59,7 +211,7 @@ const Battlefield = () => {
           <div className={styles.main}>
             {thisPlayer === 'player1' ? (
               <div className={styles.handsContainer}>
-                <Header setOpenMenu={setOpenMenu} isOpenMenu={isOpenMenu} />
+                <Header />
                 <div className={styles.heropad1}>
                   {activeCardPlayer1 && (
                   <ActiveCard activeCard={activeCardPlayer1} playerType="player1" />
@@ -67,14 +219,27 @@ const Battlefield = () => {
                   <HeroPad type="first" player={thisPlayer} />
                 </div>
                 <div className={styles.playerHand}>
-                  {playersHands[thisPlayer].map((card) => (
-                    <Card
-                      key={card.id}
-                      content={playersHands[thisPlayer]}
-                      card={card}
-                      activeCard={activeCardPlayer1}
-                    />
-                  ))}
+                  <TransitionGroup component={null} exit>
+                    {playersHands[thisPlayer].map((card) => (
+                      <CSSTransition
+                        key={card.id}
+                        timeout={500}
+                        classNames={{
+                          enter: styles.cardAnimationEnter,
+                          enterActive: styles.cardAnimationActive,
+                          exit: styles.cardAnimationExit,
+                          exitActive: styles.cardAnimationExitActive,
+                        }}
+                      >
+                        <Card
+                          key={card.id}
+                          content={playersHands[thisPlayer]}
+                          card={card}
+                          activeCard={activeCardPlayer1}
+                        />
+                      </CSSTransition>
+                    ))}
+                  </TransitionGroup>
                 </div>
               </div>
             ) : (<HeroPad type="second" player="player1" />)}
@@ -84,6 +249,7 @@ const Battlefield = () => {
                   <Cell
                     key={spell.id}
                     id={spell.id}
+                    cellData={cellData}
                     props={{
                       animation: spell.animation,
                       content: spell.content,
@@ -95,6 +261,7 @@ const Battlefield = () => {
                 <Cell
                   key={bigSpell.id}
                   id={bigSpell.id}
+                  cellData={cellData}
                   props={{
                     animation: bigSpell.animation,
                     content: bigSpell.content,
@@ -106,6 +273,7 @@ const Battlefield = () => {
                   <Cell
                     key={spell.id}
                     id={spell.id}
+                    cellData={cellData}
                     props={{
                       animation: spell.animation,
                       content: spell.content,
@@ -121,6 +289,7 @@ const Battlefield = () => {
                     <Cell
                       key={cell.id}
                       id={cell.id}
+                      cellData={cellData}
                       props={{
                         animation: cell.animation,
                         content: cell.content,
@@ -137,6 +306,7 @@ const Battlefield = () => {
                     <Cell
                       key={spell.id}
                       id={spell.id}
+                      cellData={cellData}
                       props={{
                         animation: spell.animation,
                         content: spell.content,
@@ -151,6 +321,7 @@ const Battlefield = () => {
                     <Cell
                       key={cell.id}
                       id={cell.id}
+                      cellData={cellData}
                       props={{
                         animation: cell.animation,
                         content: cell.content,
@@ -166,7 +337,7 @@ const Battlefield = () => {
             </div>
             {thisPlayer === 'player2' ? (
               <div className={styles.handsContainer}>
-                <Header setOpenMenu={setOpenMenu} isOpenMenu={isOpenMenu} />
+                <Header />
                 <div className={styles.heropad2}>
                   <HeroPad type="first" player={thisPlayer} />
                   {activeCardPlayer2 && (
@@ -187,7 +358,7 @@ const Battlefield = () => {
             ) : (<HeroPad type="second" player="player2" />)}
           </div>
           {renderModal(isOpened, type)}
-          <InGameMenu isOpenMenu={isOpenMenu} setOpenMenu={setOpenMenu} />
+          <InGameMenu />
         </>
       )}
     </div>

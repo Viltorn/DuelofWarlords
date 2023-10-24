@@ -1,6 +1,7 @@
 import React, { useContext } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useSelector, useDispatch } from 'react-redux';
+import cn from 'classnames';
 import { actions as battleActions } from '../slices/battleSlice.js';
 import { actions as modalsActions } from '../slices/modalsSlice.js';
 import { maxActionPoints } from '../gameData/gameLimits';
@@ -9,23 +10,25 @@ import functionContext from '../contexts/functionsContext.js';
 import abilityContext from '../contexts/abilityActions.js';
 import Menu from '../assets/Menu.svg';
 import styles from './Header.module.css';
+import socket from '../socket.js';
 
-const Header = ({ setOpenMenu, isOpenMenu }) => {
+const Header = () => {
   const { t } = useTranslation();
   const {
     thisPlayer,
     playerPoints,
     commonPoints,
-    activeCardPlayer1,
-    activeCardPlayer2,
     fieldCells,
     players,
+    gameTurn,
   } = useSelector((state) => state.battleReducer);
-  const { gameMode } = useSelector((state) => state.gameReducer);
+  const { gameMode, curRoom } = useSelector((state) => state.gameReducer);
   const {
-    handleAnimation, deleteOtherActiveCard, changeTutorStep, tutorStep,
+    changeTutorStep, tutorStep, setOpenMenu, isOpenMenu,
   } = useContext(functionContext);
-  const { sendCardFromField, findTriggerSpells, makeFeatureCast } = useContext(abilityContext);
+  const {
+    endTurn,
+  } = useContext(abilityContext);
   const player1Points = playerPoints.find((item) => item.player === 'player1').points;
   const player2Points = playerPoints.find((item) => item.player === 'player2').points;
   const dispatch = useDispatch();
@@ -40,6 +43,9 @@ const Header = ({ setOpenMenu, isOpenMenu }) => {
       dispatch(battleActions.drawCard({ player: 'player1' }));
       dispatch(battleActions.turnPostponed({ player: 'player1', status: 'face' }));
       changeTutorStep((prev) => prev + 1);
+      return;
+    }
+    if (gameTurn !== thisPlayer) {
       return;
     }
     const posponedCell = fieldCells.find((cell) => cell.type === 'postponed' && cell.player === thisPlayer);
@@ -58,34 +64,17 @@ const Header = ({ setOpenMenu, isOpenMenu }) => {
         return arr;
       }, []);
 
-    if (newPlayer === 'player2') {
-      dispatch(battleActions.setPlayerPoints({ points: commonPoints, player: 'player2' }));
-    } else {
-      if (commonPoints < maxActionPoints) {
-        dispatch(battleActions.addCommonPoint());
-      }
-      dispatch(battleActions.setPlayerPoints({ points: newCommonPoints, player: 'player1' }));
-    }
-    if (posponedCell.status === 'face') {
-      const card = posponedCell.content[0];
-      sendCardFromField(card, 'return');
-      dispatch(battleActions.deleteActiveCard({ player: thisPlayer }));
-      deleteOtherActiveCard(activeCardPlayer1, activeCardPlayer2, thisPlayer);
-    }
-    handleAnimation(activeCardPlayer2, 'delete');
-    dispatch(battleActions.turnPostponed({ player: newPlayer, status: 'face' }));
-    dispatch(battleActions.drawCard({ player: newPlayer }));
-    dispatch(battleActions.massTurnCards({ player: newPlayer }));
-    dispatch(battleActions.changePlayer({ newPlayer }));
-    [...turnSpells, ...temporarySpells].forEach((spell) => sendCardFromField(spell, 'grave'));
-
-    fieldCells
-      .filter((cell) => cell.content.length !== 0 && cell.type === 'field' && cell.player === newPlayer)
-      .forEach((cell) => {
-        const warrior = cell.content.find((el) => el.type === 'warrior');
-        const onTurnStartSpells = findTriggerSpells(warrior, cell, 'onturnstart', 'warrior');
-        onTurnStartSpells.forEach((spell) => makeFeatureCast(spell, cell));
-      });
+    endTurn(newPlayer, commonPoints, newCommonPoints, posponedCell, temporarySpells, turnSpells);
+    socket.emit('makeMove', {
+      move: 'endTurn',
+      room: curRoom,
+      newPlayer,
+      commonPoints,
+      newCommonPoints,
+      posponedCell,
+      temporarySpells,
+      turnSpells,
+    });
   };
 
   const handlePointsClick = (player) => {
@@ -96,6 +85,16 @@ const Header = ({ setOpenMenu, isOpenMenu }) => {
     setOpenMenu((prev) => !prev);
   };
 
+  const playerOneBlock = cn({
+    [styles.titleBlock]: true,
+    [styles.turnAnimation]: gameTurn === 'player1',
+  });
+
+  const playerTwoBlock = cn({
+    [styles.titleBlock]: true,
+    [styles.turnAnimation]: gameTurn === 'player2',
+  });
+
   return (
     <div className={styles.container} style={thisPlayer === 'player1' ? { left: 0 } : { right: 0 }}>
       <div className={styles.centralBlock}>
@@ -105,7 +104,7 @@ const Header = ({ setOpenMenu, isOpenMenu }) => {
           </button>
         )}
         <div className={styles.playersInfo}>
-          <div className={styles.titleBlock}>
+          <div className={playerOneBlock}>
             <h3 className={styles.title}>
               {t('Player1')}
               :
@@ -126,7 +125,7 @@ const Header = ({ setOpenMenu, isOpenMenu }) => {
           <button type="button" onClick={() => handlePointsClick('player2')} disabled={gameMode !== 'hotseat'} className={styles.counter}>
             <h3 className={styles.counterNum}>{player2Points}</h3>
           </button>
-          <div className={styles.titleBlock}>
+          <div className={playerTwoBlock}>
             <h3 className={styles.title}>
               {t('Player2')}
               :

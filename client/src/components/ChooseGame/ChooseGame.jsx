@@ -17,6 +17,7 @@ const ChooseGame = () => {
         <h2 className={styles.header}>{t('ChooseGame')}</h2>
         <MenuBtn text={t('Tutorial')} data="tutorial" type="primary" />
         <MenuBtn text={t('HotSeat')} data="hotseat" type="primary" />
+        <MenuBtn text={t('OnlineGame')} data="online" type="primary" />
       </div>
     </div>
   );

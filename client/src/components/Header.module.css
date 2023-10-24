@@ -18,6 +18,8 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
+  border-radius: 0.3rem;
+  padding: 0.3rem;
 }
 
 .title {
@@ -93,6 +95,20 @@
 .menuBtn > img {
   width: 100%;
   height: 100%;
+}
+
+.turnAnimation {
+  animation: 1.5s infinite alternate glowing;
+}
+
+@keyframes glowing {
+  from {
+    box-shadow: 0rem  0rem  0.3rem  0.3rem var(--golden);
+  }
+
+  to {
+    box-shadow: 0rem  0rem  0.5rem  0.5rem var(--golden);
+  }
 }
 
 /* @media (min-width: 0) and (max-width: 767px) {

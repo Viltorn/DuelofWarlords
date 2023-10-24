@@ -9,7 +9,7 @@ import { factionsData, heroes, decks } from '../../gameCardsData/factionsData.js
 import { startCardsNumber1, startCardsNumber2 } from '../../gameData/gameLimits.js';
 import { actions as modalsActions } from '../../slices/modalsSlice.js';
 import styles from './HotSeatStartMenu.module.css';
-import MenuSlider from './MenuSlider.jsx';
+import MenuSlider from '../MenuSlider.jsx';
 import makeShaffledDeck from '../../utils/makeShaffledDeck.js';
 import createDeckForPLayer from '../../utils/makeDeckForPlayer.js';
 import dummyCard from '../../gameCardsData/dummyCard.js';
@@ -76,6 +76,8 @@ const HotSeatMenu = () => {
         const player2Deck = player2FullDeck.slice(startCardsNumber2);
         dispatch(battleActions.setHero({ hero: values.player1Hero, player: 'player1' }));
         dispatch(battleActions.setHero({ hero: values.player2Hero, player: 'player2' }));
+        dispatch(battleActions.setPlayerName({ name: 'Тест 1', player: 'player1' }));
+        dispatch(battleActions.setPlayerName({ name: 'Тест 2', player: 'player2' }));
         dispatch(battleActions.setPlayersDeck({ deck: player1Deck, player: 'player1' }));
         dispatch(battleActions.setPlayersDeck({ deck: player2Deck, player: 'player2' }));
         dispatch(battleActions.setPlayersHand({ hand: player1Hand, player: 'player1' }));

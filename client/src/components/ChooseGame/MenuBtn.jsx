@@ -1,9 +1,9 @@
-import React, { useRef, useContext } from 'react';
+import React, { useRef } from 'react';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import cn from 'classnames';
-import { actions as battleActions } from '../../slices/battleSlice.js';
-import functionContext from '../../contexts/functionsContext.js';
+import { actions as modalsActions } from '../../slices/modalsSlice.js';
+// import functionContext from '../../contexts/functionsContext.js';
 import { actions as gameActions } from '../../slices/gameSlice';
 import styles from './MenuBtn.module.css';
 
@@ -13,8 +13,6 @@ const MenuBtn = ({
   const option = useRef();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
-  const { changeTutorStep } = useContext(functionContext);
 
   const askForInstall = async () => {
     console.log('👍', 'butInstall-clicked');
@@ -36,10 +34,13 @@ const MenuBtn = ({
 
   const handleOptionClick = () => {
     const gameMode = option.current.dataset.type;
-    dispatch(battleActions.resetState());
-    changeTutorStep(0);
+    dispatch(modalsActions.closeModal());
     dispatch(gameActions.setGameMode({ gameMode }));
-    navigate('/hotseat');
+    if (gameMode === 'online') {
+      navigate('/lobby');
+    } else {
+      navigate('/battle');
+    }
   };
 
   return (

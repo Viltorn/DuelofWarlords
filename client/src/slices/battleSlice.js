@@ -8,8 +8,9 @@ import {
 const initialState = {
   commonPoints: 0,
   playerPoints: [{ player: 'player1', points: 1 }, { player: 'player2', points: 1 }],
-  players: { player1: { name: 'Player1', id: 'player1', cardsdrawn: false }, player2: { name: 'Player2', id: 'player2', cardsdrawn: false } },
+  players: { player1: { name: '', id: 'player1', cardsdrawn: false }, player2: { name: '', id: 'player2', cardsdrawn: false } },
   thisPlayer: 'player1',
+  gameTurn: 'player1',
   playersDecks: { player1: [], player2: [] },
   playersHands: { player1: [], player2: [] },
   fieldCells: [
@@ -30,6 +31,16 @@ const battleSlice = createSlice({
   initialState,
   reducers: {
     resetState: () => initialState,
+
+    setThisPlayer(state, { payload }) {
+      const { player } = payload;
+      state.thisPlayer = player;
+    },
+
+    changeTurn(state, { payload }) {
+      const { player } = payload;
+      state.gameTurn = player;
+    },
 
     addAttachment(state, { payload }) {
       const { cellId, feature, type } = payload;
@@ -157,6 +168,11 @@ const battleSlice = createSlice({
       state.playersHands[player] = hand;
     },
 
+    setPlayerName(state, { payload }) {
+      const { name, player } = payload;
+      state.players[player].name = name;
+    },
+
     drawCard(state, { payload }) {
       const { player } = payload;
       if (state.playersDecks[player].length !== 0) {
@@ -166,9 +182,9 @@ const battleSlice = createSlice({
     },
 
     sendCardtoDeck(state, { payload }) {
-      const { activeCard } = payload;
-      const { player } = activeCard;
-      state.playersDecks[player] = [...state.playersDecks[player], activeCard];
+      const { card } = payload;
+      const { player } = card;
+      state.playersDecks[player] = [...state.playersDecks[player], card];
     },
 
     changePlayer(state, { payload }) {
@@ -202,12 +218,12 @@ const battleSlice = createSlice({
     },
 
     addFieldContent(state, { payload }) {
-      const { activeCard, id } = payload;
+      const { card, id } = payload;
       const status = id !== 'postponed1' && id !== 'postponed2' ? 'field' : 'postponed';
-      const changedActiveCard = { ...activeCard, status, cellId: id };
+      const changedCard = { ...card, status, cellId: id };
       const newFieldCells = state.fieldCells.map((cell) => {
         if (cell.id === id) {
-          cell.content = [changedActiveCard, ...cell.content];
+          cell.content = [changedCard, ...cell.content];
         }
         return cell;
       });

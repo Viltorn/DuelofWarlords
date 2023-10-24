@@ -1,0 +1,40 @@
+.container {
+  width: 300px;
+  height: 300px;
+  padding: 15px;
+  border: 1px solid #888;
+  border-radius: 15px;
+  background: var(--dark-blue);
+  box-sizing: border-box;
+  cursor: pointer;
+}
+
+.infoBlock {
+  height: 100%;
+  border: 2px solid var(--golden);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 20px;
+}
+
+.playersInfo {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.info {
+  color: var(--light-gray);
+  font-size: 35px;
+  line-height: 45px;
+}
+
+.versus {
+  color: var(--golden);
+  font-size: 25px;
+  line-height: 35px;
+}
+
+

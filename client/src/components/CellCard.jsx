@@ -7,6 +7,7 @@ import abilityContext from '../contexts/abilityActions.js';
 import AttackIcon from '../assets/battlefield/Sword.png';
 import Healed from '../assets/battlefield/Healing.svg';
 import styles from './CellCard.module.css';
+import socket from '../socket.js';
 
 const getTopMargin = (cardtype) => {
   if (cardtype === 'field') {
@@ -19,19 +20,18 @@ const getTopMargin = (cardtype) => {
 };
 
 const CellCard = ({
-  item, type, setCardType, setContLength, setCardSource,
+  item, type,
 }) => {
   const {
-    deleteCardfromSource,
     getActiveCard,
+    addActiveCard,
     handleAnimation,
-    canBeAttacked,
-    canBeCast,
     getWarriorPower,
+    canBeCast,
+    canBeAttacked,
   } = useContext(functionContext);
   const {
-    makeFeatureCast,
-    makeFeatureAttach,
+    castSpell,
     makeFight,
   } = useContext(abilityContext);
   const cardElement = useRef();
@@ -40,6 +40,7 @@ const CellCard = ({
     cellId, turn,
   } = item;
   const { thisPlayer, fieldCells, playerPoints } = useSelector((state) => state.battleReducer);
+  const { curRoom } = useSelector((state) => state.gameReducer);
   const currentCell = fieldCells.find((cell) => cell.id === cellId);
   const currentPoints = playerPoints.find((data) => data.player === thisPlayer).points;
   const marginTop = getTopMargin(type);
@@ -53,45 +54,31 @@ const CellCard = ({
     [styles.turn2]: turn === 2,
   });
 
-  const castSpell = async (spell, receiveCell) => {
-    dispatch(battleActions.deleteActiveCard({ player: thisPlayer }));
-    const makeCast = async () => {
-      await Promise.all(spell.features.map((feature) => new Promise((resolve) => {
-        setTimeout(() => {
-          if (!feature.condition && !feature.attach) {
-            makeFeatureCast(feature, receiveCell);
-            console.log('cast');
-          } else if (feature.attach) {
-            if (setCardType && setCardSource && setContLength) {
-              setCardType('spell');
-              setCardSource(spell.status);
-              setContLength((prev) => prev + 1);
-            }
-            makeFeatureAttach(feature, receiveCell);
-          }
-          resolve();
-        }, 500);
-      })));
-    };
-
-    await makeCast();
-
-    console.log('delete');
-
-    if (spell.name !== 'fake' && spell.type !== 'hero') {
-      deleteCardfromSource(spell);
-      if (spell.subtype === 'instant') {
-        dispatch(battleActions.addToGraveyard({ card: spell }));
-      } else {
-        dispatch(battleActions.addFieldContent({ activeCard: spell, id: receiveCell.id }));
-      }
-    }
-    if (spell.type === 'hero') {
-      dispatch(battleActions.turnCardLeft({
-        cardId: spell.id,
-        cellId: spell.cellId,
-        qty: 1,
-      }));
+  const makeCardAction = (card, player, points, cell, appliedCard) => {
+    if (canBeCast(cell.id)) {
+      handleAnimation(card, 'delete');
+      castSpell(card, player, points, cell);
+      socket.emit('makeMove', {
+        move: 'castSpell',
+        room: curRoom,
+        card,
+        player,
+        points,
+        cell,
+      });
+    } else if (canBeAttacked(appliedCard)) {
+      makeFight(card, appliedCard);
+      socket.emit('makeMove', {
+        move: 'makeFight',
+        room: curRoom,
+        card1: card,
+        card2: appliedCard,
+      });
+    } else {
+      handleAnimation(card, 'delete');
+      const currentCardData = cell.content.find((el) => el.id === appliedCard.id);
+      addActiveCard(currentCardData, player);
+      handleAnimation(currentCardData, 'add');
     }
   };
 
@@ -102,23 +89,8 @@ const CellCard = ({
     if (activeId === cardId) {
       dispatch(battleActions.deleteActiveCard({ player: thisPlayer }));
       handleAnimation(activeCard, 'delete');
-    } else if (canBeCast(cellId)) {
-      if (activeCard.status === 'hand' || activeCard.type === 'hero') {
-        const newPoints = currentPoints - activeCard.currentC;
-        dispatch(battleActions.setPlayerPoints({ points: newPoints, player: thisPlayer }));
-      }
-      if (activeCard.type !== 'hero') {
-        deleteCardfromSource(activeCard);
-      }
-      handleAnimation(activeCard, 'delete');
-      castSpell(activeCard, currentCell);
-    } else if (canBeAttacked(item)) {
-      makeFight(activeCard, item);
     } else {
-      handleAnimation(activeCard, 'delete');
-      const currentCardData = currentCell.content.find((card) => card.id === cardId);
-      dispatch(battleActions.addActiveCard({ card: currentCardData, player: thisPlayer }));
-      handleAnimation(currentCardData, 'add');
+      makeCardAction(activeCard, thisPlayer, currentPoints, currentCell, item);
     }
   };
 

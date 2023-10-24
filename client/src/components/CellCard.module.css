@@ -6,6 +6,7 @@
   border-radius: 0.5rem;
   cursor: pointer;
   transition: scale 0.3s ease-in-out;
+  transition: transform 0.3s linear;
 }
 
 .heroCellItem {
@@ -15,6 +16,7 @@
   border: none;
   border-radius: 0.5rem;
   cursor: pointer;
+  transition: transform 0.3s linear;
 }
 
 .contentItem:first-child {

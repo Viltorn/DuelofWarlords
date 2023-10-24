@@ -1,18 +1,24 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { actions as modalActions } from '../slices/modalsSlice.js';
-import { actions as battleActions } from '../slices/battleSlice.js';
+import abilityContext from '../contexts/abilityActions.js';
 import PrimaryButton from '../components/PrimaryButton';
 import { startCardsNumber1, startCards2AfterDraw } from '../gameData/gameLimits.js';
 import './Modals.css';
+import socket from '../socket.js';
 
 const ChangeStartCards = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
 
+  const {
+    drawCards,
+  } = useContext(abilityContext);
+
   const { playersHands } = useSelector((state) => state.battleReducer);
   const { player } = useSelector((state) => state.modalsReducer);
+  const { curRoom } = useSelector((state) => state.gameReducer);
   const thisHand = playersHands[player];
   const handSize = player === 'player1' ? startCardsNumber1 : startCards2AfterDraw;
   const diffSize = handSize - thisHand.length;
@@ -22,12 +28,14 @@ const ChangeStartCards = () => {
   };
 
   const handleSubmit = () => {
-    dispatch(battleActions.setCardDrawStatus({ player, status: true }));
     dispatch(modalActions.closeModal());
-    // eslint-disable-next-line functional/no-loop-statements
-    for (let i = 1; i <= diffSize; i += 1) {
-      dispatch(battleActions.drawCard({ player }));
-    }
+    drawCards(player, diffSize);
+    socket.emit('makeMove', {
+      move: 'drawCards',
+      room: curRoom,
+      player,
+      number: diffSize,
+    });
   };
 
   return (

@@ -16,6 +16,8 @@
   width: 90%; /* Could be more or less, depending on screen size */
   height: 27rem;
   padding: 0.5rem 0.5rem;
+  transition: all 0.3s ease-in-out;
+  transform: translateY(100%);
 }
 
 .container {
@@ -53,6 +55,3 @@
   gap: 1.5rem;
 }
 
-/* display: flex;
-flex-direction: column;
-align-items: flex-start; */

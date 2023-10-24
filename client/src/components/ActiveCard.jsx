@@ -1,6 +1,8 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { useSelector } from 'react-redux';
 import cn from 'classnames';
+import tutorialStepsData from '../gameData/tutorialStepsData';
+import functionContext from '../contexts/functionsContext.js';
 import ActionButton from './ActionButton';
 import Card from './Card';
 import styles from './ActiveCard.module.css';
@@ -15,13 +17,17 @@ const ActiveCard = ({ activeCard, playerType }) => {
     block2: playerType === 'player2',
   });
   const { gameMode } = useSelector((state) => state.gameReducer);
-  // const { isOpened } = useSelector((state) => state.modalsReducer);
+  const { tutorStep } = useContext(functionContext);
+
+  const { disAbility } = tutorialStepsData[tutorStep];
+
   const {
-    thisPlayer, playerPoints, fieldCells, commonPoints,
+    thisPlayer, playerPoints, fieldCells, commonPoints, gameTurn,
   } = useSelector((state) => state.battleReducer);
   const firstRound = commonPoints === 1;
   const currentPoints = playerPoints.find((item) => item.player === thisPlayer).points;
   const insteadatk = activeCard.features.find((feat) => feat.condition === 'insteadatk');
+  const legalTurn = thisPlayer === gameTurn;
   const ressurect = fieldCells
     .find((cell) => cell.type === 'graveyard' && cell.player === thisPlayer)
     .attachments.find((feat) => feat.name === 'ressurect' && feat.aim.includes(activeCard.type));
@@ -39,7 +45,7 @@ const ActiveCard = ({ activeCard, playerType }) => {
         {((firstRound && thisPlayer === activeCard.player) || gameMode === 'hotseat') && (type !== 'hero') && (
         <ActionButton card={activeCard} ability={insteadatk} type="deckreturn" />
         )}
-        {insteadatk && activeCard.turn === 0 && leftPoints >= 0 && (
+        {insteadatk && activeCard.turn === 0 && leftPoints >= 0 && !disAbility && legalTurn && (
           <ActionButton card={activeCard} ability={insteadatk} type="ability" />
         )}
         {(status === 'field') && (type === 'warrior' || type === 'hero') && gameMode === 'hotseat' && (

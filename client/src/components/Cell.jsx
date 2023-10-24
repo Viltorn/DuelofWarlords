@@ -1,38 +1,37 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import cn from 'classnames';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
-import { actions as battleActions } from '../slices/battleSlice.js';
+// import { actions as battleActions } from '../slices/battleSlice.js';
 import CellCard from './CellCard.jsx';
 import styles from './Cell.module.css';
 import functionContext from '../contexts/functionsContext.js';
 import abilityContext from '../contexts/abilityActions.js';
+import socket from '../socket.js';
 
-const Cell = ({ props, id }) => {
+const Cell = ({ props, id, cellData }) => {
   // const { t } = useTranslation();
+  const { type, content, animation } = props;
   const [cardSource, setCardSource] = useState('hand');
   const [cardType, setCardType] = useState('');
+  const [contLength, setContLength] = useState(content.length);
   const {
-    thisPlayer, playerPoints, fieldCells,
+    fieldCells,
+    thisPlayer,
+    playerPoints,
   } = useSelector((state) => state.battleReducer);
-  const dispatch = useDispatch();
-  const { type, content, animation } = props;
+
   const {
-    deleteCardfromSource,
-    getActiveCard,
-    moveAttachedSpells,
-    canBeMoved,
-    handleAnimation,
-    canBeCast,
     isAllowedCost,
-    changeTutorStep,
+    getActiveCard,
+    canBeMoved,
+    canBeCast,
   } = useContext(functionContext);
 
-  const { gameMode } = useSelector((state) => state.gameReducer);
-  const [contLength, setContLength] = useState(content.length);
-  const { makeFeatureCast, makeFeatureAttach, findTriggerSpells } = useContext(abilityContext);
-  const currentPoints = playerPoints.find((item) => item.player === thisPlayer).points;
+  const { curRoom } = useSelector((state) => state.gameReducer);
+  const { makeFeatureCast, findTriggerSpells, addCardToField } = useContext(abilityContext);
   const currentCell = fieldCells.find((cell) => cell.id === id);
+  const currentPoints = playerPoints.find((item) => item.player === thisPlayer).points;
 
   const classes = cn({
     [styles.defaultSize]: true,
@@ -47,9 +46,9 @@ const Cell = ({ props, id }) => {
     const onTriggerSpells = findTriggerSpells(card, thisCell, spellType, cardclass);
     const returnSpell = onTriggerSpells.find((spell) => spell.name === 'return');
     if (returnSpell) {
-      makeFeatureCast(returnSpell, thisCell, card);
+      makeFeatureCast(returnSpell, thisCell, card, card.player);
     } else {
-      onTriggerSpells.forEach((spell) => makeFeatureCast(spell, thisCell, card));
+      onTriggerSpells.forEach((spell) => makeFeatureCast(spell, thisCell, card, card.player));
     }
   };
 
@@ -68,62 +67,30 @@ const Cell = ({ props, id }) => {
       const spellCard = currentCell.content.find((item, i) => item.type === 'spell' && i === 0);
       if (spellCard && cardSource === 'field') {
         const onMoveSpells = findTriggerSpells(spellCard, currentCell, 'onmove', 'spell');
-        onMoveSpells.forEach((spell) => makeFeatureCast(spell, currentCell, spellCard));
+        onMoveSpells.forEach((spell) => {
+          makeFeatureCast(spell, currentCell, spellCard, spellCard.player);
+        });
       }
       if (spellCard && (cardSource === 'hand' || cardSource === 'postponed')) {
         const onPlaySpells = findTriggerSpells(spellCard, currentCell, 'onplay', 'spell');
-        onPlaySpells.forEach((spell) => makeFeatureCast(spell, currentCell, spellCard));
+        onPlaySpells.forEach((spell) => {
+          makeFeatureCast(spell, currentCell, spellCard, spellCard.player);
+        });
       }
     }
   // eslint-disable-next-line
   }, [cardType, contLength, cardSource]);
 
+  useEffect(() => {
+    if (cellData?.id === id) {
+      setCardSource(cellData.source);
+      setCardType(cellData.type);
+      setContLength((prev) => prev + cellData.content);
+    }
+  }, [cellData, id]);
+
   const handleCellClick = () => {
     const activeCard = getActiveCard();
-
-    const addCardToField = () => {
-      if (gameMode === 'tutorial') {
-        changeTutorStep((prev) => prev + 1);
-      }
-      if (activeCard.status === 'hand') {
-        const newPoints = currentPoints - activeCard.currentC;
-        dispatch(battleActions.setPlayerPoints({ points: newPoints, player: thisPlayer }));
-      }
-      handleAnimation(activeCard, 'delete');
-      deleteCardfromSource(activeCard);
-      dispatch(battleActions.addFieldContent({ activeCard, id }));
-      dispatch(battleActions.deleteActiveCard({ player: thisPlayer }));
-      moveAttachedSpells(activeCard, id, 'move');
-      setContLength((prev) => prev + 1);
-      setCardSource(activeCard.status);
-      setCardType(activeCard.type);
-      if (activeCard.type === 'warrior') {
-        if (activeCard.status === 'field') {
-          const movingAttachment = activeCard.attachments.find((feature) => feature.name === 'moving');
-          const hasSwift = activeCard.features.find((feat) => feat.name === 'swift')
-            || activeCard.attachments.find((feature) => feature.name === 'swift');
-          if (!hasSwift && activeCard.player === thisPlayer && !movingAttachment) {
-            dispatch(battleActions.turnCardLeft({
-              cardId: activeCard.id,
-              cellId: id,
-              qty: 1,
-            }));
-          }
-        }
-        const attachSpells = activeCard.features.filter((feat) => feat.attach);
-        attachSpells.forEach((spell) => makeFeatureAttach(spell, currentCell));
-      }
-      if (activeCard.type === 'spell') {
-        activeCard.features
-          .forEach((feature) => setTimeout(() => {
-            if (!feature.condition && !feature.attach) {
-              makeFeatureCast(feature, currentCell);
-            } else if (feature.attach) {
-              makeFeatureAttach(feature, currentCell);
-            }
-          }, 1000));
-      }
-    };
 
     if (activeCard && !isAllowedCost(activeCard)) {
       return;
@@ -133,7 +100,15 @@ const Cell = ({ props, id }) => {
     const isSpell = activeCard && activeCard.type === 'spell';
 
     if ((isWarOnFieldCard && canBeMoved(id)) || (isSpell && canBeCast(id))) {
-      addCardToField();
+      addCardToField(activeCard, thisPlayer, currentPoints, currentCell);
+      socket.emit('makeMove', {
+        move: 'addCardToField',
+        room: curRoom,
+        card: activeCard,
+        player: thisPlayer,
+        points: currentPoints,
+        cell: currentCell,
+      });
     }
   };
 
@@ -157,8 +132,8 @@ const Cell = ({ props, id }) => {
                 item={item}
                 type={type}
                 content={content}
-                setCardType={setCardType}
                 setContLength={setContLength}
+                setCardType={setCardType}
                 setCardSource={setCardSource}
               />
             </CSSTransition>

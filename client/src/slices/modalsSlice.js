@@ -6,7 +6,10 @@ const initialState = {
   type: null,
   id: null,
   cellId: null,
+  roomId: null,
   player: null,
+  name: null,
+  dest: null,
 };
 
 const modalsSlice = createSlice({
@@ -16,16 +19,22 @@ const modalsSlice = createSlice({
     openModal(state, { payload }) {
       state.isOpened = true;
       state.type = payload.type;
+      state.roomId = payload.roomId ?? null;
       state.id = payload.id ?? null;
       state.cellId = payload.cellId ?? null;
       state.player = payload.player ?? null;
+      state.name = payload.name ?? null;
+      state.dest = payload.dest ?? null;
     },
     closeModal(state) {
       state.isOpened = false;
       state.type = null;
+      state.roomId = null;
       state.id = null;
       state.cellId = null;
       state.player = null;
+      state.name = null;
+      state.dest = null;
     },
   },
 });

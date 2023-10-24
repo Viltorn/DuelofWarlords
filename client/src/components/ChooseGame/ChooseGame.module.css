@@ -15,7 +15,7 @@
 .options {
   display: flex;
   flex-direction: column;
-  justify-content: flex-start;
+  justify-content: center;
   align-items: center;
   gap: 15px;
   background-color: transparent;
@@ -24,7 +24,7 @@
   background-position: center;
   background-size: cover;
   margin: auto; /* 15% from the top and centered */
-  padding: 80px 50px 50px 50px;
+  padding: 50px 50px 50px 50px;
   width: 300px; /* Could be more or less, depending on screen size */
   height: 430px;
   border-radius: 0.5rem;
