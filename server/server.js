@@ -13,7 +13,7 @@ const app = express(); // initialize express
 const server = createServer(app);
 
 // set port to value received from environment variable or 8080 if null
-const port = process.env.PORT || 80 
+const port = process.env.PORT || 80
 
 app.use(express.static(path.join(__dirname, "../client/build")));
 
