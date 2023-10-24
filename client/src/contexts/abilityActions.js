@@ -840,7 +840,6 @@ export const AbilityProvider = ({ children }) => {
 
   const drawCards = (player, number) => {
     dispatch(battleActions.setCardDrawStatus({ player, status: true }));
-    // eslint-disable-next-line functional/no-loop-statements
     for (let i = 1; i <= number; i += 1) {
       dispatch(battleActions.drawCard({ player }));
     }
