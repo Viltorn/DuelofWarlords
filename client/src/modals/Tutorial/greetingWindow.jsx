@@ -28,7 +28,7 @@ const GreetingWindow = () => {
         <PrimaryButton
           showIcon={false}
           state="default"
-          text={t('Continue')}
+          text={t('CONTINUE')}
           variant="primary"
           type="submit"
           onClick={handleContinue}

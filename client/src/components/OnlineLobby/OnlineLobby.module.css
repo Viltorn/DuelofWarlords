@@ -55,7 +55,8 @@
 }
 
 .divider {
-  border: 0.2rem solid var(--golden);
+  border: 5px solid var(--golden);
+  border-radius: 10px;
   width: 100%;
 }
 
@@ -100,6 +101,10 @@
   }
   .container {
     padding: 30px 20px;
+  }
+
+  .divider {
+    border: 3px solid var(--golden);
   }
 }
 
