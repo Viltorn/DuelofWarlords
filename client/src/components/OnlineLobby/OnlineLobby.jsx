@@ -4,11 +4,11 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { actions as modalsActions } from '../../slices/modalsSlice.js';
 import { actions as gameActions } from '../../slices/gameSlice';
-import socket from '../../socket';
 import PrimaryButton from '../PrimaryButton.jsx';
 import getModal from '../../modals/index.js';
 import GameRoom from './GameRoom';
 import styles from './OnlineLobby.module.css';
+import socket from '../../socket.js';
 
 const OnlineLobby = () => {
   const { t } = useTranslation();
@@ -34,17 +34,25 @@ const OnlineLobby = () => {
   };
 
   useEffect(() => {
-    socket.on('rooms', (data) => {
-      dispatch(gameActions.updateRooms({ rooms: data }));
-    });
     if (name === '') {
       dispatch(modalsActions.openModal({ type: 'enterUsername' }));
     }
-    socket.on('clientsCount', (count) => {
-      dispatch(gameActions.setOnlineCount({ count }));
-      console.log(count);
-    });
-  }, [dispatch, name]);
+    const updateLobbyRooms = (data) => {
+      dispatch(gameActions.updateRooms({ rooms: data }));
+    };
+
+    const updatePlayersOnline = (players) => {
+      dispatch(gameActions.setOnlineCount({ count: players }));
+      console.log(players);
+    };
+    socket.on('rooms', updateLobbyRooms);
+    socket.on('clientsCount', updatePlayersOnline);
+
+    return () => {
+      socket.off('rooms', updateLobbyRooms);
+      socket.off('clientsCount', updatePlayersOnline);
+    };
+  }, [name, dispatch]);
 
   return (
     <div className={styles.container}>

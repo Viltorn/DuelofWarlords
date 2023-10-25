@@ -155,11 +155,24 @@ const Battlefield = () => {
       }
     });
 
+    const updateRoomsBattle = (data) => {
+      dispatch(gameActions.updateRooms({ rooms: data }));
+    };
+
+    const updPlayersOnlieneBattle = (data) => {
+      dispatch(gameActions.setOnlineCount({ count: data }));
+      console.log(data);
+    };
+    socket.on('rooms', updateRoomsBattle);
+    socket.on('clientsCount', updPlayersOnlieneBattle);
+
     return () => {
       socket.off('opponentJoined');
       socket.off('playerDisconnected');
       socket.off('disconnect');
       socket.off('closeRoom');
+      socket.off('rooms', updateRoomsBattle);
+      socket.off('clientsCount', updPlayersOnlieneBattle);
     };
   }, [dispatch, navigate, curRoom, addCardToField, endTurn]);
 
@@ -317,14 +330,27 @@ const Battlefield = () => {
                   )}
                 </div>
                 <div className={styles.playerHand}>
-                  {playersHands[thisPlayer].map((card) => (
-                    <Card
-                      key={card.id}
-                      content={playersHands[thisPlayer]}
-                      card={card}
-                      activeCard={activeCardPlayer2}
-                    />
-                  ))}
+                  <TransitionGroup component={null} exit>
+                    {playersHands[thisPlayer].map((card) => (
+                      <CSSTransition
+                        key={card.id}
+                        timeout={500}
+                        classNames={{
+                          enter: styles.cardAnimationEnter,
+                          enterActive: styles.cardAnimationActive,
+                          exit: styles.cardAnimationExit,
+                          exitActive: styles.cardAnimationExitActive,
+                        }}
+                      >
+                        <Card
+                          key={card.id}
+                          content={playersHands[thisPlayer]}
+                          card={card}
+                          activeCard={activeCardPlayer2}
+                        />
+                      </CSSTransition>
+                    ))}
+                  </TransitionGroup>
                 </div>
               </div>
             ) : (<HeroPad type="second" player="player2" />)}

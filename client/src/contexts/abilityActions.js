@@ -128,14 +128,14 @@ export const AbilityProvider = ({ children }) => {
     return direct === 'right' ? null : '3';
   };
 
-  const findAdjasentCells = (aimCell) => {
+  const findAdjasentCells = (aimCell, newfieldcells) => {
     const rowNumber = parseInt(aimCell.row, 10);
     const lineNumber = aimCell.line;
     const topRowNum = (rowNumber - 1).toString();
     const botRowNum = (rowNumber + 1).toString();
     const rightLineNum = findAdjasentLine(lineNumber, 'right');
     const leftLineNum = findAdjasentLine(lineNumber, 'left');
-    return fieldCells.filter((cell) => (((cell.row === topRowNum || cell.row === botRowNum)
+    return newfieldcells.filter((cell) => (((cell.row === topRowNum || cell.row === botRowNum)
         && cell.line === lineNumber)
         || (cell.row === aimCell.row && (cell.line === rightLineNum || cell.line === leftLineNum)))
         && cell.type === 'field');
@@ -401,7 +401,8 @@ export const AbilityProvider = ({ children }) => {
       });
     } else if (aim.includes('adjacent')) {
       if (type === 'all') {
-        const adjasCells = findAdjasentCells(aimCell).filter((cell) => cell.content.length !== 0);
+        const adjasCells = findAdjasentCells(aimCell, newfieldCells)
+          .filter((cell) => cell.content.length !== 0);
         adjasCells.forEach((cell) => {
           const warriorCard = cell.content.find((item) => item.type === 'warrior');
           if (warriorCard) {
@@ -410,7 +411,8 @@ export const AbilityProvider = ({ children }) => {
         });
       }
       if (type === 'good') {
-        const adjasCells = findAdjasentCells(aimCell).filter((cell) => cell.content.length !== 0
+        const adjasCells = findAdjasentCells(aimCell, newfieldCells)
+          .filter((cell) => cell.content.length !== 0
           && cell.player === player);
         adjasCells.forEach((cell) => {
           const warriorCard = cell.content.find((item) => item.type === 'warrior');
@@ -420,7 +422,8 @@ export const AbilityProvider = ({ children }) => {
         });
       }
     } else if (aim.includes('oneadjacent')) {
-      const adjasentCells = findAdjasentCells(aimCell).filter((cell) => cell.content.length !== 0);
+      const adjasentCells = findAdjasentCells(aimCell, newfieldCells)
+        .filter((cell) => cell.content.length !== 0);
       const filteredCells = name === 'heal' ? adjasentCells.filter((cell) => {
         const warCard = cell.content.find((el) => el.type === 'warrior');
         return warCard.health > warCard.currentHP;
@@ -760,6 +763,7 @@ export const AbilityProvider = ({ children }) => {
 
   const endTurn = (newPlayer, comPoints, newPoints, postCell, tempSpells, turnSpells) => {
     const prevPlayer = newPlayer === 'player1' ? 'player2' : 'player1';
+    const currentfieldCells = store.getState().battleReducer.fieldCells;
     if (newPlayer === 'player2') {
       dispatch(battleActions.setPlayerPoints({ points: comPoints, player: 'player2' }));
     } else {
@@ -784,7 +788,7 @@ export const AbilityProvider = ({ children }) => {
     dispatch(battleActions.changeTurn({ player: newPlayer }));
     [...turnSpells, ...tempSpells].forEach((spell) => sendCardFromField(spell, 'grave'));
 
-    fieldCells
+    currentfieldCells
       .filter((cell) => cell.content.length !== 0 && cell.type === 'field' && cell.player === newPlayer)
       .forEach((cell) => {
         const warrior = cell.content.find((el) => el.type === 'warrior');
