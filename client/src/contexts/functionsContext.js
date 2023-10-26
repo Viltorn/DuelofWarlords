@@ -222,13 +222,13 @@ export const FunctionProvider = ({ children }) => {
     }
   };
 
-  const findDependValue = (spell) => {
+  const findDependValue = (spell, spellOwner) => {
     const { depend, dependValue, value } = spell;
     const currFieldCells = store.getState().battleReducer.fieldCells;
     if (depend === 'goodattachments') {
       const goodAttach = currFieldCells.filter((cell) => cell.content.length !== 0 && cell.type !== 'graveyard')
         .reduce((acc, cell) => {
-          const goodContent = cell.content.filter((el) => el.type === 'spell' && el.player === thisPlayer);
+          const goodContent = cell.content.filter((el) => el.type === 'spell' && el.player === spellOwner);
           acc = [...acc, ...goodContent];
           return acc;
         }, []);
@@ -236,8 +236,8 @@ export const FunctionProvider = ({ children }) => {
     }
     if (depend === 'warriorsdiff') {
       const goodWarriors = currFieldCells.filter((cell) => cell.content.length !== 0
-        && cell.type === 'field' && cell.player === thisPlayer).length;
-      const enemyPlayer = thisPlayer === 'player1' ? 'player2' : 'player1';
+        && cell.type === 'field' && cell.player === spellOwner).length;
+      const enemyPlayer = spellOwner === 'player1' ? 'player2' : 'player1';
       const badWarriors = currFieldCells.filter((cell) => cell.content.length !== 0
       && cell.type === 'field' && cell.player === enemyPlayer).length;
       const diff = badWarriors - goodWarriors > 0 ? badWarriors - goodWarriors : 0;
@@ -259,13 +259,13 @@ export const FunctionProvider = ({ children }) => {
     const cardCell = newField.find((cell) => cell.id === card.cellId);
     const powerCellAttach = cardCell.attachments.filter((spell) => spell.name === 'power');
     const powerCellValue = powerCellAttach.reduce((acc, spell) => {
-      const spellPower = spell.depend ? findDependValue(spell) : spell.value;
+      const spellPower = spell.depend ? findDependValue(spell, card.player) : spell.value;
       acc += spellPower;
       return acc;
     }, 0);
     const powerCardAttach = attachments.filter((spell) => spell.name === 'power');
     const attachPowerValue = powerCardAttach.reduce((acc, spell) => {
-      const spellPower = spell.depend ? findDependValue(spell) : spell.value;
+      const spellPower = spell.depend ? findDependValue(spell, card.player) : spell.value;
       acc += spellPower;
       return acc;
     }, 0);

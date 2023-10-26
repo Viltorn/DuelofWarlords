@@ -40,6 +40,16 @@ io.on('connection', (socket) => {
   // each socket is assigned an id
   console.log(socket.id, 'connected');
 
+  const currentRooms = Array.from(rooms.values()); // <- 1
+
+  currentRooms.forEach((room) => { // <- 2
+    const roomUser = room.players.find((player) => player.id === socket.id); // <- 3
+
+    if (roomUser) {
+      io.to(room.roomId).emit('playerReconnected', userInRoom); // <- 4
+    }
+  });
+
   socket.on('username', (args, callback) => {
     console.log('username:', args.username);
     socket.data.username = args.username;
@@ -58,7 +68,7 @@ io.on('connection', (socket) => {
     // set roomId as a key and roomData including players as value in the map
     rooms.set(roomId, { // <- 3
       roomId,
-      players: [{ id: socket.id, username: socket.data?.username, hero, deck, hand }],
+      players: [{ id: socket.id, type: 'player1', username: socket.data?.username, hero, deck, hand }],
     });
 
     const gameRooms = Array.from(rooms.values());
@@ -106,7 +116,7 @@ io.on('connection', (socket) => {
       ...currentRoom,
       players: [
         ...currentRoom.players,
-        { id: socket.id, username: socket.data?.username, hero, deck, hand },
+        { id: socket.id, type: 'player2', username: socket.data?.username, hero, deck, hand },
       ],
     };
 
@@ -126,9 +136,10 @@ io.on('connection', (socket) => {
 
     gameRooms.forEach((room) => { // <- 2
       const userInRoom = room.players.find((player) => player.id === socket.id); // <- 3
+      const allRoomUsers = io.in(room.roomId).engine.clientsCount;
 
       if (userInRoom) {
-        if (room.players.length < 2) {
+        if (room.players.length < 2 || allRoomUsers === 0) {
           // if there's only 1 player in the room, close it and exit.
           rooms.delete(room.roomId);
           return;
@@ -136,17 +147,20 @@ io.on('connection', (socket) => {
         socket.to(room.roomId).emit('playerDisconnected', userInRoom); // <- 4
       }
     });
+    const newGameRooms = Array.from(rooms.values());
+    io.emit('rooms', newGameRooms);
     const count = io.engine.clientsCount;
     io.emit('clientsCount', count);
   });
 
   socket.on('makeMove', (data, callback) => {
     socket.to(data.room).emit('makeMove', data);
+    console.log('move');
     callback();
   });
 
   socket.on('closeRoom', async (data, callback) => {
-    const { roomId, name } = data;
+    const { roomId } = data;
     console.log(rooms.get(roomId));
     if (rooms.get(roomId)) {
       console.log('closing room');

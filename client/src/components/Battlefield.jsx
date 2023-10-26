@@ -114,14 +114,15 @@ const Battlefield = () => {
 
   useEffect(() => {
     if (gameMode === 'online' && curRoom !== '') {
-      const playerName = players.player2.name;
-      if (playerName === '') {
+      const player1Name = players.player1.name;
+      const player2Name = players.player2.name;
+      if (player1Name === '' || player2Name === '') {
         dispatch(modalsActions.openModal({ type: 'waitForPlayer' }));
       } else {
         dispatch(modalsActions.closeModal());
       }
     }
-  }, [players.player2.name, dispatch, gameMode, curRoom]);
+  }, [players.player2.name, dispatch, gameMode, curRoom, players.player1.name]);
 
   useEffect(() => {
     socket.on('opponentJoined', (roomData) => {
@@ -140,8 +141,10 @@ const Battlefield = () => {
       dispatch(gameActions.setCurrentRoom({ room: roomId }));
     });
     socket.on('playerDisconnected', (player) => {
-      dispatch(modalsActions.openModal({ type: 'playerDisconnected', player: player.username, roomId: curRoom }));
-      navigate('/lobby');
+      dispatch(battleActions.setPlayerName({ name: '', player: player.type }));
+      // dispatch(modalsActions
+      // .openModal({ type: 'playerDisconnected', player: player.username, roomId: curRoom }));
+      // navigate('/lobby');
     });
 
     socket.on('closeRoom', ({ roomId, name }) => {
@@ -151,9 +154,15 @@ const Battlefield = () => {
       }
     });
 
+    socket.on('playerReconnected', (player) => {
+      dispatch(battleActions.setPlayerName({ name: player.username, player: player.type }));
+    });
+
     const handleThisPlayerDisc = () => {
-      dispatch(modalsActions.openModal({ type: 'playerDisconnected', player: null, roomId: curRoom }));
-      navigate('/lobby');
+      dispatch(battleActions.setPlayerName({ name: '', player: thisPlayer }));
+      // dispatch(modalsActions
+      // .openModal({ type: 'playerDisconnected', player: null, roomId: curRoom }));
+      // navigate('/lobby');
     };
 
     const updateRoomsBattle = (data) => {
@@ -170,6 +179,7 @@ const Battlefield = () => {
     socket.on('clientsCount', updPlayersOnlieneBattle);
 
     return () => {
+      socket.off('playerReconnected');
       socket.off('opponentJoined');
       socket.off('playerDisconnected');
       socket.off('disconnect', handleThisPlayerDisc);
@@ -177,7 +187,7 @@ const Battlefield = () => {
       socket.off('rooms', updateRoomsBattle);
       socket.off('clientsCount', updPlayersOnlieneBattle);
     };
-  }, [dispatch, navigate, curRoom, addCardToField, endTurn]);
+  }, [dispatch, navigate, curRoom, addCardToField, endTurn, thisPlayer]);
 
   useEffect(() => {
     socket.on('makeMove', (data) => {

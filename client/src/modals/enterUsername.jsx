@@ -34,6 +34,7 @@ const EnterUsername = () => {
           dispatch(gameActions.setPlayerName({ name: username }));
           const rooms = data ?? [];
           dispatch(gameActions.updateRooms({ rooms }));
+          formik.setSubmitting(false);
           handleClose();
         });
       } catch (err) {

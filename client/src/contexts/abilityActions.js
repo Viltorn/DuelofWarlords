@@ -8,7 +8,7 @@ import { actions as modalsActions } from '../slices/modalsSlice.js';
 import { actions as battleActions } from '../slices/battleSlice.js';
 import functionContext from './functionsContext.js';
 
-const getRandomIndex = (range) => Math.floor(Math.random() * range);
+// const getRandomIndex = (range) => Math.floor(Math.random() * range);
 
 const AbilitiesContext = createContext({});
 
@@ -156,7 +156,7 @@ export const AbilityProvider = ({ children }) => {
       };
       const makeCardAttack = (cast, attackedCard) => {
         const receivedHealth = attackedCard.currentHP;
-        const spellPower = findDependValue(cast);
+        const spellPower = findDependValue(cast, cast.player);
         const protection = findSpell(cast, attackedCard, 'spell', 'protection');
         const protectionVal = protection
           ? getProtectionVal(spellPower, protection, receivedHealth) : 0;
@@ -242,7 +242,7 @@ export const AbilityProvider = ({ children }) => {
           dispatch(battleActions.deleteActiveCard({ player: aimCard.player }));
         }
       } else if (name === 'heal' && aimCard?.status === 'field') {
-        const spellPower = findDependValue(feature);
+        const spellPower = findDependValue(feature, castingPlayer);
         const newHealth = (aimCard.currentHP + spellPower) >= aimCard.health
           ? aimCard.health : aimCard.currentHP + spellPower;
         dispatch(battleActions.addAnimation({ cell: applyingCell, type: 'healed' }));
@@ -275,7 +275,7 @@ export const AbilityProvider = ({ children }) => {
           cellId: heroCard.cellId,
         }));
       } else if (name === 'health' && aimCard?.status === 'field') {
-        const newHealth = aimCard.currentHP + findDependValue(feature);
+        const newHealth = aimCard.currentHP + findDependValue(feature, castingPlayer);
         dispatch(battleActions.changeHP({
           health: newHealth,
           cardId: aimCard.id,
@@ -423,8 +423,7 @@ export const AbilityProvider = ({ children }) => {
         return warCard.health > warCard.currentHP;
       }) : adjasentCells;
       if (filteredCells.length !== 0) {
-        const randomIndex = getRandomIndex(filteredCells.length);
-        const chosenCell = filteredCells[randomIndex];
+        const chosenCell = filteredCells[0];
         const warriorCard = chosenCell.content.find((item) => item.type === 'warrior');
         applySpellEffect(feature, warriorCard, chosenCell, newfieldCells, player);
       }
@@ -657,7 +656,7 @@ export const AbilityProvider = ({ children }) => {
     const powerSpells = card1.attachments.filter((spell) => spell.name === 'power');
     powerSpells.forEach((spell) => {
       if (spell.charges === 1) {
-        const spellCard = fieldCells.reduce((acc, cell) => {
+        const spellCard = newfieldCells.reduce((acc, cell) => {
           const searchingCard = cell.content.find((el) => el.id === spell.id);
           if (searchingCard) {
             acc = searchingCard;
@@ -673,7 +672,7 @@ export const AbilityProvider = ({ children }) => {
     });
 
     if (protection && protection.charges === 1) {
-      const protectionCard = fieldCells.reduce((acc, cell) => {
+      const protectionCard = newfieldCells.reduce((acc, cell) => {
         const searchingCard = cell.content.find((el) => el.id === protection.id);
         if (searchingCard) {
           acc = searchingCard;

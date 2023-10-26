@@ -46,18 +46,19 @@ const OnlineLobby = () => {
       console.log(players);
     };
 
-    const handleLobbyDisc = () => {
-      dispatch(modalsActions.openModal({ type: 'playerDisconnected', player: null, roomId: null }));
-    };
+    // const handleLobbyDisc = () => {
+    //   dispatch(modalsActions
+    // .openModal({ type: 'playerDisconnected', player: null, roomId: null }));
+    // };
 
-    socket.on('disconnect', handleLobbyDisc);
+    // socket.on('disconnect', handleLobbyDisc);
     socket.on('rooms', updateLobbyRooms);
     socket.on('clientsCount', updatePlayersOnline);
 
     return () => {
       socket.off('rooms', updateLobbyRooms);
       socket.off('clientsCount', updatePlayersOnline);
-      socket.off('disconnect', handleLobbyDisc);
+      // socket.off('disconnect', handleLobbyDisc);
     };
   }, [name, dispatch]);
 
