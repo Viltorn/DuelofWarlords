@@ -216,11 +216,7 @@ export const AbilityProvider = ({ children }) => {
         dispatch(battleActions.addActiveCard({ card: movingCard, player: castingPlayer }));
       } else if (name === 'evade') {
         const { topRowCell, bottomRowCell } = findNextRows(aimCell);
-        const normTopCell = topRowCell || {};
-        const normBotCell = bottomRowCell || {};
-        const cellsArr = [topRowCell, bottomRowCell];
-        const choosenCell = topRowCell && bottomRowCell
-          ? cellsArr[getRandomIndex(2)] : { ...normTopCell, ...normBotCell };
+        const choosenCell = topRowCell ?? bottomRowCell;
         const turnQty = turn === 0 ? 2 : 1;
         deleteCardfromSource(aimCard);
         dispatch(battleActions.addFieldContent({ card: aimCard, id: choosenCell.id }));
@@ -358,9 +354,7 @@ export const AbilityProvider = ({ children }) => {
           && cell.content.length !== 0 && cell.player !== player && cell.type === 'field');
         const bottomRowCells = newfieldCells.filter((cell) => cell.row === bottomRowNumber
           && cell.content.length !== 0 && cell.player !== player && cell.type === 'field');
-        const allRowCells = [topRowCells, bottomRowCells];
-        const choosenRowCells = topRowCells.length !== 0 && bottomRowCells.length !== 0
-          ? allRowCells[getRandomIndex(2)] : [...topRowCells, ...bottomRowCells];
+        const choosenRowCells = topRowCells.length !== 0 ? topRowCells : bottomRowCells;
         choosenRowCells.forEach((cell) => {
           const warriorCard = cell.content.find((item) => item.type === 'warrior');
           applySpellEffect(feature, warriorCard, cell, newfieldCells, player);
@@ -573,8 +567,9 @@ export const AbilityProvider = ({ children }) => {
   };
 
   const makeFight = (card1, card2) => {
-    const attackedCell = fieldCells.find((cell) => cell.id === card2.cellId);
-    const attackingCell = fieldCells.find((cell) => cell.id === card1.cellId);
+    const newfieldCells = store.getState().battleReducer.fieldCells;
+    const attackedCell = newfieldCells.find((cell) => cell.id === card2.cellId);
+    const attackingCell = newfieldCells.find((cell) => cell.id === card1.cellId);
 
     const makeCounterStrike = (
       strikeCard,

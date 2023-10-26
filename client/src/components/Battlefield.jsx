@@ -143,10 +143,6 @@ const Battlefield = () => {
       dispatch(modalsActions.openModal({ type: 'playerDisconnected', player: player.username, roomId: curRoom }));
       navigate('/lobby');
     });
-    socket.on('disconnect', () => {
-      dispatch(modalsActions.openModal({ type: 'playerDisconnected', player: null, roomId: curRoom }));
-      navigate('/lobby');
-    });
 
     socket.on('closeRoom', ({ roomId, name }) => {
       if (roomId === curRoom) {
@@ -154,6 +150,11 @@ const Battlefield = () => {
         navigate('/lobby', { replace: true });
       }
     });
+
+    const handleThisPlayerDisc = () => {
+      dispatch(modalsActions.openModal({ type: 'playerDisconnected', player: null, roomId: curRoom }));
+      navigate('/lobby');
+    };
 
     const updateRoomsBattle = (data) => {
       dispatch(gameActions.updateRooms({ rooms: data }));
@@ -163,13 +164,15 @@ const Battlefield = () => {
       dispatch(gameActions.setOnlineCount({ count: data }));
       console.log(data);
     };
+
+    socket.on('disconnect', handleThisPlayerDisc);
     socket.on('rooms', updateRoomsBattle);
     socket.on('clientsCount', updPlayersOnlieneBattle);
 
     return () => {
       socket.off('opponentJoined');
       socket.off('playerDisconnected');
-      socket.off('disconnect');
+      socket.off('disconnect', handleThisPlayerDisc);
       socket.off('closeRoom');
       socket.off('rooms', updateRoomsBattle);
       socket.off('clientsCount', updPlayersOnlieneBattle);

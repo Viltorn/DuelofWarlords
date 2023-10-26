@@ -224,8 +224,9 @@ export const FunctionProvider = ({ children }) => {
 
   const findDependValue = (spell) => {
     const { depend, dependValue, value } = spell;
+    const currFieldCells = store.getState().battleReducer.fieldCells;
     if (depend === 'goodattachments') {
-      const goodAttach = fieldCells.filter((cell) => cell.content.length !== 0 && cell.type !== 'graveyard')
+      const goodAttach = currFieldCells.filter((cell) => cell.content.length !== 0 && cell.type !== 'graveyard')
         .reduce((acc, cell) => {
           const goodContent = cell.content.filter((el) => el.type === 'spell' && el.player === thisPlayer);
           acc = [...acc, ...goodContent];
@@ -234,16 +235,16 @@ export const FunctionProvider = ({ children }) => {
       return dependValue * goodAttach.length;
     }
     if (depend === 'warriorsdiff') {
-      const goodWarriors = fieldCells.filter((cell) => cell.content.length !== 0
+      const goodWarriors = currFieldCells.filter((cell) => cell.content.length !== 0
         && cell.type === 'field' && cell.player === thisPlayer).length;
       const enemyPlayer = thisPlayer === 'player1' ? 'player2' : 'player1';
-      const badWarriors = fieldCells.filter((cell) => cell.content.length !== 0
+      const badWarriors = currFieldCells.filter((cell) => cell.content.length !== 0
       && cell.type === 'field' && cell.player === enemyPlayer).length;
       const diff = badWarriors - goodWarriors > 0 ? badWarriors - goodWarriors : 0;
       return value + dependValue * diff;
     }
     if (depend === 'postponed') {
-      const cellWithFeatureType = fieldCells
+      const cellWithFeatureType = currFieldCells
         .find((cell) => cell.content.find((item) => item.id === spell.id))?.type;
       if (cellWithFeatureType === 'postponed') {
         return dependValue;

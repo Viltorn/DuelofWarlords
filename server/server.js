@@ -24,6 +24,12 @@ app.get("/", function(req, res) {
 // upgrade http server to websocket server
 const io = new Server(server, {
   cors: '*', // allow connection from any origin
+  connectionStateRecovery: {
+    // the backup duration of the sessions and the packets
+    maxDisconnectionDuration: 2 * 60 * 1000,
+    // whether to skip middlewares upon successful recovery
+    skipMiddlewares: true,
+  }
 });
 
 const rooms = new Map();
@@ -38,9 +44,10 @@ io.on('connection', (socket) => {
     console.log('username:', args.username);
     socket.data.username = args.username;
     const gameRooms = Array.from(rooms.values());
+    console.log(gameRooms);
     const count = io.engine.clientsCount;
     io.emit('clientsCount', count);
-    callback(args.username, gameRooms);
+    callback(gameRooms);
   });
 
   socket.on('createRoom', async (args, callback) => { // callback here refers to the callback function from the client passed as data
@@ -103,6 +110,8 @@ io.on('connection', (socket) => {
       ],
     };
 
+    console.log(roomUpdate);
+
     rooms.set(room, roomUpdate);
     // respond to the client with the room details.
     // emit an 'opponentJoined' event to the room to tell the other player that an opponent has joined
@@ -131,8 +140,9 @@ io.on('connection', (socket) => {
     io.emit('clientsCount', count);
   });
 
-  socket.on('makeMove', (data) => {
+  socket.on('makeMove', (data, callback) => {
     socket.to(data.room).emit('makeMove', data);
+    callback();
   });
 
   socket.on('closeRoom', async (data, callback) => {

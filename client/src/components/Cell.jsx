@@ -28,7 +28,7 @@ const Cell = ({ props, id, cellData }) => {
     canBeCast,
   } = useContext(functionContext);
 
-  const { curRoom } = useSelector((state) => state.gameReducer);
+  const { curRoom, gameMode } = useSelector((state) => state.gameReducer);
   const { makeFeatureCast, findTriggerSpells, addCardToField } = useContext(abilityContext);
   const currentCell = fieldCells.find((cell) => cell.id === id);
   const currentPoints = playerPoints.find((item) => item.player === thisPlayer).points;
@@ -100,15 +100,20 @@ const Cell = ({ props, id, cellData }) => {
     const isSpell = activeCard && activeCard.type === 'spell';
 
     if ((isWarOnFieldCard && canBeMoved(id)) || (isSpell && canBeCast(id))) {
-      addCardToField(activeCard, thisPlayer, currentPoints, currentCell);
-      socket.emit('makeMove', {
-        move: 'addCardToField',
-        room: curRoom,
-        card: activeCard,
-        player: thisPlayer,
-        points: currentPoints,
-        cell: currentCell,
-      });
+      if (gameMode === 'online') {
+        socket.emit('makeMove', {
+          move: 'addCardToField',
+          room: curRoom,
+          card: activeCard,
+          player: thisPlayer,
+          points: currentPoints,
+          cell: currentCell,
+        }, () => {
+          addCardToField(activeCard, thisPlayer, currentPoints, currentCell);
+        });
+      } else {
+        addCardToField(activeCard, thisPlayer, currentPoints, currentCell);
+      }
     }
   };
 

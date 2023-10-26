@@ -73,24 +73,15 @@ const HeroPad = ({ type, player }) => {
     }
 
     if (activeCard && player === activeCard.player) {
-      addCardToField(activeCard, player, currentPoints, postponedCell);
-      socket.emit('makeMove', {
-        move: 'addCardToField', room: curRoom, card: activeCard, player, points: currentPoints, cell: postponedCell,
-      });
-      // if (gameMode === 'tutorial') {
-      //   changeTutorStep((prev) => prev + 1);
-      // }
-      // if (activeCard.status === 'hand') {
-      //   const newPoints = currentPoints - activeCard.cost;
-      //   dispatch(battleActions.setPlayerPoints({ points: newPoints, player: thisPlayer }));
-      // }
-      // handleAnimation(activeCard, 'delete');
-      // dispatch(battleActions.addFieldContent({ activeCard, id: postponedCell.id }));
-      // deleteCardfromSource(activeCard);
-      // dispatch(battleActions.deleteActiveCard({ player: thisPlayer }));
-      // if (activeCard.type === 'spell' && activeCard.place === 'postponed') {
-      //   activeCard.features.forEach((feature) => makeFeatureAttach(feature, postponedCell));
-      // }
+      if (gameMode === 'online') {
+        socket.emit('makeMove', {
+          move: 'addCardToField', room: curRoom, card: activeCard, player, points: currentPoints, cell: postponedCell,
+        }, () => {
+          addCardToField(activeCard, player, currentPoints, postponedCell);
+        });
+      } else {
+        addCardToField(activeCard, player, currentPoints, postponedCell);
+      }
     }
   };
 
@@ -113,7 +104,7 @@ const HeroPad = ({ type, player }) => {
     const firstRound = commonPoints === 1;
     const drawStatus = players[thisPlayer].cardsdrawn;
     if ((deckOwner === thisPlayer && firstRound && !drawStatus && gameMode !== 'tutorial') || gameMode === 'hotseat') {
-      dispatch(modalsActions.openModal({ type: 'drawCards', player: thisPlayer }));
+      dispatch(modalsActions.openModal({ type: 'drawCards', player: thisPlayer, roomId: curRoom }));
     }
   };
 

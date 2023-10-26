@@ -1,4 +1,4 @@
-import React, { useRef, useState, useContext } from 'react';
+import React, { useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import { useFormik } from 'formik';
@@ -15,8 +15,6 @@ import MenuSlider from './MenuSlider.jsx';
 import makeShaffledDeck from '../utils/makeShaffledDeck.js';
 import createDeckForPLayer from '../utils/makeDeckForPlayer.js';
 import dummyCard from '../gameCardsData/dummyCard.js';
-import functionContext from '../contexts/functionsContext.js';
-import RotateScreen from '../components/RotateScreen.jsx';
 
 const OnlineGameStart = () => {
   const [factionNumber, setFactionSlide] = useState(0);
@@ -26,7 +24,6 @@ const OnlineGameStart = () => {
   const inputEl = useRef();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { windowWidth } = useContext(functionContext);
 
   const { roomId, name } = useSelector((state) => state.modalsReducer);
 
@@ -120,82 +117,80 @@ const OnlineGameStart = () => {
 
   return (
     <dialog className={styles.container}>
-      {windowWidth < 700 ? (
-        <RotateScreen />
-      ) : (
-        <div className={styles.contentDark}>
-          <form className={styles.hotseatForm} onSubmit={formik.handleSubmit}>
-            <fieldset className={styles.fieldset} disabled={formik.isSubmitting}>
-              <h2 className={styles.headerLight}>{t('ChooseFactions')}</h2>
-              <div className={styles.playerSlides}>
-                <div className={styles.slideBlock}>
-                  <MenuSlider item={playerFaction} player="player1" changeSlide={changeFaction} />
-                  <input
-                    className={styles.slideInput}
-                    id="player1Faction"
-                    type="text"
-                    ref={inputEl}
-                    onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
-                    value={playerFaction.id}
-                    data-testid="input-body"
-                    name="player1Faction"
-                  />
-                  <label htmlFor="player1Faction" className={styles.label}>{playerFaction.id}</label>
-                </div>
-                <div className={styles.slideBlock}>
-                  <MenuSlider item={playerHeroes[heroNumber]} player="player1" changeSlide={changeHero} />
-                  <input
-                    className={styles.slideInput}
-                    id="player1Hero"
-                    type="text"
-                    ref={inputEl}
-                    onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
-                    value={playerHeroes[heroNumber].name}
-                    data-testid="input-body"
-                    name="player1Hero"
-                  />
-                  <label htmlFor="player1Hero" className={styles.label}>{playerHeroes[heroNumber].name}</label>
-                </div>
+      <div className={styles.contentDark}>
+        <form className={styles.hotseatForm} onSubmit={formik.handleSubmit}>
+          <fieldset className={styles.fieldset} disabled={formik.isSubmitting}>
+            <h2 className={styles.headerLight}>{t('ChooseFactions')}</h2>
+            <div className={styles.playerSlides}>
+              <div className={styles.slideBlock}>
+                <MenuSlider item={playerFaction} player="player1" changeSlide={changeFaction} />
+                <input
+                  className={styles.slideInput}
+                  id="player1Faction"
+                  type="text"
+                  ref={inputEl}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  value={playerFaction.id}
+                  data-testid="input-body"
+                  name="player1Faction"
+                />
+                <label htmlFor="player1Faction" className={styles.label}>{playerFaction.id}</label>
+                <p className={styles.description}>{playerFaction.description}</p>
               </div>
-              {error && (<div className={styles.invalidFeedback}>{t(`errors.${error.message}`)}</div>)}
-              {name && (
-                <p className={styles.roomsOwner}>
-                  {t('RoomsOwner')}
-                  {name}
-                </p>
-              )}
-              <div className={styles.btnBlock}>
-                {!roomId ? (
-                  <PrimaryButton
-                    showIcon={false}
-                    state="default"
-                    text={t('CREATE')}
-                    variant="primary"
-                    type="submit"
-                  />
-                ) : (
-                  <PrimaryButton
-                    showIcon={false}
-                    state="default"
-                    text={t('JOIN')}
-                    variant="primary"
-                    type="submit"
-                  />
-                )}
+              <div className={styles.slideBlock}>
+                <MenuSlider item={playerHeroes[heroNumber]} player="player1" changeSlide={changeHero} />
+                <input
+                  className={styles.slideInput}
+                  id="player1Hero"
+                  type="text"
+                  ref={inputEl}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  value={playerHeroes[heroNumber].name}
+                  data-testid="input-body"
+                  name="player1Hero"
+                />
+                <label htmlFor="player1Hero" className={styles.label}>{playerHeroes[heroNumber].name}</label>
+                <p className={styles.description}>{playerHeroes[heroNumber].description}</p>
+              </div>
+            </div>
+            {error && (<div className={styles.invalidFeedback}>{t(`errors.${error.message}`)}</div>)}
+            {name && (
+            <p className={styles.roomsOwner}>
+              {t('RoomsOwner')}
+              {name}
+            </p>
+            )}
+            <div className={styles.btnBlock}>
+              {!roomId ? (
                 <PrimaryButton
-                  onClick={handleClose}
                   showIcon={false}
                   state="default"
-                  text={t('CLOSE')}
-                  variant="secondary"
+                  text={t('CREATE')}
+                  variant="primary"
+                  type="submit"
                 />
-              </div>
-            </fieldset>
-          </form>
-        </div>
-      )}
+              ) : (
+                <PrimaryButton
+                  showIcon={false}
+                  state="default"
+                  text={t('JOIN')}
+                  variant="primary"
+                  type="submit"
+                />
+              )}
+              <PrimaryButton
+                onClick={handleClose}
+                showIcon={false}
+                state="default"
+                text={t('CLOSE')}
+                variant="secondary"
+              />
+            </div>
+          </fieldset>
+        </form>
+      </div>
     </dialog>
   );
 };

@@ -40,7 +40,7 @@ const CellCard = ({
     cellId, turn,
   } = item;
   const { thisPlayer, fieldCells, playerPoints } = useSelector((state) => state.battleReducer);
-  const { curRoom } = useSelector((state) => state.gameReducer);
+  const { curRoom, gameMode } = useSelector((state) => state.gameReducer);
   const currentCell = fieldCells.find((cell) => cell.id === cellId);
   const currentPoints = playerPoints.find((data) => data.player === thisPlayer).points;
   const marginTop = getTopMargin(type);
@@ -57,23 +57,33 @@ const CellCard = ({
   const makeCardAction = (card, player, points, cell, appliedCard) => {
     if (canBeCast(cell.id)) {
       handleAnimation(card, 'delete');
-      castSpell(card, player, points, cell);
-      socket.emit('makeMove', {
-        move: 'castSpell',
-        room: curRoom,
-        card,
-        player,
-        points,
-        cell,
-      });
+      if (gameMode === 'online') {
+        socket.emit('makeMove', {
+          move: 'castSpell',
+          room: curRoom,
+          card,
+          player,
+          points,
+          cell,
+        }, () => {
+          castSpell(card, player, points, cell);
+        });
+      } else {
+        castSpell(card, player, points, cell);
+      }
     } else if (canBeAttacked(appliedCard)) {
-      makeFight(card, appliedCard);
-      socket.emit('makeMove', {
-        move: 'makeFight',
-        room: curRoom,
-        card1: card,
-        card2: appliedCard,
-      });
+      if (gameMode === 'online') {
+        socket.emit('makeMove', {
+          move: 'makeFight',
+          room: curRoom,
+          card1: card,
+          card2: appliedCard,
+        }, () => {
+          makeFight(card, appliedCard);
+        });
+      } else {
+        makeFight(card, appliedCard);
+      }
     } else {
       handleAnimation(card, 'delete');
       const currentCardData = cell.content.find((el) => el.id === appliedCard.id);

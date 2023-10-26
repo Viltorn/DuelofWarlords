@@ -17,7 +17,9 @@ const PlayerDisconnected = () => {
   const handleClick = () => {
     if (!player) {
       dispatch(gameActions.resetConnection());
-      socket.emit('closeRoom', { roomId, name });
+      if (roomId) {
+        socket.emit('closeRoom', { roomId, name });
+      }
     }
     dispatch(battleActions.resetState());
     dispatch(gameActions.setCurrentRoom({ room: '' }));

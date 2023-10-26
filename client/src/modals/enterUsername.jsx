@@ -30,9 +30,9 @@ const EnterUsername = () => {
     validationSchema: userName,
     onSubmit: ({ username }) => {
       try {
-        socket.emit('username', { username }, (name, rooms) => {
-          dispatch(gameActions.setPlayerName({ name }));
-          console.log(rooms);
+        socket.emit('username', { username }, (data) => {
+          dispatch(gameActions.setPlayerName({ name: username }));
+          const rooms = data ?? [];
           dispatch(gameActions.updateRooms({ rooms }));
           handleClose();
         });

@@ -21,10 +21,8 @@
   margin: auto; /* 15% from the top and centered */
   padding: 30px 30px;
   border: 1px solid #888;
-  width: 30rem; /* Could be more or less, depending on screen size */
-  min-width: 600px;
-  height: 600px;
-  min-height: 375px;
+  width: 700px; /* Could be more or less, depending on screen size */
+  height: 700px;
   border-radius: 0.5rem;
   color: var(--light-gray);
 }
@@ -52,7 +50,8 @@
 .playerSlides {
   display: flex;
   justify-content: space-around;
-  align-items: center;
+  gap: 20px;
+  align-items: top;
 }
 
 .slideBlock {
@@ -79,6 +78,16 @@
   width: 100%;
   padding: 0;
   line-height: 1.5rem;
+}
+
+.description {
+  font-weight: 600;
+  font-size: 13px;
+  padding: 10px;
+  border: 2px solid var(--golden);
+  color: var(--light-gray);
+  width: 300px;
+  height: 100px;
 }
 
 .player {
@@ -112,7 +121,7 @@
 
 @media (max-width: 900px) {
   .contentDark {
-    height: 400px;
+    height: 550px;
     width: 400px;
   }
 
@@ -134,5 +143,44 @@
   .fieldset {
     gap: 30px;
     justify-content: start;
+  }
+
+  .description {
+    font-weight: 600;
+    font-size: 11px;
+    padding: 10px;
+    border: 2px solid var(--golden);
+    color: var(--light-gray);
+    width: 150px;
+    height: 150px;
+  }
+}
+
+@media (max-width: 767px) {
+  .contentDark {
+    height: 600px;
+    width: 320px;
+  }
+
+  .headerLight {
+    font-size: 15px;
+  }
+  .playerSlides {
+    flex-direction: column;
+    gap: 30px;
+  }
+
+  .description {
+    font-weight: 600;
+    font-size: 10px;
+    padding: 10px;
+    border: 2px solid var(--golden);
+    color: var(--light-gray);
+    width: 250px;
+    height: 80px;
+  }
+
+  .roomsOwner {
+    font-size: 15px;
   }
 }

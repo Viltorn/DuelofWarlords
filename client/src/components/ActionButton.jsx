@@ -33,7 +33,7 @@ const ActionButton = ({
     fieldCells,
     playerPoints,
   } = useSelector((state) => state.battleReducer);
-  const { gameMode, curRoom } = useSelector((state) => state.gameReducer);
+  const { curRoom, gameMode } = useSelector((state) => state.gameReducer);
   const currentPoints = playerPoints.find((item) => item.player === thisPlayer).points;
   const currentCell = fieldCells.find((item) => item.id === cellId);
 
@@ -49,7 +49,6 @@ const ActionButton = ({
         makeTurn('turnRight');
         break;
       case 'return':
-        returnCardToHand(card, thisPlayer, cost, ressurect?.id);
         if (gameMode === 'online') {
           socket.emit('makeMove', {
             move: 'returnCardToHand',
@@ -58,7 +57,11 @@ const ActionButton = ({
             player: thisPlayer,
             cost,
             spellId: ressurect?.id,
+          }, () => {
+            returnCardToHand(card, thisPlayer, cost, ressurect?.id);
           });
+        } else {
+          returnCardToHand(card, thisPlayer, cost, ressurect?.id);
         }
         break;
       case 'graveyard':
@@ -69,7 +72,6 @@ const ActionButton = ({
         sendCardFromField(card, 'grave');
         break;
       case 'ability':
-        makeAbilityCast(card, thisPlayer, currentPoints, currentCell, ability);
         if (gameMode === 'online') {
           socket.emit('makeMove', {
             move: 'makeAbilityCast',
@@ -79,19 +81,25 @@ const ActionButton = ({
             points: currentPoints,
             cell: currentCell,
             ability,
+          }, () => {
+            makeAbilityCast(card, thisPlayer, currentPoints, currentCell, ability);
           });
-          console.log('ability');
+        } else {
+          makeAbilityCast(card, thisPlayer, currentPoints, currentCell, ability);
         }
         break;
       case 'deckreturn':
-        returnCardToDeck(card, thisPlayer);
         if (gameMode === 'online') {
           socket.emit('makeMove', {
             move: 'returnCardToDeck',
             room: curRoom,
             card,
             player: thisPlayer,
+          }, () => {
+            returnCardToDeck(card, thisPlayer);
           });
+        } else {
+          returnCardToDeck(card, thisPlayer);
         }
         break;
       default:

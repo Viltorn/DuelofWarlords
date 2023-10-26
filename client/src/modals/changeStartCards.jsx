@@ -17,8 +17,8 @@ const ChangeStartCards = () => {
   } = useContext(abilityContext);
 
   const { playersHands } = useSelector((state) => state.battleReducer);
-  const { player } = useSelector((state) => state.modalsReducer);
-  const { curRoom } = useSelector((state) => state.gameReducer);
+  const { player, roomId } = useSelector((state) => state.modalsReducer);
+  const { gameMode } = useSelector((state) => state.gameReducer);
   const thisHand = playersHands[player];
   const handSize = player === 'player1' ? startCardsNumber1 : startCards2AfterDraw;
   const diffSize = handSize - thisHand.length;
@@ -29,13 +29,18 @@ const ChangeStartCards = () => {
 
   const handleSubmit = () => {
     dispatch(modalActions.closeModal());
-    drawCards(player, diffSize);
-    socket.emit('makeMove', {
-      move: 'drawCards',
-      room: curRoom,
-      player,
-      number: diffSize,
-    });
+    if (gameMode === 'online') {
+      socket.emit('makeMove', {
+        move: 'drawCards',
+        room: roomId,
+        player,
+        number: diffSize,
+      }, () => {
+        drawCards(player, diffSize);
+      });
+    } else {
+      drawCards(player, diffSize);
+    }
   };
 
   return (

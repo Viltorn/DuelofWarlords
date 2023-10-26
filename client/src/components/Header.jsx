@@ -64,17 +64,29 @@ const Header = () => {
         return arr;
       }, []);
 
-    endTurn(newPlayer, commonPoints, newCommonPoints, posponedCell, temporarySpells, turnSpells);
-    socket.emit('makeMove', {
-      move: 'endTurn',
-      room: curRoom,
-      newPlayer,
-      commonPoints,
-      newCommonPoints,
-      posponedCell,
-      temporarySpells,
-      turnSpells,
-    });
+    if (gameMode === 'online') {
+      socket.emit('makeMove', {
+        move: 'endTurn',
+        room: curRoom,
+        newPlayer,
+        commonPoints,
+        newCommonPoints,
+        posponedCell,
+        temporarySpells,
+        turnSpells,
+      }, () => {
+        endTurn(
+          newPlayer,
+          commonPoints,
+          newCommonPoints,
+          posponedCell,
+          temporarySpells,
+          turnSpells,
+        );
+      });
+    } else {
+      endTurn(newPlayer, commonPoints, newCommonPoints, posponedCell, temporarySpells, turnSpells);
+    }
   };
 
   const handlePointsClick = (player) => {
