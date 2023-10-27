@@ -46,7 +46,7 @@ io.on('connection', (socket) => {
     const roomUser = room.players.find((player) => player.id === socket.id); // <- 3
 
     if (roomUser) {
-      io.to(room.roomId).emit('playerReconnected', userInRoom); // <- 4
+      io.to(room.roomId).emit('playerReconnected', roomUser); // <- 4
     }
   });
 
