@@ -106,7 +106,7 @@ export default {
       Unique: 'Этот чат уже добавлен',
       UniqueName: 'Такое имя уже есть',
       Identical: 'Пароли должны совпадать',
-      NetworkError: 'Ошибка соединения',
+      NetworkError: 'Network error',
       false: '',
     },
   },

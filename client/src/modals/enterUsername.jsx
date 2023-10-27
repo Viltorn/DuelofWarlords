@@ -1,7 +1,8 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { useFormik } from 'formik';
+import axios from 'axios';
 import { actions as modalActions } from '../slices/modalsSlice.js';
 import { actions as gameActions } from '../slices/gameSlice';
 import { userName } from '../utils/validation.js';
@@ -13,6 +14,7 @@ const EnterUsername = () => {
   const { t } = useTranslation();
   const inputEl = useRef();
   const dispatch = useDispatch();
+  const [error, setError] = useState(false);
 
   const handleClose = () => {
     dispatch(modalActions.closeModal());
@@ -28,8 +30,10 @@ const EnterUsername = () => {
       username: '',
     },
     validationSchema: userName,
-    onSubmit: ({ username }) => {
+    onSubmit: async ({ username }) => {
       try {
+        setError(false);
+        await axios.get('https://duelsofwarlords.onrender.com');
         socket.emit('username', { username }, (data) => {
           dispatch(gameActions.setPlayerName({ name: username }));
           const rooms = data ?? [];
@@ -38,6 +42,7 @@ const EnterUsername = () => {
           handleClose();
         });
       } catch (err) {
+        setError(err.message);
         console.log(err);
         formik.setSubmitting(false);
       }
@@ -66,6 +71,7 @@ const EnterUsername = () => {
               {formik.errors.username ? (
                 <div className={styles.invalidFeedback}>{t(`errors.${formik.errors.username}`)}</div>
               ) : null}
+              {error && (<div className={styles.invalidFeedback}>{t(`errors.${error}`)}</div>)}
             </div>
             <label htmlFor="username" className="visually-hidden">{t('YourName')}</label>
             <PrimaryButton

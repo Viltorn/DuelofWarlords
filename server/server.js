@@ -134,12 +134,16 @@ io.on('connection', (socket) => {
   socket.on('disconnect', () => {
     const gameRooms = Array.from(rooms.values()); // <- 1
 
+    const isRoomEmpty = (roomid) => {
+      const room = io.sockets.adapter.rooms.get(roomid);
+      return room ? room.size === 0 : true;
+    };
+
     gameRooms.forEach((room) => { // <- 2
       const userInRoom = room.players.find((player) => player.id === socket.id); // <- 3
-      const allRoomUsers = io.in(room.roomId).engine.clientsCount;
 
       if (userInRoom) {
-        if (room.players.length < 2 || allRoomUsers === 0) {
+        if (room.players.length < 2 || isRoomEmpty(room.roomId)) {
           // if there's only 1 player in the room, close it and exit.
           rooms.delete(room.roomId);
           return;

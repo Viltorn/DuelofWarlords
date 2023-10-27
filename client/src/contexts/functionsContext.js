@@ -224,9 +224,9 @@ export const FunctionProvider = ({ children }) => {
 
   const findDependValue = (spell, spellOwner) => {
     const { depend, dependValue, value } = spell;
-    const currFieldCells = store.getState().battleReducer.fieldCells;
+    const curFieldCells = store.getState().battleReducer.fieldCells;
     if (depend === 'goodattachments') {
-      const goodAttach = currFieldCells.filter((cell) => cell.content.length !== 0 && cell.type !== 'graveyard')
+      const goodAttach = curFieldCells.filter((cell) => cell.content.length !== 0 && cell.type !== 'graveyard')
         .reduce((acc, cell) => {
           const goodContent = cell.content.filter((el) => el.type === 'spell' && el.player === spellOwner);
           acc = [...acc, ...goodContent];
@@ -235,16 +235,16 @@ export const FunctionProvider = ({ children }) => {
       return dependValue * goodAttach.length;
     }
     if (depend === 'warriorsdiff') {
-      const goodWarriors = currFieldCells.filter((cell) => cell.content.length !== 0
+      const goodWarriors = curFieldCells.filter((cell) => cell.content.length !== 0
         && cell.type === 'field' && cell.player === spellOwner).length;
       const enemyPlayer = spellOwner === 'player1' ? 'player2' : 'player1';
-      const badWarriors = currFieldCells.filter((cell) => cell.content.length !== 0
+      const badWarriors = curFieldCells.filter((cell) => cell.content.length !== 0
       && cell.type === 'field' && cell.player === enemyPlayer).length;
       const diff = badWarriors - goodWarriors > 0 ? badWarriors - goodWarriors : 0;
       return value + dependValue * diff;
     }
     if (depend === 'postponed') {
-      const cellWithFeatureType = currFieldCells
+      const cellWithFeatureType = curFieldCells
         .find((cell) => cell.content.find((item) => item.id === spell.id))?.type;
       if (cellWithFeatureType === 'postponed') {
         return dependValue;
@@ -275,6 +275,7 @@ export const FunctionProvider = ({ children }) => {
 
   const checkMeetCondition = (attacking, protecting, spell, type) => {
     const { condition, conditionValue } = spell;
+    const curFieldCells = store.getState().battleReducer.fieldCells;
     if (type === 'warrior' || warSubtypes.includes(type)) {
       if (condition && condition === 'minPower') {
         const attackingPower = getWarriorPower(attacking);
@@ -296,14 +297,14 @@ export const FunctionProvider = ({ children }) => {
         return currentHP - (attackingPower + attackingAddPower) <= 0;
       }
       if (condition && condition === 'nextRowCell') {
-        const protectCell = fieldCells.find((cell) => cell.id === protecting.cellId);
+        const protectCell = curFieldCells.find((cell) => cell.id === protecting.cellId);
         const curRowNumber = parseInt(protectCell.row, 10);
         const currentline = protectCell.line;
         const topRowNumber = (curRowNumber - 1).toString();
         const bottomRowNumber = (curRowNumber + 1).toString();
-        const topRowCell = fieldCells.find((cell) => cell.row === topRowNumber
+        const topRowCell = curFieldCells.find((cell) => cell.row === topRowNumber
             && cell.line === currentline && cell.content.length === 0);
-        const bottomRowCell = fieldCells.find((cell) => cell.row === bottomRowNumber
+        const bottomRowCell = curFieldCells.find((cell) => cell.row === bottomRowNumber
             && cell.line === currentline && cell.content.length === 0);
         return (topRowCell || bottomRowCell) && protecting.turn !== 2;
       }

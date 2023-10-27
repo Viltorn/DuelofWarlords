@@ -23,5 +23,8 @@
   "bugs": {
     "url": "https://github.com/Viltorn/DuelofWarlords/issues"
   },
-  "homepage": "https://github.com/Viltorn/DuelofWarlords#readme"
+  "homepage": "https://github.com/Viltorn/DuelofWarlords#readme",
+  "engines": {
+    "node": "19.4.0"
+  }
 }

@@ -110,6 +110,7 @@ export default {
       UniqueName: 'Такое имя уже есть',
       Identical: 'Пароли должны совпадать',
       NetworkError: 'Ошибка соединения',
+      'Network Error': 'Ошибка соединения',
       false: '',
     },
     messages: {
