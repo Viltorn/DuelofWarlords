@@ -43,16 +43,16 @@ const ActiveCard = ({ activeCard, playerType }) => {
             <ActionButton card={activeCard} type="turnRight" />
           </>
         )}
-        {((firstRound && thisPlayer === activeCard.player && !cardsdrawn) || gameMode === 'hotseat') && (type !== 'hero') && (
+        {((firstRound && thisPlayer === activeCard.player && !cardsdrawn && legalTurn) || gameMode === 'hotseat') && (type !== 'hero') && (
         <ActionButton card={activeCard} ability={insteadatk} type="deckreturn" />
         )}
-        {insteadatk && activeCard.turn === 0 && leftPoints >= 0 && !disAbility && legalTurn && (
+        {insteadatk && activeCard.turn === 0 && leftPoints >= 0 && !disAbility && legalTurn && status !== 'graveyard' && (
           <ActionButton card={activeCard} ability={insteadatk} type="ability" />
         )}
         {(status === 'field') && (type === 'warrior' || type === 'hero') && gameMode === 'hotseat' && (
           <ActionButton card={activeCard} type="healthBar" />
         )}
-        {((status !== 'hand' && (type !== 'hero') && ressurect && activeCard.status === 'graveyard') || gameMode === 'hotseat') && (
+        {((status !== 'hand' && (type !== 'hero') && ressurect && activeCard.status === 'graveyard' && legalTurn) || gameMode === 'hotseat') && (
           <ActionButton card={activeCard} type="return" ressurect={ressurect} />
         )}
         {type !== 'hero' && status !== 'graveyard' && gameMode === 'hotseat' && (

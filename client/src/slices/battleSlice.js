@@ -255,11 +255,13 @@ const battleSlice = createSlice({
 
     addToGraveyard(state, { payload }) {
       const { card } = payload;
-      const { player, type, health } = card;
+      const {
+        player, type, health, cost,
+      } = card;
       const cellId = player === 'player1' ? 'graveyard1' : 'graveyard2';
       const changedBasic = { ...card, status: 'graveyard', cellId };
       const newCard = type === 'warrior' ? {
-        ...changedBasic, turn: 1, currentHP: health, attachments: [],
+        ...changedBasic, turn: 1, currentHP: health, attachments: [], currentC: cost,
       }
         : changedBasic;
       state.fieldCells = state.fieldCells.map((cell) => {

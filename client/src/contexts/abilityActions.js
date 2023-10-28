@@ -64,7 +64,8 @@ export const AbilityProvider = ({ children }) => {
   }, []);
 
   const findSpell = (attacking, protecting, attackType, name) => {
-    const protectingCell = fieldCells.find((cell) => cell.id === protecting.cellId);
+    const newFieldCells = store.getState().battleReducer.fieldCells;
+    const protectingCell = newFieldCells.find((cell) => cell.id === protecting.cellId);
     console.log(protectingCell);
     const cardAttachSpell = protecting.attachments.find((spell) => spell.name === name
       && spell.aim.includes(attackType));
@@ -154,9 +155,9 @@ export const AbilityProvider = ({ children }) => {
                 && cell.line === currentline && cell.content.length === 0);
         return { topRowCell, bottomRowCell };
       };
-      const makeCardAttack = (cast, attackedCard) => {
+      const makeCardAttack = (cast, attackedCard, castPlayer) => {
         const receivedHealth = attackedCard.currentHP;
-        const spellPower = findDependValue(cast, cast.player);
+        const spellPower = findDependValue(cast, castPlayer);
         const protection = findSpell(cast, attackedCard, 'spell', 'protection');
         const protectionVal = protection
           ? getProtectionVal(spellPower, protection, receivedHealth) : 0;
@@ -196,7 +197,7 @@ export const AbilityProvider = ({ children }) => {
       const { turn } = aimCard ?? { turn: 0 };
       if (name === 'attack') {
         dispatch(battleActions.addAnimation({ cell: applyingCell, type: 'attacked' }));
-        makeCardAttack(feature, aimCard);
+        makeCardAttack(feature, aimCard, castingPlayer);
       } else if (name === 'selfheroattack') {
         const heroCell = cellsfield.find((cell) => cell.type === 'hero' && cell.player === castingPlayer);
         const heroCard = heroCell.content.find((el) => el.type === 'hero');
@@ -509,14 +510,14 @@ export const AbilityProvider = ({ children }) => {
       }
     } else if (attach.includes('adjacent')) {
       if (type === 'good') {
-        const adjacentCells = findAdjasentCells(aimCell);
+        const adjacentCells = findAdjasentCells(aimCell, currentfieldCells);
         const filtered = adjacentCells
           .filter((cell) => cell.player === castingPlayer)
           .map((cell) => cell.id);
         filtered.forEach((id) => dispatch(battleActions.addAttachment({ cellId: id, feature })));
       }
     } else if (attach.includes('nextcells')) {
-      const adjacentCells = findAdjasentCells(aimCell);
+      const adjacentCells = findAdjasentCells(aimCell, currentfieldCells);
       const filtered = adjacentCells
         .filter((cell) => cell.line === aimCell.line)
         .map((cell) => cell.id);
