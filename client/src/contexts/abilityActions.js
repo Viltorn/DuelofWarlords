@@ -846,8 +846,10 @@ export const AbilityProvider = ({ children }) => {
   // RETURN CARD TO HAND
 
   const returnCardToHand = (card, player, cost, spellId) => {
+    if (card.status === 'field') {
+      moveAttachedSpells(card.cellId, null, 'return');
+    }
     handleAnimation(card, 'delete');
-    moveAttachedSpells(card.cellId, null, 'return');
     dispatch(battleActions.deleteActiveCard({ player }));
     deleteOtherActiveCard(activeCardPlayer1, activeCardPlayer2, player);
     sendCardFromField(card, 'return', cost);

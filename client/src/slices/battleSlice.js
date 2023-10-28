@@ -255,9 +255,13 @@ const battleSlice = createSlice({
 
     addToGraveyard(state, { payload }) {
       const { card } = payload;
-      const { player } = card;
+      const { player, type, health } = card;
       const cellId = player === 'player1' ? 'graveyard1' : 'graveyard2';
-      const newCard = { ...card, status: 'graveyard', cellId };
+      const changedBasic = { ...card, status: 'graveyard', cellId };
+      const newCard = type === 'warrior' ? {
+        ...changedBasic, turn: 1, currentHP: health, attachments: [],
+      }
+        : changedBasic;
       state.fieldCells = state.fieldCells.map((cell) => {
         if (cell.type === 'graveyard' && cell.player === player) {
           cell.content = [newCard, ...cell.content];

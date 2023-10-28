@@ -22,10 +22,11 @@ const ActiveCard = ({ activeCard, playerType }) => {
   const { disAbility } = tutorialStepsData[tutorStep];
 
   const {
-    thisPlayer, playerPoints, fieldCells, commonPoints, gameTurn,
+    thisPlayer, playerPoints, fieldCells, commonPoints, gameTurn, players,
   } = useSelector((state) => state.battleReducer);
   const firstRound = commonPoints === 1;
   const currentPoints = playerPoints.find((item) => item.player === thisPlayer).points;
+  const { cardsdrawn } = players[thisPlayer];
   const insteadatk = activeCard.features.find((feat) => feat.condition === 'insteadatk');
   const legalTurn = thisPlayer === gameTurn;
   const ressurect = fieldCells
@@ -42,7 +43,7 @@ const ActiveCard = ({ activeCard, playerType }) => {
             <ActionButton card={activeCard} type="turnRight" />
           </>
         )}
-        {((firstRound && thisPlayer === activeCard.player) || gameMode === 'hotseat') && (type !== 'hero') && (
+        {((firstRound && thisPlayer === activeCard.player && !cardsdrawn) || gameMode === 'hotseat') && (type !== 'hero') && (
         <ActionButton card={activeCard} ability={insteadatk} type="deckreturn" />
         )}
         {insteadatk && activeCard.turn === 0 && leftPoints >= 0 && !disAbility && legalTurn && (
