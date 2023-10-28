@@ -42,7 +42,8 @@ const Battlefield = () => {
     thisPlayer,
     players,
   } = useSelector((state) => state.battleReducer);
-  const { gameMode, curRoom } = useSelector((state) => state.gameReducer);
+  const { gameMode, curRoom, socketId } = useSelector((state) => state.gameReducer);
+  const thisPlayerName = useSelector((state) => state.gameReducer.name);
   const { isOpened, type } = useSelector((state) => state.modalsReducer);
   const cellsPlayer1 = useMemo(() => fieldCells.filter((cell) => cell.player === 'player1' && cell.type === 'field'), [fieldCells]);
   const cellsPlayer2 = useMemo(() => fieldCells.filter((cell) => cell.player === 'player2' && cell.type === 'field'), [fieldCells]);
@@ -142,12 +143,10 @@ const Battlefield = () => {
     });
     socket.on('playerDisconnected', (player) => {
       dispatch(battleActions.setPlayerName({ name: '', player: player.type }));
-      // dispatch(modalsActions
-      // .openModal({ type: 'playerDisconnected', player: player.username, roomId: curRoom }));
-      // navigate('/lobby');
     });
 
-    socket.on('closeRoom', ({ roomId, name }) => {
+    socket.on('closeRoom', (data) => {
+      const { roomId, name } = data;
       if (roomId === curRoom) {
         dispatch(modalsActions.openModal({ type: 'playerDisconnected', player: name, roomId: curRoom }));
         navigate('/lobby', { replace: true });
@@ -160,9 +159,6 @@ const Battlefield = () => {
 
     const handleThisPlayerDisc = () => {
       dispatch(battleActions.setPlayerName({ name: '', player: thisPlayer }));
-      // dispatch(modalsActions
-      // .openModal({ type: 'playerDisconnected', player: null, roomId: curRoom }));
-      // navigate('/lobby');
     };
 
     const updateRoomsBattle = (data) => {
@@ -174,11 +170,24 @@ const Battlefield = () => {
       console.log(data);
     };
 
+    const updateSocketIdBattle = (id) => {
+      if (socketId !== id) {
+        dispatch(gameActions.setSocketId({ socketId: id }));
+        socket.emit('closeRoom', { roomId: curRoom, name: thisPlayerName }, (data) => {
+          dispatch(gameActions.updateRooms({ rooms: data }));
+        });
+        navigate('/lobby');
+        dispatch(gameActions.setPlayerName({ name: '' }));
+      }
+    };
+
+    socket.on('getSocketId', updateSocketIdBattle);
     socket.on('disconnect', handleThisPlayerDisc);
     socket.on('rooms', updateRoomsBattle);
     socket.on('clientsCount', updPlayersOnlieneBattle);
 
     return () => {
+      socket.off('getSocketId', updateSocketIdBattle);
       socket.off('playerReconnected');
       socket.off('opponentJoined');
       socket.off('playerDisconnected');
@@ -187,7 +196,7 @@ const Battlefield = () => {
       socket.off('rooms', updateRoomsBattle);
       socket.off('clientsCount', updPlayersOnlieneBattle);
     };
-  }, [dispatch, navigate, curRoom, addCardToField, endTurn, thisPlayer]);
+  }, [dispatch, navigate, curRoom, addCardToField, endTurn, thisPlayer, socketId, thisPlayerName]);
 
   useEffect(() => {
     socket.on('makeMove', (data) => {

@@ -38,9 +38,16 @@ const rooms = new Map();
 io.on('connection', (socket) => {
   // socket refers to the client socket that just got connected.
   // each socket is assigned an id
+  const isRoomEmpty = (roomid) => {
+    const room = io.sockets.adapter.rooms.get(roomid);
+    return room ? room.size === 0 : true;
+  };
+
+  const getRooms = () => Array.from(rooms.values());
+
   console.log(socket.id, 'connected');
 
-  const currentRooms = Array.from(rooms.values()); // <- 1
+  const currentRooms = getRooms(); // <- 1
 
   currentRooms.forEach((room) => { // <- 2
     const roomUser = room.players.find((player) => player.id === socket.id); // <- 3
@@ -50,14 +57,17 @@ io.on('connection', (socket) => {
     }
   });
 
+  const userCount = io.engine.clientsCount;
+  io.emit('clientsCount', userCount);
+  io.to(socket.id).emit('getSocketId', socket.id);
+
   socket.on('username', (args, callback) => {
     console.log('username:', args.username);
     socket.data.username = args.username;
-    const gameRooms = Array.from(rooms.values());
-    console.log(gameRooms);
+    console.log(getRooms());
     const count = io.engine.clientsCount;
     io.emit('clientsCount', count);
-    callback(gameRooms);
+    callback(getRooms());
   });
 
   socket.on('createRoom', async (args, callback) => { // callback here refers to the callback function from the client passed as data
@@ -71,10 +81,8 @@ io.on('connection', (socket) => {
       players: [{ id: socket.id, type: 'player1', username: socket.data?.username, hero, deck, hand }],
     });
 
-    const gameRooms = Array.from(rooms.values());
-
     callback(roomId); // <- 4 respond with roomId to client by calling the callback function from the client
-    io.emit('rooms', gameRooms);
+    io.emit('rooms', getRooms());
   });
 
   socket.on('joinRoom', async (args, callback) => {
@@ -126,18 +134,12 @@ io.on('connection', (socket) => {
     // respond to the client with the room details.
     // emit an 'opponentJoined' event to the room to tell the other player that an opponent has joined
     socket.to(room).emit('opponentJoined', roomUpdate);
-    const gameRooms = Array.from(rooms.values());
-    io.emit('rooms', gameRooms);
+    io.emit('rooms', getRooms());
     callback(roomUpdate);
   });
 
   socket.on('disconnect', () => {
-    const gameRooms = Array.from(rooms.values()); // <- 1
-
-    const isRoomEmpty = (roomid) => {
-      const room = io.sockets.adapter.rooms.get(roomid);
-      return room ? room.size === 0 : true;
-    };
+    const gameRooms = getRooms() // <- 1
 
     gameRooms.forEach((room) => { // <- 2
       const userInRoom = room.players.find((player) => player.id === socket.id); // <- 3
@@ -151,8 +153,7 @@ io.on('connection', (socket) => {
         socket.to(room.roomId).emit('playerDisconnected', userInRoom); // <- 4
       }
     });
-    const newGameRooms = Array.from(rooms.values());
-    io.emit('rooms', newGameRooms);
+    io.emit('rooms', getRooms());
     const count = io.engine.clientsCount;
     io.emit('clientsCount', count);
   });
@@ -177,9 +178,8 @@ io.on('connection', (socket) => {
       });
 
       rooms.delete(roomId); // <- 4 delete room from rooms map
-      const gameRooms = Array.from(rooms.values());
       
-      io.emit('rooms', gameRooms);
+      io.emit('rooms', getRooms());
       if (callback) {
         callback(gameRooms);
       }

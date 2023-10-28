@@ -6,6 +6,7 @@ const initialState = {
   curRoom: '',
   name: '',
   onlineCount: '',
+  socketId: '',
 };
 
 const gameSlice = createSlice({
@@ -20,6 +21,11 @@ const gameSlice = createSlice({
     resetConnection(state) {
       state.name = '';
       state.rooms = [];
+    },
+
+    setSocketId(state, { payload }) {
+      const { socketId } = payload;
+      state.socketId = socketId;
     },
 
     setGameMode(state, { payload }) {

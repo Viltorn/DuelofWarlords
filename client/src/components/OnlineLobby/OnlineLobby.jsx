@@ -14,7 +14,9 @@ const OnlineLobby = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { rooms, name, onlineCount } = useSelector((state) => state.gameReducer);
+  const {
+    rooms, name, onlineCount, socketId,
+  } = useSelector((state) => state.gameReducer);
   const { isOpened, type } = useSelector((state) => state.modalsReducer);
 
   const renderModal = (status, option) => {
@@ -46,21 +48,23 @@ const OnlineLobby = () => {
       console.log(players);
     };
 
-    // const handleLobbyDisc = () => {
-    //   dispatch(modalsActions
-    // .openModal({ type: 'playerDisconnected', player: null, roomId: null }));
-    // };
+    const updateSocketId = (id) => {
+      if (socketId !== id) {
+        dispatch(gameActions.setSocketId({ socketId: id }));
+        dispatch(gameActions.setPlayerName({ name: '' }));
+      }
+    };
 
-    // socket.on('disconnect', handleLobbyDisc);
+    socket.on('getSocketId', updateSocketId);
     socket.on('rooms', updateLobbyRooms);
     socket.on('clientsCount', updatePlayersOnline);
 
     return () => {
+      socket.off('getSocketId', updateSocketId);
       socket.off('rooms', updateLobbyRooms);
       socket.off('clientsCount', updatePlayersOnline);
-      // socket.off('disconnect', handleLobbyDisc);
     };
-  }, [name, dispatch]);
+  }, [name, dispatch, socketId]);
 
   return (
     <div className={styles.container}>
