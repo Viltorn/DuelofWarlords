@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { useFormik } from 'formik';
-import axios from 'axios';
+// import axios from 'axios';
 import { actions as modalActions } from '../slices/modalsSlice.js';
 import { actions as gameActions } from '../slices/gameSlice';
 import { userName } from '../utils/validation.js';
@@ -33,12 +33,13 @@ const EnterUsername = () => {
     onSubmit: async ({ username }) => {
       try {
         setError(false);
-        await axios.get('https://duelsofwarlords.onrender.com');
-        socket.emit('username', { username }, (data) => {
+        // await axios.get('https://duelsofwarlords.onrender.com');
+        socket.emit('username', { username }, (id, data) => {
+          console.log(id);
           dispatch(gameActions.setPlayerName({ name: username }));
           const rooms = data ?? [];
           dispatch(gameActions.updateRooms({ rooms }));
-          formik.setSubmitting(false);
+          dispatch(gameActions.setSocketId({ socketId: id }));
           handleClose();
         });
       } catch (err) {

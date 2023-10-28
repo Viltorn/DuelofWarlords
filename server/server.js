@@ -65,9 +65,10 @@ io.on('connection', (socket) => {
     console.log('username:', args.username);
     socket.data.username = args.username;
     console.log(getRooms());
+    console.log(socket.id);
     const count = io.engine.clientsCount;
     io.emit('clientsCount', count);
-    callback(getRooms());
+    callback(socket.id, getRooms());
   });
 
   socket.on('createRoom', async (args, callback) => { // callback here refers to the callback function from the client passed as data
@@ -139,7 +140,7 @@ io.on('connection', (socket) => {
   });
 
   socket.on('disconnect', () => {
-    const gameRooms = getRooms() // <- 1
+    const gameRooms = getRooms(); // <- 1
 
     gameRooms.forEach((room) => { // <- 2
       const userInRoom = room.players.find((player) => player.id === socket.id); // <- 3
@@ -181,7 +182,7 @@ io.on('connection', (socket) => {
       
       io.emit('rooms', getRooms());
       if (callback) {
-        callback(gameRooms);
+        callback(getRooms());
       }
     }
   });

@@ -49,7 +49,7 @@ const OnlineLobby = () => {
     };
 
     const updateSocketId = (id) => {
-      if (socketId !== id) {
+      if (socketId !== id && socketId !== '') {
         dispatch(gameActions.setSocketId({ socketId: id }));
         dispatch(gameActions.setPlayerName({ name: '' }));
       }

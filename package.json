@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "cd server && node server && cd .. && serve -s ./client/build",
+    "start": "npm run build-client && cd server && node server",
     "start-local": "npm run start-server && npm run serve-build",
     "serve-build": "serve -s ./client/build",
     "start-server": "cd server && PORT=8080 node server",

@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import { useFormik } from 'formik';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
+// import axios from 'axios';
 import { factionsData, heroes, decks } from '../gameCardsData/factionsData.js';
 import { startCardsNumber1, startCardsNumber2 } from '../gameData/gameLimits.js';
 import { actions as modalsActions } from '../slices/modalsSlice.js';
@@ -68,7 +68,7 @@ const OnlineGameStart = () => {
     onSubmit: async (values) => {
       try {
         setError(false);
-        await axios.get('https://duelsofwarlords.onrender.com');
+        // await axios.get('https://duelsofwarlords.onrender.com');
         const player = !roomId ? 'player1' : 'player2';
         const startCardsNum = player === 'player1' ? startCardsNumber1 : startCardsNumber2;
         const playerFullDeck = createDeckForPLayer(makeShaffledDeck(values.playerDeck), player);
