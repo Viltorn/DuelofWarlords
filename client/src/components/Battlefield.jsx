@@ -171,7 +171,7 @@ const Battlefield = () => {
     };
 
     const updateSocketIdBattle = (id) => {
-      if (socketId !== id) {
+      if (socketId !== id && gameMode === 'online') {
         dispatch(gameActions.setSocketId({ socketId: id }));
         socket.emit('closeRoom', { roomId: curRoom, name: thisPlayerName }, (data) => {
           dispatch(gameActions.updateRooms({ rooms: data }));
@@ -196,7 +196,16 @@ const Battlefield = () => {
       socket.off('rooms', updateRoomsBattle);
       socket.off('clientsCount', updPlayersOnlieneBattle);
     };
-  }, [dispatch, navigate, curRoom, addCardToField, endTurn, thisPlayer, socketId, thisPlayerName]);
+  }, [dispatch,
+    navigate,
+    curRoom,
+    addCardToField,
+    endTurn,
+    thisPlayer,
+    socketId,
+    thisPlayerName,
+    gameMode,
+  ]);
 
   useEffect(() => {
     socket.on('makeMove', (data) => {

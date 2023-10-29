@@ -79,13 +79,13 @@ const TutorialStepsWindow = () => {
         .forEach((cell) => dispatch(battleActions.addAnimation({ cell, type: 'green' }))),
       heroAnimation: () => heroCells.forEach((cell) => dispatch(battleActions.addAnimation({ cell, type: 'green' }))),
       addTwoWarriors: () => {
-        dispatch(battleActions.addFieldContent({ activeCard: cards.knight, id: '2.1' }));
-        dispatch(battleActions.addFieldContent({ activeCard: cards.earthGolem, id: '2.3' }));
+        dispatch(battleActions.addFieldContent({ card: cards.knight, id: '2.1' }));
+        dispatch(battleActions.addFieldContent({ card: cards.earthGolem, id: '2.3' }));
         dispatch(battleActions.disableCells({ ids: [...fieldCellsIds, 'hero1', 'hero2'] }));
       },
       addGrifAndGarg: () => {
-        dispatch(battleActions.addFieldContent({ activeCard: cards.griffon, id: '4.1' }));
-        dispatch(battleActions.addFieldContent({ activeCard: cards.gargoyle, id: '3.3' }));
+        dispatch(battleActions.addFieldContent({ card: cards.griffon, id: '4.1' }));
+        dispatch(battleActions.addFieldContent({ card: cards.gargoyle, id: '3.3' }));
         dispatch(battleActions.activateCells({ ids: ['2.3'] }));
       },
       turnWarrior: () => {
@@ -127,8 +127,8 @@ const TutorialStepsWindow = () => {
       },
       addTwoGolems: () => {
         const { row } = fieldCells.find((cell) => cell.content.find((item) => item.name === 'Warrior Of Light'));
-        dispatch(battleActions.addFieldContent({ activeCard: cards.earthGolem, id: `${row}.3` }));
-        dispatch(battleActions.addFieldContent({ activeCard: cards.iceElement, id: `${row}.4` }));
+        dispatch(battleActions.addFieldContent({ card: cards.earthGolem, id: `${row}.3` }));
+        dispatch(battleActions.addFieldContent({ card: cards.iceElement, id: `${row}.4` }));
       },
       removeFireGolem: () => {
         const curFireGolem = fieldCells
@@ -140,13 +140,13 @@ const TutorialStepsWindow = () => {
       addSecondEarthGolem: () => {
         const { row } = fieldCells.find((cell) => cell.content.find((item) => item.name === 'Warrior Of Light'));
         const row2 = fieldCells.find((cell) => cell.content.find((item) => item.name === 'Imperial Griffon')).row;
-        dispatch(battleActions.addFieldContent({ activeCard: cards.mage, id: `${row2}.4` }));
-        dispatch(battleActions.addFieldContent({ activeCard: cards.earthGolem2, id: `${row}.3` }));
+        dispatch(battleActions.addFieldContent({ card: cards.mage, id: `${row2}.4` }));
+        dispatch(battleActions.addFieldContent({ card: cards.earthGolem2, id: `${row}.3` }));
       },
       addFireGolem: () => {
         const { row } = fieldCells.find((cell) => cell.content.find((item) => item.name === 'Imperial Griffon'));
         const { id } = heroCells.find((cell) => cell.id === 'hero1').content[0];
-        dispatch(battleActions.addFieldContent({ activeCard: cards.fireGolem, id: `${row}.3` }));
+        dispatch(battleActions.addFieldContent({ card: cards.fireGolem, id: `${row}.3` }));
         dispatch(battleActions.turnCardRight({ cardId: id, cellId: 'hero1', qty: 1 }));
       },
       sendHolyLandToGrave: () => {
@@ -173,8 +173,8 @@ const TutorialStepsWindow = () => {
         const { row } = fieldCells.find((cell) => cell.content.find((item) => item.name === 'Imperial Shooter'));
         const ids = playersCells.map((cell) => cell.id);
         dispatch(battleActions.disableCells({ ids: [...ids] }));
-        dispatch(battleActions.addFieldContent({ activeCard: cards.earthGolem, id: `${row}.3` }));
-        dispatch(battleActions.addFieldContent({ activeCard: cards.iceElement, id: `${row}.4` }));
+        dispatch(battleActions.addFieldContent({ card: cards.earthGolem, id: `${row}.3` }));
+        dispatch(battleActions.addFieldContent({ card: cards.iceElement, id: `${row}.4` }));
       },
       activeFlyerCells: () => dispatch(battleActions.activateCells({ ids: ['1.2', '2.2', '3.2', '4.2', '1.1', '2.1', '3.1', '4.1'] })),
       activateEnemyLine3: () => {

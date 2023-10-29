@@ -1,14 +1,22 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import { actions as battleActions } from '../../slices/battleSlice.js';
 import PrimaryButton from '../../components/PrimaryButton';
+import functionContext from '../../contexts/functionsContext.js';
 import styles from './lastStepWindow.module.css';
 
 const GreetingWindow = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const { changeTutorStep } = useContext(functionContext);
 
   const handleExit = () => {
+    dispatch(battleActions.resetState());
+    changeTutorStep(0);
     navigate('/choose');
   };
 
