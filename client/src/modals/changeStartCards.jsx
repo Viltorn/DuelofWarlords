@@ -35,12 +35,9 @@ const ChangeStartCards = () => {
         room: roomId,
         player,
         number: diffSize,
-      }, () => {
-        drawCards(player, diffSize);
       });
-    } else {
-      drawCards(player, diffSize);
     }
+    drawCards(player, diffSize);
   };
 
   return (

@@ -65,12 +65,9 @@ const CellCard = ({
           player,
           points,
           cell,
-        }, () => {
-          castSpell(card, player, points, cell);
         });
-      } else {
-        castSpell(card, player, points, cell);
       }
+      castSpell(card, player, points, cell);
     } else if (canBeAttacked(appliedCard)) {
       if (gameMode === 'online') {
         socket.emit('makeMove', {
@@ -78,12 +75,9 @@ const CellCard = ({
           room: curRoom,
           card1: card,
           card2: appliedCard,
-        }, () => {
-          makeFight(card, appliedCard);
         });
-      } else {
-        makeFight(card, appliedCard);
       }
+      makeFight(card, appliedCard);
     } else {
       handleAnimation(card, 'delete');
       const currentCardData = cell.content.find((el) => el.id === appliedCard.id);

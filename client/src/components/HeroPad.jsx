@@ -76,12 +76,9 @@ const HeroPad = ({ type, player }) => {
       if (gameMode === 'online') {
         socket.emit('makeMove', {
           move: 'addCardToField', room: curRoom, card: activeCard, player, points: currentPoints, cell: postponedCell,
-        }, () => {
-          addCardToField(activeCard, player, currentPoints, postponedCell);
         });
-      } else {
-        addCardToField(activeCard, player, currentPoints, postponedCell);
       }
+      addCardToField(activeCard, player, currentPoints, postponedCell);
     }
   };
 

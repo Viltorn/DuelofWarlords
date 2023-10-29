@@ -74,19 +74,9 @@ const Header = () => {
         posponedCell,
         temporarySpells,
         turnSpells,
-      }, () => {
-        endTurn(
-          newPlayer,
-          commonPoints,
-          newCommonPoints,
-          posponedCell,
-          temporarySpells,
-          turnSpells,
-        );
       });
-    } else {
-      endTurn(newPlayer, commonPoints, newCommonPoints, posponedCell, temporarySpells, turnSpells);
     }
+    endTurn(newPlayer, commonPoints, newCommonPoints, posponedCell, temporarySpells, turnSpells);
   };
 
   const handlePointsClick = (player) => {

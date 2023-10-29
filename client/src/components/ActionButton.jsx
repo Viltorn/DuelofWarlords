@@ -57,12 +57,9 @@ const ActionButton = ({
             player: thisPlayer,
             cost,
             spellId: ressurect?.id,
-          }, () => {
-            returnCardToHand(card, thisPlayer, cost, ressurect?.id);
           });
-        } else {
-          returnCardToHand(card, thisPlayer, cost, ressurect?.id);
         }
+        returnCardToHand(card, thisPlayer, cost, ressurect?.id);
         break;
       case 'graveyard':
         handleAnimation(card, 'delete');
@@ -81,12 +78,9 @@ const ActionButton = ({
             points: currentPoints,
             cell: currentCell,
             ability,
-          }, () => {
-            makeAbilityCast(card, thisPlayer, currentPoints, currentCell, ability);
           });
-        } else {
-          makeAbilityCast(card, thisPlayer, currentPoints, currentCell, ability);
         }
+        makeAbilityCast(card, thisPlayer, currentPoints, currentCell, ability);
         break;
       case 'deckreturn':
         if (gameMode === 'online') {
@@ -95,12 +89,9 @@ const ActionButton = ({
             room: curRoom,
             card,
             player: thisPlayer,
-          }, () => {
-            returnCardToDeck(card, thisPlayer);
           });
-        } else {
-          returnCardToDeck(card, thisPlayer);
         }
+        returnCardToDeck(card, thisPlayer);
         break;
       default:
         break;

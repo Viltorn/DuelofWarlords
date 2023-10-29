@@ -108,12 +108,9 @@ const Cell = ({ props, id, cellData }) => {
           player: thisPlayer,
           points: currentPoints,
           cell: currentCell,
-        }, () => {
-          addCardToField(activeCard, thisPlayer, currentPoints, currentCell);
         });
-      } else {
-        addCardToField(activeCard, thisPlayer, currentPoints, currentCell);
       }
+      addCardToField(activeCard, thisPlayer, currentPoints, currentCell);
     }
   };
 
