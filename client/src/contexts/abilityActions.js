@@ -738,6 +738,9 @@ export const AbilityProvider = ({ children }) => {
             qty: 1,
           }));
         }
+        if (movingAttachment && movingAttachment.charges === 1) {
+          dispatch(battleActions.deleteAttachment({ spellId: movingAttachment.id }));
+        }
       }
       const attachSpells = card.features.filter((feat) => feat.attach);
       attachSpells.forEach((spell) => makeFeatureAttach(spell, curCell));

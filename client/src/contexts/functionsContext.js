@@ -458,6 +458,7 @@ export const FunctionProvider = ({ children }) => {
   return (
     <FunctionContext.Provider value={{
       checkMeetCondition,
+      findFieldCells,
       setMoveCells,
       setCastCells,
       getWarriorPower,

@@ -681,14 +681,14 @@ const academiaDeck = [
   {
     name: 'Teleport',
     type: 'spell',
-    subtype: 'temporary',
+    subtype: 'instant',
     cost: 1,
     currentC: 1,
     description: academiaInfo.Teleport,
     id: _.uniqueId(),
-    place: 'warrior',
+    place: '',
     features: [{
-      attach: ['warrior'], type: 'good', aim: ['warrior'], name: 'moving',
+      attach: ['warrior'], type: 'good', aim: ['warrior'], charges: 1, name: 'moving',
     }],
     img: Teleport,
     status: 'hand',
