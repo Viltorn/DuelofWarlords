@@ -34,7 +34,7 @@ const InGameMenu = () => {
         <h3>{t('Tips')}</h3>
         <div className={styles.tips}>
           {tipsData.map((tip) => (
-            <Tip key={tip.id} h1={tip.h1} p={tip.p} />
+            <Tip key={tip.id} h1={t(`menuTipsHeader.${tip.h1}`)} p={t(`menuTipsDescription.${tip.h1}`)} />
           ))}
         </div>
       </div>

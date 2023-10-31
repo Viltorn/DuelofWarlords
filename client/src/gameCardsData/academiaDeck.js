@@ -654,12 +654,17 @@ const academiaDeck = [
     description: academiaInfo.InvisibilityCloak,
     id: _.uniqueId(),
     place: 'warrior',
-    features: [{
-      attach: ['warrior'],
-      aim: ['warrior'],
-      type: 'good',
-      name: 'invisible',
-    }],
+    features: [
+      {
+        attach: ['warrior'],
+        aim: ['warrior'],
+        type: 'good',
+        name: 'invisible',
+      },
+      {
+        attach: ['warrior'], type: 'good', name: 'protection', value: { type: 'percent', val: 0.5 }, aim: ['spell'],
+      },
+    ],
     img: InvisibilityCloak,
     status: 'hand',
   },

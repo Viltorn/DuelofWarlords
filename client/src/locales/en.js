@@ -1,3 +1,6 @@
+import tutorialText from './tutorialTextEN';
+import { menuTipsHeaders, menuTipsText } from './menuTipsEn';
+
 export default {
   translation: {
     mainDescription: ` - is collectible card game created on basis of Might and Magic: Duel of Champions (MMDoc) that is no longer officially supported.
@@ -13,13 +16,14 @@ export default {
     Battlefield: 'BATTLEFIELD',
     Heroes: 'WARLORDS',
     Spells: 'SPELLS',
+    PostponedCard: 'POSTPONED CARD',
     BattlefieldDescription: `There are 3 classes of warriors in the game: melee fighters, flying and shooters.
     You need to place them correctly on the battlefield to take advantage of each class.
     Move the warriors around the battlefield to prevent the enemy from attacking your warlord!`,
     HeroPowerDescription: `Warlords are directly involved in the battle: they attack the enemy or use useful spells!
     Each warlord has a standard ability and a unique one that should be taken into account when assembling the deck of cards.`,
-    SpellsDescription: `6 types of spell schools and three classes:i nstant, temporary and permanent will allow you to come up with different combinations to achieve success in battle.
-    The game has the ability to enhance individual spells, as well as apply "reaction" spells that act unexpectedly for the enemy!`,
+    SpellsDescription: '6 spells schools and three types of magic cards: make strikes against enemy warriors with instant type of magic, take control over battlefield with temporary effects or increase your warriors power with permanent spells!',
+    PostponedDescription: 'You can make any card postponed during your turn that allows you to perform one of the following moves: increase spell power of attacking spells, make unexpected strike agains your enemy or simply play combo of your own!',
     GameDescriptTitle: 'GAME DESCRIPTION',
     GameFactionsTitle: 'GAME FACTIONS',
     GameFeaturesTitle: 'GAME FEATURES',
@@ -53,6 +57,7 @@ export default {
     ChooseGame: 'CHOOSE GAME',
     Tutorial: 'TUTORIAL',
     HotSeat: 'TRAINING',
+    OnlineGame: 'ONLINE',
     ChooseFactions: 'CHOOSE FACTION AND WARLORD',
     START: 'BEGIN',
     BACK: 'BACK',
@@ -79,7 +84,7 @@ export default {
     Tip1: 'You can always click on the graveyard to see the cards played by you or your opponent',
     Tip2: 'In the first round of the game, you can throw any number of cards from your hand to the end of the deck and take the same number in return from top of your deck',
     Tip3: 'Look at the description of the abilities of your warriors - they will help you to use them correctly in battle',
-    Tip4: 'The current number of cards in the opponent\'s hand is displayed in the upper right corner of the playing field',
+    Tip4: 'If you are player#1 so the current number of cards in the opponent\'s hand is displayed in the right right upper corner of the playing field, if you are player#2 then in the left upper corner',
     CurrentRooms: 'CURRENT GAMES',
     YourName: 'Your name',
     RoomsOwner: 'Room\'s owner: ',
@@ -109,5 +114,8 @@ export default {
       NetworkError: 'Network error',
       false: '',
     },
+    tutorialSteps: tutorialText,
+    menuTipsHeader: menuTipsHeaders,
+    menuTipsDescription: menuTipsText,
   },
 };

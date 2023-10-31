@@ -56,7 +56,7 @@ const ChangeStartCards = () => {
           <PrimaryButton
             showIcon={false}
             state="default"
-            text={t('Close')}
+            text={t('CLOSE')}
             variant="secondary"
             onClick={handleClose}
           />

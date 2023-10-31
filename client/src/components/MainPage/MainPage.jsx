@@ -17,6 +17,7 @@ import Paladin from '../../assets/MainPage/Paladin_logo.png';
 import Mage from '../../assets/MainPage/Mage_logo.png';
 import Hunter from '../../assets/MainPage/Hunter_logo.png';
 import Assasin from '../../assets/MainPage/Assasin_logo.png';
+import PostponedCover from '../../assets/MainPage/PostponedCover.png';
 
 const MainPage = () => {
   const { t } = useTranslation();
@@ -93,6 +94,8 @@ const MainPage = () => {
           <GameFeature img={HeroPower} direction="reverse" h1={t('Heroes')} p={t('HeroPowerDescription')} />
           <hr className={styles.devider} />
           <GameFeature img={SpellCast} direction="normal" h1={t('Spells')} p={t('SpellsDescription')} />
+          <hr className={styles.devider} />
+          <GameFeature img={PostponedCover} direction="reverse" h1={t('PostponedCard')} p={t('PostponedDescription')} />
         </div>
         <Link to="/choose" className={styles.link}>
           <PrimaryButton showIcon={false} state="default" text={t('PLAY')} variant="primary" />

@@ -451,7 +451,7 @@ export const AbilityProvider = ({ children }) => {
     const currentAimCell = currentfieldCells.find((cell) => cell.id === aimCell?.id);
     const aimCard = currentAimCell?.content?.find((item) => item.type === 'warrior' || item.type === 'hero');
     const {
-      name, type, aim, attach,
+      name, type, attach,
     } = feature;
     const enemyPlayer = castingPlayer === 'player1' ? 'player2' : 'player1';
     if (attach.includes('spells')) {
@@ -537,11 +537,11 @@ export const AbilityProvider = ({ children }) => {
         const movingCard = currentCell.content.find((item) => item.type === 'warrior');
         dispatch(battleActions.addActiveCard({ card: movingCard, player: castingPlayer }));
         handleAnimation(movingCard, 'add');
-      } else if (aim.includes('warrior') || aim.includes('hero')) {
+      } else if (attach.includes('warrior') || attach.includes('hero')) {
         dispatch(battleActions.addAttachment({ cellId: aimCell.id, feature }));
       }
     } else if (type === 'bad') {
-      if (aim.includes('warrior') || aim.includes('hero')) {
+      if (attach.includes('warrior') || attach.includes('hero')) {
         dispatch(battleActions.addAttachment({ cellId: aimCell.id, feature }));
       }
     }
