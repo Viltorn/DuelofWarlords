@@ -220,7 +220,7 @@ const Battlefield = () => {
 
   return (
     <div className={styles.container}>
-      {windowWidth < 700 ? (
+      {windowWidth < 680 ? (
         <RotateScreen />
       ) : (
         <>

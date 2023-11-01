@@ -4,6 +4,42 @@
 @import url('./src/components/ErrorPage.css');
 @import url('./src/modals/Modals.css'); */
 
+@font-face {
+  font-weight: 400; /* Соответствует значению normal */
+  font-family: Almendra;
+  src: url("./assets/fonts/Almendra-Regular.ttf");
+}
+
+@font-face {
+  font-weight: 700; /* Соответствует значению bold */
+  font-family: Almendra;
+  src: url("./assets/fonts/Almendra-Bold.ttf");
+}
+
+@font-face {
+  font-weight: 400; /* Соответствует значению normal */
+  font-family: Roboto;
+  src: url("./assets/fonts/Roboto-Regular.woff");
+}
+
+@font-face {
+  font-weight: 400; /* Соответствует значению normal */
+  font-family: Roboto;
+  src: url("./assets/fonts/Roboto-Regular.woff");
+}
+
+@font-face {
+  font-weight: 500; /* Соответствует значению medium */
+  font-family: Roboto;
+  src: url("./assets/fonts/Roboto-Medium.woff");
+}
+
+@font-face {
+  font-weight: 600; /* Соответствует значению medium */
+  font-family: Roboto;
+  src: url("./assets/fonts/Roboto-Bold.woff");
+}
+
 html {
   scroll-behavior: smooth;
   font-size: 22px;
@@ -18,12 +54,15 @@ html {
 
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+  font-family: 'Roboto', 'Ubuntu', 'Oxygen',
+    'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
     sans-serif;
+  font-weight: 400;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+
+/* -apple-system, BlinkMacSystemFont, 'Segoe UI',  */
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
@@ -65,19 +104,6 @@ code {
 .border-black {
   border: 0.2rem solid var(--black-color);
   border-radius: 0.5rem;
-}
-
-
-@font-face {
-  font-weight: 400; /* Соответствует значению normal */
-  font-family: Almendra;
-  src: url("./assets/fonts/Almendra-Regular.ttf");
-}
-
-@font-face {
-  font-weight: 700; /* Соответствует значению bold */
-  font-family: Almendra;
-  src: url("./assets/fonts/Almendra-Bold.ttf");
 }
 
 
