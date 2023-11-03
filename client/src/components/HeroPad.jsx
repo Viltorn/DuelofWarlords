@@ -13,7 +13,6 @@ import functionContext from '../contexts/functionsContext.js';
 import abilityContext from '../contexts/abilityActions.js';
 import CellCard from './CellCard.jsx';
 import styles from './HeroPad.module.css';
-import socket from '../socket.js';
 
 const HeroPad = ({ type, player }) => {
   const { t } = useTranslation();
@@ -23,7 +22,7 @@ const HeroPad = ({ type, player }) => {
     getActiveCard, handleAnimation, isAllowedCost,
   } = useContext(functionContext);
 
-  const { addCardToField } = useContext(abilityContext);
+  const { addCardToField, actionPerforming, makeOnlineAction } = useContext(abilityContext);
 
   const {
     fieldCells, playersHands, thisPlayer, playerPoints, commonPoints, players,
@@ -68,21 +67,29 @@ const HeroPad = ({ type, player }) => {
   const addPosponedCard = () => {
     const activeCard = getActiveCard();
 
+    if (gameMode === 'online' && actionPerforming) {
+      return;
+    }
     if (activeCard && !isAllowedCost(activeCard)) {
       return;
     }
 
     if (activeCard && player === activeCard.player) {
+      const data = {
+        move: 'addCardToField', room: curRoom, card: activeCard, player, points: currentPoints, curCell: postponedCell,
+      };
       if (gameMode === 'online') {
-        socket.emit('makeMove', {
-          move: 'addCardToField', room: curRoom, card: activeCard, player, points: currentPoints, cell: postponedCell,
-        });
+        makeOnlineAction(data);
+      } else {
+        addCardToField(data);
       }
-      addCardToField(activeCard, player, currentPoints, postponedCell);
     }
   };
 
   const handlePostCardClick = () => {
+    if (gameMode === 'online' && actionPerforming) {
+      return;
+    }
     const activeCard = getActiveCard();
     if (!activeCard && (postponedCell.status === 'cover' && player === thisPlayer)) {
       dispatch(battleActions.addActiveCard({ card: postponedContentData, player: thisPlayer }));
@@ -97,6 +104,9 @@ const HeroPad = ({ type, player }) => {
   };
 
   const handleDeckClick = () => {
+    if (gameMode === 'online' && actionPerforming) {
+      return;
+    }
     const deckOwner = deck.current.dataset.player;
     const firstRound = commonPoints === 1;
     const drawStatus = players[thisPlayer].cardsdrawn;
@@ -106,6 +116,9 @@ const HeroPad = ({ type, player }) => {
   };
 
   const checkGraveyard = () => {
+    if (gameMode === 'online' && actionPerforming) {
+      return;
+    }
     if (!graveCell.disabled) {
       dispatch(modalsActions.openModal({ type: 'openGraveyard', player }));
     }

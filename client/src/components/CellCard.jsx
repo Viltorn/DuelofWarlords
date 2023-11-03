@@ -7,7 +7,6 @@ import abilityContext from '../contexts/abilityActions.js';
 import AttackIcon from '../assets/battlefield/Sword.png';
 import Healed from '../assets/battlefield/Healing.svg';
 import styles from './CellCard.module.css';
-import socket from '../socket.js';
 
 const getTopMargin = (cardtype) => {
   if (cardtype === 'field') {
@@ -33,6 +32,8 @@ const CellCard = ({
   const {
     castSpell,
     makeFight,
+    actionPerforming,
+    makeOnlineAction,
   } = useContext(abilityContext);
   const cardElement = useRef();
   const dispatch = useDispatch();
@@ -57,27 +58,31 @@ const CellCard = ({
   const makeCardAction = (card, player, points, cell, appliedCard) => {
     if (canBeCast(cell.id)) {
       handleAnimation(card, 'delete');
+      const data = {
+        move: 'castSpell',
+        room: curRoom,
+        card,
+        player,
+        points,
+        cell,
+      };
       if (gameMode === 'online') {
-        socket.emit('makeMove', {
-          move: 'castSpell',
-          room: curRoom,
-          card,
-          player,
-          points,
-          cell,
-        });
+        makeOnlineAction(data);
+      } else {
+        castSpell(data);
       }
-      castSpell(card, player, points, cell);
     } else if (canBeAttacked(appliedCard)) {
+      const data = {
+        move: 'makeFight',
+        room: curRoom,
+        card1: card,
+        card2: appliedCard,
+      };
       if (gameMode === 'online') {
-        socket.emit('makeMove', {
-          move: 'makeFight',
-          room: curRoom,
-          card1: card,
-          card2: appliedCard,
-        });
+        makeOnlineAction(data);
+      } else {
+        makeFight(data);
       }
-      makeFight(card, appliedCard);
     } else {
       handleAnimation(card, 'delete');
       const currentCardData = cell.content.find((el) => el.id === appliedCard.id);
@@ -87,6 +92,9 @@ const CellCard = ({
   };
 
   const handleCardClick = () => {
+    if (gameMode === 'online' && actionPerforming) {
+      return;
+    }
     const activeCard = getActiveCard();
     const cardId = cardElement.current.id;
     const activeId = activeCard?.id ?? null;

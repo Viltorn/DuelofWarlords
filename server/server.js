@@ -159,8 +159,9 @@ io.on('connection', (socket) => {
     io.emit('clientsCount', count);
   });
 
-  socket.on('makeMove', (data) => {
+  socket.on('makeMove', (data, callback) => {
     socket.to(data.room).emit('makeMove', data);
+    callback();
   });
 
   socket.on('closeRoom', async (data, callback) => {

@@ -519,7 +519,7 @@ const academiaDeck = [
     features: [
       {
         attach: ['warrior'],
-        aim: ['warrior'],
+        aim: ['warrior', 'fighter', 'shooter', 'flyer', 'hero'],
         type: 'bad',
         name: 'power',
         value: -2,
@@ -612,7 +612,7 @@ const academiaDeck = [
     place: 'warrior',
     features: [{
       attach: ['warrior'],
-      aim: ['warrior'],
+      aim: ['warrior', 'fighter', 'shooter', 'flyer', 'hero'],
       type: 'good',
       name: 'power',
       value: 2,

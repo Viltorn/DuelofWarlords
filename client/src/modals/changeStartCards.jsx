@@ -6,7 +6,6 @@ import abilityContext from '../contexts/abilityActions.js';
 import PrimaryButton from '../components/PrimaryButton';
 import { startCardsNumber1, startCards2AfterDraw } from '../gameData/gameLimits.js';
 import './Modals.css';
-import socket from '../socket.js';
 
 const ChangeStartCards = () => {
   const { t } = useTranslation();
@@ -14,6 +13,8 @@ const ChangeStartCards = () => {
 
   const {
     drawCards,
+    actionPerforming,
+    makeOnlineAction,
   } = useContext(abilityContext);
 
   const { playersHands } = useSelector((state) => state.battleReducer);
@@ -28,16 +29,21 @@ const ChangeStartCards = () => {
   };
 
   const handleSubmit = () => {
-    dispatch(modalActions.closeModal());
-    if (gameMode === 'online') {
-      socket.emit('makeMove', {
-        move: 'drawCards',
-        room: roomId,
-        player,
-        number: diffSize,
-      });
+    if (gameMode === 'online' && actionPerforming) {
+      return;
     }
-    drawCards(player, diffSize);
+    dispatch(modalActions.closeModal());
+    const data = {
+      move: 'drawCards',
+      room: roomId,
+      player,
+      number: diffSize,
+    };
+    if (gameMode === 'online') {
+      makeOnlineAction(data);
+    } else {
+      drawCards(data);
+    }
   };
 
   return (

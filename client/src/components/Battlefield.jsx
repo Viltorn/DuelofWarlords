@@ -53,45 +53,14 @@ const Battlefield = () => {
   const midPells = useMemo(() => fieldCells.filter((cell) => cell.type === 'midSpell'), [fieldCells]);
 
   const makeMove = useMemo(() => ({
-    addCardToField: (data) => {
-      const { card, player, points, cell } = data;
-      addCardToField(card, player, points, cell);
-    },
-    endTurn: (data) => {
-      const {
-        newPlayer,
-        commonPoints,
-        newCommonPoints,
-        posponedCell,
-        temporarySpells,
-        turnSpells,
-      } = data;
-      endTurn(newPlayer, commonPoints, newCommonPoints, posponedCell, temporarySpells, turnSpells);
-    },
-    castSpell: (data) => {
-      const { card, player, points, cell } = data;
-      castSpell(card, player, points, cell);
-    },
-    makeFight: (data) => {
-      const { card1, card2 } = data;
-      makeFight(card1, card2);
-    },
-    drawCards: (data) => {
-      const { player, number } = data;
-      drawCards(player, number);
-    },
-    returnCardToHand: (data) => {
-      const { card, player, cost, spellId } = data;
-      returnCardToHand(card, player, cost, spellId);
-    },
-    returnCardToDeck: (data) => {
-      const { card, player } = data;
-      returnCardToDeck(card, player);
-    },
-    makeAbilityCast: (data) => {
-      const { card, player, points, cell, ability } = data;
-      makeAbilityCast(card, player, points, cell, ability);
-    },
+    addCardToField: (data) => addCardToField(data),
+    endTurn: (data) => endTurn(data),
+    castSpell: (data) => castSpell(data),
+    makeFight: (data) => makeFight(data),
+    drawCards: (data) => drawCards(data),
+    returnCardToHand: (data) => returnCardToHand(data),
+    returnCardToDeck: (data) => returnCardToDeck(data),
+    makeAbilityCast: (data) => makeAbilityCast(data),
     // eslint-disable-next-line
   }), []);
 

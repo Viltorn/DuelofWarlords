@@ -10,7 +10,6 @@ import functionContext from '../contexts/functionsContext.js';
 import abilityContext from '../contexts/abilityActions.js';
 import Menu from '../assets/Menu.svg';
 import styles from './Header.module.css';
-import socket from '../socket.js';
 
 const Header = () => {
   const { t } = useTranslation();
@@ -28,6 +27,8 @@ const Header = () => {
   } = useContext(functionContext);
   const {
     endTurn,
+    actionPerforming,
+    makeOnlineAction,
   } = useContext(abilityContext);
   const player1Points = playerPoints.find((item) => item.player === 'player1').points;
   const player2Points = playerPoints.find((item) => item.player === 'player2').points;
@@ -35,6 +36,9 @@ const Header = () => {
   const { disEndTurn } = tutorialStepsData[tutorStep];
 
   const hadleEndTurnClick = () => {
+    if (gameMode === 'online' && actionPerforming) {
+      return;
+    }
     const newPlayer = thisPlayer === 'player1' ? 'player2' : 'player1';
     const newCommonPoints = commonPoints < maxActionPoints ? commonPoints + 1 : maxActionPoints;
     if (gameMode === 'tutorial') {
@@ -48,7 +52,7 @@ const Header = () => {
     if (gameTurn !== thisPlayer) {
       return;
     }
-    const posponedCell = fieldCells.find((cell) => cell.type === 'postponed' && cell.player === thisPlayer);
+    const postponedCell = fieldCells.find((cell) => cell.type === 'postponed' && cell.player === thisPlayer);
     const temporarySpells = fieldCells
       .filter((cell) => cell.content.length !== 0 && cell.type !== 'postponed')
       .reduce((arr, cell) => {
@@ -64,19 +68,22 @@ const Header = () => {
         return arr;
       }, []);
 
+    const data = {
+      move: 'endTurn',
+      room: curRoom,
+      newPlayer,
+      commonPoints,
+      newCommonPoints,
+      postponedCell,
+      temporarySpells,
+      turnSpells,
+    };
+
     if (gameMode === 'online') {
-      socket.emit('makeMove', {
-        move: 'endTurn',
-        room: curRoom,
-        newPlayer,
-        commonPoints,
-        newCommonPoints,
-        posponedCell,
-        temporarySpells,
-        turnSpells,
-      });
+      makeOnlineAction(data);
+    } else {
+      endTurn(data);
     }
-    endTurn(newPlayer, commonPoints, newCommonPoints, posponedCell, temporarySpells, turnSpells);
   };
 
   const handlePointsClick = (player) => {

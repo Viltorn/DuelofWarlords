@@ -7,6 +7,7 @@ import { spellsCells } from '../gameData/heroes&spellsCellsData';
 import { actions as modalsActions } from '../slices/modalsSlice.js';
 import { actions as battleActions } from '../slices/battleSlice.js';
 import functionContext from './functionsContext.js';
+import socket from '../socket';
 
 // const getRandomIndex = (range) => Math.floor(Math.random() * range);
 
@@ -28,6 +29,7 @@ export const AbilityProvider = ({ children }) => {
   } = useContext(functionContext);
   const store = useStore();
   const [cellData, setCellData] = useState({});
+  const [actionPerforming, setActionPerforming] = useState(false);
 
   const { gameMode, curRoom } = useSelector((state) => state.gameReducer);
 
@@ -566,7 +568,8 @@ export const AbilityProvider = ({ children }) => {
     }
   };
 
-  const makeFight = (card1, card2) => {
+  const makeFight = (actionData) => {
+    const { card1, card2 } = actionData;
     const newfieldCells = store.getState().battleReducer.fieldCells;
     const attackedCell = newfieldCells.find((cell) => cell.id === card2.cellId);
     const attackingCell = newfieldCells.find((cell) => cell.id === card1.cellId);
@@ -703,7 +706,10 @@ export const AbilityProvider = ({ children }) => {
 
   // ADD CARD TO FIELD ///////
 
-  const addCardToField = (card, player, points, curCell) => {
+  const addCardToField = (actionData) => {
+    const {
+      card, player, points, curCell,
+    } = actionData;
     const cellId = curCell.id;
     if (gameMode === 'tutorial') {
       changeTutorStep((prev) => prev + 1);
@@ -759,19 +765,27 @@ export const AbilityProvider = ({ children }) => {
 
   // END TURN //////
 
-  const endTurn = (newPlayer, comPoints, newPoints, postCell, tempSpells, turnSpells) => {
+  const endTurn = (actionData) => {
+    const {
+      newPlayer,
+      commonPoints,
+      newCommonPoints,
+      postponedCell,
+      temporarySpells,
+      turnSpells,
+    } = actionData;
     const prevPlayer = newPlayer === 'player1' ? 'player2' : 'player1';
     const currentfieldCells = store.getState().battleReducer.fieldCells;
     if (newPlayer === 'player2') {
-      dispatch(battleActions.setPlayerPoints({ points: comPoints, player: 'player2' }));
+      dispatch(battleActions.setPlayerPoints({ points: commonPoints, player: 'player2' }));
     } else {
-      if (comPoints < maxActionPoints) {
+      if (commonPoints < maxActionPoints) {
         dispatch(battleActions.addCommonPoint());
       }
-      dispatch(battleActions.setPlayerPoints({ points: newPoints, player: 'player1' }));
+      dispatch(battleActions.setPlayerPoints({ points: newCommonPoints, player: 'player1' }));
     }
-    if (postCell.status === 'face') {
-      const card = postCell.content[0];
+    if (postponedCell.status === 'face') {
+      const card = postponedCell.content[0];
       sendCardFromField(card, 'return');
       dispatch(battleActions.deleteActiveCard({ player: prevPlayer }));
       deleteOtherActiveCard(activeCardPlayer1, activeCardPlayer2, prevPlayer);
@@ -784,7 +798,7 @@ export const AbilityProvider = ({ children }) => {
     dispatch(battleActions.drawCard({ player: newPlayer }));
     dispatch(battleActions.massTurnCards({ player: newPlayer }));
     dispatch(battleActions.changeTurn({ player: newPlayer }));
-    [...turnSpells, ...tempSpells].forEach((spell) => sendCardFromField(spell, 'grave'));
+    [...turnSpells, ...temporarySpells].forEach((spell) => sendCardFromField(spell, 'grave'));
 
     currentfieldCells
       .filter((cell) => cell.content.length !== 0 && cell.type === 'field' && cell.player === newPlayer)
@@ -797,22 +811,25 @@ export const AbilityProvider = ({ children }) => {
 
   // MAKE CAST SPELL
 
-  const castSpell = async (spellCard, player, points, receiveCell) => {
-    if (spellCard.status === 'hand' || spellCard.type === 'hero') {
-      const newPoints = points - spellCard.currentC;
+  const castSpell = async (actionData) => {
+    const {
+      card, player, points, cell,
+    } = actionData;
+    if (card.status === 'hand' || card.type === 'hero') {
+      const newPoints = points - card.currentC;
       dispatch(battleActions.setPlayerPoints({ points: newPoints, player }));
     }
     dispatch(battleActions.deleteActiveCard({ player }));
     const makeCast = async () => {
-      await Promise.all(spellCard.features.map((feature) => new Promise((resolve) => {
+      await Promise.all(card.features.map((feature) => new Promise((resolve) => {
         setTimeout(() => {
           if (!feature.condition && !feature.attach) {
-            makeFeatureCast(feature, receiveCell, null, player);
+            makeFeatureCast(feature, cell, null, player);
           } else if (feature.attach) {
             setCellData({
-              id: receiveCell.id, content: 1, source: spellCard.status, type: spellCard.type,
+              id: cell.id, content: 1, source: card.status, type: card.type,
             });
-            makeFeatureAttach(feature, receiveCell, player);
+            makeFeatureAttach(feature, cell, player);
           }
           resolve();
         }, 500);
@@ -821,18 +838,18 @@ export const AbilityProvider = ({ children }) => {
 
     await makeCast();
 
-    if (spellCard.name !== 'fake' && spellCard.type !== 'hero') {
-      deleteCardfromSource(spellCard);
-      if (spellCard.subtype === 'instant') {
-        dispatch(battleActions.addToGraveyard({ card: spellCard }));
+    if (card.name !== 'fake' && card.type !== 'hero') {
+      deleteCardfromSource(card);
+      if (card.subtype === 'instant') {
+        dispatch(battleActions.addToGraveyard({ card }));
       } else {
-        dispatch(battleActions.addFieldContent({ card: spellCard, id: receiveCell.id }));
+        dispatch(battleActions.addFieldContent({ card, id: cell.id }));
       }
     }
-    if (spellCard.type === 'hero') {
+    if (card.type === 'hero') {
       dispatch(battleActions.turnCardLeft({
-        cardId: spellCard.id,
-        cellId: spellCard.cellId,
+        cardId: card.id,
+        cellId: card.cellId,
         qty: 1,
       }));
     }
@@ -840,7 +857,8 @@ export const AbilityProvider = ({ children }) => {
 
   // DRAW START CARDS //////
 
-  const drawCards = (player, number) => {
+  const drawCards = (actionData) => {
+    const { player, number } = actionData;
     dispatch(battleActions.setCardDrawStatus({ player, status: true }));
     for (let i = 1; i <= number; i += 1) {
       dispatch(battleActions.drawCard({ player }));
@@ -849,7 +867,10 @@ export const AbilityProvider = ({ children }) => {
 
   // RETURN CARD TO HAND
 
-  const returnCardToHand = (card, player, cost, spellId) => {
+  const returnCardToHand = (actionData) => {
+    const {
+      card, player, cost, spellId,
+    } = actionData;
     if (card.status === 'field') {
       moveAttachedSpells(card.cellId, null, 'return');
     }
@@ -862,7 +883,8 @@ export const AbilityProvider = ({ children }) => {
 
   // RETURN CARD TO OWNER'S DECK
 
-  const returnCardToDeck = (card, player) => {
+  const returnCardToDeck = (actionData) => {
+    const { card, player } = actionData;
     handleAnimation(card, 'delete');
     dispatch(battleActions.sendCardtoDeck({ card }));
     deleteCardfromSource(card);
@@ -870,7 +892,10 @@ export const AbilityProvider = ({ children }) => {
   };
 
   // USE CARD ABILITY
-  const makeAbilityCast = (card, player, points, cell, ability) => {
+  const makeAbilityCast = (actionData) => {
+    const {
+      card, player, points, cell, ability,
+    } = actionData;
     handleAnimation(card, 'delete');
     dispatch(battleActions.deleteActiveCard({ player }));
     const newPoints = points - ability.cost;
@@ -889,8 +914,47 @@ export const AbilityProvider = ({ children }) => {
     }
   };
 
+  // MAKE ACTION
+
+  const makeOnlineAction = (actionData) => {
+    setActionPerforming(true);
+    socket.emit('makeMove', actionData, () => {
+      setActionPerforming(false);
+      const { move } = actionData;
+      switch (move) {
+        case 'addCardToField':
+          addCardToField(actionData);
+          break;
+        case 'castSpell':
+          castSpell(actionData);
+          break;
+        case 'makeFight':
+          makeFight(actionData);
+          break;
+        case 'endTurn':
+          endTurn(actionData);
+          break;
+        case 'drawCards':
+          drawCards(actionData);
+          break;
+        case 'returnCardToHand':
+          returnCardToHand(actionData);
+          break;
+        case 'makeAbilityCast':
+          makeAbilityCast(actionData);
+          break;
+        case 'returnCardToDeck':
+          returnCardToDeck(actionData);
+          break;
+        default:
+          break;
+      }
+    });
+  };
+
   return (
     <AbilitiesContext.Provider value={{
+      makeOnlineAction,
       makeFeatureCast,
       makeFeatureAttach,
       sendCardFromField,
@@ -907,6 +971,7 @@ export const AbilityProvider = ({ children }) => {
       makeAbilityCast,
       makeTurn,
       cellData,
+      actionPerforming,
     }}
     >
       {children}

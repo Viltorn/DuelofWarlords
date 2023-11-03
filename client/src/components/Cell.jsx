@@ -7,7 +7,6 @@ import CellCard from './CellCard.jsx';
 import styles from './Cell.module.css';
 import functionContext from '../contexts/functionsContext.js';
 import abilityContext from '../contexts/abilityActions.js';
-import socket from '../socket.js';
 
 const Cell = ({ props, id, cellData }) => {
   // const { t } = useTranslation();
@@ -29,7 +28,9 @@ const Cell = ({ props, id, cellData }) => {
   } = useContext(functionContext);
 
   const { curRoom, gameMode } = useSelector((state) => state.gameReducer);
-  const { makeFeatureCast, findTriggerSpells, addCardToField } = useContext(abilityContext);
+  const {
+    makeFeatureCast, findTriggerSpells, addCardToField, actionPerforming, makeOnlineAction,
+  } = useContext(abilityContext);
   const currentCell = fieldCells.find((cell) => cell.id === id);
   const currentPoints = playerPoints.find((item) => item.player === thisPlayer).points;
 
@@ -92,6 +93,10 @@ const Cell = ({ props, id, cellData }) => {
   const handleCellClick = () => {
     const activeCard = getActiveCard();
 
+    if (gameMode === 'online' && actionPerforming) {
+      return;
+    }
+
     if (activeCard && !isAllowedCost(activeCard)) {
       return;
     }
@@ -100,17 +105,19 @@ const Cell = ({ props, id, cellData }) => {
     const isSpell = activeCard && activeCard.type === 'spell';
 
     if ((isWarOnFieldCard && canBeMoved(id)) || (isSpell && canBeCast(id))) {
+      const data = {
+        move: 'addCardToField',
+        room: curRoom,
+        card: activeCard,
+        player: thisPlayer,
+        points: currentPoints,
+        curCell: currentCell,
+      };
       if (gameMode === 'online') {
-        socket.emit('makeMove', {
-          move: 'addCardToField',
-          room: curRoom,
-          card: activeCard,
-          player: thisPlayer,
-          points: currentPoints,
-          cell: currentCell,
-        });
+        makeOnlineAction(data);
+      } else {
+        addCardToField(data);
       }
-      addCardToField(activeCard, thisPlayer, currentPoints, currentCell);
     }
   };
 

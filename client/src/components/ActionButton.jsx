@@ -6,7 +6,6 @@ import { actions as battleActions } from '../slices/battleSlice.js';
 import functionContext from '../contexts/functionsContext.js';
 import abilityContext from '../contexts/abilityActions.js';
 import styles from './ActionButton.module.css';
-import socket from '../socket.js';
 
 const ActionButton = ({
   type, card, ability, ressurect,
@@ -18,7 +17,13 @@ const ActionButton = ({
     handleAnimation, moveAttachedSpells, deleteOtherActiveCard,
   } = useContext(functionContext);
   const {
-    sendCardFromField, returnCardToHand, makeAbilityCast, makeTurn, returnCardToDeck,
+    sendCardFromField,
+    returnCardToHand,
+    makeAbilityCast,
+    makeTurn,
+    returnCardToDeck,
+    actionPerforming,
+    makeOnlineAction,
   } = useContext(abilityContext);
   const {
     id, cellId,
@@ -38,6 +43,33 @@ const ActionButton = ({
   const currentCell = fieldCells.find((item) => item.id === cellId);
 
   const performClick = (btnType) => {
+    if (gameMode === 'online' && actionPerforming) {
+      return;
+    }
+    const returnData = {
+      move: 'returnCardToHand',
+      room: curRoom,
+      card,
+      player: thisPlayer,
+      cost,
+      spellId: ressurect?.id,
+    };
+    const abilityData = {
+      move: 'makeAbilityCast',
+      room: curRoom,
+      card,
+      player: thisPlayer,
+      points: currentPoints,
+      cell: currentCell,
+      ability,
+    };
+    const deckRetData = {
+      move: 'returnCardToDeck',
+      room: curRoom,
+      card,
+      player: thisPlayer,
+    };
+
     switch (btnType) {
       case 'healthBar':
         dispatch(modalsActions.openModal({ type: 'changeStats', id, cellId }));
@@ -50,16 +82,10 @@ const ActionButton = ({
         break;
       case 'return':
         if (gameMode === 'online') {
-          socket.emit('makeMove', {
-            move: 'returnCardToHand',
-            room: curRoom,
-            card,
-            player: thisPlayer,
-            cost,
-            spellId: ressurect?.id,
-          });
+          makeOnlineAction(returnData);
+        } else {
+          returnCardToHand(returnData);
         }
-        returnCardToHand(card, thisPlayer, cost, ressurect?.id);
         break;
       case 'graveyard':
         handleAnimation(card, 'delete');
@@ -70,28 +96,17 @@ const ActionButton = ({
         break;
       case 'ability':
         if (gameMode === 'online') {
-          socket.emit('makeMove', {
-            move: 'makeAbilityCast',
-            room: curRoom,
-            card,
-            player: thisPlayer,
-            points: currentPoints,
-            cell: currentCell,
-            ability,
-          });
+          makeOnlineAction(abilityData);
+        } else {
+          makeAbilityCast(abilityData);
         }
-        makeAbilityCast(card, thisPlayer, currentPoints, currentCell, ability);
         break;
       case 'deckreturn':
         if (gameMode === 'online') {
-          socket.emit('makeMove', {
-            move: 'returnCardToDeck',
-            room: curRoom,
-            card,
-            player: thisPlayer,
-          });
+          makeOnlineAction(deckRetData);
+        } else {
+          returnCardToDeck(deckRetData);
         }
-        returnCardToDeck(card, thisPlayer);
         break;
       default:
         break;

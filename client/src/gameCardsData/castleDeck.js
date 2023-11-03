@@ -187,7 +187,7 @@ const castleDeck = [
         description: cardsInfo.BannermanCast,
         place: '',
         features: [{
-          attach: ['warrior'], aim: ['warrior', 'fighter', 'shooter', 'flyer'], type: 'good', name: 'power', value: 2, charges: 1, id: _.uniqueId(),
+          attach: ['warrior'], aim: ['warrior', 'fighter', 'shooter', 'flyer', 'hero'], type: 'good', name: 'power', value: 2, charges: 1, id: _.uniqueId(),
         }],
         status: 'hand',
       },
@@ -224,7 +224,7 @@ const castleDeck = [
         description: cardsInfo.BannermanCast,
         place: '',
         features: [{
-          attach: ['warrior'], aim: ['warrior', 'fighter', 'shooter', 'flyer'], type: 'good', name: 'power', value: 2, charges: 1, id: _.uniqueId(),
+          attach: ['warrior'], aim: ['warrior', 'fighter', 'shooter', 'flyer', 'hero'], type: 'good', name: 'power', value: 2, charges: 1, id: _.uniqueId(),
         }],
         status: 'hand',
       },
@@ -493,7 +493,7 @@ const castleDeck = [
     place: 'warrior',
     features: [{
       attach: ['warrior'],
-      aim: ['warrior'],
+      aim: ['warrior', 'fighter', 'shooter', 'flyer'],
       type: 'good',
       name: 'power',
       value: 1,
@@ -570,7 +570,7 @@ const castleDeck = [
     id: _.uniqueId(),
     place: 'bigSpell',
     features: [{
-      attach: ['field', 'warrior'], type: 'good', aim: ['warrior'], name: 'power', value: 1,
+      attach: ['field', 'warrior'], type: 'good', aim: ['warrior', 'fighter', 'shooter', 'flyer', 'hero'], name: 'power', value: 1,
     }],
     img: Enlightenment,
     status: 'hand',
@@ -608,7 +608,7 @@ const castleDeck = [
     place: 'warrior',
     features: [{
       attach: ['warrior'],
-      aim: ['warrior'],
+      aim: ['warrior', 'fighter', 'shooter', 'flyer', 'hero'],
       type: 'good',
       name: 'power',
       value: 1,
