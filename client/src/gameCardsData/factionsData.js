@@ -5,6 +5,7 @@ import academiaDeck from './academiaDeck.js';
 import castleDeck from './castleDeck.js';
 import ZigfridHero from '../assets/CastleDeck/ZigfridHero.png';
 import NalaHero from '../assets/AcademiaDeck/NalaHero.png';
+import makeInitialDeck from '../utils/makeInitialDeck';
 
 export const factionsData = [
   { id: 'Castle', img: CastleLogo, description: 'Рыцари и ангелы полагающиеся на магию света' },
@@ -66,6 +67,6 @@ export const heroes = [
 ];
 
 export const decks = {
-  Castle: castleDeck,
-  Academia: academiaDeck,
+  Castle: makeInitialDeck(castleDeck),
+  Academia: makeInitialDeck(academiaDeck),
 };

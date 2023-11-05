@@ -136,7 +136,6 @@ const Battlefield = () => {
 
     const updPlayersOnlieneBattle = (data) => {
       dispatch(gameActions.setOnlineCount({ count: data }));
-      console.log(data);
     };
 
     const updateSocketIdBattle = (id) => {

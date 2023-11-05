@@ -53,7 +53,7 @@ export default {
   step52: 'Try to cast a spell by selecting it and attacking an enemy Golem - you will see how your "Thunderblast" will work',
   step53: 'Try to cast a spell by selecting it and attacking an enemy Golem - you will see how your "Thunderblast" will work',
   step54: 'Good! You killed the golem, but, as you can see, you stunned not only the enemy warrior, but also your own - you need to be careful with such spells. Stunned warriors miss one turn, but they can still retaliate. Now let\'s make another one of your cards postponed',
-  step55: 'The "Last Chance" spell has the "REACTION" effect - such a spell is used during the enemy\'s turn in response to some event,  the card must necessarily be postponed to use this ability',
+  step55: 'The "Last Chance" spell has the "REACTION" effect - such a spell is used as a response to some event in the game, the card has to be postponed to use this ability',
   step56: 'If the event does not occur, the card will return to your hand at the end of your next turn, but since the card will be lying face up, it will be reavealed to your enemy',
   step57: 'Select the "Last chance" and make the card postponed',
   step58: 'Great! Time to end this turn and see if your spell works',

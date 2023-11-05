@@ -11,6 +11,7 @@ import tutorialStepsData from '../../gameData/tutorialStepsData';
 import makeDeckForPLayer from '../../utils/makeDeckForPlayer.js';
 import abilityContext from '../../contexts/abilityActions.js';
 import functionContext from '../../contexts/functionsContext.js';
+import makeInitialDeck from '../../utils/makeInitialDeck.js';
 
 const TutorialStepsWindow = () => {
   const { t } = useTranslation();
@@ -20,8 +21,8 @@ const TutorialStepsWindow = () => {
   const { makeFight, sendCardFromField } = useContext(abilityContext);
   const { deleteCardfromSource, tutorStep, changeTutorStep } = useContext(functionContext);
 
-  const madeCastleDeck = useMemo(() => makeDeckForPLayer(castleDeck, 'player1'), []);
-  const madeAcademiaDeck = useMemo(() => makeDeckForPLayer(academiaDeck, 'player2'), []);
+  const madeCastleDeck = useMemo(() => makeDeckForPLayer(makeInitialDeck(castleDeck), 'player1'), []);
+  const madeAcademiaDeck = useMemo(() => makeDeckForPLayer(makeInitialDeck(academiaDeck), 'player2'), []);
 
   const cards = {
     shooter: madeCastleDeck.find((el) => el.name === 'Imperial Shooter'),
@@ -188,7 +189,7 @@ const TutorialStepsWindow = () => {
       activatePlayersHero: () => dispatch(battleActions.activateCells({ ids: ['hero1'] })),
       addWarriorsToDeck: () => dispatch(battleActions.setPlayersDeck({ deck: warriorsDeck, player: 'player1' })),
       addSpellsToDeck: () => dispatch(battleActions.setPlayersDeck({ deck: spellsDeck, player: 'player1' })),
-      attackGriffon: () => makeFight({ ...cards.gargoyle, cellId: '3.3', status: 'field' }, { ...cards.griffon, cellId: '3.1' }),
+      attackGriffon: () => makeFight({ card1: { ...cards.gargoyle, cellId: '3.3', status: 'field' }, card2: { ...cards.griffon, cellId: '3.1' } }),
       attackShooter: () => {
         const curMage = fieldCells.reduce((acc, cell) => {
           const mageItem = cell.content.find((item) => item.name === 'Mage apprentice');
@@ -200,7 +201,7 @@ const TutorialStepsWindow = () => {
           acc = shootItem ?? acc;
           return acc;
         }, {});
-        makeFight(curMage, curShooter);
+        makeFight({ card1: curMage, card2: curShooter });
       },
       activateEnemyCells: () => {
         const ids = enemyCells.map((cell) => cell.id);

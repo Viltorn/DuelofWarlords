@@ -1,198 +1,193 @@
 const data = [
   {
-    step: 'step1', text: 'Если вы играете за игрока №1, ваши войска и герой располагаются на левой половине поля боя, если за игрока №2, то на правой', func: 'step1', next: true, back: true, disEndTurn: true,
+    step: 'step1', func: 'step1', next: true, back: true, disEndTurn: true,
   },
   {
-    step: 'step2', text: 'В каждой игре игроки должны победить вражеского героя, для этого его здоровье должно опуститься до нуля', func: 'heroAnimation', next: true, back: true, disEndTurn: true,
+    step: 'step2', func: 'heroAnimation', next: true, back: true, disEndTurn: true,
   },
   {
-    step: 'step3', text: 'Поле боя условно делится на линии - клетки по вертикали и шеренги -  клетки по горизонтали', func: 'linesRowsAnimation', next: true, back: true, disEndTurn: true,
+    step: 'step3', func: 'linesRowsAnimation', next: true, back: true, disEndTurn: true,
   },
   {
-    step: 'step4', text: 'Оставшиеся клетки предназначены для заклинаний, которые действуют на шеренгу, линию или на все поле боя в зависмости от их расположения', func: 'spellCellsAnimation', next: true, back: true, disEndTurn: true,
+    step: 'step4', func: 'spellCellsAnimation', next: true, back: true, disEndTurn: true,
   },
   {
-    step: 'step5', text: 'Попробуем провести первый бой: у вас и у вашего противника появились воины на поле боя', func: 'addTwoWarriors', next: true, back: false, disEndTurn: true,
+    step: 'step5', func: 'addTwoWarriors', next: true, back: false, disEndTurn: true,
   },
   {
-    step: 'step6', text: 'По умолчанию воины в свой ход могут либо атаковать, либо передвигаться по полю боя. Для этого в любом случае они должны быть в активном (не повернутом) состоянии - как сейчас ваш Воин света', func: 'turnWarrior', next: true, back: false, disEndTurn: true,
+    step: 'step6', func: 'turnWarrior', next: true, back: false, disEndTurn: true,
   },
   {
-    step: 'step7', text: 'Для того, чтобы посмотреть описания воина и его особенности, а также совершить им атаку или передвижение, нужно нажать на него. Посмотрите особенности вашего "Воина света" и нажмите "продолжить"', func: '', left: 23, next: true, back: false, disEndTurn: true,
+    step: 'step7', func: '', left: 23, next: true, back: false, disEndTurn: true,
   },
   {
-    step: 'step8', text: 'Воины атакуют только врагов находящихся в их шеренге, выделите еще раз вашего "Воина света" и атакуйте им вражеского голема', func: 'addGrifAndGarg', left: 23, next: false, back: false, disEndTurn: true,
+    step: 'step8', func: 'addGrifAndGarg', left: 23, next: false, back: false, disEndTurn: true,
   },
   {
-    step: 'step9', text: 'Отлично! Вы атаковали вражеского голема силой атаки 2 и отняли столько же здоровья у него - сила атаки воина указана в верхнем левом углу карты. Так как голем остался жив, он совершил ответный удар по вашему рыцарю также силой своей атаки 2', func: '', left: 23, next: true, back: false, disEndTurn: true,
+    step: 'step9', func: '', left: 23, next: true, back: false, disEndTurn: true,
   },
   {
-    step: 'step10', text: 'Если в шеренге нет вражеских воинов, то воин может атаковать героя: выделите вашего Гриффона и нажмите на соседнюю клетку, чтобы переместить его и заблокировать атаку Гаргульи по вашему герою', func: 'turnGriffon', left: 23, next: false, back: false, disEndTurn: true,
+    step: 'step10', func: 'turnGriffon', left: 23, next: false, back: false, disEndTurn: true,
   },
   {
-    step: 'step11', text: 'Ура! Гриффон принял удар на себя, при этом от ответного удара здоровье гаргульи опустилось до нуля, и она покинула поле боя, отправившись в сток', func: 'attackGriffon', left: 23, next: true, back: false, disEndTurn: true,
+    step: 'step11', func: 'attackGriffon', left: 23, next: true, back: false, disEndTurn: true,
   },
   {
-    step: 'step12', text: 'Отлично, теперь можно попробовать разыграть карты из руки, но для этого вам нужно узнать об очках действия, которые нужны, чтобы разыгрывать любые карты в игре', func: 'returnGriffonAndKnight', left: 23, next: true, back: false, disEndTurn: true,
+    step: 'step12', func: 'returnGriffonAndKnight', left: 23, next: true, back: false, disEndTurn: true,
   },
   {
-    step: 'step13', text: 'В начале игры каждый игрок получает по 1 очку действия, их количество для обоих игроков отображается в верхней плашке.', func: 'addWarriorsToDeck', left: 23, next: true, back: false, disEndTurn: true,
+    step: 'step13', func: 'addWarriorsToDeck', left: 23, next: true, back: false, disEndTurn: true,
   },
   {
-    step: 'step14', text: 'После того, как оба игрока сходят, начинается следующий раунд, и игроки получают количество очков действия, равное номеру текущего раунда (независимо от того, оставались у них очки или нет с прошлого раунда)', func: '', left: 23, next: true, back: false, disEndTurn: true,
+    step: 'step14', func: '', left: 23, next: true, back: false, disEndTurn: true,
   },
   {
-    step: 'step15', text: 'Итак, к вам в руку пришла карта "Имперский стрелок", его стоимость 1, она отображается в черном квадрате на карте. "Имперский стрелок" относится к классу Стрелок, так как имеет значок "цель" в верхнем левом углу карты', func: 'drawCard', left: 23, next: true, back: false, disEndTurn: true,
+    step: 'step15', func: 'drawCard', left: 23, next: true, back: false, disEndTurn: true,
   },
   {
-    step: 'step16', text: 'Стрелков можно располагать только на "задней линии" позади остальных воинов. Выделите карту "Имперский стрелок" и поместите ее на поле боя в любую доступную клетку.', func: 'activeShooterCells', left: 15, next: false, back: false, disEndTurn: true,
+    step: 'step16', func: 'activeShooterCells', left: 15, next: false, back: false, disEndTurn: true,
   },
   {
-    step: 'step17', text: 'Воины входят в игру в повернутом состоянии, поэтому вы не сможете ими сразу сходить. У вас не осталось очков действия, поэтому нажмите красную кнопку "закончить ход" в верхней плашке, чтобы начать следующий раунд', func: 'addCommonPoint', left: 15, next: false, back: false, disEndTurn: false,
+    step: 'step17', func: 'addCommonPoint', left: 15, next: false, back: false, disEndTurn: false,
   },
   {
-    step: 'step18', text: 'Начался 2 раунд, и у вас 2 очка действия. Также каждый ход вы получаете карту из своей колоды: сейчас это Воин света, попробуем ее разыграть', func: '', left: 15, next: true, back: false, disEndTurn: true,
+    step: 'step18', func: '', left: 15, next: true, back: false, disEndTurn: true,
   },
   {
-    step: 'step19', text: 'Воин света является Бойцом, так как имеет значок мечей в верхнем левом углу карты. Бойцы располагаются только в передней линии на любой свободной клетке', func: '', left: 15, next: true, back: false, disEndTurn: true,
+    step: 'step19', func: '', left: 15, next: true, back: false, disEndTurn: true,
   },
   {
-    step: 'step20', text: 'Выделите Воина света и поместите его на поле боя перед вашим стрелком, чтобы защитить его от будущих атак', func: 'activeFighterCell', left: 15, next: false, back: false, disEndTurn: true,
+    step: 'step20', func: 'activeFighterCell', left: 15, next: false, back: false, disEndTurn: true,
   },
   {
-    step: 'step21', text: 'Отлично! У вас закончились очки действия, поэтому нажмите "закончить ход", чтобы начать следующий ход и получить новую карту', func: 'activateEnemyCells', left: 22, next: false, back: false, disEndTurn: false,
+    step: 'step21', func: 'activateEnemyCells', left: 22, next: false, back: false, disEndTurn: false,
   },
   {
-    step: 'step22', text: 'Теперь у вас в руке "Имперский гриффон". Он относится к классу Летающий, потому что имеет значок "крыльев" в верхнем левом углу. Летающие могут войти в игру на любую линию', func: '', left: 22, next: true, back: false, disEndTurn: true,
+    step: 'step22', func: '', left: 22, next: true, back: false, disEndTurn: true,
   },
   {
-    step: 'step23', text: 'Выделите Гриффона и поместите его на поле боя на любую клетку', func: 'activeFlyerCells', left: 15, next: false, back: false, disEndTurn: true,
+    step: 'step23', func: 'activeFlyerCells', left: 15, next: false, back: false, disEndTurn: true,
   },
   {
-    step: 'step24', text: 'Теперь, когда все воины на поле, попробуем совершить атаку вашим стрелком: стрелки могут атаковать любого воина в шеренге, при этом они не получают ответный удар, но и сами не могут отвечать врагам', func: 'addGolemsForShoot', left: 15, next: true, back: false, disEndTurn: true,
+    step: 'step24', func: 'addGolemsForShoot', left: 15, next: true, back: false, disEndTurn: true,
   },
   {
-    step: 'step25', text: 'Выделите вашего Имперского стрелка и атакуйте любого доступного воина', func: 'turnShooter', left: 15, next: false, back: false, disEndTurn: true,
+    step: 'step25', func: 'turnShooter', left: 15, next: false, back: false, disEndTurn: true,
   },
   {
-    step: 'step26', text: 'Отлично! Теперь попробуем совершить атаку вашим Воином света. Бойцы и Летающие могут атаковать только воинов, не закрытых другими воинами, поэтому ваш Воин света не сможет атаковать Элемента льда, пока жив Земляной голем', func: '', left: 15, next: true, back: false, disEndTurn: true,
+    step: 'step26', func: '', left: 15, next: true, back: false, disEndTurn: true,
   },
   {
-    step: 'step27', text: 'Выделите Воина света и совершите им атаку', func: 'turnFighter', left: 15, next: false, back: false, disEndTurn: true,
+    step: 'step27', func: 'turnFighter', left: 15, next: false, back: false, disEndTurn: true,
   },
   {
-    step: 'step28', text: 'Хорошо, теперь выделите вашего Гриффона и атакуйте им вражеского героя: вы можете это сделать так как в шеренге с Гриффоном нет вражеских воинов, которые бы защищали героя', func: 'turnFlyer', left: 15, next: false, back: false, disEndTurn: true,
+    step: 'step28', func: 'turnFlyer', left: 15, next: false, back: false, disEndTurn: true,
   },
   {
-    step: 'step29', text: 'Все ваши воины на поле боя снова повернуты - это значит, что они сходили и больше в этом ходу не могут передвигаться или атаковать. Время нажать "закончить ход"', func: 'addSpellsToDeck', left: 15, next: false, back: false, disEndTurn: false,
+    step: 'step29', func: 'addSpellsToDeck', left: 15, next: false, back: false, disEndTurn: false,
   },
   {
-    step: 'step30', text: 'К вам пришла карта мгновенного заклинания - такие карты действуют один раз и после использования эффекта отправляются в сток.', func: 'disableCells', left: 15, next: true, back: false, disEndTurn: true,
+    step: 'step30', func: '', left: 15, next: true, back: false, disEndTurn: true,
   },
   {
-    step: 'step31', text: 'Молот правосудия - это атакующее заклинание (это написано в его описании). Такие заклинания обычно действуют только на воинов, для атаки героя вы должны использовать ваших воинов', func: '', left: 15, next: true, back: false, disEndTurn: true,
+    step: 'step31', func: 'disableCells', left: 15, next: true, back: false, disEndTurn: true,
   },
   {
-    step: 'step32', text: 'Выберите ваше заклинание и атакуйте вражеского Земляного голема', func: 'activateEnemyLine3', left: 15, next: false, back: false, disEndTurn: true,
+    step: 'step32', func: 'activateEnemyLine3', left: 15, next: false, back: false, disEndTurn: true,
   },
   {
-    step: 'step33', text: 'Хорошо! Сейчас у вас остались очки действия, но нет карт в руке - самое время применить стандартную способность героя', func: 'activatePlayersHero', left: 15, next: true, back: false, disEndTurn: true,
+    step: 'step33', func: 'activatePlayersHero', left: 15, next: true, back: false, disEndTurn: true,
   },
   {
-    step: 'step34', text: 'Стандартная способность героя - "Прилив сил", она позволяет потратить 1 очко действия и взять карту из колоды в руку - эта способность есть у каждого героя. После применения герой поворачивается. Попробуйте выделить героя и применить способность нажав на кнопку "СПОСОБНОСТЬ"!', func: '', left: 38, next: false, back: false, disEndTurn: true,
+    step: 'step34', func: '', left: 38, next: false, back: false, disEndTurn: true,
   },
   {
-    step: 'step35', text: 'К вам пришла карта временного заклинания - она имеет значок часов в левом верхнем углу, такие карты действуют один ход и перед началом вашего следующего хода отправляются в сток', func: 'disableSpellCells', left: 15, next: true, back: false, disEndTurn: true,
+    step: 'step35', func: 'disableSpellCells', left: 15, next: true, back: false, disEndTurn: true,
   },
   {
-    step: 'step36', text: 'Заклинание "Святая земля" атакует всех врагов, которые наступают на шеренгу, в которой она находится. Давайте разыграем ее в шеренгу с Гриффоном, чтобы помешать противнику защищать своего героя', func: 'activateSpellCellForGriffon', left: 15, next: false, back: false, disEndTurn: true,
+    step: 'step36', func: 'activateSpellCellForGriffon', left: 15, next: false, back: false, disEndTurn: true,
   },
   {
-    step: 'step37', text: 'Вы сделали все действия в этом ходу, поэтому время нажать "закончить ход"', func: 'disableEnemyCells', left: 15, next: false, back: false, disEndTurn: false,
+    step: 'step37', func: 'disableEnemyCells', left: 15, next: false, back: false, disEndTurn: false,
   },
   {
-    step: 'step38', text: 'Враг разыграл карту Огненного голема в свой ход и получил повреждение от святой земли (изначальное здоровье Огненного голема равно 6)', func: 'addFireGolem', left: 15, next: true, back: false, disEndTurn: true,
+    step: 'step38', func: 'addFireGolem', left: 15, next: true, back: false, disEndTurn: true,
   },
   {
-    step: 'step39', text: 'Все ваши временные карты на поле боя отправляются в сток перед началом вашего хода', func: 'sendHolyLandToGrave', left: 15, next: true, back: false, disEndTurn: true,
+    step: 'step39', func: 'sendHolyLandToGrave', left: 15, next: true, back: false, disEndTurn: true,
   },
   {
-    step: 'step40', text: 'К вам в руку пришла карта заклинания "Щит света" - это постоянная карта, потому что она имеет знак 2-х стрелок в верхнем левом углу, такая карта накладывается на воина и будет действовать, пока этот воин не покинет поле боя', func: '', left: 15, next: true, back: false, disEndTurn: true,
+    step: 'step40', func: '', left: 15, next: true, back: false, disEndTurn: true,
   },
   {
-    step: 'step41', text: 'Выберите "Щит света" и примените его к вашему "Воину света", который получил повреждение ранее, чтобы прибавить ему 2 здоровья', func: 'activeFighterCell', left: 15, next: false, back: false, disEndTurn: true,
+    step: 'step41', func: 'activeFighterCell', left: 15, next: false, back: false, disEndTurn: true,
   },
   {
-    step: 'step42', text: 'Хорошо, у вас еще остались очки действия, и вы можете использовать уникальную способность вашего героя "Удар молотом": атаковать воина силой 1 и переместить его на соседнюю клетку. Выделите вашего героя и атакуйте вражеского Огненного голема', func: 'activateEnemyLine3', left: 0, next: false, back: false, disEndTurn: true, disAbility: true,
+    step: 'step42', func: 'activateEnemyLine3', left: 0, next: false, back: false, disEndTurn: true, disAbility: true,
   },
   {
-    step: 'step43', text: 'Теперь передвиньте голема на соседнюю клетку', func: '', left: 38, next: false, back: false, disEndTurn: true, disAbility: true,
+    step: 'step43', func: '', left: 38, next: false, back: false, disEndTurn: true, disAbility: true,
   },
   {
-    step: 'step44', text: 'Теперь передвиньте голема на соседнюю клетку', func: '', left: 38, next: false, back: false, disEndTurn: true, disAbility: true,
+    step: 'step44', func: '', left: 38, next: false, back: false, disEndTurn: true, disAbility: true,
   },
   {
-    step: 'step45', text: 'Время нажать "закончить ход"', func: 'disableCells', left: 38, next: false, back: false, disEndTurn: false, disAbility: true,
+    step: 'step45', func: 'disableCells', left: 38, next: false, back: false, disEndTurn: false, disAbility: true,
   },
   {
-    step: 'step46', text: 'Начался новый ход и у вас в руке еще одно мгновенное заклинание. Его действие можно усилить, если сделать его отложенной картой', func: '', left: 23, next: true, back: false, disEndTurn: true,
+    step: 'step46', func: '', left: 23, next: true, back: false, disEndTurn: true, disAbility: true,
   },
   {
-    step: 'step47', text: 'Чтобы сделать карту отложенной, вы кладете ее в специальное поле лицом вниз и сразу платите цену карты, но разыгать ее сможете только в вашем следующем ходу', func: '', left: 23, next: true, back: false, disEndTurn: true,
+    step: 'step47', func: '', left: 23, next: true, back: false, disEndTurn: true, disAbility: true,
   },
   {
-    step: 'step48', text: 'Выберите Удар громa и сделайте эту карту отложенной', func: 'removeFireGolem', left: 38, next: false, back: false, disEndTurn: true,
+    step: 'step48', func: 'removeFireGolem', left: 38, next: false, back: false, disEndTurn: true, disAbility: true,
   },
   {
-    step: 'step49', text: 'Теперь нажмите "закончить ход"', func: '', left: 38, next: false, back: false, disEndTurn: false,
+    step: 'step49', func: '', left: 38, next: false, back: false, disEndTurn: false, disAbility: true,
   },
   {
-    step: 'step50', text: 'В новом ходу вы можете разыграть вашу отложенную карту с усиленным эффектом. Удар грома не только атакует целевого воина, но и оглушает воинов в прилегающих клетках. Прилегающие - это все клетки вокруг цели, кроме клеток наискосок (в том числе вражеские клетки)', func: 'addSecondEarthGolem', left: 15, next: true, back: false, disEndTurn: true,
+    step: 'step50', func: 'addSecondEarthGolem', left: 15, next: true, back: false, disEndTurn: true, disAbility: true,
   },
   {
-    step: 'step51', text: 'Попробуйте применить заклинание, выделив его и нажав на вражеского Голема - вы увидите, как сработает ваш Удар грома', func: 'activateEnemyLine3', left: 5, next: false, back: false, disEndTurn: true,
+    step: 'step51', func: 'activateEnemyLine3', left: 5, next: false, back: false, disEndTurn: true, disAbility: true,
   },
   {
-    step: 'step52', text: 'Попробуйте применить заклинание, выделив его и нажав на вражеского Голема - вы увидите, как сработает ваш Удар грома', func: '', left: 15, next: false, back: false, disEndTurn: true,
+    step: 'step52', func: '', left: 15, next: false, back: false, disEndTurn: true, disAbility: true,
   },
   {
-    step: 'step53', text: 'Попробуйте применить заклинание, выделив его и нажав на вражеского Голема - вы увидите, как сработает ваш Удар грома', func: '', left: 15, next: false, back: false, disEndTurn: true,
+    step: 'step53', func: '', left: 15, next: false, back: false, disEndTurn: true, disAbility: true,
   },
   {
-    step: 'step54', text: 'Вы смогли убить голема, но, как видите, вы оглушили не только вражеского воина, но и своего - с такими заклинаниями надо быть аккуратнее. Оглушенные воины пропускают один ход, но они все еще могут наносить ответные удары. Теперь давайте сделаем отложенной еще одну вашу карту', func: '', left: 15, next: true, back: false, disEndTurn: true,
+    step: 'step54', func: '', left: 15, next: true, back: false, disEndTurn: true, disAbility: true,
   },
   {
-    step: 'step55', text: 'Заклинание "Последний шанс" имеет эффект "РЕАКЦИЯ" - такое заклинание применяется во время хода врага в ответ на какое-то событие, для этого карта со способностью должна быть обязательно отложенной', func: '', left: 15, next: true, back: false, disEndTurn: true,
+    step: 'step55', func: '', left: 15, next: true, back: false, disEndTurn: true, disAbility: true,
   },
   {
-    step: 'step56', text: 'Если событие не произойдет, то карта вернется к вам в руку в конце вашего следующего хода, но, так как карта будет лежать лицом вверх, враг узнает, что такая карта есть у вас в наличии', func: '', left: 15, next: true, back: false, disEndTurn: true,
+    step: 'step56', func: '', left: 15, next: true, back: false, disEndTurn: true, disAbility: true,
   },
   {
-    step: 'step57', text: 'Выделите "Последний шанс" и сделайте карту отложенной', func: '', left: 38, next: false, back: false, disEndTurn: true,
+    step: 'step57', func: '', left: 38, next: false, back: false, disEndTurn: true, disAbility: true,
   },
   {
-    step: 'step58', text: 'Отлично! Время закончить ход и посмотреть, сработает ли ваше заклинание', func: 'disableEnemyCells', left: 0, next: false, back: false, disEndTurn: false,
+    step: 'step58', func: 'disableEnemyCells', left: 0, next: false, back: false, disEndTurn: false, disAbility: true,
   },
   {
-    step: 'step59', text: '"Ученик мага" оппонента атаковал вашего Имперского стрелка, но не смог его убить, так как сработало заклинание Последний шанс. После использования заклинание сразу отправилось в сток', func: 'attackShooter', left: 0, next: true, back: false, disEndTurn: true,
+    step: 'step59', func: 'attackShooter', left: 0, next: true, back: false, disEndTurn: true, disAbility: true,
   },
   {
-    step: 'step60', text: 'Важно отметить, что вы можете сделать отложенной любую карту: воина или заклинание, но только 1 карту за ход и только если поле "отложенная карта" свободно', func: 'massTurn', left: 0, next: true, back: false, disEndTurn: true,
+    step: 'step60', func: 'massTurn', left: 0, next: true, back: false, disEndTurn: true, disAbility: true,
   },
   {
-    step: 'step61', text: 'Сейчас все ваши воины и герой повернулись в активное состояние, кроме оглушенного ранее воина. В обычной игре воины и герой всегда поворачиваются в активное состояние в начале вашего хода, если они не оглушены', func: '', left: 0, next: true, back: false, disEndTurn: true,
+    step: 'step61', func: '', left: 0, next: true, back: false, disEndTurn: true, disAbility: true,
   },
   {
-    step: 'step62', text: 'Итак вы изучили основные положения игры Duel of Warlords, нажмите "продолжить" чтобы завершить обучение!', func: '', left: 0, next: true, back: false, disEndTurn: true,
+    step: 'step62', func: '', left: 0, next: true, back: false, disEndTurn: true, disAbility: true,
   },
   {
-    step: 'step63', text: '', func: 'openLastStep', left: 0, next: true, back: false, disEndTurn: true,
+    step: 'step63', func: 'openLastStep', left: 0, next: true, back: false, disEndTurn: true, disAbility: true,
   },
 ];
 
 export default data;
-
-// { text: 'Вы всегда можете посмотреть сыгранные карты любым игроком выбрав сток карт,
-// при этом сверху будет отображаться картинка последней попавшей туда карты', func: '', left: 23 },
-// { text: 'Нажмите на иконку иконку Гаргульи чтобы посмотреть сток второго игрока.
-// После этого закройте сток и нажмите "далее"', func: '', left: 23 },
