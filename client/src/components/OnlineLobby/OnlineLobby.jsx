@@ -7,6 +7,7 @@ import { actions as gameActions } from '../../slices/gameSlice';
 import PrimaryButton from '../PrimaryButton.jsx';
 import getModal from '../../modals/index.js';
 import GameRoom from './GameRoom';
+import DiscordLogo from '../../assets/MainPage/discord.svg';
 import styles from './OnlineLobby.module.css';
 import socket from '../../socket.js';
 
@@ -99,6 +100,10 @@ const OnlineLobby = () => {
             :
           </h3>
           <h2 className={styles.name}>{onlineCount}</h2>
+        </div>
+        <div className={styles.infoBlock}>
+          <h3 className={styles.nameText}>{t('VoiceLobby')}</h3>
+          <a href="https://discord.gg/JWFBjKK9" target="_blank" rel="noreferrer"><img className={styles.discord} src={DiscordLogo} alt="discord logo" /></a>
         </div>
       </div>
       <hr className={styles.divider} />

@@ -585,11 +585,17 @@ export const AbilityProvider = ({ children }) => {
       const attachPower = attachretaliate ? attachretaliate.value : 0;
       const totalStrikePower = strikePower + attachPower;
       const recieveHealth = recieveCard.currentHP;
-      if (isKilled(totalStrikePower, recieveHealth)) {
+      const retaliateProtect = findSpell(strikeCard, recieveCard, strikeCard.subtype, 'retaliateProtect');
+      const retaliateProtectVal = retaliateProtect
+        ? getProtectionVal(totalStrikePower, retaliateProtect, recieveHealth) : 0;
+      const calcRetaliatePower = totalStrikePower - retaliateProtectVal > 0
+        ? totalStrikePower - retaliateProtectVal : 0;
+
+      if (isKilled(calcRetaliatePower, recieveHealth)) {
         sendCardFromField(recieveCard, 'grave');
         moveAttachedSpells(recieveCard.cellId, null, 'kill');
       } else {
-        changeCardHP(totalStrikePower, recieveHealth, recieveCard);
+        changeCardHP(calcRetaliatePower, recieveHealth, recieveCard);
       }
       const powerSpells = strikeCard.attachments.filter((spell) => spell.name === 'power');
       powerSpells.forEach((spell) => {

@@ -660,6 +660,13 @@ const academiaDeck = [
         type: 'good',
         name: 'protection',
         value: { type: 'number', val: 1 },
+      },
+      {
+        attach: ['warrior', 'hero'],
+        aim: ['warrior', 'hero', 'spell', 'fighter', 'shooter', 'flyer'],
+        type: 'good',
+        name: 'retaliateProtect',
+        value: { type: 'number', val: 1 },
       }],
       img: IceArmor,
       status: 'hand',

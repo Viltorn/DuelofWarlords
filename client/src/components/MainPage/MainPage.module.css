@@ -4,7 +4,6 @@
   font-family: "Roboto-Regular", Helvetica;
   line-height: 2rem;
   color: var(--light-gray);
-  padding-bottom: 5rem;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -118,6 +117,63 @@
   border: 0.1rem solid var(--golden);
 }
 
+.footer {
+  width: 100%;
+  margin-top: 50px;
+  border-top: 1rem solid var(--golden);
+  height: 250px;
+  display: flex;
+  align-items: center;
+}
+
+.footerBlock {
+  width: 100%;
+  max-width: 1500px;
+  padding: 3rem;
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 30px;
+}
+
+.footTitle {
+  font-family: "Almendra", Helvetica;
+  font-weight: 700;
+  font-size: 2rem;
+  line-height: 2rem;
+  color: var(--light-gray);
+  text-align: center;
+}
+
+.feebackBlock {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 30px;
+  border: 0.3rem solid var(--dark-red-color);
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+}
+
+.footFeedback {
+  color: var(--light-gray);
+  font-size: 1.2rem;
+  line-height: 20px;
+}
+
+.discord {
+  width: 40px;
+  height: 40px;
+  transition: all 0.3s linear;
+}
+
+.discord:hover {
+  transform: scale(1.2);
+}
+
 @media screen and (max-width: 767px) {
   .main {
     gap: 40px;
@@ -159,6 +215,21 @@
     margin-bottom: 50px;
   }
 
+  .footerBlock {
+    padding: 10px;
+  }
+
+  .footTitle {
+    font-size: 25px;
+  }
+
+  .footFeedback {
+    font-size: 14px;
+  }
+
+  .feebackBlock {
+    padding: 10px 15px;
+  }
 }
 
 @media screen and (min-width: 1600px) {

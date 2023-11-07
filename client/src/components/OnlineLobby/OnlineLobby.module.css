@@ -79,7 +79,7 @@
 }
 
 .name {
-  color: var(--dark-color);
+  color: var(--light-gray);
   font-size: 35px;
 }
 
@@ -92,6 +92,11 @@
   display: flex;
   flex-wrap: wrap;
   gap: 30px;
+}
+
+.discord {
+  width: 40px;
+  height: 40px;
 }
 
 

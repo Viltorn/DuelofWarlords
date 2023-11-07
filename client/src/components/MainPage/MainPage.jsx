@@ -18,6 +18,7 @@ import Mage from '../../assets/MainPage/Mage_logo.png';
 import Hunter from '../../assets/MainPage/Hunter_logo.png';
 import Assasin from '../../assets/MainPage/Assasin_logo.png';
 import PostponedCover from '../../assets/MainPage/PostponedCover.png';
+import DiscordLogo from '../../assets/MainPage/discord.svg';
 
 const MainPage = () => {
   const { t } = useTranslation();
@@ -101,6 +102,15 @@ const MainPage = () => {
           <PrimaryButton showIcon={false} state="default" text={t('PLAY')} variant="primary" />
         </Link>
       </section>
+      <footer className={styles.footer}>
+        <div className={styles.footerBlock}>
+          <h3 className={styles.footTitle}>Duel of Warlords</h3>
+          <div className={styles.feebackBlock}>
+            <p className={styles.footFeedback}>{t('FeedBackLine')}</p>
+            <a href="https://discord.gg/BUTqPcRC" target="_blank" rel="noreferrer"><img className={styles.discord} src={DiscordLogo} alt="discord logo" /></a>
+          </div>
+        </div>
+      </footer>
     </div>
   );
 };
