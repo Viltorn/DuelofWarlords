@@ -920,42 +920,57 @@ export const AbilityProvider = ({ children }) => {
     }
   };
 
-  // MAKE ACTION
+  // MAKE ONLINE ACTION
 
-  const makeOnlineAction = (actionData) => {
+  const performAction = (type, actionData) => {
+    switch (type) {
+      case 'addCardToField':
+        addCardToField(actionData);
+        break;
+      case 'castSpell':
+        castSpell(actionData);
+        break;
+      case 'makeFight':
+        makeFight(actionData);
+        break;
+      case 'endTurn':
+        endTurn(actionData);
+        break;
+      case 'drawCards':
+        drawCards(actionData);
+        break;
+      case 'returnCardToHand':
+        returnCardToHand(actionData);
+        break;
+      case 'makeAbilityCast':
+        makeAbilityCast(actionData);
+        break;
+      case 'returnCardToDeck':
+        returnCardToDeck(actionData);
+        break;
+      default:
+        break;
+    }
+  };
+
+  const chooseAction = {
+    error: () => dispatch(modalsActions.openModal({ type: 'connectProblem' })),
+    action: (move, actionData) => performAction(move, actionData),
+  };
+
+  const makeOnlineAction = async (actionData) => {
     setActionPerforming(true);
-    socket.emit('makeMove', actionData, () => {
+    if (socket.connected) {
+      socket.emit('makeMove', actionData, (res) => {
+        const { move } = actionData;
+        const resType = res.error ? 'error' : 'action';
+        chooseAction[resType](move, actionData);
+        setActionPerforming(false);
+      });
+    } else {
+      chooseAction.error();
       setActionPerforming(false);
-      const { move } = actionData;
-      switch (move) {
-        case 'addCardToField':
-          addCardToField(actionData);
-          break;
-        case 'castSpell':
-          castSpell(actionData);
-          break;
-        case 'makeFight':
-          makeFight(actionData);
-          break;
-        case 'endTurn':
-          endTurn(actionData);
-          break;
-        case 'drawCards':
-          drawCards(actionData);
-          break;
-        case 'returnCardToHand':
-          returnCardToHand(actionData);
-          break;
-        case 'makeAbilityCast':
-          makeAbilityCast(actionData);
-          break;
-        case 'returnCardToDeck':
-          returnCardToDeck(actionData);
-          break;
-        default:
-          break;
-      }
-    });
+    }
   };
 
   return (

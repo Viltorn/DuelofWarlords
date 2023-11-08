@@ -12,8 +12,10 @@ import WaitForPlayer from './waitForPLayer.jsx';
 import PlayerDisconnected from './playerDisconnected.jsx';
 import PlayerVictory from './playerVictory.jsx';
 import WarningResetWindow from './warningResetWindow.jsx';
+import ConnectProblem from './connectProblem.jsx';
 
 const modals = {
+  connectProblem: ConnectProblem,
   warningWindow: WarningResetWindow,
   victory: PlayerVictory,
   playerDisconnected: PlayerDisconnected,

@@ -1,0 +1,51 @@
+.window {
+  position: fixed; 
+  display: flex;
+  justify-content: center;
+  align-items: top;
+  z-index: 2;
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 30px;
+  background-color: var(--dark-blue);
+  margin: auto auto; /* 15% from the top and centered */
+  padding: 2rem 2rem;
+  border: 1px solid #888;
+  width: 490px; /* Could be more or less, depending on screen size */
+  min-width: 320px;
+  height: 400px;
+  min-height: 300px;
+  border-radius: 0.5rem;
+}
+
+.title {
+  color: var(--light-gray);
+  font-size: 30px;
+  text-align: center;
+}
+
+
+@media (max-width: 767px) {
+  .content {
+    width: 320px; /* Could be more or less, depending on screen size */
+    min-width: 320px;
+    height: 300px;
+    min-height: 300px;
+  }
+  
+  .title {
+    color: var(--light-gray);
+    font-size: 20px;
+  }
+  
+}

@@ -119,10 +119,11 @@
 
 .footer {
   width: 100%;
-  margin-top: 50px;
+  margin: 50px 0 0 0;
   border-top: 1rem solid var(--golden);
-  height: 250px;
+  height: 100%;
   display: flex;
+  justify-content: center;
   align-items: center;
 }
 
@@ -141,7 +142,7 @@
   font-family: "Almendra", Helvetica;
   font-weight: 700;
   font-size: 2rem;
-  line-height: 2rem;
+  line-height: 4rem;
   color: var(--light-gray);
   text-align: center;
 }
@@ -216,7 +217,9 @@
   }
 
   .footerBlock {
-    padding: 10px;
+    gap: 15px;
+    padding-top: 40px;
+    padding-bottom: 40px;
   }
 
   .footTitle {

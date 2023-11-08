@@ -370,7 +370,6 @@ export const FunctionProvider = ({ children }) => {
   const deleteCardfromSource = (card) => {
     const { player, status, cellId } = card;
     const cardId = card.id;
-    console.log(card);
     switch (status) {
       case 'hand':
         dispatch(battleActions.deleteHandCard({ cardId, player }));

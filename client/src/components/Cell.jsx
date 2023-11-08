@@ -56,7 +56,6 @@ const Cell = ({ props, id, cellData }) => {
   useEffect(() => {
     if (cardType === 'warrior') {
       const warrior = currentCell.content.find((item) => item.type === 'warrior');
-      console.log(warrior);
       if (type === 'field' && warrior && cardSource === 'field') {
         playTriggers(warrior, currentCell, 'onmove', 'warrior');
       }

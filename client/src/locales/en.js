@@ -99,6 +99,7 @@ export default {
     GameEnd: 'The game is over! Player won: ',
     ResetWarning: 'If you continue current progress will be reset. Continue?',
     CurrentOnline: 'Players online',
+    ConnectProblem: 'One of the players experiencing connection problem: try to perform action one more time',
     errors: {
       RoomNotExist: 'Комната не найдена!',
       RoomEmpty: 'Эта комната пустая!',

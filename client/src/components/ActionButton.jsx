@@ -120,7 +120,6 @@ const ActionButton = ({
   function handleKeyDown(e) {
     e.preventDefault();
     const { key } = e;
-    console.log(key);
     switch (key) {
       case '1':
         performClick('turnLeft');

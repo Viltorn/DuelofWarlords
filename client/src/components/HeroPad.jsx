@@ -25,7 +25,7 @@ const HeroPad = ({ type, player }) => {
   const { addCardToField, actionPerforming, makeOnlineAction } = useContext(abilityContext);
 
   const {
-    fieldCells, playersHands, thisPlayer, playerPoints, commonPoints, players,
+    fieldCells, playersHands, thisPlayer, playerPoints, commonPoints, players, gameTurn,
   } = useSelector((state) => state.battleReducer);
   const { gameMode, curRoom } = useSelector((state) => state.gameReducer);
 
@@ -105,6 +105,9 @@ const HeroPad = ({ type, player }) => {
 
   const handleDeckClick = () => {
     if (gameMode === 'online' && actionPerforming) {
+      return;
+    }
+    if (gameTurn !== thisPlayer) {
       return;
     }
     const deckOwner = deck.current.dataset.player;

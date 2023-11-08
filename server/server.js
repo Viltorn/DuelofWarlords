@@ -43,17 +43,24 @@ io.on('connection', (socket) => {
     return room ? room.size === 0 : true;
   };
 
+  const isRoomFull = (roomId) => {
+    const room = io.sockets.adapter.rooms.get(roomId);
+    return room.size === 2;
+  }
+  
+
   const getRooms = () => Array.from(rooms.values());
 
   console.log(socket.id, 'connected');
 
   const currentRooms = getRooms(); // <- 1
 
-  currentRooms.forEach((room) => { // <- 2
+  currentRooms.forEach(async (room) => { // <- 2
     const roomUser = room.players.find((player) => player.id === socket.id); // <- 3
 
     if (roomUser) {
-      io.to(room.roomId).emit('playerReconnected', roomUser); // <- 4
+      await socket.join(room.roomId);
+      io.to(room.roomId).emit('playerReconnected', roomUser);
     }
   });
 
@@ -65,7 +72,6 @@ io.on('connection', (socket) => {
     console.log('username:', args.username);
     socket.data.username = args.username;
     console.log(getRooms());
-    console.log(socket.id);
     const count = io.engine.clientsCount;
     io.emit('clientsCount', count);
     callback(socket.id, getRooms());
@@ -151,6 +157,7 @@ io.on('connection', (socket) => {
           rooms.delete(room.roomId);
           return;
         }
+        socket.leave(room.roomId);
         socket.to(room.roomId).emit('playerDisconnected', userInRoom); // <- 4
       }
     });
@@ -160,13 +167,18 @@ io.on('connection', (socket) => {
   });
 
   socket.on('makeMove', (data, callback) => {
-    socket.to(data.room).emit('makeMove', data);
-    callback();
+    const { room, move } = data;
+    console.log(move);
+    if (isRoomFull(room)) {
+      socket.to(room).emit('makeMove', data);
+      callback({ error: false });
+    } else {
+      callback({ error: true });
+    }
   });
 
   socket.on('closeRoom', async (data, callback) => {
     const { roomId } = data;
-    console.log(rooms.get(roomId));
     if (rooms.get(roomId)) {
       console.log('closing room');
       socket.to(roomId).emit('closeRoom', data);
