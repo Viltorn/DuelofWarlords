@@ -372,14 +372,12 @@ export const AbilityProvider = ({ children }) => {
           applySpellEffect(feature, warrior, foundCell, newfieldCells, player);
         }
       }
-    } else if (aim.includes('closerowcell')) {
-      if (type === 'bad') {
-        const foundCell = newfieldCells.find((cell) => cell.player !== aimCell.player
+    } else if (aim.includes('enemyrowcell')) {
+      const foundCell = newfieldCells.find((cell) => cell.player !== aimCell.player
         && cell.row === aimCell.row && cell.content.length !== 0);
-        if (foundCell) {
-          const warrior = foundCell.content.find((el) => el.type === 'warrior');
-          applySpellEffect(feature, warrior, foundCell, newfieldCells, player);
-        }
+      if (foundCell) {
+        const warrior = foundCell.content.find((el) => el.type === 'warrior');
+        applySpellEffect(feature, warrior, foundCell, newfieldCells, player);
       }
     } else if (aim.includes('nextcells')) {
       const currentRowNumber = parseInt(aimCell.row, 10);
@@ -965,6 +963,7 @@ export const AbilityProvider = ({ children }) => {
         const { move } = actionData;
         const resType = res.error ? 'error' : 'action';
         chooseAction[resType](move, actionData);
+        console.log(resType);
         setActionPerforming(false);
       });
     } else {

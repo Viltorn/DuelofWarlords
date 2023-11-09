@@ -70,7 +70,7 @@ const HeroPad = ({ type, player }) => {
     if (gameMode === 'online' && actionPerforming) {
       return;
     }
-    if (activeCard && !isAllowedCost(activeCard)) {
+    if ((activeCard && !isAllowedCost(activeCard)) || postponedCell.disabled) {
       return;
     }
 

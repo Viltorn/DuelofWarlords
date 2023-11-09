@@ -74,7 +74,7 @@ const OnlineGameStart = () => {
         const playerFullDeck = createDeckForPLayer(makeShaffledDeck(values.playerDeck), player);
         const playerHand = player === 'player1' ? playerFullDeck.slice(0, startCardsNum) : [...playerFullDeck.slice(0, startCardsNum), dummyCard];
         const playerDeck = playerFullDeck.slice(startCardsNum);
-        if (player === 'player1') {
+        if (player === 'player1' && socket.connected) {
           socket.emit('createRoom', { deck: playerDeck, hand: playerHand, hero: values.playerHero }, (res) => {
             console.log(res);
             handleClose();
@@ -82,7 +82,7 @@ const OnlineGameStart = () => {
             dispatch(battleActions.addCommonPoint());
             navigate('/battle');
           });
-        } else {
+        } else if (socket.connected) {
           socket.emit('joinRoom', {
             room: roomId, deck: playerDeck, hand: playerHand, hero: values.playerHero,
           }, (res) => {

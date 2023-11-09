@@ -21,7 +21,7 @@ import HealingLight from '../assets/CastleDeck/HealingLight.png';
 import HeavenProtection from '../assets/CastleDeck/HeavenProtection.png';
 import HeavenShock from '../assets/CastleDeck/HeavenShock.png';
 import HolyLand from '../assets/CastleDeck/HolyLand.png';
-import HolyShield from '../assets/CastleDeck/HolyShield.png';
+import AttackAura from '../assets/CastleDeck/AttackAura.png';
 import LastChance from '../assets/CastleDeck/LastChance.png';
 import LightShield from '../assets/CastleDeck/LightShield.png';
 import Resurrection from '../assets/CastleDeck/Resurrection.png';
@@ -379,22 +379,22 @@ const castleDeck = [
   },
   {
     card: {
-      name: 'Holy Shield',
+      name: 'Attack Aura',
       type: 'spell',
       subtype: 'permanent',
       cost: 2,
       currentC: 2,
-      description: cardsInfo.HolyShield,
+      description: cardsInfo.AttackAura,
       id: _.uniqueId(),
       place: 'warrior',
-      features: [{
-        attach: ['warrior'],
-        aim: ['warrior', 'fighter', 'shooter', 'flyer'],
-        type: 'good',
-        name: 'retaliatestrike',
-        value: 2,
-      }],
-      img: HolyShield,
+      features: [
+        {
+          attach: false, type: 'good', aim: ['enemyrowcell', 'warrior'], name: 'attack', value: 2,
+        },
+        {
+          attach: ['warrior'], type: 'bad', aim: ['enemyrowcell', 'warrior'], name: 'attack', condition: 'onturnstart', value: 2, charges: 1,
+        }],
+      img: AttackAura,
       status: 'hand',
       disabled: false,
     },
@@ -682,3 +682,11 @@ const castleDeck = [
 ];
 
 export default castleDeck;
+
+// {
+//   attach: ['warrior'],
+//   aim: ['warrior', 'fighter', 'shooter', 'flyer'],
+//   type: 'good',
+//   name: 'retaliatestrike',
+//   value: 2,
+// }

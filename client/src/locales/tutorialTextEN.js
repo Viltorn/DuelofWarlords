@@ -17,7 +17,7 @@ export default {
   step16: 'So, the "Imperial Shooter" card came to your hand, its costs  1, that is displayed in a black square on the card. "Imperial Shooter" belongs to the class of Shooter as it has a "target" icon in the upper left corner of the card',
   step17: 'Shooters can only be positioned on the "back line" behind the rest of the warriors. Select the "Imperial Shooter" card and place it on the battlefield in any available cell',
   step18: 'Warriors enter the game in inactive state, so you will not be able to use them immediately. You don\'t have any action points left, so click the red "end turn" button in header bar to start the next round',
-  step19: 'Round 2 has started and now you have 2 action points. Also, every turn you get a card from your deck: now it\'s a "Warrior of Light", let\'s try to play it',
+  step19: 'Round 2 has started and now you have 2 action points. Also, every turn you get a card from your deck: now it\'s a "Warrior of Light"',
   step20: 'The "Warrior of Light" is a Fighter, as he has a swords icon in the upper left corner of the card. The fighters are located only in the front line on any free cell',
   step21: 'Select the "Warrior of Light" and place him on the battlefield in front of your shooter to protect him from future attacks',
   step22: 'Great! You have run out of action points, so click "end turn" to start the next round and get a new card',

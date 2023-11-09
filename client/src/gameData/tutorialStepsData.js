@@ -18,7 +18,7 @@ const data = [
     step: 'step6', func: 'turnWarrior', next: true, back: false, disEndTurn: true,
   },
   {
-    step: 'step7', func: '', left: 23, next: true, back: false, disEndTurn: true,
+    step: 'step7', func: 'disablePostponed', left: 23, next: true, back: false, disEndTurn: true,
   },
   {
     step: 'step8', func: 'addGrifAndGarg', left: 23, next: false, back: false, disEndTurn: true,
@@ -66,7 +66,7 @@ const data = [
     step: 'step22', func: 'activateEnemyCells', left: 22, next: false, back: false, disEndTurn: false,
   },
   {
-    step: 'step23', func: '', left: 22, next: true, back: false, disEndTurn: true,
+    step: 'step23', func: 'disablePlayerCells', left: 22, next: true, back: false, disEndTurn: true,
   },
   {
     step: 'step24', func: 'activeFlyerCells', left: 15, next: false, back: false, disEndTurn: true,
@@ -90,10 +90,10 @@ const data = [
     step: 'step30', func: 'addSpellsToDeck', left: 15, next: false, back: false, disEndTurn: false,
   },
   {
-    step: 'step31', func: '', left: 15, next: true, back: false, disEndTurn: true,
+    step: 'step31', func: 'disableCells', left: 15, next: true, back: false, disEndTurn: true,
   },
   {
-    step: 'step32', func: 'disableCells', left: 15, next: true, back: false, disEndTurn: true,
+    step: 'step32', func: '', left: 15, next: true, back: false, disEndTurn: true,
   },
   {
     step: 'step33', func: 'activateEnemyLine3', left: 15, next: false, back: false, disEndTurn: true,
@@ -141,13 +141,13 @@ const data = [
     step: 'step47', func: '', left: 23, next: true, back: false, disEndTurn: true, disAbility: true,
   },
   {
-    step: 'step48', func: '', left: 23, next: true, back: false, disEndTurn: true, disAbility: true,
+    step: 'step48', func: 'removeFireGolem', left: 23, next: true, back: false, disEndTurn: true, disAbility: true,
   },
   {
-    step: 'step49', func: 'removeFireGolem', left: 38, next: false, back: false, disEndTurn: true, disAbility: true,
+    step: 'step49', func: 'activatePostponed', left: 38, next: false, back: false, disEndTurn: true, disAbility: true,
   },
   {
-    step: 'step50', func: '', left: 38, next: false, back: false, disEndTurn: false, disAbility: true,
+    step: 'step50', func: 'disablePostponed', left: 38, next: false, back: false, disEndTurn: false, disAbility: true,
   },
   {
     step: 'step51', func: 'addSecondEarthGolem', left: 15, next: true, back: false, disEndTurn: true, disAbility: true,
@@ -171,7 +171,7 @@ const data = [
     step: 'step57', func: '', left: 15, next: true, back: false, disEndTurn: true, disAbility: true,
   },
   {
-    step: 'step58', func: '', left: 38, next: false, back: false, disEndTurn: true, disAbility: true,
+    step: 'step58', func: 'activatePostponed', left: 38, next: false, back: false, disEndTurn: true, disAbility: true,
   },
   {
     step: 'step59', func: 'disableEnemyCells', left: 0, next: false, back: false, disEndTurn: false, disAbility: true,

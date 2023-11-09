@@ -39,25 +39,26 @@ export const types = ['beforeturn', 'afterplay', 'protection', 'afterdeath'];
 const academiaDeck = [
   {
     card: {
-      name: 'Living wall', type: 'warrior', subtype: 'fighter', power: 2, currentP: 2, health: 5, currentHP: 5, cost: 2, currentC: 2, description: academiaInfo.LivingWall, id: _.uniqueId(), features: [{ name: 'immobile' }, { name: 'unarmed' }], attachments: [], img: LivingWall, status: 'hand', turn: 1,
+      name: 'Living wall', id: _.uniqueId(), type: 'warrior', subtype: 'fighter', power: 2, currentP: 2, health: 5, currentHP: 5, cost: 2, currentC: 2, description: academiaInfo.LivingWall, features: [{ name: 'immobile' }, { name: 'unarmed' }], attachments: [], img: LivingWall, status: 'hand', turn: 1,
     },
     qty: 1,
   },
   {
     card: {
-      name: 'Mage apprentice', type: 'warrior', subtype: 'shooter', power: 2, currentP: 2, health: 4, currentHP: 4, cost: 3, currentC: 3, description: academiaInfo.MageApprentice, id: _.uniqueId(), features: [{ name: 'massAttack' }], attachments: [], img: MageApprentice, status: 'hand', turn: 1,
+      name: 'Mage apprentice', id: _.uniqueId(), type: 'warrior', subtype: 'shooter', power: 2, currentP: 2, health: 4, currentHP: 4, cost: 3, currentC: 3, description: academiaInfo.MageApprentice, features: [{ name: 'massAttack' }], attachments: [], img: MageApprentice, status: 'hand', turn: 1,
     },
     qty: 2,
   },
   {
     card: {
-      name: 'Gremlin shooter', type: 'warrior', subtype: 'shooter', power: 2, currentP: 2, health: 3, currentHP: 3, cost: 2, currentC: 2, description: academiaInfo.GremlinShooter, id: _.uniqueId(), features: [{ name: 'retaliation', value: 1, aim: ['shooter'] }], attachments: [], img: GremlinShooter, status: 'hand', turn: 1,
+      name: 'Gremlin shooter', id: _.uniqueId(), type: 'warrior', subtype: 'shooter', power: 2, currentP: 2, health: 3, currentHP: 3, cost: 2, currentC: 2, description: academiaInfo.GremlinShooter, features: [{ name: 'retaliation', value: 1, aim: ['shooter'] }], attachments: [], img: GremlinShooter, status: 'hand', turn: 1,
     },
     qty: 1,
   },
   {
     card: {
       name: 'Ice element',
+      id: _.uniqueId(),
       type: 'warrior',
       subtype: 'shooter',
       power: 2,
@@ -67,9 +68,8 @@ const academiaDeck = [
       cost: 3,
       currentC: 3,
       description: academiaInfo.IceElement,
-      id: _.uniqueId(),
       features: [{
-        attach: false, type: 'bad', aim: ['closerowcell', 'warrior'], name: 'stun', condition: 'lastcall',
+        attach: false, type: 'bad', aim: ['enemyrowcell', 'warrior'], name: 'stun', condition: 'lastcall',
       }],
       attachments: [],
       img: IceElemental,
@@ -81,6 +81,7 @@ const academiaDeck = [
   {
     card: {
       name: 'Earth golem',
+      id: _.uniqueId(),
       type: 'warrior',
       subtype: 'fighter',
       power: 2,
@@ -90,7 +91,6 @@ const academiaDeck = [
       cost: 2,
       currentC: 2,
       description: academiaInfo.EarthGolem,
-      id: _.uniqueId(),
       features: [{
         attach: false, type: 'good', aim: ['adjacent', 'warrior'], name: 'heal', value: 1, condition: 'onplay',
       }],
@@ -105,6 +105,7 @@ const academiaDeck = [
   {
     card: {
       name: 'Gargoyle',
+      id: _.uniqueId(),
       type: 'warrior',
       subtype: 'flyer',
       power: 2,
@@ -114,7 +115,6 @@ const academiaDeck = [
       cost: 2,
       currentC: 2,
       description: academiaInfo.Gargoyle,
-      id: _.uniqueId(),
       features: [{
         attach: false,
         aim: ['shooter', 'warrior'],
@@ -134,6 +134,7 @@ const academiaDeck = [
   {
     card: {
       name: 'Fire golem',
+      id: _.uniqueId(),
       type: 'warrior',
       subtype: 'fighter',
       power: 3,
@@ -143,7 +144,6 @@ const academiaDeck = [
       cost: 4,
       currentC: 4,
       description: academiaInfo.FireGolem,
-      id: _.uniqueId(),
       features: [{
         attach: false, type: 'all', aim: ['row', 'warrior'], name: 'attack', condition: 'lastcall', value: 1,
       }],
@@ -157,6 +157,7 @@ const academiaDeck = [
   {
     card: {
       name: 'Rakshasa',
+      id: _.uniqueId(),
       type: 'warrior',
       subtype: 'fighter',
       power: 2,
@@ -166,7 +167,6 @@ const academiaDeck = [
       cost: 3,
       currentC: 3,
       description: academiaInfo.Rakshasa,
-      id: _.uniqueId(),
       features: [{
         attach: false, type: 'good', aim: ['warrior'], name: 'evade', condition: 'nextRowCell',
       }],
@@ -180,6 +180,7 @@ const academiaDeck = [
   {
     card: {
       name: 'Young genie',
+      id: _.uniqueId(),
       type: 'warrior',
       subtype: 'flyer',
       power: 3,
@@ -189,7 +190,6 @@ const academiaDeck = [
       cost: 3,
       currentC: 3,
       description: academiaInfo.YoungGenie,
-      id: _.uniqueId(),
       features: [{
         name: 'invoke',
         aim: ['warrior'],
@@ -219,6 +219,7 @@ const academiaDeck = [
   {
     card: {
       name: 'Energy elemental',
+      id: _.uniqueId(),
       type: 'warrior',
       subtype: 'shooter',
       power: 2,
@@ -228,7 +229,6 @@ const academiaDeck = [
       cost: 4,
       currentC: 4,
       description: academiaInfo.EnergyElemental,
-      id: _.uniqueId(),
       features: [{
         name: 'attack', condition: 'onattack', type: 'bad', aim: ['nextrowcell', 'warrior'], value: 2, apply: 'attacked',
       }],
@@ -242,6 +242,7 @@ const academiaDeck = [
   {
     card: {
       name: 'Ice giant',
+      id: _.uniqueId(),
       type: 'warrior',
       subtype: 'fighter',
       power: 4,
@@ -251,7 +252,6 @@ const academiaDeck = [
       cost: 6,
       currentC: 6,
       description: academiaInfo.IceGiant,
-      id: _.uniqueId(),
       features: [{
         attach: false, type: 'bad', aim: ['row', 'warrior', 'fighter', 'shooter', 'flyer'], name: 'stun', condition: 'onplay',
       }],
@@ -265,12 +265,12 @@ const academiaDeck = [
   {
     card: {
       name: 'Arcane armor',
+      id: _.uniqueId(),
       type: 'spell',
       subtype: 'instant',
       cost: 1,
       currentC: 1,
       description: academiaInfo.ArcaneArmor,
-      id: _.uniqueId(),
       place: 'postponed',
       features: [{
         attach: ['field', 'warrior', 'hero'], aim: ['warrior', 'fighter', 'shooter', 'flyer'], type: 'good', name: 'protection', value: { type: 'number', val: 100 }, charges: 1, condition: 'minPower', conditionValue: 3,
@@ -283,12 +283,12 @@ const academiaDeck = [
   {
     card: {
       name: 'Blizzard',
+      id: _.uniqueId(),
       type: 'spell',
       subtype: 'temporary',
       cost: 2,
       currentC: 2,
       description: academiaInfo.Blizzard,
-      id: _.uniqueId(),
       place: 'midSpell',
       features: [
         {
@@ -306,12 +306,12 @@ const academiaDeck = [
   {
     card: {
       name: 'Cursed chackle',
+      id: _.uniqueId(),
       type: 'spell',
       subtype: 'permanent',
       cost: 3,
       currentC: 3,
       description: academiaInfo.CursedChackle,
-      id: _.uniqueId(),
       place: 'warrior',
       features: [
         {
@@ -332,12 +332,12 @@ const academiaDeck = [
   {
     card: {
       name: 'Frostbite',
+      id: _.uniqueId(),
       type: 'spell',
       subtype: 'permanent',
       cost: 2,
       currentC: 2,
       description: academiaInfo.Frostbite,
-      id: _.uniqueId(),
       place: 'warrior',
       features: [
         {
@@ -356,12 +356,12 @@ const academiaDeck = [
   {
     card: {
       name: 'Frost trap',
+      id: _.uniqueId(),
       type: 'spell',
       subtype: 'instant',
       cost: 2,
       currentC: 2,
       description: academiaInfo.FrostTrap,
-      id: _.uniqueId(),
       place: 'postponed',
       features: [{
         attach: ['field', 'warrior'], aim: ['warrior'], name: 'return', condition: 'onplay', type: 'bad', charges: 1,
@@ -377,12 +377,12 @@ const academiaDeck = [
   {
     card: {
       name: 'Ice block',
+      id: _.uniqueId(),
       type: 'spell',
       subtype: 'temporary',
       cost: 3,
       currentC: 3,
       description: academiaInfo.IceBlock,
-      id: _.uniqueId(),
       place: 'warrior',
       features: [
         {
@@ -401,12 +401,12 @@ const academiaDeck = [
   {
     card: {
       name: 'Ice spikes',
+      id: _.uniqueId(),
       type: 'spell',
       subtype: 'instant',
       cost: 3,
       currentC: 3,
       description: academiaInfo.IceSpikes,
-      id: _.uniqueId(),
       place: '',
       features: [{
         attach: false, type: 'bad', name: 'attack', value: 2, aim: ['warrior', 'line'],
@@ -419,12 +419,12 @@ const academiaDeck = [
   {
     card: {
       name: 'Ice wall',
+      id: _.uniqueId(),
       type: 'spell',
       subtype: 'temporary',
       cost: 1,
       currentC: 1,
       description: academiaInfo.IceWall,
-      id: _.uniqueId(),
       place: 'midSpell',
       features: [
         {
@@ -441,12 +441,12 @@ const academiaDeck = [
   {
     card: {
       name: 'Ice weapon',
+      id: _.uniqueId(),
       type: 'spell',
       subtype: 'permanent',
       cost: 4,
       currentC: 4,
       description: academiaInfo.IceWeapon,
-      id: _.uniqueId(),
       place: 'warrior',
       features: [{
         attach: ['warrior'],
@@ -463,12 +463,12 @@ const academiaDeck = [
   {
     card: {
       name: 'Icing',
+      id: _.uniqueId(),
       type: 'spell',
       subtype: 'temporary',
       cost: 2,
       currentC: 2,
       description: academiaInfo.Icing,
-      id: _.uniqueId(),
       place: 'midSpell',
       features: [
         {
@@ -491,12 +491,12 @@ const academiaDeck = [
   {
     card: {
       name: 'Invisibility cloak',
+      id: _.uniqueId(),
       type: 'spell',
       subtype: 'temporary',
       cost: 1,
       currentC: 1,
       description: academiaInfo.InvisibilityCloak,
-      id: _.uniqueId(),
       place: 'warrior',
       features: [
         {
@@ -517,12 +517,12 @@ const academiaDeck = [
   {
     card: {
       name: 'Soul drain',
+      id: _.uniqueId(),
       type: 'spell',
       subtype: 'instant',
       cost: 5,
       currentC: 5,
       description: academiaInfo.SoulDrain,
-      id: _.uniqueId(),
       place: '',
       features: [{
         attach: false, type: 'bad', name: 'attack', value: 200, aim: ['warrior'],
@@ -535,12 +535,12 @@ const academiaDeck = [
   {
     card: {
       name: 'Teleport',
+      id: _.uniqueId(),
       type: 'spell',
       subtype: 'instant',
       cost: 1,
       currentC: 1,
       description: academiaInfo.Teleport,
-      id: _.uniqueId(),
       place: '',
       features: [{
         attach: ['warrior'], type: 'good', aim: ['warrior'], charges: 1, name: 'moving',
@@ -553,12 +553,12 @@ const academiaDeck = [
   {
     card: {
       name: 'Town portal',
+      id: _.uniqueId(),
       type: 'spell',
       subtype: 'instant',
       cost: 3,
       currentC: 3,
       description: academiaInfo.TownPortal,
-      id: _.uniqueId(),
       place: '',
       features: [{
         attach: false, type: 'bad', name: 'return', aim: ['warrior'],
@@ -571,12 +571,12 @@ const academiaDeck = [
   {
     card: {
       name: 'Transformation',
+      id: _.uniqueId(),
       type: 'spell',
       subtype: 'instant',
       cost: 1,
       currentC: 1,
       description: academiaInfo.Transformation,
-      id: _.uniqueId(),
       place: '',
       features: [{
         attach: false, type: 'bad', name: 'stun', aim: 'warrior',
@@ -591,12 +591,12 @@ const academiaDeck = [
   {
     card: {
       name: 'Tsunami',
+      id: _.uniqueId(),
       type: 'spell',
       subtype: 'instant',
       cost: 7,
       currentC: 7,
       description: academiaInfo.Tsunami,
-      id: _.uniqueId(),
       place: '',
       features: [{
         attach: false, type: 'all', aim: ['field', 'warrior', 'fighter', 'shooter'], name: 'attack', value: 7, depend: 'postponed', dependValue: 8,
@@ -609,12 +609,12 @@ const academiaDeck = [
   {
     card: {
       name: 'Waterfall',
+      id: _.uniqueId(),
       type: 'spell',
       subtype: 'temporary',
       cost: 2,
       currentC: 2,
       description: academiaInfo.Waterfall,
-      id: _.uniqueId(),
       place: 'bigSpell',
       features: [{
         attach: ['field', 'warrior'], aim: ['warrior', 'fighter', 'shooter', 'flyer'], type: 'all', name: 'unarmed', condition: 'maxPower', conditionValue: 2,
@@ -627,12 +627,12 @@ const academiaDeck = [
   {
     card: {
       name: 'Ice arrow',
+      id: _.uniqueId(),
       type: 'spell',
       subtype: 'instant',
       cost: 2,
       currentC: 2,
       description: academiaInfo.IceArrow,
-      id: _.uniqueId(),
       place: '',
       features: [{
         attach: false, type: 'bad', aim: ['warrior'], name: 'attack', value: 2,
@@ -647,12 +647,12 @@ const academiaDeck = [
   {
     card: {
       name: 'Ice armor',
+      id: _.uniqueId(),
       type: 'spell',
       subtype: 'temporary',
       cost: 1,
       currentC: 1,
       description: academiaInfo.IceArmor,
-      id: _.uniqueId(),
       place: 'warrior',
       features: [{
         attach: ['warrior', 'hero'],

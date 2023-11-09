@@ -362,7 +362,7 @@ export const FunctionProvider = ({ children }) => {
     }
 
     const postponedCell = fieldCells.find((cell) => cell.type === 'postponed' && cell.player === thisPlayer);
-    if (status === 'hand' && postponedCell.content.length === 0) {
+    if (status === 'hand' && postponedCell.content.length === 0 && !postponedCell.disabled) {
       dispatch(battleActions.addAnimation({ cell: postponedCell, type: 'green' }));
     }
   };

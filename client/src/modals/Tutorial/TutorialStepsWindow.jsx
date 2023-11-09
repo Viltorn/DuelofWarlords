@@ -89,6 +89,12 @@ const TutorialStepsWindow = () => {
         dispatch(battleActions.addFieldContent({ card: cards.gargoyle, id: '3.3' }));
         dispatch(battleActions.activateCells({ ids: ['2.3'] }));
       },
+      disablePostponed: () => {
+        dispatch(battleActions.disableCells({ ids: ['postponed1'] }));
+      },
+      activatePostponed: () => {
+        dispatch(battleActions.activateCells({ ids: ['postponed1'] }));
+      },
       turnWarrior: () => {
         dispatch(battleActions.turnCardRight({ cardId: cards.knight.id, cellId: '2.1', qty: 1 }));
       },
@@ -177,6 +183,10 @@ const TutorialStepsWindow = () => {
       activatePlayersCells: () => {
         const ids = playersCells.map((cell) => cell.id);
         dispatch(battleActions.activateCells({ ids: [...ids] }));
+      },
+      disablePlayerCells: () => {
+        const ids = playersCells.map((cell) => cell.id);
+        dispatch(battleActions.disableCells({ ids: [...ids] }));
       },
       activatePlayersHero: () => dispatch(battleActions.activateCells({ ids: ['hero1'] })),
       addWarriorsToDeck: () => dispatch(battleActions.setPlayersDeck({ deck: warriorsDeck, player: 'player1' })),
