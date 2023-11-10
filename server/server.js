@@ -79,13 +79,14 @@ io.on('connection', (socket) => {
 
   socket.on('createRoom', async (args, callback) => { // callback here refers to the callback function from the client passed as data
     const roomId = uuidV4(); // <- 1 create a new uuid
-    const { hero,  deck, hand  } = args
+    const { hero,  deck, hand, password  } = args
     await socket.join(roomId); // <- 2 make creating user join the room
    
     // set roomId as a key and roomData including players as value in the map
     rooms.set(roomId, { // <- 3
       roomId,
       players: [{ id: socket.id, type: 'player1', username: socket.data?.username, hero, deck, hand }],
+      password
     });
 
     callback(roomId); // <- 4 respond with roomId to client by calling the callback function from the client
@@ -94,7 +95,7 @@ io.on('connection', (socket) => {
 
   socket.on('joinRoom', async (args, callback) => {
     // check if room exists and has a player waiting
-    const { hero, deck, hand, room  } = args;
+    const { hero, deck, hand, room, password  } = args;
     const currentRoom = rooms.get(room);
 
     let error, message;
@@ -108,6 +109,9 @@ io.on('connection', (socket) => {
     } else if (currentRoom.players.length >= 2) { // if room is full
       error = true;
       message = 'RoomFull'; // set message to 'room is full'
+    } else if (currentRoom.password !== password) {
+      error = true;
+      message = 'IncorrectPass';
     }
 
     if (error) {

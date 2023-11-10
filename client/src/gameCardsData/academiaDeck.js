@@ -254,6 +254,9 @@ const academiaDeck = [
       description: academiaInfo.IceGiant,
       features: [{
         attach: false, type: 'bad', aim: ['row', 'warrior', 'fighter', 'shooter', 'flyer'], name: 'stun', condition: 'onplay',
+      },
+      {
+        attach: false, type: 'good', aim: ['allyrowcell', 'warrior', 'fighter', 'shooter', 'flyer'], name: 'stun', condition: 'onplay',
       }],
       attachments: [],
       img: IceGiant,

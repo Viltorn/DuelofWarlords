@@ -16,6 +16,7 @@ import MenuSlider from './MenuSlider.jsx';
 import makeShaffledDeck from '../utils/makeShaffledDeck.js';
 import createDeckForPLayer from '../utils/makeDeckForPlayer.js';
 import dummyCard from '../gameCardsData/dummyCard.js';
+import { password } from '../utils/validation.js';
 
 const OnlineGameStart = () => {
   const [factionNumber, setFactionSlide] = useState(0);
@@ -64,7 +65,9 @@ const OnlineGameStart = () => {
       playerFaction,
       playerHero: playerHeroes[heroNumber],
       playerDeck: decks[playerFaction.id],
+      password: '',
     },
+    validationSchema: password,
     onSubmit: async (values) => {
       try {
         setError(false);
@@ -75,7 +78,9 @@ const OnlineGameStart = () => {
         const playerHand = player === 'player1' ? playerFullDeck.slice(0, startCardsNum) : [...playerFullDeck.slice(0, startCardsNum), dummyCard];
         const playerDeck = playerFullDeck.slice(startCardsNum);
         if (player === 'player1' && socket.connected) {
-          socket.emit('createRoom', { deck: playerDeck, hand: playerHand, hero: values.playerHero }, (res) => {
+          socket.emit('createRoom', {
+            deck: playerDeck, hand: playerHand, hero: values.playerHero, password: values.password,
+          }, (res) => {
             console.log(res);
             handleClose();
             dispatch(gameActions.setCurrentRoom({ room: res }));
@@ -84,7 +89,11 @@ const OnlineGameStart = () => {
           });
         } else if (socket.connected) {
           socket.emit('joinRoom', {
-            room: roomId, deck: playerDeck, hand: playerHand, hero: values.playerHero,
+            room: roomId,
+            deck: playerDeck,
+            hand: playerHand,
+            hero: values.playerHero,
+            password: values.password,
           }, (res) => {
             console.log('response:', res);
             if (res.error) {
@@ -159,38 +168,57 @@ const OnlineGameStart = () => {
                 <p className={styles.description}>{playerHeroes[heroNumber].description}</p>
               </div>
             </div>
-            {error && (<div className={styles.invalidFeedback}>{t(`errors.${error.message}`)}</div>)}
-            {name && (
-            <p className={styles.roomsOwner}>
-              {t('RoomsOwner')}
-              {name}
-            </p>
-            )}
-            <div className={styles.btnBlock}>
-              {!roomId ? (
-                <PrimaryButton
-                  showIcon={false}
-                  state="default"
-                  text={t('CREATE')}
-                  variant="primary"
-                  type="submit"
-                />
-              ) : (
-                <PrimaryButton
-                  showIcon={false}
-                  state="default"
-                  text={t('JOIN')}
-                  variant="primary"
-                  type="submit"
-                />
-              )}
-              <PrimaryButton
-                onClick={handleClose}
-                showIcon={false}
-                state="default"
-                text={t('CLOSE')}
-                variant="secondary"
+            <div className={styles.inputBlock}>
+              <input
+                className={styles.input}
+                id="password"
+                type="text"
+                ref={inputEl}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                value={formik.values.password}
+                placeholder={t('Password')}
+                data-testid="input-body"
+                name="password"
               />
+              {formik.errors.password ? (
+                <div className={styles.invalidFeedback}>{t(`errors.${formik.errors.password}`)}</div>
+              ) : null}
+              {error && (<div className={styles.invalidFeedback}>{t(`errors.${error.message}`)}</div>)}
+            </div>
+            <div className={styles.lowerBlock}>
+              {name && (
+              <p className={styles.roomsOwner}>
+                {t('RoomsOwner')}
+                {name}
+              </p>
+              )}
+              <div className={styles.btnBlock}>
+                {!roomId ? (
+                  <PrimaryButton
+                    showIcon={false}
+                    state="default"
+                    text={t('CREATE')}
+                    variant="primary"
+                    type="submit"
+                  />
+                ) : (
+                  <PrimaryButton
+                    showIcon={false}
+                    state="default"
+                    text={t('JOIN')}
+                    variant="primary"
+                    type="submit"
+                  />
+                )}
+                <PrimaryButton
+                  onClick={handleClose}
+                  showIcon={false}
+                  state="default"
+                  text={t('CLOSE')}
+                  variant="secondary"
+                />
+              </div>
             </div>
           </fieldset>
         </form>

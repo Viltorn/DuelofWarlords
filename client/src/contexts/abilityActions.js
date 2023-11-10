@@ -229,6 +229,9 @@ export const AbilityProvider = ({ children }) => {
           qty: turnQty,
         }));
         moveAttachedSpells(aimCard.cellId, choosenCell.id, 'move');
+        setCellData({
+          id: choosenCell.id, content: 1, source: aimCard.status, type: aimCard.type,
+        });
       } else if (name === 'stun' && aimCard?.status === 'field') {
         const newTurn = turn === 0 ? 2 : 1;
         dispatch(battleActions.turnCardLeft({
@@ -375,6 +378,13 @@ export const AbilityProvider = ({ children }) => {
     } else if (aim.includes('enemyrowcell')) {
       const foundCell = newfieldCells.find((cell) => cell.player !== aimCell.player
         && cell.row === aimCell.row && cell.content.length !== 0);
+      if (foundCell) {
+        const warrior = foundCell.content.find((el) => el.type === 'warrior');
+        applySpellEffect(feature, warrior, foundCell, newfieldCells, player);
+      }
+    } else if (aim.includes('allyrowcell')) {
+      const foundCell = newfieldCells.find((cell) => cell.player === aimCell.player
+        && cell.row === aimCell.row && cell.content.length !== 0 && cell.id !== aimCell.id);
       if (foundCell) {
         const warrior = foundCell.content.find((el) => el.type === 'warrior');
         applySpellEffect(feature, warrior, foundCell, newfieldCells, player);

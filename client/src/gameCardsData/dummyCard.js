@@ -5,7 +5,7 @@ const dummyCard = {
   name: 'Dummy',
   type: 'spell',
   subtype: 'instant',
-  description: 'Вы получаете дополнительное 1 очко действия или вытягиваете карту из колоды, или отнимаете 1 здоровье у воина на поле',
+  description: 'Вы получаете дополнительное 1 очко действия в этому ходу',
   id: _.uniqueId(),
   features: [{
     attach: false, type: 'all', aim: ['warrior'], name: 'increasepoints', value: 1, condition: 'insteadatk', cost: 0,

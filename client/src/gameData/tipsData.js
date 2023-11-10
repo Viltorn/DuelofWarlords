@@ -3,7 +3,7 @@ const tips = [
   { h1: 'STUN', id: 't2' },
   { h1: 'INVISIBILITY', id: 't3' },
   { h1: 'REACTION', id: 't4' },
-  { h1: 'EVADE', id: 't5' },
+  { h1: 'EVASION', id: 't5' },
   { h1: 'MASSIVEBLOW', id: 't6' },
   { h1: 'SHOCKWAVE', id: 't7' },
   { h1: 'MAGICSHIELD', id: 't8' },
