@@ -1,11 +1,13 @@
 import tutorialText from './tutorialTextEN';
 import { menuTipsHeaders, menuTipsText } from './menuTipsEn';
+import AcademiaInfo from './academiaCardsInfoEN';
+import CastleInfo from './castleCardsInfoEN';
 
 export default {
   translation: {
     mainDescription: ` - is collectible card game created on basis of Might and Magic: Duel of Champions (MMDoc) that is no longer officially supported.
-      MMdoc had many fans but it also had pretty complicated gameplay and could exist as computer game only. In DofW original mechanic was reworked:
-      it become simplier but new features were also added in order to make it still exciting to play, and overall allows new game to be made as board game alongside with electronic version.`,
+      MMdoc had many fans but it also had pretty complicated gameplay for average player and could exist as computer game only. In DofW original mechanic of MMDoC was reworked:
+      it become simplier but new features were also added in order to make it still exciting to play, and overall allows new game to be made as board game alongside with digital version.`,
     gameDescription: `The game is a 2-player tactical duel in a fantasy world inspired by the Heroes of Might and Magic series of games.
     Each of the players controls one of the unique warlord in the game belonging to the chosen faction.
     During the game, opponents take turns playing spells and warriors cards, as well as moving them around the battlefield to achieve the main goal - to reduce the enemy warlord's health to 0 points`,
@@ -21,7 +23,7 @@ export default {
     You need to place them correctly on the battlefield to take advantage of each class.
     Move the warriors around the battlefield to prevent the enemy from attacking your warlord!`,
     HeroPowerDescription: `Warlords are directly involved in the battle: they attack the enemy or use useful spells!
-    Each warlord has a standard ability and a unique one that should be taken into account when assembling the deck of cards.`,
+    Each warlord has a standard ability and a unique one that should be taken into account when you assembling your deck.`,
     SpellsDescription: '6 spells schools and three types of magic cards: make strikes against enemy warriors with instant type of magic, take control over battlefield with temporary effects or increase your warriors power with permanent spells!',
     PostponedDescription: 'You can make any card postponed during your turn that allows you to perform one of the following moves: increase spell power of attacking spells, make unexpected strike agains your enemy or simply play combo of your own!',
     GameDescriptTitle: 'GAME DESCRIPTION',
@@ -52,6 +54,7 @@ export default {
     deckreturn: 'TO DECK',
     ability: 'ABILITY',
     graveyard: 'TO GRAVE',
+    switchcard: 'REPLACE',
     CLOSE: 'CLOSE',
     Change: 'CHANGE',
     ChangeHP: 'CHANGE HEALTH POINTS',
@@ -85,9 +88,10 @@ export default {
     GOLOBBY: 'GO TO LOBBY',
     Tips: 'TIPS',
     Tip1: 'You can always click on the graveyard to see the cards played by you or your opponent',
-    Tip2: 'In the first round of the game, you can throw any number of cards from your hand to the end of the deck and take the same number in return from top of your deck',
-    Tip3: 'In the game menu, you can see a description of special effects such as: STUN, EVASION, etc.',
-    Tip4: 'If you are player#1 so the current number of cards in the opponent\'s hand is displayed in the right right upper corner of the playing field, if you are player#2 then in the left upper corner',
+    Tip2: 'In the first round of the game, you can one time throw any number of cards from your hand to the end of the deck and take the same number in return from top of your deck',
+    Tip3: 'During game, once per round, a player can put 1 card from his hand into the deck and draw a new card in return',
+    Tip4: 'In the game menu, you can see a description of special effects such as: STUN, EVASION, etc.',
+    Tip5: 'If you are player#1 so the current number of cards in the opponent\'s hand is displayed in the right upper corner of the playing field, if you are player#2 then in the left upper corner',
     CurrentRooms: 'CURRENT GAMES',
     YourName: 'Your name',
     Password: 'Password...',
@@ -110,7 +114,7 @@ export default {
       AuthorizationError: 'Пожалуйста, авторизуйте аккаунт',
       LoginError: 'Пожалуйста, проверьте данные для входа',
       Conflict: 'Такой пользователь уже существует',
-      Required: 'Обязательное поле',
+      Required: 'Required field',
       OnlyNumber: 'Допустимы только цифры',
       Min3Max10: 'The length from 3 up to 10 symbols',
       Min6: 'Не менее 6 символов',
@@ -119,6 +123,10 @@ export default {
       Identical: 'Пароли должны совпадать',
       NetworkError: 'Network error',
       false: '',
+    },
+    description: {
+      Castle: CastleInfo,
+      Academia: AcademiaInfo,
     },
     tutorialSteps: tutorialText,
     menuTipsHeader: menuTipsHeaders,

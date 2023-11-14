@@ -1,4 +1,5 @@
 import React, { useRef, useContext } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import cn from 'classnames';
 import { actions as battleActions } from '../slices/battleSlice.js';
@@ -9,6 +10,7 @@ const Card = ({
   card, active, content,
 }) => {
   const dispatch = useDispatch();
+  const { t } = useTranslation();
   const { thisPlayer } = useSelector((state) => state.battleReducer);
   const cardElement = useRef();
   const {
@@ -21,6 +23,7 @@ const Card = ({
     id,
     player,
     currentC,
+    faction,
   } = card;
   const { getActiveCard, handleAnimation } = useContext(functionContext);
 
@@ -83,7 +86,7 @@ const Card = ({
         <img className={styles.mainImage} src={img} alt={name} />
       </div>
       <div className={styles.description}>
-        <p className={descriptClasses}>{description}</p>
+        <p className={descriptClasses}>{t(`description.${faction}.${description}`)}</p>
       </div>
     </button>
   );

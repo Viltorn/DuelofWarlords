@@ -16,7 +16,7 @@ import MenuSlider from './MenuSlider.jsx';
 import makeShaffledDeck from '../utils/makeShaffledDeck.js';
 import createDeckForPLayer from '../utils/makeDeckForPlayer.js';
 import dummyCard from '../gameCardsData/dummyCard.js';
-import { password } from '../utils/validation.js';
+import { passwordYup } from '../utils/validation.js';
 
 const OnlineGameStart = () => {
   const [factionNumber, setFactionSlide] = useState(0);
@@ -27,10 +27,12 @@ const OnlineGameStart = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const { roomId, name } = useSelector((state) => state.modalsReducer);
+  const { roomId, name, password } = useSelector((state) => state.modalsReducer);
 
   const playerFaction = factionsData[factionNumber];
-  const playerHeroes = heroes.filter((hero) => hero.factionId === playerFaction.id);
+  const playerHeroes = heroes.filter((hero) => hero.faction === playerFaction.id);
+  const currentFactionId = playerFaction.id;
+  const currentHero = playerHeroes[heroNumber];
 
   const changeFaction = (number) => {
     const maxNumber = factionsData.length - 1;
@@ -67,7 +69,9 @@ const OnlineGameStart = () => {
       playerDeck: decks[playerFaction.id],
       password: '',
     },
-    validationSchema: password,
+    validationSchema: passwordYup,
+    enableReinitialize: true,
+    validateOnChange: true,
     onSubmit: async (values) => {
       try {
         setError(false);
@@ -99,6 +103,7 @@ const OnlineGameStart = () => {
             if (res.error) {
               setError(res);
               formik.setSubmitting(false);
+              inputEl.current.focus();
               return;
             }
             const player1 = res.players[0];
@@ -124,9 +129,12 @@ const OnlineGameStart = () => {
         formik.setSubmitting(false);
       }
     },
-    validateOnChange: true,
-    enableReinitialize: true,
   });
+
+  const onChangeInput = (e) => {
+    formik.handleChange(e);
+    setError(false);
+  };
 
   return (
     <dialog className={styles.container}>
@@ -141,46 +149,46 @@ const OnlineGameStart = () => {
                   className={styles.slideInput}
                   id="player1Faction"
                   type="text"
-                  ref={inputEl}
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
                   value={playerFaction.id}
-                  data-testid="input-body"
                   name="player1Faction"
                 />
                 <label htmlFor="player1Faction" className={styles.label}>{playerFaction.id}</label>
-                <p className={styles.description}>{playerFaction.description}</p>
+                <p className={styles.description}>{t(`description.${currentFactionId}.factionInfo`)}</p>
               </div>
               <div className={styles.slideBlock}>
-                <MenuSlider item={playerHeroes[heroNumber]} player="player1" changeSlide={changeHero} />
+                <MenuSlider item={currentHero} player="player1" changeSlide={changeHero} />
                 <input
                   className={styles.slideInput}
                   id="player1Hero"
                   type="text"
-                  ref={inputEl}
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
                   value={playerHeroes[heroNumber].name}
-                  data-testid="input-body"
                   name="player1Hero"
                 />
-                <label htmlFor="player1Hero" className={styles.label}>{playerHeroes[heroNumber].name}</label>
-                <p className={styles.description}>{playerHeroes[heroNumber].description}</p>
+                <label htmlFor="player1Hero" className={styles.label}>{currentHero.name}</label>
+                <p className={styles.description}>{t(`description.${currentFactionId}.${currentHero.description}`)}</p>
               </div>
             </div>
             <div className={styles.inputBlock}>
-              <input
-                className={styles.input}
-                id="password"
-                type="text"
-                ref={inputEl}
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                value={formik.values.password}
-                placeholder={t('Password')}
-                data-testid="input-body"
-                name="password"
-              />
+              {roomId && password === '' ? (
+                null
+              ) : (
+                <input
+                  className={styles.input}
+                  id="password"
+                  type="text"
+                  ref={inputEl}
+                  onChange={onChangeInput}
+                  onBlur={formik.handleBlur}
+                  value={formik.values.password}
+                  placeholder={t('Password')}
+                  data-testid="input-body"
+                  name="password"
+                />
+              )}
               {formik.errors.password ? (
                 <div className={styles.invalidFeedback}>{t(`errors.${formik.errors.password}`)}</div>
               ) : null}

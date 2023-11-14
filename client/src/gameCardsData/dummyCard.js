@@ -5,7 +5,8 @@ const dummyCard = {
   name: 'Dummy',
   type: 'spell',
   subtype: 'instant',
-  description: 'Вы получаете дополнительное 1 очко действия в этому ходу',
+  description: 'DummyCard',
+  faction: 'Castle',
   id: _.uniqueId(),
   features: [{
     attach: false, type: 'all', aim: ['warrior'], name: 'increasepoints', value: 1, condition: 'insteadatk', cost: 0,

@@ -19,6 +19,7 @@ const ActionButton = ({
   const {
     sendCardFromField,
     returnCardToHand,
+    switchCard,
     makeAbilityCast,
     makeTurn,
     returnCardToDeck,
@@ -70,6 +71,13 @@ const ActionButton = ({
       player: thisPlayer,
     };
 
+    const switchCardData = {
+      move: 'switchCard',
+      room: curRoom,
+      card,
+      player: thisPlayer,
+    };
+
     switch (btnType) {
       case 'healthBar':
         dispatch(modalsActions.openModal({ type: 'changeStats', id, cellId }));
@@ -80,6 +88,13 @@ const ActionButton = ({
       case 'turnRight':
         makeTurn('turnRight');
         break;
+      case 'graveyard':
+        handleAnimation(card, 'delete');
+        moveAttachedSpells(card, null, 'kill');
+        dispatch(battleActions.deleteActiveCard({ player: thisPlayer }));
+        deleteOtherActiveCard(activeCardPlayer1, activeCardPlayer2, thisPlayer);
+        sendCardFromField(card, 'grave');
+        break;
       case 'return':
         if (gameMode === 'online') {
           makeOnlineAction(returnData);
@@ -87,12 +102,12 @@ const ActionButton = ({
           returnCardToHand(returnData);
         }
         break;
-      case 'graveyard':
-        handleAnimation(card, 'delete');
-        moveAttachedSpells(card, null, 'kill');
-        dispatch(battleActions.deleteActiveCard({ player: thisPlayer }));
-        deleteOtherActiveCard(activeCardPlayer1, activeCardPlayer2, thisPlayer);
-        sendCardFromField(card, 'grave');
+      case 'switchcard':
+        if (gameMode === 'online') {
+          makeOnlineAction(switchCardData);
+        } else {
+          switchCard(switchCardData);
+        }
         break;
       case 'ability':
         if (gameMode === 'online') {

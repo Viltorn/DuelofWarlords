@@ -26,8 +26,8 @@ const HotSeatMenu = () => {
 
   const player1Faction = factionsData[factionNumber.player1];
   const player2Faction = factionsData[factionNumber.player2];
-  const player1Heroes = heroes.filter((hero) => hero.factionId === player1Faction.id);
-  const player2Heroes = heroes.filter((hero) => hero.factionId === player2Faction.id);
+  const player1Heroes = heroes.filter((hero) => hero.faction === player1Faction.id);
+  const player2Heroes = heroes.filter((hero) => hero.faction === player2Faction.id);
 
   const changeFaction = (number, player) => {
     const maxNumber = factionsData.length - 1;

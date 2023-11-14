@@ -40,6 +40,9 @@ const GreetingWindow = () => {
           <li className={styles.tip}>
             {t('Tip4')}
           </li>
+          <li className={styles.tip}>
+            {t('Tip5')}
+          </li>
         </ul>
         <PrimaryButton
           showIcon={false}

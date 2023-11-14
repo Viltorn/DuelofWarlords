@@ -47,7 +47,7 @@ const MainPage = () => {
           </div>
         </div>
       </div>
-      <section className={styles.main}>
+      <section className={styles.main} id="description">
         <div className={styles.mainDescription}>
           <h1 className={styles.mainTitle}>
             Duel of Warlords

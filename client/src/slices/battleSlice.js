@@ -8,7 +8,14 @@ import {
 const initialState = {
   commonPoints: 0,
   playerPoints: [{ player: 'player1', points: 1 }, { player: 'player2', points: 1 }],
-  players: { player1: { name: '', id: 'player1', cardsdrawn: false }, player2: { name: '', id: 'player2', cardsdrawn: false } },
+  players: {
+    player1: {
+      name: '', id: 'player1', cardsdrawn: false, switchedcard: true,
+    },
+    player2: {
+      name: '', id: 'player2', cardsdrawn: false, switchedcard: true,
+    },
+  },
   thisPlayer: 'player1',
   gameTurn: 'player1',
   playersDecks: { player1: [], player2: [] },
@@ -119,6 +126,11 @@ const battleSlice = createSlice({
     setCardDrawStatus(state, { payload }) {
       const { player, status } = payload;
       state.players[player].cardsdrawn = status;
+    },
+
+    setCardSwitchStatus(state, { payload }) {
+      const { player, status } = payload;
+      state.players[player].switchedcard = status;
     },
 
     turnPostponed(state, { payload }) {

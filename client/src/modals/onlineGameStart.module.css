@@ -148,62 +148,66 @@
   gap: 20px;
 }
 
+
 @media (max-width: 900px) {
-  .contentDark {
-    height: 650px;
-    width: 400px;
-  }
-
-  .headerLight {
-    font-size: 25px;
-  }
-
-  .player {
-    font-size: 18px;
-  }
-  .roomsOwner {
-    font-size: 16px;
+  .fieldset {
+    display: grid;
+    grid-template-columns: repeat(2, auto);
+    grid-template-rows: repeat(2, auto);
+    grid-auto-flow: column;
+    justify-content: start;
+    align-content: start;
+    gap: 15px 30px;
   }
 
   .label {
     font-size: 20px;
   }
 
-  .fieldset {
-    gap: 20px;
+  .contentDark {
+    height: 380px;
+    width: 650px;
+  }
+
+  .headerLight {
+    font-size: 15px;
+  }
+  .playerSlides {
+    gap: 30px;
   }
 
   .description {
     font-weight: 600;
-    font-size: 11px;
+    font-size: 10px;
     padding: 10px;
     border: 2px solid var(--golden);
     color: var(--light-gray);
     width: 150px;
-    height: 150px;
+    height: 120px;
   }
 
   .input {
-    width: 200px;
-    height: 35px;
-    padding: 10px;
-    font-size: 16px;
-  }
-  .invalidFeedback  {
-    font-size: 14px;
-  }
-
-  .inputBlock {
-    height: 60px;
-    gap: 10px;
+    margin-top: 90px;
+    width: 240px;
   }
 
   .lowerBlock {
-    gap: 15px;
+    align-items: start;
+  }
+
+  .roomsOwner {
+    font-size: 15px;
   }
 }
 
-@media (max-width: 767px) {
+@media (max-width: 650px) {
+  .fieldset {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+    justify-content: center;
+  }
   .contentDark {
     height: 650px;
     width: 320px;
@@ -215,6 +219,10 @@
   .playerSlides {
     flex-direction: column;
     gap: 30px;
+  }
+
+  .lowerBlock {
+    align-items: center;
   }
 
   .description {
@@ -230,4 +238,10 @@
   .roomsOwner {
     font-size: 15px;
   }
+
+  .input {
+    margin-top: 0;
+    width: 240px;
+  }
 }
+

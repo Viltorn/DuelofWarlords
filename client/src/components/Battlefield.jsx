@@ -27,12 +27,7 @@ const Battlefield = () => {
     cellData,
     addCardToField,
     endTurn,
-    drawCards,
-    castSpell,
-    makeFight,
-    returnCardToHand,
-    returnCardToDeck,
-    makeAbilityCast,
+    makeMove,
   } = useContext(AbilitiesContext);
   const {
     activeCardPlayer1,
@@ -51,18 +46,6 @@ const Battlefield = () => {
   const topSpellsPlayer2 = useMemo(() => fieldCells.filter((cell) => cell.player === 'player2' && cell.type === 'topSpell'), [fieldCells]);
   const bigSpell = useMemo(() => fieldCells.find((cell) => cell.type === 'bigSpell'), [fieldCells]);
   const midPells = useMemo(() => fieldCells.filter((cell) => cell.type === 'midSpell'), [fieldCells]);
-
-  const makeMove = useMemo(() => ({
-    addCardToField: (data) => addCardToField(data),
-    endTurn: (data) => endTurn(data),
-    castSpell: (data) => castSpell(data),
-    makeFight: (data) => makeFight(data),
-    drawCards: (data) => drawCards(data),
-    returnCardToHand: (data) => returnCardToHand(data),
-    returnCardToDeck: (data) => returnCardToDeck(data),
-    makeAbilityCast: (data) => makeAbilityCast(data),
-    // eslint-disable-next-line
-  }), []);
 
   const renderModal = (status, option) => {
     if (!status) {

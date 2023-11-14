@@ -26,7 +26,7 @@ const ActiveCard = ({ activeCard, playerType }) => {
   } = useSelector((state) => state.battleReducer);
   const firstRound = commonPoints === 1;
   const currentPoints = playerPoints.find((item) => item.player === thisPlayer).points;
-  const { cardsdrawn } = players[thisPlayer];
+  const { cardsdrawn, switchedcard } = players[thisPlayer];
   const insteadatk = activeCard.features.find((feat) => feat.condition === 'insteadatk');
   const legalTurn = thisPlayer === gameTurn;
   const ressurect = fieldCells
@@ -37,11 +37,15 @@ const ActiveCard = ({ activeCard, playerType }) => {
   return (
     <div className={styles[cardClasses]}>
       <div className={styles.buttons}>
-        {(status === 'field') && (type === 'warrior' || type === 'hero') && gameMode === 'hotseat' && (
+        {/* {(status === 'field') && (type === 'warrior' || type === 'hero')
+        && gameMode === 'hotseat' && (
           <>
             <ActionButton card={activeCard} type="turnLeft" />
             <ActionButton card={activeCard} type="turnRight" />
           </>
+        )} */}
+        {!switchedcard && thisPlayer === activeCard.player && legalTurn && type !== 'hero' && status === 'hand' && (
+          <ActionButton card={activeCard} ability={insteadatk} type="switchcard" />
         )}
         {((firstRound && thisPlayer === activeCard.player && !cardsdrawn && legalTurn) || gameMode === 'hotseat') && (type !== 'hero') && (
         <ActionButton card={activeCard} ability={insteadatk} type="deckreturn" />
@@ -49,9 +53,10 @@ const ActiveCard = ({ activeCard, playerType }) => {
         {insteadatk && activeCard.turn === 0 && leftPoints >= 0 && !disAbility && legalTurn && status !== 'graveyard' && (
           <ActionButton card={activeCard} ability={insteadatk} type="ability" />
         )}
-        {(status === 'field') && (type === 'warrior' || type === 'hero') && gameMode === 'hotseat' && (
+        {/* {(status === 'field') && (type === 'warrior' || type === 'hero')
+        && gameMode === 'hotseat' && (
           <ActionButton card={activeCard} type="healthBar" />
-        )}
+        )} */}
         {((status !== 'hand' && (type !== 'hero') && ressurect && activeCard.status === 'graveyard' && legalTurn) || gameMode === 'hotseat') && (
           <ActionButton card={activeCard} type="return" ressurect={ressurect} />
         )}

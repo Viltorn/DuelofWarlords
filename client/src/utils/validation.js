@@ -8,10 +8,10 @@ export const userName = Yup.object().shape({
     .max(10, 'Min3Max10'),
 });
 
-export const password = Yup.object().shape({
+export const passwordYup = Yup.object().shape({
   password: Yup
     .string()
-    .required('Required')
+    .optional()
     .min(3, 'Min3Max10')
     .max(10, 'Min3Max10'),
 });

@@ -32,26 +32,25 @@ import Tsunami from '../assets/AcademiaDeck/Tsunami.png';
 import Waterfall from '../assets/AcademiaDeck/Waterfall.png';
 import IceArrow from '../assets/AcademiaDeck/IceArrow.png';
 import IceArmor from '../assets/AcademiaDeck/IceArmor.png';
-import academiaInfo from './academiaCardsInfo';
 
 export const types = ['beforeturn', 'afterplay', 'protection', 'afterdeath'];
 
 const academiaDeck = [
   {
     card: {
-      name: 'Living wall', id: _.uniqueId(), type: 'warrior', subtype: 'fighter', power: 2, currentP: 2, health: 5, currentHP: 5, cost: 2, currentC: 2, description: academiaInfo.LivingWall, features: [{ name: 'immobile' }, { name: 'unarmed' }], attachments: [], img: LivingWall, status: 'hand', turn: 1,
+      name: 'Living wall', id: _.uniqueId(), type: 'warrior', subtype: 'fighter', power: 2, currentP: 2, health: 5, currentHP: 5, cost: 2, currentC: 2, description: 'LivingWall', faction: 'Academia', features: [{ name: 'immobile' }, { name: 'unarmed' }], attachments: [], img: LivingWall, status: 'hand', turn: 1,
     },
     qty: 1,
   },
   {
     card: {
-      name: 'Mage apprentice', id: _.uniqueId(), type: 'warrior', subtype: 'shooter', power: 2, currentP: 2, health: 4, currentHP: 4, cost: 3, currentC: 3, description: academiaInfo.MageApprentice, features: [{ name: 'massAttack' }], attachments: [], img: MageApprentice, status: 'hand', turn: 1,
+      name: 'Mage apprentice', id: _.uniqueId(), type: 'warrior', subtype: 'shooter', power: 2, currentP: 2, health: 4, currentHP: 4, cost: 3, currentC: 3, description: 'MageApprentice', faction: 'Academia', features: [{ name: 'massAttack' }], attachments: [], img: MageApprentice, status: 'hand', turn: 1,
     },
     qty: 2,
   },
   {
     card: {
-      name: 'Gremlin shooter', id: _.uniqueId(), type: 'warrior', subtype: 'shooter', power: 2, currentP: 2, health: 3, currentHP: 3, cost: 2, currentC: 2, description: academiaInfo.GremlinShooter, features: [{ name: 'retaliation', value: 1, aim: ['shooter'] }], attachments: [], img: GremlinShooter, status: 'hand', turn: 1,
+      name: 'Gremlin shooter', id: _.uniqueId(), type: 'warrior', subtype: 'shooter', power: 2, currentP: 2, health: 3, currentHP: 3, cost: 2, currentC: 2, description: 'GremlinShooter', faction: 'Academia', features: [{ name: 'retaliation', value: 1, aim: ['shooter'] }], attachments: [], img: GremlinShooter, status: 'hand', turn: 1,
     },
     qty: 1,
   },
@@ -67,7 +66,8 @@ const academiaDeck = [
       currentHP: 4,
       cost: 3,
       currentC: 3,
-      description: academiaInfo.IceElement,
+      description: 'IceElement',
+      faction: 'Academia',
       features: [{
         attach: false, type: 'bad', aim: ['enemyrowcell', 'warrior'], name: 'stun', condition: 'lastcall',
       }],
@@ -90,7 +90,8 @@ const academiaDeck = [
       currentHP: 4,
       cost: 2,
       currentC: 2,
-      description: academiaInfo.EarthGolem,
+      description: 'EarthGolem',
+      faction: 'Academia',
       features: [{
         attach: false, type: 'good', aim: ['adjacent', 'warrior'], name: 'heal', value: 1, condition: 'onplay',
       }],
@@ -114,7 +115,8 @@ const academiaDeck = [
       currentHP: 4,
       cost: 2,
       currentC: 2,
-      description: academiaInfo.Gargoyle,
+      description: 'Gargoyle',
+      faction: 'Academia',
       features: [{
         attach: false,
         aim: ['shooter', 'warrior'],
@@ -143,7 +145,8 @@ const academiaDeck = [
       currentHP: 6,
       cost: 4,
       currentC: 4,
-      description: academiaInfo.FireGolem,
+      description: 'FireGolem',
+      faction: 'Academia',
       features: [{
         attach: false, type: 'all', aim: ['row', 'warrior'], name: 'attack', condition: 'lastcall', value: 1,
       }],
@@ -166,7 +169,8 @@ const academiaDeck = [
       currentHP: 6,
       cost: 3,
       currentC: 3,
-      description: academiaInfo.Rakshasa,
+      description: 'Rakshasa',
+      faction: 'Academia',
       features: [{
         attach: false, type: 'good', aim: ['warrior'], name: 'evade', condition: 'nextRowCell',
       }],
@@ -189,7 +193,8 @@ const academiaDeck = [
       currentHP: 4,
       cost: 3,
       currentC: 3,
-      description: academiaInfo.YoungGenie,
+      description: 'YoungGenie',
+      faction: 'Academia',
       features: [{
         name: 'invoke',
         aim: ['warrior'],
@@ -200,7 +205,8 @@ const academiaDeck = [
           type: 'spell',
           subtype: 'instant',
           currentC: 0,
-          description: academiaInfo.YoungGenieCast,
+          description: 'YoungGenieCast',
+          faction: 'Academia',
           place: '',
           features: [{
             attach: false, type: 'bad', aim: ['warrior'], name: 'moverow',
@@ -228,7 +234,8 @@ const academiaDeck = [
       currentHP: 5,
       cost: 4,
       currentC: 4,
-      description: academiaInfo.EnergyElemental,
+      description: 'EnergyElemental',
+      faction: 'Academia',
       features: [{
         name: 'attack', condition: 'onattack', type: 'bad', aim: ['nextrowcell', 'warrior'], value: 2, apply: 'attacked',
       }],
@@ -251,7 +258,8 @@ const academiaDeck = [
       currentHP: 8,
       cost: 6,
       currentC: 6,
-      description: academiaInfo.IceGiant,
+      description: 'IceGiant',
+      faction: 'Academia',
       features: [{
         attach: false, type: 'bad', aim: ['row', 'warrior', 'fighter', 'shooter', 'flyer'], name: 'stun', condition: 'onplay',
       },
@@ -273,7 +281,9 @@ const academiaDeck = [
       subtype: 'instant',
       cost: 1,
       currentC: 1,
-      description: academiaInfo.ArcaneArmor,
+      description: 'ArcaneArmor',
+      faction: 'Academia',
+      school: 'Shadow',
       place: 'postponed',
       features: [{
         attach: ['field', 'warrior', 'hero'], aim: ['warrior', 'fighter', 'shooter', 'flyer'], type: 'good', name: 'protection', value: { type: 'number', val: 100 }, charges: 1, condition: 'minPower', conditionValue: 3,
@@ -291,7 +301,9 @@ const academiaDeck = [
       subtype: 'temporary',
       cost: 2,
       currentC: 2,
-      description: academiaInfo.Blizzard,
+      description: 'Blizzard',
+      faction: 'Academia',
+      school: 'Water',
       place: 'midSpell',
       features: [
         {
@@ -314,7 +326,9 @@ const academiaDeck = [
       subtype: 'permanent',
       cost: 3,
       currentC: 3,
-      description: academiaInfo.CursedChackle,
+      description: 'CursedChackle',
+      faction: 'Academia',
+      school: 'Shadow',
       place: 'warrior',
       features: [
         {
@@ -340,7 +354,9 @@ const academiaDeck = [
       subtype: 'permanent',
       cost: 2,
       currentC: 2,
-      description: academiaInfo.Frostbite,
+      description: 'Frostbite',
+      faction: 'Academia',
+      school: 'Water',
       place: 'warrior',
       features: [
         {
@@ -364,7 +380,9 @@ const academiaDeck = [
       subtype: 'instant',
       cost: 2,
       currentC: 2,
-      description: academiaInfo.FrostTrap,
+      description: 'FrostTrap',
+      faction: 'Academia',
+      school: 'Water',
       place: 'postponed',
       features: [{
         attach: ['field', 'warrior'], aim: ['warrior'], name: 'return', condition: 'onplay', type: 'bad', charges: 1,
@@ -385,7 +403,9 @@ const academiaDeck = [
       subtype: 'temporary',
       cost: 3,
       currentC: 3,
-      description: academiaInfo.IceBlock,
+      description: 'IceBlock',
+      faction: 'Academia',
+      school: 'Water',
       place: 'warrior',
       features: [
         {
@@ -409,7 +429,9 @@ const academiaDeck = [
       subtype: 'instant',
       cost: 3,
       currentC: 3,
-      description: academiaInfo.IceSpikes,
+      description: 'IceSpikes',
+      faction: 'Academia',
+      school: 'Water',
       place: '',
       features: [{
         attach: false, type: 'bad', name: 'attack', value: 2, aim: ['warrior', 'line'],
@@ -427,7 +449,9 @@ const academiaDeck = [
       subtype: 'temporary',
       cost: 1,
       currentC: 1,
-      description: academiaInfo.IceWall,
+      description: 'IceWall',
+      faction: 'Academia',
+      school: 'Water',
       place: 'midSpell',
       features: [
         {
@@ -449,7 +473,9 @@ const academiaDeck = [
       subtype: 'permanent',
       cost: 4,
       currentC: 4,
-      description: academiaInfo.IceWeapon,
+      description: 'IceWeapon',
+      faction: 'Academia',
+      school: 'Water',
       place: 'warrior',
       features: [{
         attach: ['warrior'],
@@ -471,7 +497,9 @@ const academiaDeck = [
       subtype: 'temporary',
       cost: 2,
       currentC: 2,
-      description: academiaInfo.Icing,
+      description: 'Icing',
+      faction: 'Academia',
+      school: 'Water',
       place: 'midSpell',
       features: [
         {
@@ -499,7 +527,9 @@ const academiaDeck = [
       subtype: 'temporary',
       cost: 1,
       currentC: 1,
-      description: academiaInfo.InvisibilityCloak,
+      description: 'InvisibilityCloak',
+      faction: 'Academia',
+      school: 'Shadow',
       place: 'warrior',
       features: [
         {
@@ -525,7 +555,9 @@ const academiaDeck = [
       subtype: 'instant',
       cost: 5,
       currentC: 5,
-      description: academiaInfo.SoulDrain,
+      description: 'SoulDrain',
+      faction: 'Academia',
+      school: 'Shadow',
       place: '',
       features: [{
         attach: false, type: 'bad', name: 'attack', value: 200, aim: ['warrior'],
@@ -543,7 +575,9 @@ const academiaDeck = [
       subtype: 'instant',
       cost: 1,
       currentC: 1,
-      description: academiaInfo.Teleport,
+      description: 'Teleport',
+      faction: 'Academia',
+      school: 'Shadow',
       place: '',
       features: [{
         attach: ['warrior'], type: 'good', aim: ['warrior'], charges: 1, name: 'moving',
@@ -561,7 +595,9 @@ const academiaDeck = [
       subtype: 'instant',
       cost: 3,
       currentC: 3,
-      description: academiaInfo.TownPortal,
+      description: 'TownPortal',
+      faction: 'Academia',
+      school: 'Shadow',
       place: '',
       features: [{
         attach: false, type: 'bad', name: 'return', aim: ['warrior'],
@@ -579,7 +615,9 @@ const academiaDeck = [
       subtype: 'instant',
       cost: 1,
       currentC: 1,
-      description: academiaInfo.Transformation,
+      description: 'Transformation',
+      faction: 'Academia',
+      school: 'Shadow',
       place: '',
       features: [{
         attach: false, type: 'bad', name: 'stun', aim: 'warrior',
@@ -599,7 +637,9 @@ const academiaDeck = [
       subtype: 'instant',
       cost: 7,
       currentC: 7,
-      description: academiaInfo.Tsunami,
+      description: 'Tsunami',
+      faction: 'Academia',
+      school: 'Water',
       place: '',
       features: [{
         attach: false, type: 'all', aim: ['field', 'warrior', 'fighter', 'shooter'], name: 'attack', value: 7, depend: 'postponed', dependValue: 8,
@@ -617,7 +657,9 @@ const academiaDeck = [
       subtype: 'temporary',
       cost: 2,
       currentC: 2,
-      description: academiaInfo.Waterfall,
+      description: 'Waterfall',
+      faction: 'Academia',
+      school: 'Water',
       place: 'bigSpell',
       features: [{
         attach: ['field', 'warrior'], aim: ['warrior', 'fighter', 'shooter', 'flyer'], type: 'all', name: 'unarmed', condition: 'maxPower', conditionValue: 2,
@@ -635,7 +677,9 @@ const academiaDeck = [
       subtype: 'instant',
       cost: 2,
       currentC: 2,
-      description: academiaInfo.IceArrow,
+      description: 'IceArrow',
+      faction: 'Academia',
+      school: 'Water',
       place: '',
       features: [{
         attach: false, type: 'bad', aim: ['warrior'], name: 'attack', value: 2,
@@ -655,7 +699,9 @@ const academiaDeck = [
       subtype: 'temporary',
       cost: 1,
       currentC: 1,
-      description: academiaInfo.IceArmor,
+      description: 'IceArmor',
+      faction: 'Academia',
+      school: 'Water',
       place: 'warrior',
       features: [{
         attach: ['warrior', 'hero'],

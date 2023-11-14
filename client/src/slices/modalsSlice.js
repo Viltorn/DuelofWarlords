@@ -10,6 +10,7 @@ const initialState = {
   player: null,
   name: null,
   dest: null,
+  password: null,
 };
 
 const modalsSlice = createSlice({
@@ -25,6 +26,7 @@ const modalsSlice = createSlice({
       state.player = payload.player ?? null;
       state.name = payload.name ?? null;
       state.dest = payload.dest ?? null;
+      state.password = payload.password ?? null;
     },
     closeModal(state) {
       state.isOpened = false;
@@ -35,6 +37,7 @@ const modalsSlice = createSlice({
       state.player = null;
       state.name = null;
       state.dest = null;
+      state.password = null;
     },
   },
 });

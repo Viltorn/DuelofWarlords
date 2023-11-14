@@ -32,18 +32,17 @@ import SaintWord from '../assets/CastleDeck/SaintWord.png';
 import Swift from '../assets/CastleDeck/Swift.png';
 import ThunderBlast from '../assets/CastleDeck/ThunderBlast.png';
 import YouthFountain from '../assets/CastleDeck/YouthFountain.png';
-import cardsInfo from './castleCardsInfo';
 
 const castleDeck = [
   {
     card: {
-      name: 'Imperial Shooter', type: 'warrior', subtype: 'shooter', power: 1, currentP: 1, health: 2, currentHP: 2, cost: 1, currentC: 1, description: cardsInfo.ImperialShooter, id: _.uniqueId(), features: [{}], attachments: [], img: ImperialShooter, status: 'hand', turn: 1, disabled: false,
+      name: 'Imperial Shooter', type: 'warrior', subtype: 'shooter', power: 1, currentP: 1, health: 2, currentHP: 2, cost: 1, currentC: 1, description: 'ImperialShooter', faction: 'Castle', id: _.uniqueId(), features: [{}], attachments: [], img: ImperialShooter, status: 'hand', turn: 1, disabled: false,
     },
     qty: 2,
   },
   {
     card: {
-      name: 'Master Shooter', type: 'warrior', subtype: 'shooter', power: 2, currentP: 2, health: 4, currentHP: 4, cost: 3, currentC: 3, description: cardsInfo.MasterShooter, id: _.uniqueId(), features: [{ name: 'retaliation', value: 1, aim: ['warrior', 'fighter', 'shooter', 'flyer'] }], attachments: [], img: MasterShooter, status: 'hand', turn: 1, disabled: false,
+      name: 'Master Shooter', type: 'warrior', subtype: 'shooter', power: 2, currentP: 2, health: 4, currentHP: 4, cost: 3, currentC: 3, description: 'MasterShooter', faction: 'Castle', id: _.uniqueId(), features: [{ name: 'retaliation', value: 1, aim: ['warrior', 'fighter', 'shooter', 'flyer'] }], attachments: [], img: MasterShooter, status: 'hand', turn: 1, disabled: false,
     },
     qty: 3,
   },
@@ -58,7 +57,8 @@ const castleDeck = [
       currentHP: 4,
       cost: 2,
       currentC: 2,
-      description: cardsInfo.YoungPriestess,
+      description: 'YoungPriestess',
+      faction: 'Castle',
       id: _.uniqueId(),
       features: [{
         name: 'heal', condition: 'onturnstart', aim: ['oneadjacent', 'warrior'], value: 1,
@@ -73,7 +73,7 @@ const castleDeck = [
   },
   {
     card: {
-      name: 'Warrior Of Light', type: 'warrior', subtype: 'fighter', power: 2, currentP: 2, health: 4, currentHP: 4, cost: 2, currentC: 2, description: cardsInfo.WarriorOfLight, id: _.uniqueId(), features: [{ name: 'swift' }], attachments: [], img: WarriorOfLight, status: 'hand', turn: 1, disabled: false,
+      name: 'Warrior Of Light', type: 'warrior', subtype: 'fighter', power: 2, currentP: 2, health: 4, currentHP: 4, cost: 2, currentC: 2, description: 'WarriorOfLight', faction: 'Castle', id: _.uniqueId(), features: [{ name: 'swift' }], attachments: [], img: WarriorOfLight, status: 'hand', turn: 1, disabled: false,
     },
     qty: 2,
   },
@@ -88,7 +88,8 @@ const castleDeck = [
       currentHP: 6,
       cost: 3,
       currentC: 3,
-      description: cardsInfo.ValorKnight,
+      description: 'ValorKnight',
+      faction: 'Castle',
       id: _.uniqueId(),
       features: [{
         name: 'heal', condition: 'onattack', type: 'good', aim: ['nextcells', 'warrior'], value: 1,
@@ -112,7 +113,8 @@ const castleDeck = [
       currentHP: 5,
       cost: 3,
       currentC: 3,
-      description: cardsInfo.Bannerman,
+      description: 'Bannerman',
+      faction: 'Castle',
       id: _.uniqueId(),
       attachments: [],
       features: [{
@@ -125,7 +127,8 @@ const castleDeck = [
           type: 'spell',
           subtype: 'instant',
           currentC: 0,
-          description: cardsInfo.BannermanCast,
+          description: 'BannermanCast',
+          faction: 'Castle',
           place: '',
           features: [{
             attach: ['warrior'], aim: ['warrior', 'fighter', 'shooter', 'flyer', 'hero'], type: 'good', name: 'power', value: 2, charges: 1, id: _.uniqueId(),
@@ -152,7 +155,8 @@ const castleDeck = [
       currentHP: 5,
       cost: 3,
       currentC: 3,
-      description: cardsInfo.Defender,
+      description: 'Defender',
+      faction: 'Castle',
       id: _.uniqueId(),
       features: [{ name: 'protection', value: { type: 'percent', val: 0.5 }, aim: ['spell'] },
         {
@@ -168,7 +172,7 @@ const castleDeck = [
   },
   {
     card: {
-      name: 'Righeous Fighter', type: 'warrior', subtype: 'fighter', power: 3, currentP: 3, health: 4, currentHP: 4, cost: 3, currentC: 3, description: cardsInfo.RigheousFighter, id: _.uniqueId(), features: [{ name: 'power', value: 1, aim: ['hero'] }], attachments: [], img: RighteousFighter, status: 'hand', turn: 1, disabled: false,
+      name: 'Righeous Fighter', type: 'warrior', subtype: 'fighter', power: 3, currentP: 3, health: 4, currentHP: 4, cost: 3, currentC: 3, description: 'RigheousFighter', faction: 'Castle', id: _.uniqueId(), features: [{ name: 'power', value: 1, aim: ['hero'] }], attachments: [], img: RighteousFighter, status: 'hand', turn: 1, disabled: false,
     },
     qty: 2,
   },
@@ -183,7 +187,8 @@ const castleDeck = [
       currentHP: 8,
       cost: 4,
       currentC: 4,
-      description: cardsInfo.KnightGuardian,
+      description: 'KnightGuardian',
+      faction: 'Castle',
       id: _.uniqueId(),
       features: [{
         attach: ['nextcells'], type: 'good', name: 'redirect', aim: ['warrior', 'fighter', 'shooter', 'flyer'],
@@ -207,7 +212,8 @@ const castleDeck = [
       currentHP: 7,
       cost: 4,
       currentC: 4,
-      description: cardsInfo.ImperialGriffon,
+      description: 'ImperialGriffon',
+      faction: 'Castle',
       id: _.uniqueId(),
       features: [{
         name: 'retaliation', value: 1, aim: ['warrior', 'fighter'],
@@ -231,7 +237,8 @@ const castleDeck = [
       currentHP: 7,
       cost: 5,
       currentC: 5,
-      description: cardsInfo.TemplarChampion,
+      description: 'TemplarChampion',
+      faction: 'Castle',
       id: _.uniqueId(),
       features: [{
         name: 'invoke',
@@ -243,7 +250,8 @@ const castleDeck = [
           type: 'spell',
           subtype: 'instant',
           currentC: 0,
-          description: cardsInfo.TemplarChampCast,
+          description: 'TemplarChampCast',
+          faction: 'Castle',
           place: '',
           features: [{
             attach: false, aim: ['warrior'], type: 'good', name: 'heal', value: 3,
@@ -274,7 +282,8 @@ const castleDeck = [
       currentHP: 9,
       cost: 7,
       currentC: 7,
-      description: cardsInfo.MasterOfLight,
+      description: 'MasterOfLight',
+      faction: 'Castle',
       id: _.uniqueId(),
       features: [{
         attach: false, type: 'bad', aim: ['row', 'warrior'], value: 2, name: 'attack', condition: 'insteadatk', cost: 0,
@@ -294,7 +303,8 @@ const castleDeck = [
       subtype: 'instant',
       cost: 4,
       currentC: 4,
-      description: cardsInfo.ThunderBlast,
+      description: 'ThunderBlast',
+      faction: 'Castle',
       id: _.uniqueId(),
       place: '',
       features: [{
@@ -316,7 +326,8 @@ const castleDeck = [
       subtype: 'permanent',
       cost: 2,
       currentC: 2,
-      description: cardsInfo.Swift,
+      description: 'Swift',
+      faction: 'Castle',
       id: _.uniqueId(),
       place: 'warrior',
       features: [{
@@ -338,7 +349,8 @@ const castleDeck = [
       subtype: 'instant',
       cost: 4,
       currentC: 4,
-      description: cardsInfo.Resurrection,
+      description: 'Resurrection',
+      faction: 'Castle',
       id: _.uniqueId(),
       place: 'grave',
       turn: 0,
@@ -358,7 +370,8 @@ const castleDeck = [
       subtype: 'temporary',
       cost: 1,
       currentC: 1,
-      description: cardsInfo.Retribution,
+      description: 'Retribution',
+      faction: 'Castle',
       id: _.uniqueId(),
       place: 'warrior',
       features: [{
@@ -381,10 +394,11 @@ const castleDeck = [
     card: {
       name: 'Attack Aura',
       type: 'spell',
-      subtype: 'permanent',
+      subtype: 'temporary',
       cost: 2,
       currentC: 2,
-      description: cardsInfo.AttackAura,
+      description: 'AttackAura',
+      faction: 'Castle',
       id: _.uniqueId(),
       place: 'warrior',
       features: [
@@ -392,7 +406,7 @@ const castleDeck = [
           attach: false, type: 'good', aim: ['enemyrowcell', 'warrior'], name: 'attack', value: 2,
         },
         {
-          attach: ['warrior'], type: 'bad', aim: ['enemyrowcell', 'warrior'], name: 'attack', condition: 'onturnstart', value: 2, charges: 1,
+          attach: ['warrior'], type: 'bad', aim: ['enemyrowcell', 'warrior', 'spell'], name: 'attack', condition: 'lastcall', value: 2,
         }],
       img: AttackAura,
       status: 'hand',
@@ -407,7 +421,8 @@ const castleDeck = [
       subtype: 'instant',
       cost: 1,
       currentC: 1,
-      description: cardsInfo.HealingLight,
+      description: 'HealingLight',
+      faction: 'Castle',
       id: _.uniqueId(),
       place: '',
       features: [{
@@ -426,7 +441,8 @@ const castleDeck = [
       subtype: 'temporary',
       cost: 2,
       currentC: 2,
-      description: cardsInfo.YouthFountain,
+      description: 'YouthFountain',
+      faction: 'Castle',
       id: _.uniqueId(),
       place: 'bigSpell',
       features: [{
@@ -448,7 +464,8 @@ const castleDeck = [
       subtype: 'turn',
       cost: 2,
       currentC: 2,
-      description: cardsInfo.Enlightenment,
+      description: 'Enlightenment',
+      faction: 'Castle',
       id: _.uniqueId(),
       place: 'bigSpell',
       features: [{
@@ -467,7 +484,8 @@ const castleDeck = [
       subtype: 'temporary',
       cost: 1,
       currentC: 1,
-      description: cardsInfo.HeavenProtection,
+      description: 'HeavenProtection',
+      faction: 'Castle',
       id: _.uniqueId(),
       place: 'warrior',
       features: [{
@@ -491,7 +509,8 @@ const castleDeck = [
       subtype: 'permanent',
       cost: 2,
       currentC: 2,
-      description: cardsInfo.Bless,
+      description: 'Bless',
+      faction: 'Castle',
       id: _.uniqueId(),
       place: 'warrior',
       features: [{
@@ -514,7 +533,8 @@ const castleDeck = [
       subtype: 'temporary',
       cost: 1,
       currentC: 1,
-      description: cardsInfo.HolyLand,
+      description: 'HolyLand',
+      faction: 'Castle',
       id: _.uniqueId(),
       place: 'midSpell',
       features: [{
@@ -536,7 +556,8 @@ const castleDeck = [
       subtype: 'instant',
       cost: 2,
       currentC: 2,
-      description: cardsInfo.HeavenShock,
+      description: 'HeavenShock',
+      faction: 'Castle',
       id: _.uniqueId(),
       place: '',
       features: [{
@@ -559,7 +580,8 @@ const castleDeck = [
       subtype: 'instant',
       cost: 4,
       currentC: 4,
-      description: cardsInfo.SaintWord,
+      description: 'SaintWord',
+      faction: 'Castle',
       id: _.uniqueId(),
       place: '',
       features: [{
@@ -582,7 +604,8 @@ const castleDeck = [
       subtype: 'instant',
       cost: 2,
       currentC: 2,
-      description: cardsInfo.RighteousHammer,
+      description: 'RighteousHammer',
+      faction: 'Castle',
       id: _.uniqueId(),
       place: '',
       features: [{
@@ -601,7 +624,8 @@ const castleDeck = [
       subtype: 'instant',
       cost: 2,
       currentC: 2,
-      description: cardsInfo.RetaliationHammer,
+      description: 'RetaliationHammer',
+      faction: 'Castle',
       id: _.uniqueId(),
       place: '',
       features: [
@@ -625,7 +649,8 @@ const castleDeck = [
       subtype: 'permanent',
       cost: 1,
       currentC: 1,
-      description: cardsInfo.LightShield,
+      description: 'LightShield',
+      faction: 'Castle',
       id: _.uniqueId(),
       place: 'warrior',
       features: [{
@@ -648,7 +673,8 @@ const castleDeck = [
       subtype: 'instant',
       cost: 2,
       currentC: 2,
-      description: cardsInfo.LastChance,
+      description: 'LastChance',
+      faction: 'Castle',
       id: _.uniqueId(),
       place: 'postponed',
       features: [{
@@ -667,7 +693,8 @@ const castleDeck = [
       subtype: 'temporary',
       cost: 5,
       currentC: 5,
-      description: cardsInfo.Conciliation,
+      description: 'Conciliation',
+      faction: 'Castle',
       id: _.uniqueId(),
       place: 'bigSpell',
       features: [{
