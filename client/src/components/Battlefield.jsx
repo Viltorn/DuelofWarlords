@@ -171,9 +171,10 @@ const Battlefield = () => {
 
   return (
     <div className={styles.container}>
-      {windowSize.winWidth < windowSize.winHeight ? (
+      {windowSize.winWidth < windowSize.winHeight && (
         <RotateScreen />
-      ) : (
+      )}
+      {windowSize.winWidth > windowSize.winHeight && (
         <>
           <div className={styles.main}>
             {thisPlayer === 'player1' ? (
