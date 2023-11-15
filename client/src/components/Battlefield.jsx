@@ -2,6 +2,7 @@
 import React, { useContext, useEffect, useMemo } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
+import { useOrientation } from '@uidotdev/usehooks';
 import { useNavigate } from 'react-router-dom';
 import socket from '../socket';
 import Cell from './Cell.jsx';
@@ -13,7 +14,7 @@ import ActiveCard from './ActiveCard.jsx';
 import InGameMenu from './InGameMenu/InGameMenu.jsx';
 import styles from './Battlefield.module.css';
 import getModal from '../modals/index.js';
-import functionContext from '../contexts/functionsContext.js';
+// import functionContext from '../contexts/functionsContext.js';
 import { actions as modalsActions } from '../slices/modalsSlice.js';
 import { actions as battleActions } from '../slices/battleSlice.js';
 import { actions as gameActions } from '../slices/gameSlice';
@@ -22,7 +23,8 @@ import AbilitiesContext from '../contexts/abilityActions';
 const Battlefield = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { windowSize } = useContext(functionContext);
+  const orientation = useOrientation();
+  // const { windowSize } = useContext(functionContext);
   const {
     cellData,
     addCardToField,
@@ -171,10 +173,9 @@ const Battlefield = () => {
 
   return (
     <div className={styles.container}>
-      {windowSize.winWidth < windowSize.winHeight && (
+      {orientation.type === 'portrait-primary' ? (
         <RotateScreen />
-      )}
-      {windowSize.winWidth > windowSize.winHeight && (
+      ) : (
         <>
           <div className={styles.main}>
             {thisPlayer === 'player1' ? (

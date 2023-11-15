@@ -33,9 +33,11 @@ export const FunctionProvider = ({ children }) => {
     });
   });
 
-  const windowAspectRatio = windowSize.winWidth / windowSize.winHeight;
-  const fontValue = windowAspectRatio <= 2 ? `${windowSize.winWidth / 88}px` : `${windowSize.winHeight / 44}px`;
-  document.documentElement.style.setProperty('font-size', fontValue);
+  useEffect(() => {
+    const windowAspectRatio = windowSize.winWidth / windowSize.winHeight;
+    const fontValue = windowAspectRatio <= 2 ? `${windowSize.winWidth / 88}px` : `${windowSize.winHeight / 44}px`;
+    document.documentElement.style.setProperty('font-size', fontValue);
+  }, [windowSize]);
 
   useEffect(() => {
     const handleWindowResize = () => {
@@ -47,7 +49,7 @@ export const FunctionProvider = ({ children }) => {
     return () => {
       window.removeEventListener('resize', handleWindowResize);
     };
-  }, []);
+  });
 
   const getActiveCard = () => {
     const { activeCardPlayer1, activeCardPlayer2 } = store.getState().battleReducer;
