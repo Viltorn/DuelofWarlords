@@ -44,7 +44,7 @@ export const FunctionProvider = ({ children }) => {
     return () => {
       window.removeEventListener('resize', handleWindowResize);
     };
-  });
+  }, []);
 
   const getActiveCard = () => {
     const { activeCardPlayer1, activeCardPlayer2 } = store.getState().battleReducer;
