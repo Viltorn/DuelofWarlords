@@ -33,11 +33,9 @@ export const FunctionProvider = ({ children }) => {
     });
   });
 
-  useEffect(() => {
-    const windowAspectRatio = windowSize.winWidth / windowSize.winHeight;
-    const fontValue = windowAspectRatio <= 2 ? `${windowSize.winWidth / 88}px` : `${windowSize.winHeight / 44}px`;
-    document.documentElement.style.setProperty('font-size', fontValue);
-  }, [windowSize]);
+  const windowAspectRatio = window.innerWidth / window.innerHeight;
+  const fontValue = windowAspectRatio <= 2 ? `${window.innerWidth / 88}px` : `${window.innerHeight / 44}px`;
+  document.documentElement.style.setProperty('font-size', fontValue);
 
   useEffect(() => {
     const handleWindowResize = () => {
