@@ -23,6 +23,7 @@
   background: transparent;
   border: none;
   cursor: pointer;
+  position: relative;
 }
  
 .cells {
@@ -144,7 +145,16 @@
   height: 100%;
   object-fit: cover;
   border: 0.1rem solid var(--dark-color);
-  border-radius: 0.3rem;
+  border-radius: 0.2rem;
+}
+
+.graveCardTitle {
+  position: absolute;
+  font-size: 0.4rem;
+  color: var(--black-font);
+  right: 0;
+  left: 0;
+  margin-top: 0.3rem;
 }
 
 .defaultTitle {

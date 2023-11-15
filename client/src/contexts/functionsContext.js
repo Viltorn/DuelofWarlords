@@ -362,7 +362,8 @@ export const FunctionProvider = ({ children }) => {
     }
 
     const postponedCell = fieldCells.find((cell) => cell.type === 'postponed' && cell.player === thisPlayer);
-    if (status === 'hand' && postponedCell.content.length === 0 && !postponedCell.disabled) {
+    const cantPostpone = activeCard.features.find((feat) => feat.name === 'cantPostpone');
+    if (status === 'hand' && postponedCell.content.length === 0 && !postponedCell.disabled && !cantPostpone) {
       dispatch(battleActions.addAnimation({ cell: postponedCell, type: 'green' }));
     }
   };
@@ -428,21 +429,22 @@ export const FunctionProvider = ({ children }) => {
   const moveAttachedSpells = (cellId, endCellId, type) => {
     const currentField = store.getState().battleReducer.fieldCells;
     const activeCell = currentField.find((cell) => cell.id === cellId);
-    console.log(activeCell);
-    activeCell.content.forEach((item) => {
-      if (item.type === 'spell' && type === 'kill') {
-        deleteCardfromSource(item);
-        dispatch(battleActions.deleteAttachment({ spellId: item.id }));
-        dispatch(battleActions.addToGraveyard({ card: item }));
-      } else if (item.type === 'spell' && type === 'move') {
-        deleteCardfromSource(item);
-        dispatch(battleActions.addFieldContent({ card: item, id: endCellId }));
-      } else if (item.type === 'spell' && type === 'return') {
-        deleteCardfromSource(item);
-        dispatch(battleActions.deleteAttachment({ spellId: item.id }));
-        dispatch(battleActions.returnCard({ card: item, cost: item.cost }));
-      }
-    });
+    if (activeCell) {
+      activeCell.content.forEach((item) => {
+        if (item.type === 'spell' && type === 'kill') {
+          deleteCardfromSource(item);
+          dispatch(battleActions.deleteAttachment({ spellId: item.id }));
+          dispatch(battleActions.addToGraveyard({ card: item }));
+        } else if (item.type === 'spell' && type === 'move') {
+          deleteCardfromSource(item);
+          dispatch(battleActions.addFieldContent({ card: item, id: endCellId }));
+        } else if (item.type === 'spell' && type === 'return') {
+          deleteCardfromSource(item);
+          dispatch(battleActions.deleteAttachment({ spellId: item.id }));
+          dispatch(battleActions.returnCard({ card: item, cost: item.cost }));
+        }
+      });
+    }
   };
 
   const deleteOtherActiveCard = (card1, card2, thisplayer) => {

@@ -356,7 +356,8 @@ const castleDeck = [
       turn: 0,
       features: [{
         attach: ['grave'], type: 'good', aim: ['warrior'], name: 'ressurect', condition: 'insteadatk', cost: 4, resCost: 0,
-      }],
+      },
+      { name: 'cantPostpone' }],
       img: Resurrection,
       status: 'hand',
       disabled: false,

@@ -2,6 +2,8 @@ import tutorialText from './tutorialTextEN';
 import { menuTipsHeaders, menuTipsText } from './menuTipsEn';
 import AcademiaInfo from './academiaCardsInfoEN';
 import CastleInfo from './castleCardsInfoEN';
+import castleCardsNames from './castleCardsNamesEN';
+import academiaCardsNames from './academiaCardsNamesEN';
 
 export default {
   translation: {
@@ -127,6 +129,10 @@ export default {
     description: {
       Castle: CastleInfo,
       Academia: AcademiaInfo,
+    },
+    titles: {
+      Castle: castleCardsNames,
+      Academia: academiaCardsNames,
     },
     tutorialSteps: tutorialText,
     menuTipsHeader: menuTipsHeaders,

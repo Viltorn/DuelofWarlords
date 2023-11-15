@@ -39,6 +39,12 @@ const Card = ({
     [styles.font]: !active,
   });
 
+  const titleClasses = cn({
+    [styles.cardName]: type !== 'hero',
+    [styles.cardNameActive]: type !== 'hero' && active,
+    [styles.heroNameActive]: type === 'hero' && active,
+  });
+
   const handleClick = () => {
     const activeCard = getActiveCard();
     const activeId = activeCard ? activeCard.id : null;
@@ -71,6 +77,7 @@ const Card = ({
   return (
     <button className={classes} type="button" ref={cardElement} onClick={handleClick} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave} style={{ marginRight: `-${marginRight}rem` }}>
       <div className={cn([styles.imageContainer], { [styles.active]: active })}>
+        <h2 className={titleClasses}>{t(`titles.${faction}.${description}`)}</h2>
         {type === 'warrior' && (
         <>
           <h3 className={cn([styles.warriorPower], { [styles.active]: active })}>{power}</h3>

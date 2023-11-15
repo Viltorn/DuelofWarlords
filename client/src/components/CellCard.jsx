@@ -1,5 +1,6 @@
 import React, { useRef, useContext } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 import cn from 'classnames';
 import { actions as battleActions } from '../slices/battleSlice.js';
 import functionContext from '../contexts/functionsContext.js';
@@ -37,8 +38,9 @@ const CellCard = ({
   } = useContext(abilityContext);
   const cardElement = useRef();
   const dispatch = useDispatch();
+  const { t } = useTranslation();
   const {
-    cellId, turn,
+    cellId, turn, faction, description,
   } = item;
   const { thisPlayer, fieldCells, playerPoints } = useSelector((state) => state.battleReducer);
   const { curRoom, gameMode } = useSelector((state) => state.gameReducer);
@@ -53,6 +55,11 @@ const CellCard = ({
     [styles.makeAttackAnimation]: currentCell.animation === 'makeattack',
     [styles.turn1]: turn === 1,
     [styles.turn2]: turn === 2,
+  });
+
+  const titleClasses = cn({
+    [styles.cardName]: type !== 'hero',
+    [styles.heroName]: type === 'hero',
   });
 
   const makeCardAction = (card, player, points, cell, appliedCard) => {
@@ -117,6 +124,7 @@ const CellCard = ({
       className={cardStyles}
       style={{ marginTop: `-${marginTop}rem`, marginRight: `-${marginRight}rem` }}
     >
+      <h2 className={titleClasses}>{t(`titles.${faction}.${description}`)}</h2>
       {item.type === 'warrior' && (
         <>
           <h3 className={styles.warriorPower}>{getWarriorPower(item)}</h3>

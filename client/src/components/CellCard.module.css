@@ -110,6 +110,23 @@
   opacity: 0;
 }
 
+.cardName {
+  position: absolute;
+  font-size: 0.4rem;
+  color: var(--black-font);
+  right: 0.4rem;
+  margin-top: 0.15rem;
+}
+
+.heroName {
+  position: absolute;
+  font-size: 0.4rem;
+  color: var(--black-font);
+  right: 0;
+  left: 0;
+  margin-top: 0.3rem;
+}
+
 @keyframes makeattack {
   from {
     transform: scale(1);

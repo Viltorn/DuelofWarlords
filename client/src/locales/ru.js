@@ -2,6 +2,8 @@ import tutorialTextRU from './tutorialTextRU';
 import { menuTipsHeaders, menuTipsText } from './menuTipsRU';
 import AcademiaInfo from './academiaCardsInfoRU';
 import CastleInfo from './castleCardsInfoRU';
+import castleCardsNamesRU from './castleCardsNamesRU';
+import academiaCardsNamesRU from './academiaCardsNamesRU';
 
 export default {
   translation: {
@@ -138,6 +140,10 @@ export default {
     description: {
       Castle: CastleInfo,
       Academia: AcademiaInfo,
+    },
+    titles: {
+      Castle: castleCardsNamesRU,
+      Academia: academiaCardsNamesRU,
     },
     tutorialSteps: tutorialTextRU,
     menuTipsHeader: menuTipsHeaders,

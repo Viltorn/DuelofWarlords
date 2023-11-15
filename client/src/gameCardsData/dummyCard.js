@@ -6,6 +6,8 @@ const dummyCard = {
   type: 'spell',
   subtype: 'instant',
   description: 'DummyCard',
+  cost: 0,
+  currentC: 0,
   faction: 'Castle',
   id: _.uniqueId(),
   features: [{
