@@ -22,7 +22,7 @@ import AbilitiesContext from '../contexts/abilityActions';
 const Battlefield = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { windowWidth } = useContext(functionContext);
+  const { windowSize } = useContext(functionContext);
   const {
     cellData,
     addCardToField,
@@ -171,7 +171,7 @@ const Battlefield = () => {
 
   return (
     <div className={styles.container}>
-      {windowWidth < 680 ? (
+      {windowSize.winWidth < windowSize.winHeight ? (
         <RotateScreen />
       ) : (
         <>

@@ -17,7 +17,10 @@ export const FunctionProvider = ({ children }) => {
   const [tutorStep, changeTutorStep] = useState(0);
   const [isOpenMenu, setOpenMenu] = useState(false);
   const currentPoints = playerPoints.find((item) => item.player === thisPlayer).points;
-  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+  const [windowSize, setWindowWidth] = useState({
+    winHeight: window.innerHeight,
+    winWidth: window.innerWidth,
+  });
 
   useEffect(() => {
     window.addEventListener('beforeinstallprompt', (event) => {
@@ -36,7 +39,7 @@ export const FunctionProvider = ({ children }) => {
 
   useEffect(() => {
     const handleWindowResize = () => {
-      setWindowWidth(window.innerWidth);
+      setWindowWidth({ winHeight: window.innerHeight, winWidth: window.innerWidth });
     };
 
     window.addEventListener('resize', handleWindowResize);
@@ -475,12 +478,12 @@ export const FunctionProvider = ({ children }) => {
       deleteCardfromSource,
       getActiveCard,
       addActiveCard,
-      windowWidth,
       findDependValue,
       tutorStep,
       changeTutorStep,
       isOpenMenu,
       setOpenMenu,
+      windowSize,
     }}
     >
       {children}

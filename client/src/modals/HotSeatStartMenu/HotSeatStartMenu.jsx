@@ -1,4 +1,4 @@
-import React, { useRef, useState, useContext } from 'react';
+import React, { useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch } from 'react-redux';
 import { useFormik } from 'formik';
@@ -13,8 +13,6 @@ import MenuSlider from '../MenuSlider.jsx';
 import makeShaffledDeck from '../../utils/makeShaffledDeck.js';
 import createDeckForPLayer from '../../utils/makeDeckForPlayer.js';
 import dummyCard from '../../gameCardsData/dummyCard.js';
-import functionContext from '../../contexts/functionsContext.js';
-import RotateScreen from '../../components/RotateScreen.jsx';
 
 const HotSeatMenu = () => {
   const [factionNumber, setFactionSlide] = useState({ player1: 0, player2: 1 });
@@ -22,7 +20,6 @@ const HotSeatMenu = () => {
   const { t } = useTranslation();
   const inputEl = useRef();
   const dispatch = useDispatch();
-  const { windowWidth } = useContext(functionContext);
 
   const player1Faction = factionsData[factionNumber.player1];
   const player2Faction = factionsData[factionNumber.player2];
@@ -95,113 +92,109 @@ const HotSeatMenu = () => {
 
   return (
     <dialog className={styles.container}>
-      {windowWidth < 700 ? (
-        <RotateScreen />
-      ) : (
-        <div className={styles.contentDark}>
-          <form className={styles.hotseatForm} onSubmit={formik.handleSubmit}>
-            <fieldset className={styles.fieldset} disabled={formik.isSubmitting}>
-              <div className={styles.headerBlock}>
-                <h2 className={styles.headerLight}>{t('ChooseFactions')}</h2>
+      <div className={styles.contentDark}>
+        <form className={styles.hotseatForm} onSubmit={formik.handleSubmit}>
+          <fieldset className={styles.fieldset} disabled={formik.isSubmitting}>
+            <div className={styles.headerBlock}>
+              <h2 className={styles.headerLight}>{t('ChooseFactions')}</h2>
+              <PrimaryButton
+                showIcon={false}
+                state="default"
+                text={t('START')}
+                variant="primary"
+                type="submit"
+              />
+              <PrimaryButton
+                onClick={handleClose}
+                showIcon={false}
+                state="default"
+                text={t('CONTINUE')}
+                variant="primary"
+                type="submit"
+              />
+              <Link to="/choose" className={styles.link}>
                 <PrimaryButton
                   showIcon={false}
                   state="default"
-                  text={t('START')}
-                  variant="primary"
-                  type="submit"
+                  text={t('BACK')}
+                  variant="secondary"
                 />
-                <PrimaryButton
-                  onClick={handleClose}
-                  showIcon={false}
-                  state="default"
-                  text={t('CONTINUE')}
-                  variant="primary"
-                  type="submit"
+              </Link>
+            </div>
+            <div className={styles.playerSlides}>
+              <h3 className={styles.player}>
+                {t('Player1')}
+              </h3>
+              <div className={styles.slideBlock}>
+                <MenuSlider item={player1Faction} player="player1" changeSlide={changeFaction} />
+                <input
+                  className={styles.slideInput}
+                  id="player1Faction"
+                  type="text"
+                  ref={inputEl}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  value={player1Faction.id}
+                  data-testid="input-body"
+                  name="player1Faction"
                 />
-                <Link to="/choose" className={styles.link}>
-                  <PrimaryButton
-                    showIcon={false}
-                    state="default"
-                    text={t('BACK')}
-                    variant="secondary"
-                  />
-                </Link>
+                <label htmlFor="player1Faction" className={styles.label}>{player1Faction.id}</label>
               </div>
-              <div className={styles.playerSlides}>
-                <h3 className={styles.player}>
-                  {t('Player1')}
-                </h3>
-                <div className={styles.slideBlock}>
-                  <MenuSlider item={player1Faction} player="player1" changeSlide={changeFaction} />
-                  <input
-                    className={styles.slideInput}
-                    id="player1Faction"
-                    type="text"
-                    ref={inputEl}
-                    onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
-                    value={player1Faction.id}
-                    data-testid="input-body"
-                    name="player1Faction"
-                  />
-                  <label htmlFor="player1Faction" className={styles.label}>{player1Faction.id}</label>
-                </div>
-                <div className={styles.slideBlock}>
-                  <MenuSlider item={player1Heroes[heroNumber.player1]} player="player1" changeSlide={changeHero} />
-                  <input
-                    className={styles.slideInput}
-                    id="player1Hero"
-                    type="text"
-                    ref={inputEl}
-                    onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
-                    value={player1Heroes[heroNumber.player1].name}
-                    data-testid="input-body"
-                    name="player1Hero"
-                  />
-                  <label htmlFor="player1Hero" className={styles.label}>{player1Heroes[heroNumber.player1].name}</label>
-                </div>
+              <div className={styles.slideBlock}>
+                <MenuSlider item={player1Heroes[heroNumber.player1]} player="player1" changeSlide={changeHero} />
+                <input
+                  className={styles.slideInput}
+                  id="player1Hero"
+                  type="text"
+                  ref={inputEl}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  value={player1Heroes[heroNumber.player1].name}
+                  data-testid="input-body"
+                  name="player1Hero"
+                />
+                <label htmlFor="player1Hero" className={styles.label}>{player1Heroes[heroNumber.player1].name}</label>
               </div>
-              <hr className={styles.hr} />
-              <div className={styles.playerSlides}>
-                <h3 className={styles.player}>
-                  {t('Player2')}
-                </h3>
-                <div className={styles.slideBlock}>
-                  <MenuSlider item={player2Faction} player="player2" changeSlide={changeFaction} />
-                  <input
-                    className={styles.slideInput}
-                    id="player1Faction"
-                    type="text"
-                    ref={inputEl}
-                    onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
-                    value={player2Faction.id}
-                    data-testid="input-body"
-                    name="player1Faction"
-                  />
-                  <label htmlFor="player1Faction" className={styles.label}>{player2Faction.id}</label>
-                </div>
-                <div className={styles.slideBlock}>
-                  <MenuSlider item={player2Heroes[heroNumber.player2]} player="player2" changeSlide={changeHero} />
-                  <input
-                    className={styles.slideInput}
-                    id="player1Hero"
-                    type="text"
-                    ref={inputEl}
-                    onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
-                    value={player2Heroes[heroNumber.player2].name}
-                    data-testid="input-body"
-                    name="player1Hero"
-                  />
-                  <label htmlFor="player1Hero" className={styles.label}>{player2Heroes[heroNumber.player2].name}</label>
-                </div>
+            </div>
+            <hr className={styles.hr} />
+            <div className={styles.playerSlides}>
+              <h3 className={styles.player}>
+                {t('Player2')}
+              </h3>
+              <div className={styles.slideBlock}>
+                <MenuSlider item={player2Faction} player="player2" changeSlide={changeFaction} />
+                <input
+                  className={styles.slideInput}
+                  id="player1Faction"
+                  type="text"
+                  ref={inputEl}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  value={player2Faction.id}
+                  data-testid="input-body"
+                  name="player1Faction"
+                />
+                <label htmlFor="player1Faction" className={styles.label}>{player2Faction.id}</label>
               </div>
-            </fieldset>
-          </form>
-        </div>
-      )}
+              <div className={styles.slideBlock}>
+                <MenuSlider item={player2Heroes[heroNumber.player2]} player="player2" changeSlide={changeHero} />
+                <input
+                  className={styles.slideInput}
+                  id="player1Hero"
+                  type="text"
+                  ref={inputEl}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  value={player2Heroes[heroNumber.player2].name}
+                  data-testid="input-body"
+                  name="player1Hero"
+                />
+                <label htmlFor="player1Hero" className={styles.label}>{player2Heroes[heroNumber.player2].name}</label>
+              </div>
+            </div>
+          </fieldset>
+        </form>
+      </div>
     </dialog>
   );
 };
