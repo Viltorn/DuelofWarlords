@@ -1,6 +1,9 @@
-import { createContext, useEffect, useState } from 'react';
+import {
+  createContext, useEffect, useState,
+} from 'react';
 import { useDispatch, useStore, useSelector } from 'react-redux';
 import { actions as battleActions } from '../slices/battleSlice.js';
+import isInvisible from '../utils/isInvisible.js';
 import warSubtypes from '../gameData/warriorsSubtypes.js';
 
 const FunctionContext = createContext({});
@@ -17,10 +20,10 @@ export const FunctionProvider = ({ children }) => {
   const [tutorStep, changeTutorStep] = useState(0);
   const [isOpenMenu, setOpenMenu] = useState(false);
   const currentPoints = playerPoints.find((item) => item.player === thisPlayer).points;
-  const [windowSize, setWindowWidth] = useState({
-    winHeight: window.innerHeight,
-    winWidth: window.innerWidth,
-  });
+  // const [windowSize, setWindowWidth] = useState({
+  //   winHeight: window.innerHeight,
+  //   winWidth: window.innerWidth,
+  // });
 
   useEffect(() => {
     window.addEventListener('beforeinstallprompt', (event) => {
@@ -33,21 +36,25 @@ export const FunctionProvider = ({ children }) => {
     });
   });
 
-  const windowAspectRatio = window.innerWidth / window.innerHeight;
-  const fontValue = windowAspectRatio <= 2 ? `${window.innerWidth / 88}px` : `${window.innerHeight / 44}px`;
-  document.documentElement.style.setProperty('font-size', fontValue);
-
   useEffect(() => {
     const handleWindowResize = () => {
-      setWindowWidth({ winHeight: window.innerHeight, winWidth: window.innerWidth });
+      clearTimeout(window.resizelag);
+      window.resizelag = setTimeout(() => {
+        delete window.resizelag;
+        const windowAspectRatio = window.innerWidth / window.innerHeight;
+        const fontValue = windowAspectRatio <= 2 ? `${window.innerWidth / 88}px` : `${window.innerHeight / 44}px`;
+        document.documentElement.style.setProperty('font-size', fontValue);
+      }, 200);
+      // setWindowWidth({ winHeight: window.innerHeight, winWidth: window.innerWidth });
     };
 
+    handleWindowResize();
     window.addEventListener('resize', handleWindowResize);
 
     return () => {
       window.removeEventListener('resize', handleWindowResize);
     };
-  });
+  }, []);
 
   const getActiveCard = () => {
     const { activeCardPlayer1, activeCardPlayer2 } = store.getState().battleReducer;
@@ -65,14 +72,6 @@ export const FunctionProvider = ({ children }) => {
       return true;
     }
     return false;
-  };
-
-  const isInvisible = (cell) => {
-    const cellInvis = cell.attachments?.find((feat) => feat.name === 'invisible');
-    const warrior = cell.content.find((item) => item.type === 'warrior');
-    const cardInvis = warrior?.attachments.find((feat) => feat.name === 'invisible');
-    const featureInvis = warrior?.features.find((feat) => feat.name === 'invisible');
-    return cardInvis || cellInvis || featureInvis;
   };
 
   const findCellByContentId = (id) => fieldCells
@@ -483,7 +482,6 @@ export const FunctionProvider = ({ children }) => {
       changeTutorStep,
       isOpenMenu,
       setOpenMenu,
-      windowSize,
     }}
     >
       {children}
