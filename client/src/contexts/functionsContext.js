@@ -20,10 +20,7 @@ export const FunctionProvider = ({ children }) => {
   const [tutorStep, changeTutorStep] = useState(0);
   const [isOpenMenu, setOpenMenu] = useState(false);
   const currentPoints = playerPoints.find((item) => item.player === thisPlayer).points;
-  // const [windowSize, setWindowWidth] = useState({
-  //   winHeight: window.innerHeight,
-  //   winWidth: window.innerWidth,
-  // });
+  const [fontVal, setFontVal] = useState(0);
 
   useEffect(() => {
     window.addEventListener('beforeinstallprompt', (event) => {
@@ -42,8 +39,10 @@ export const FunctionProvider = ({ children }) => {
       window.resizelag = setTimeout(() => {
         delete window.resizelag;
         const windowAspectRatio = window.innerWidth / window.innerHeight;
-        const fontValue = windowAspectRatio <= 2 ? `${window.innerWidth / 88}px` : `${window.innerHeight / 44}px`;
-        document.documentElement.style.setProperty('font-size', fontValue);
+        const fontValue = windowAspectRatio <= 2 ? window.innerWidth / 88 : window.innerHeight / 44;
+        const fontSize = `${fontValue}px`;
+        setFontVal(fontValue);
+        document.documentElement.style.setProperty('font-size', fontSize);
       }, 200);
       // setWindowWidth({ winHeight: window.innerHeight, winWidth: window.innerWidth });
     };
@@ -482,6 +481,7 @@ export const FunctionProvider = ({ children }) => {
       changeTutorStep,
       isOpenMenu,
       setOpenMenu,
+      fontVal,
     }}
     >
       {children}

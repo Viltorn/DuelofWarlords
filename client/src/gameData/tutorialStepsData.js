@@ -1,5 +1,8 @@
 const data = [
   {
+    step: 'step0', func: 'tutorialSetUp', next: true, back: false, disEndTurn: true,
+  },
+  {
     step: 'step1', func: 'step1', next: true, back: true, disEndTurn: true,
   },
   {
@@ -18,34 +21,34 @@ const data = [
     step: 'step6', func: 'turnWarrior', next: true, back: false, disEndTurn: true,
   },
   {
-    step: 'step7', func: 'disablePostponed', left: 23, next: true, back: false, disEndTurn: true,
+    step: 'step7', func: 'disablePostponed', left: 22, next: true, back: false, disEndTurn: true,
   },
   {
-    step: 'step8', func: 'addGrifAndGarg', left: 23, next: false, back: false, disEndTurn: true,
+    step: 'step8', func: 'addGrifAndGarg', left: 22, next: false, back: false, disEndTurn: true,
   },
   {
-    step: 'step9', func: '', left: 23, next: true, back: false, disEndTurn: true,
+    step: 'step9', func: '', left: 22, next: true, back: false, disEndTurn: true,
   },
   {
-    step: 'step10', func: 'turnGriffon', left: 23, next: false, back: false, disEndTurn: true,
+    step: 'step10', func: 'turnGriffon', left: 22, next: false, back: false, disEndTurn: true,
   },
   {
-    step: 'step11', func: '', left: 23, next: false, back: false, disEndTurn: false,
+    step: 'step11', func: '', left: 22, next: false, back: false, disEndTurn: false,
   },
   {
-    step: 'step12', func: 'attackGriffonAndWarrior', left: 23, next: true, back: false, disEndTurn: false,
+    step: 'step12', func: 'attackGriffonAndWarrior', left: 22, next: true, back: false, disEndTurn: false,
   },
   {
-    step: 'step13', func: '', left: 23, next: true, back: false, disEndTurn: true,
+    step: 'step13', func: '', left: 22, next: true, back: false, disEndTurn: true,
   },
   {
-    step: 'step14', func: 'deleteWarriors', left: 23, next: true, back: false, disEndTurn: true,
+    step: 'step14', func: 'deleteWarriors', left: 22, next: true, back: false, disEndTurn: true,
   },
   {
-    step: 'step15', func: 'addWarriorsToDeck', left: 23, next: true, back: false, disEndTurn: true,
+    step: 'step15', func: 'addWarriorsToDeck', left: 22, next: true, back: false, disEndTurn: true,
   },
   {
-    step: 'step16', func: 'drawCard', left: 23, next: true, back: false, disEndTurn: true,
+    step: 'step16', func: 'drawCard', left: 22, next: true, back: false, disEndTurn: true,
   },
   {
     step: 'step17', func: 'activeShooterCells', left: 15, next: false, back: false, disEndTurn: true,

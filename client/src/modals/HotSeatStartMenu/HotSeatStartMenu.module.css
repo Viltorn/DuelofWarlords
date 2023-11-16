@@ -3,7 +3,7 @@
   display: flex;
   justify-content: center;
   align-items: top;
-  z-index: 100; /* Sit on top */
+  z-index: 10; /* Sit on top */
   left: 0;
   top: 0;
   width: 100%; /* Full width */

@@ -1,4 +1,5 @@
 export default {
+  step0: 'Welcome to Tutorial mode! Here you will learn the basics of the Duel of Warlords game',
   step1: 'If you play as player 1, your troops and warlord are located on the left half of the battlefield, if you play as player 2, then on the right side',
   step2: 'In each game, players must defeat an enemy warlord, for this his health must drop to zero',
   step3: 'The battlefield is conventionally divided into lines - cells vertically and rows - cells horizontally',

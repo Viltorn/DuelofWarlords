@@ -7,6 +7,7 @@ import styles from './TutorialStepsWindow.module.css';
 import castleDeck from '../../gameCardsData/castleDeck.js';
 import academiaDeck from '../../gameCardsData/academiaDeck.js';
 import { spellsCells } from '../../gameData/heroes&spellsCellsData.js';
+import { heroes } from '../../gameCardsData/factionsData';
 import tutorialStepsData from '../../gameData/tutorialStepsData';
 import makeDeckForPLayer from '../../utils/makeDeckForPlayer.js';
 import abilityContext from '../../contexts/abilityActions.js';
@@ -19,7 +20,9 @@ const TutorialStepsWindow = () => {
   const { fieldCells, thisPlayer } = useSelector((state) => state.battleReducer);
 
   const { makeFight, sendCardFromField } = useContext(abilityContext);
-  const { deleteCardfromSource, tutorStep, changeTutorStep } = useContext(functionContext);
+  const {
+    deleteCardfromSource, tutorStep, changeTutorStep,
+  } = useContext(functionContext);
 
   const madeCastleDeck = useMemo(() => makeDeckForPLayer(makeInitialDeck(castleDeck), 'player1'), []);
   const madeAcademiaDeck = useMemo(() => makeDeckForPLayer(makeInitialDeck(academiaDeck), 'player2'), []);
@@ -71,10 +74,16 @@ const TutorialStepsWindow = () => {
     }
   };
 
-  const stepIntent = tutorialStepsData[tutorStep].left ?? 0;
+  const indent = tutorialStepsData[tutorStep].left ?? 0;
 
   useEffect(() => {
     const stepFunctions = {
+      tutorialSetUp: () => {
+        dispatch(battleActions.disableCells({ ids: ['graveyard1', 'graveyard2'] }));
+        dispatch(battleActions.changePlayer({ newPlayer: 'player1' }));
+        dispatch(battleActions.setHero({ hero: heroes[0], player: 'player1' }));
+        dispatch(battleActions.setHero({ hero: heroes[1], player: 'player2' }));
+      },
       step1: () => fieldCells
         .filter((cell) => (cell.type === 'field' || cell.type === 'hero') && cell.player === 'player1')
         .forEach((cell) => dispatch(battleActions.addAnimation({ cell, type: 'green' }))),
@@ -240,7 +249,7 @@ const TutorialStepsWindow = () => {
   }, [tutorStep]);
 
   return (
-    <div className={styles.window} style={{ left: `${2 + stepIntent}rem` }}>
+    <div className={styles.window} style={{ left: `${indent}rem` }}>
       <div className={styles.container}>
         <h2 className={styles.title}>{t(`tutorialSteps.${tutorialStepsData[tutorStep].step}`)}</h2>
         <div className={styles.btnBlock}>

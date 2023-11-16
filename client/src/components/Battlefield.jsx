@@ -1,5 +1,5 @@
 /* eslint-disable object-curly-newline */
-import React, { useContext, useEffect, useMemo } from 'react';
+import React, { useContext, useEffect, useMemo, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import { useOrientation } from '@uidotdev/usehooks';
@@ -10,11 +10,11 @@ import HeroPad from './HeroPad.jsx';
 import Card from './Card.jsx';
 import Header from './Header.jsx';
 import RotateScreen from './RotateScreen.jsx';
+import TutorialStepsWindow from '../modals/Tutorial/TutorialStepsWindow';
 import ActiveCard from './ActiveCard.jsx';
 import InGameMenu from './InGameMenu/InGameMenu.jsx';
 import styles from './Battlefield.module.css';
 import getModal from '../modals/index.js';
-// import functionContext from '../contexts/functionsContext.js';
 import { actions as modalsActions } from '../slices/modalsSlice.js';
 import { actions as battleActions } from '../slices/battleSlice.js';
 import { actions as gameActions } from '../slices/gameSlice';
@@ -23,8 +23,9 @@ import AbilitiesContext from '../contexts/abilityActions';
 const Battlefield = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const container = useRef(null);
+  const main = useRef(null);
   const orientation = useOrientation();
-  // const { windowSize } = useContext(functionContext);
   const {
     cellData,
     addCardToField,
@@ -61,9 +62,9 @@ const Battlefield = () => {
     if (gameMode === 'hotseat') {
       dispatch(modalsActions.openModal({ type: 'openHotSeatMenu' }));
     }
-    if (gameMode === 'tutorial') {
-      dispatch(modalsActions.openModal({ type: 'tutorial' }));
-    }
+    // if (gameMode === 'tutorial') {
+    //   dispatch(modalsActions.openModal({ type: 'tutorial' }));
+    // }
   // eslint-disable-next-line
   }, [gameMode]);
 
@@ -172,177 +173,177 @@ const Battlefield = () => {
   }, [makeMove]);
 
   return (
-    <div className={styles.container}>
-      {orientation.type === 'portrait-primary' ? (
+    <div className={styles.container} ref={container}>
+      {orientation.type === 'portrait-primary' && (
         <RotateScreen />
-      ) : (
-        <>
-          <div className={styles.main}>
-            {thisPlayer === 'player1' ? (
-              <div className={styles.handsContainer}>
-                <Header />
-                <div className={styles.heropad1}>
-                  {activeCardPlayer1 && (
-                  <ActiveCard activeCard={activeCardPlayer1} playerType="player1" />
-                  )}
-                  <HeroPad type="first" player={thisPlayer} />
-                </div>
-                <div className={styles.playerHand}>
-                  <TransitionGroup component={null} exit>
-                    {playersHands[thisPlayer].map((card) => (
-                      <CSSTransition
-                        key={card.id}
-                        timeout={500}
-                        classNames={{
-                          enter: styles.cardAnimationEnter,
-                          enterActive: styles.cardAnimationActive,
-                          exit: styles.cardAnimationExit,
-                          exitActive: styles.cardAnimationExitActive,
-                        }}
-                      >
-                        <Card
-                          key={card.id}
-                          content={playersHands[thisPlayer]}
-                          card={card}
-                          activeCard={activeCardPlayer1}
-                        />
-                      </CSSTransition>
-                    ))}
-                  </TransitionGroup>
-                </div>
-              </div>
-            ) : (<HeroPad type="second" player="player1" />)}
-            <div className={styles.core}>
-              <div className={styles.topspells}>
-                {topSpellsPlayer1.map((spell) => (
-                  <Cell
-                    key={spell.id}
-                    id={spell.id}
-                    cellData={cellData}
-                    props={{
-                      animation: spell.animation,
-                      content: spell.content,
-                      type: 'topSpell',
-                      status: 'active',
+      )}
+      <div className={styles.main} ref={main}>
+        {gameMode === 'tutorial' && (
+          <TutorialStepsWindow />
+        )}
+        {thisPlayer === 'player1' ? (
+          <div className={styles.handsContainer}>
+            <Header />
+            <div className={styles.heropad1}>
+              {activeCardPlayer1 && (
+              <ActiveCard activeCard={activeCardPlayer1} playerType="player1" />
+              )}
+              <HeroPad type="first" player={thisPlayer} />
+            </div>
+            <div className={styles.playerHand}>
+              <TransitionGroup component={null} exit>
+                {playersHands[thisPlayer].map((card) => (
+                  <CSSTransition
+                    key={card.id}
+                    timeout={500}
+                    classNames={{
+                      enter: styles.cardAnimationEnter,
+                      enterActive: styles.cardAnimationActive,
+                      exit: styles.cardAnimationExit,
+                      exitActive: styles.cardAnimationExitActive,
                     }}
-                  />
+                  >
+                    <Card
+                      key={card.id}
+                      content={playersHands[thisPlayer]}
+                      card={card}
+                      activeCard={activeCardPlayer1}
+                    />
+                  </CSSTransition>
                 ))}
+              </TransitionGroup>
+            </div>
+          </div>
+        ) : (<HeroPad type="second" player="player1" />)}
+        <div className={styles.core}>
+          <div className={styles.topspells}>
+            {topSpellsPlayer1.map((spell) => (
+              <Cell
+                key={spell.id}
+                id={spell.id}
+                cellData={cellData}
+                props={{
+                  animation: spell.animation,
+                  content: spell.content,
+                  type: 'topSpell',
+                  status: 'active',
+                }}
+              />
+            ))}
+            <Cell
+              key={bigSpell.id}
+              id={bigSpell.id}
+              cellData={cellData}
+              props={{
+                animation: bigSpell.animation,
+                content: bigSpell.content,
+                type: 'bigSpell',
+                status: 'active',
+              }}
+            />
+            {topSpellsPlayer2.map((spell) => (
+              <Cell
+                key={spell.id}
+                id={spell.id}
+                cellData={cellData}
+                props={{
+                  animation: spell.animation,
+                  content: spell.content,
+                  type: 'topSpell',
+                  status: 'active',
+                }}
+              />
+            ))}
+          </div>
+          <div className={styles.middleCells}>
+            <div className={styles.middleFieldcells}>
+              {cellsPlayer1.map((cell) => (
                 <Cell
-                  key={bigSpell.id}
-                  id={bigSpell.id}
+                  key={cell.id}
+                  id={cell.id}
                   cellData={cellData}
                   props={{
-                    animation: bigSpell.animation,
-                    content: bigSpell.content,
-                    type: 'bigSpell',
+                    animation: cell.animation,
+                    content: cell.content,
+                    type: 'field',
+                    status: 'active',
+                    row: cell.row,
+                    line: cell.line,
+                  }}
+                />
+              ))}
+            </div>
+            <div className={styles.middleSpells}>
+              {midPells.map((spell) => (
+                <Cell
+                  key={spell.id}
+                  id={spell.id}
+                  cellData={cellData}
+                  props={{
+                    animation: spell.animation,
+                    content: spell.content,
+                    type: 'midSpell',
                     status: 'active',
                   }}
                 />
-                {topSpellsPlayer2.map((spell) => (
-                  <Cell
-                    key={spell.id}
-                    id={spell.id}
-                    cellData={cellData}
-                    props={{
-                      animation: spell.animation,
-                      content: spell.content,
-                      type: 'topSpell',
-                      status: 'active',
-                    }}
-                  />
-                ))}
-              </div>
-              <div className={styles.middleCells}>
-                <div className={styles.middleFieldcells}>
-                  {cellsPlayer1.map((cell) => (
-                    <Cell
-                      key={cell.id}
-                      id={cell.id}
-                      cellData={cellData}
-                      props={{
-                        animation: cell.animation,
-                        content: cell.content,
-                        type: 'field',
-                        status: 'active',
-                        row: cell.row,
-                        line: cell.line,
-                      }}
-                    />
-                  ))}
-                </div>
-                <div className={styles.middleSpells}>
-                  {midPells.map((spell) => (
-                    <Cell
-                      key={spell.id}
-                      id={spell.id}
-                      cellData={cellData}
-                      props={{
-                        animation: spell.animation,
-                        content: spell.content,
-                        type: 'midSpell',
-                        status: 'active',
-                      }}
-                    />
-                  ))}
-                </div>
-                <div className={styles.middleFieldcells}>
-                  {cellsPlayer2.map((cell) => (
-                    <Cell
-                      key={cell.id}
-                      id={cell.id}
-                      cellData={cellData}
-                      props={{
-                        animation: cell.animation,
-                        content: cell.content,
-                        type: 'field',
-                        status: 'active',
-                        row: cell.row,
-                        line: cell.line,
-                      }}
-                    />
-                  ))}
-                </div>
-              </div>
+              ))}
             </div>
-            {thisPlayer === 'player2' ? (
-              <div className={styles.handsContainer}>
-                <Header />
-                <div className={styles.heropad2}>
-                  <HeroPad type="first" player={thisPlayer} />
-                  {activeCardPlayer2 && (
-                  <ActiveCard activeCard={activeCardPlayer2} playerType="player2" />
-                  )}
-                </div>
-                <div className={styles.playerHand}>
-                  <TransitionGroup component={null} exit>
-                    {playersHands[thisPlayer].map((card) => (
-                      <CSSTransition
-                        key={card.id}
-                        timeout={500}
-                        classNames={{
-                          enter: styles.cardAnimationEnter,
-                          enterActive: styles.cardAnimationActive,
-                          exit: styles.cardAnimationExit,
-                          exitActive: styles.cardAnimationExitActive,
-                        }}
-                      >
-                        <Card
-                          key={card.id}
-                          content={playersHands[thisPlayer]}
-                          card={card}
-                          activeCard={activeCardPlayer2}
-                        />
-                      </CSSTransition>
-                    ))}
-                  </TransitionGroup>
-                </div>
-              </div>
-            ) : (<HeroPad type="second" player="player2" />)}
+            <div className={styles.middleFieldcells}>
+              {cellsPlayer2.map((cell) => (
+                <Cell
+                  key={cell.id}
+                  id={cell.id}
+                  cellData={cellData}
+                  props={{
+                    animation: cell.animation,
+                    content: cell.content,
+                    type: 'field',
+                    status: 'active',
+                    row: cell.row,
+                    line: cell.line,
+                  }}
+                />
+              ))}
+            </div>
           </div>
-          {renderModal(isOpened, type)}
-          <InGameMenu />
-        </>
-      )}
+        </div>
+        {thisPlayer === 'player2' ? (
+          <div className={styles.handsContainer}>
+            <Header />
+            <div className={styles.heropad2}>
+              <HeroPad type="first" player={thisPlayer} />
+              {activeCardPlayer2 && (
+              <ActiveCard activeCard={activeCardPlayer2} playerType="player2" />
+              )}
+            </div>
+            <div className={styles.playerHand}>
+              <TransitionGroup component={null} exit>
+                {playersHands[thisPlayer].map((card) => (
+                  <CSSTransition
+                    key={card.id}
+                    timeout={500}
+                    classNames={{
+                      enter: styles.cardAnimationEnter,
+                      enterActive: styles.cardAnimationActive,
+                      exit: styles.cardAnimationExit,
+                      exitActive: styles.cardAnimationExitActive,
+                    }}
+                  >
+                    <Card
+                      key={card.id}
+                      content={playersHands[thisPlayer]}
+                      card={card}
+                      activeCard={activeCardPlayer2}
+                    />
+                  </CSSTransition>
+                ))}
+              </TransitionGroup>
+            </div>
+          </div>
+        ) : (<HeroPad type="second" player="player2" />)}
+      </div>
+      {renderModal(isOpened, type)}
+      <InGameMenu />
     </div>
   );
 };

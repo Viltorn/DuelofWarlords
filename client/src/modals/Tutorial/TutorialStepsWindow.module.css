@@ -1,7 +1,6 @@
 .window {
-  position: fixed; /* Stay in place */
+  position: absolute; /* Stay in place */
   z-index: 1; /* Sit on top */
-  left: 2rem;
   top: 6.5rem;
   width: 22rem;
   height: 20rem;
