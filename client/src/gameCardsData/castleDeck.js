@@ -321,12 +321,12 @@ const castleDeck = [
   },
   {
     card: {
-      name: 'Swift',
+      name: 'Swiftness',
       type: 'spell',
       subtype: 'permanent',
       cost: 2,
       currentC: 2,
-      description: 'Swift',
+      description: 'Swiftness',
       faction: 'Castle',
       id: _.uniqueId(),
       place: 'warrior',

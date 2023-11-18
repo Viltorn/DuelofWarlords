@@ -12,7 +12,7 @@ export default {
   TemplarChampion: 'Тамплиер Чемпион',
   MasterOfLight: 'Магистр света',
   ThunderBlast: 'Удар грома',
-  Swift: 'Ускорение',
+  Swiftness: 'Стремительность',
   Resurrection: 'Воскрешение',
   Retribution: 'Воздаяние',
   AttackAura: 'Аура атаки',

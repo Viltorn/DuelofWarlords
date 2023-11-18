@@ -7,16 +7,16 @@ import academiaCardsNames from './academiaCardsNamesEN';
 
 export default {
   translation: {
-    mainDescription: ` - is collectible card game created on basis of Might and Magic: Duel of Champions (MMDoc) that is no longer officially supported.
-      MMdoc had many fans but it also had pretty complicated gameplay for average player and could exist as computer game only. In DofW original mechanic of MMDoC was reworked:
-      it become simplier but new features were also added in order to make it still exciting to play, and overall allows new game to be made as board game alongside with digital version.`,
+    mainDescription: ` - is collectible card game created on basis of Might and Magic: Duel of Champions (MMDoС) that is no longer officially supported.
+      MMDoC had many fans but it also had pretty complicated gameplay for average player and could exist as computer game only. In Duel of Warlords original mechanic of MMDoC was reworked:
+      it become simplier but new features were also added in order to make it still exciting to play, and overall allows new game to be made as board game alongside with digital version!`,
     gameDescription: `The game is a 2-player tactical duel in a fantasy world inspired by the Heroes of Might and Magic series of games.
     Each of the players controls one of the unique warlord in the game belonging to the chosen faction.
     During the game, opponents take turns playing spells and warriors cards, as well as moving them around the battlefield to achieve the main goal - to reduce the enemy warlord's health to 0 points`,
     gameFactions: `Choose one of the 4 available factions in the game:
     The Castle - strong warriors of the light, the Academy - powerful wizards, the Dungeon - dangerous killers, the Forest - adherents of the magic of nature.`,
     hoverPictures: '(move the cursor over the images)',
-    moreAboutMMdoc: 'More about MMDoc',
+    moreAboutMMdoc: 'More about MMDoC',
     Battlefield: 'BATTLEFIELD',
     Heroes: 'WARLORDS',
     Spells: 'SPELLS',

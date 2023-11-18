@@ -12,7 +12,7 @@ export default {
   TemplarChampion: 'Templar champion',
   MasterOfLight: 'Master of light',
   ThunderBlast: 'Thunder blast',
-  Swift: 'Swift',
+  Swiftness: 'Swiftness',
   Resurrection: 'Resurrection',
   Retribution: 'Retribution',
   AttackAura: 'Attack aura',

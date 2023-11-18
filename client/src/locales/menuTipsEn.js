@@ -13,7 +13,7 @@ export const menuTipsHeaders = {
 
 export const menuTipsText = {
   STARTTURN: 'This effect applies in the start of card\'s owner turn',
-  LASTCAST: 'Effect applies when card with this effect is sent to grave',
+  LASTCAST: 'Effect applies when card with this effect is being sent to grave',
   STUN: 'Turn warrior in a "stun" state',
   INVISIBILITY: 'Warriors can\'t attack invisible warrior in thier turn but can attack other warriors or warlord through this warrior',
   REACTION: 'This effect can only be used as response on some event in game. In order to use this effect this card must be postponed',
