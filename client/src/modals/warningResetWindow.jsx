@@ -21,18 +21,23 @@ const WarningResetWindow = () => {
   const handleClick = () => {
     dispatch(battleActions.resetState());
     changeTutorStep(0);
-    if (dest === 'reset') {
-      const type = gameMode === 'hotseat' ? 'openHotSeatMenu' : 'tutorial';
-      dispatch(modalsActions.openModal({ type }));
+    if (dest === 'reset' && gameMode === 'hotseat') {
+      dispatch(modalsActions.openModal({ type: 'openHotSeatMenu' }));
+      return;
+    }
+    if (dest === 'reset' && gameMode === 'tutorial') {
+      dispatch(modalsActions.closeModal());
       return;
     }
     if (dest !== '/lobby') {
       dispatch(gameActions.resetState());
     }
-    socket.emit('closeRoom', { roomId: curRoom, name }, (data) => {
-      dispatch(gameActions.updateRooms({ rooms: data }));
-    });
-    dispatch(gameActions.setCurrentRoom({ room: '' }));
+    if (gameMode === 'online') {
+      socket.emit('closeRoom', { roomId: curRoom, name }, (data) => {
+        dispatch(gameActions.updateRooms({ rooms: data }));
+      });
+      dispatch(gameActions.setCurrentRoom({ room: '' }));
+    }
     dispatch(modalsActions.closeModal());
     navigate(dest);
   };

@@ -79,7 +79,6 @@ const TutorialStepsWindow = () => {
   useEffect(() => {
     const stepFunctions = {
       tutorialSetUp: () => {
-        dispatch(battleActions.disableCells({ ids: ['graveyard1', 'graveyard2'] }));
         dispatch(battleActions.changePlayer({ newPlayer: 'player1' }));
         dispatch(battleActions.setHero({ hero: heroes[0], player: 'player1' }));
         dispatch(battleActions.setHero({ hero: heroes[1], player: 'player2' }));
@@ -126,7 +125,7 @@ const TutorialStepsWindow = () => {
       massTurn: () => dispatch(battleActions.massTurnCards({ player: 'player1' })),
       deleteWarriors: () => {
         fieldCells.forEach((cell) => {
-          const warrior = cell.content.find((item) => item.type === 'warrior');
+          const warrior = cell.content.find((item) => item.type === 'warrior' && cell.type === 'field');
           if (warrior) {
             deleteCardfromSource(warrior);
           }

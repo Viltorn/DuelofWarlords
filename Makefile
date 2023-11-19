@@ -1,5 +1,5 @@
 frontend:
-	cd client && PORT=80 npm start
+	cd client && npm start
 
 backend:
 	cd server && PORT=8080 nodemon server.js

@@ -12,7 +12,7 @@ export default {
   step10: 'If there are no enemy warriors in the row, then the warrior can attack the warlord: select your "Imperial Griffon" and click on the next cell to move it and block the "Gargoyle" attack on your warlord',
   step11: 'After making an attack or movement, the warriors turn 45 degrees - in this state they inactive and cannot attack or move. Now click "end turn" to see the enemy\'s turn',
   step12: 'As you see Griffon took the blow on himself, while the gargoyle\'s health dropped to zero from retaliation, and it left the battlefield, going to the grave',
-  step13: 'Great, now you can try to play cards from your hand, but for this you need to learn about the action points that are needed to play any cards in the game',
+  step13: 'The last card that got into the grave always lies on top - click on the Gargoyle to see the opponent\'s grave, and then close the grave window and click "continue": in the next steps you will learn about the action points that are needed to play cards from your hand',
   step14: 'At the beginning of the game, each player receives 1 action point, their number for both players is displayed in the header bar',
   step15: 'After both players end thier turns, the next round begins and the players receive the number of action points equal to the number of the current round (regardless of whether they still have points left or not from the previous round)',
   step16: 'So, the "Imperial Shooter" card came to your hand, its costs  1, that is displayed in a black square on the card. "Imperial Shooter" belongs to the class of Shooter as it has a "target" icon in the upper left corner of the card',
