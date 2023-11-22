@@ -13,8 +13,10 @@ import PlayerDisconnected from './playerDisconnected.jsx';
 import PlayerVictory from './playerVictory.jsx';
 import WarningResetWindow from './warningResetWindow.jsx';
 import ConnectProblem from './connectProblem.jsx';
+import EndTurnWarning from './endTurnWarning.jsx';
 
 const modals = {
+  endTurnWarning: EndTurnWarning,
   connectProblem: ConnectProblem,
   warningWindow: WarningResetWindow,
   victory: PlayerVictory,

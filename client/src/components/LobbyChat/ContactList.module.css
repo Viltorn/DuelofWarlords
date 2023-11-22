@@ -1,0 +1,6 @@
+.window {
+  width: 20rem;
+  min-width: 100px;
+  height: 100%;
+  overflow-y: scroll;
+}

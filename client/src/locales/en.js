@@ -105,6 +105,7 @@ export default {
     YouDisconnected: 'You disconnected from the server',
     GameEnd: 'The game is over! Player won: ',
     ResetWarning: 'If you continue current progress will be reset. Continue?',
+    EndTurnWarning: 'You have active warriors on battlefield, are you sure you want to continue?',
     CurrentOnline: 'Players online',
     ConnectProblem: 'One of the players experiencing connection problem: try to perform action one more time',
     errors: {

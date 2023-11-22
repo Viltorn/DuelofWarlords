@@ -189,25 +189,25 @@ export const FunctionProvider = ({ children }) => {
         }
       });
     } else if (place === 'warrior') {
-      const { aim, type } = feature;
+      const { type, attach } = feature;
       fieldCells.forEach((cell) => {
         const isPlayerOccupiedCell = cell.content.length > 0 && cell.content.length < 3;
         if (isPlayerOccupiedCell && type === 'good' && !cell.disabled && cell.player === thisPlayer) {
-          if (cell.type === 'field' && aim.includes('warrior')) {
+          if (cell.type === 'field' && attach.includes('warrior')) {
             dispatch(battleActions.addAnimation({ cell, type: 'green' }));
             setCastCells((prev) => [...prev, cell.id]);
           }
-          if (cell.type === 'hero' && aim.includes('hero') && !cell.disabled) {
+          if (cell.type === 'hero' && attach.includes('hero') && !cell.disabled) {
             dispatch(battleActions.addAnimation({ cell, type: 'green' }));
             setCastCells((prev) => [...prev, cell.id]);
           }
         }
         if (isPlayerOccupiedCell && type === 'bad' && cell.player !== thisPlayer) {
-          if (cell.type === 'field' && aim.includes('warrior') && !cell.disabled) {
+          if (cell.type === 'field' && attach.includes('warrior') && !cell.disabled) {
             dispatch(battleActions.addAnimation({ cell, type: 'red' }));
             setCastCells((prev) => [...prev, cell.id]);
           }
-          if (cell.type === 'hero' && aim.includes('hero') && !cell.disabled) {
+          if (cell.type === 'hero' && attach.includes('hero') && !cell.disabled) {
             dispatch(battleActions.addAnimation({ cell, type: 'red' }));
             setCastCells((prev) => [...prev, cell.id]);
           }

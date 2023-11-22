@@ -1,7 +1,9 @@
 import {
   useContext, createContext, useState,
 } from 'react';
+import useSound from 'use-sound';
 import { useDispatch, useSelector, useStore } from 'react-redux';
+import drumAudio from '../assets/DrumBeat.mp3';
 import { maxActionPoints, minCardTurn, maxCardTurn } from '../gameData/gameLimits';
 import { spellsCells } from '../gameData/heroes&spellsCellsData';
 import { actions as modalsActions } from '../slices/modalsSlice.js';
@@ -31,6 +33,7 @@ export const AbilityProvider = ({ children }) => {
     deleteOtherActiveCard,
   } = useContext(functionContext);
   const store = useStore();
+  const [play] = useSound(drumAudio, { volume: 0.3 });
   const [cellData, setCellData] = useState({});
   const [actionPerforming, setActionPerforming] = useState(false);
 
@@ -778,6 +781,7 @@ export const AbilityProvider = ({ children }) => {
         const onTurnStartSpells = findTriggerSpells(warrior, cell, 'onturnstart', 'warrior');
         onTurnStartSpells.forEach((spell) => makeFeatureCast(spell, cell, null, newPlayer));
       });
+    play();
   };
 
   // MAKE CAST SPELL

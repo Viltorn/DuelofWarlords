@@ -68,6 +68,10 @@ const Header = () => {
         return arr;
       }, []);
 
+    const activeCard = fieldCells
+      .filter((cell) => cell.type === 'field' && cell.player === thisPlayer && cell.content !== 0)
+      .find((cell) => cell.content.find((item) => item.type === 'warrior' && item.turn === 0));
+
     const data = {
       move: 'endTurn',
       room: curRoom,
@@ -78,6 +82,11 @@ const Header = () => {
       temporarySpells,
       turnSpells,
     };
+
+    if (activeCard && gameMode === 'online') {
+      dispatch(modalsActions.openModal({ type: 'endTurnWarning', data }));
+      return;
+    }
 
     if (gameMode === 'online') {
       makeOnlineAction(data);

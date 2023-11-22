@@ -404,11 +404,12 @@ const castleDeck = [
       place: 'warrior',
       features: [
         {
-          attach: false, type: 'good', aim: ['enemyrowcell', 'warrior'], name: 'attack', value: 2,
+          attach: ['warrior'], type: 'good', aim: ['enemyrowcell', 'warrior', 'spell'], name: 'attack', condition: 'lastcall', value: 2,
         },
         {
-          attach: ['warrior'], type: 'bad', aim: ['enemyrowcell', 'warrior', 'spell'], name: 'attack', condition: 'lastcall', value: 2,
-        }],
+          attach: false, type: 'good', aim: ['enemyrowcell', 'warrior'], name: 'attack', value: 2,
+        },
+      ],
       img: AttackAura,
       status: 'hand',
       disabled: false,
@@ -463,8 +464,8 @@ const castleDeck = [
       name: 'Enlightenment',
       type: 'spell',
       subtype: 'turn',
-      cost: 2,
-      currentC: 2,
+      cost: 3,
+      currentC: 3,
       description: 'Enlightenment',
       faction: 'Castle',
       id: _.uniqueId(),
@@ -655,6 +656,13 @@ const castleDeck = [
       id: _.uniqueId(),
       place: 'warrior',
       features: [{
+        attach: ['warrior'],
+        aim: ['warrior'],
+        type: 'good',
+        name: 'health',
+        value: 2,
+      },
+      {
         attach: false,
         aim: ['warrior'],
         type: 'good',
@@ -710,11 +718,3 @@ const castleDeck = [
 ];
 
 export default castleDeck;
-
-// {
-//   attach: ['warrior'],
-//   aim: ['warrior', 'fighter', 'shooter', 'flyer'],
-//   type: 'good',
-//   name: 'retaliatestrike',
-//   value: 2,
-// }
