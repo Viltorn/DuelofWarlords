@@ -9,7 +9,7 @@ import { createServer } from 'http';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-const redis = new Redis(process.env.REDIS_URL)
+const redis = new Redis('redis://red-cldnrljmot1c73dr4glg:6379');
 
 const app = express(); // initialize express
 
