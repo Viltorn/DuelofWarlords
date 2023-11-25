@@ -5,6 +5,8 @@ import { useDispatch, useStore, useSelector } from 'react-redux';
 import { actions as battleActions } from '../slices/battleSlice.js';
 import isInvisible from '../utils/isInvisible.js';
 import warSubtypes from '../gameData/warriorsSubtypes.js';
+import { actions as gameActions } from '../slices/gameSlice';
+import socket from '../socket.js';
 
 const FunctionContext = createContext({});
 
@@ -21,6 +23,7 @@ export const FunctionProvider = ({ children }) => {
   const [isOpenMenu, setOpenMenu] = useState(false);
   const currentPoints = playerPoints.find((item) => item.player === thisPlayer).points;
   const [fontVal, setFontVal] = useState(0);
+  const [isOpenChat, setOpenChat] = useState(false);
 
   useEffect(() => {
     window.addEventListener('beforeinstallprompt', (event) => {
@@ -32,6 +35,24 @@ export const FunctionProvider = ({ children }) => {
       // Remove the 'hidden' class from the install button container.
     });
   });
+
+  useEffect(() => {
+    const setMessages = (data) => {
+      dispatch(gameActions.setMessages({ data }));
+    };
+
+    const addMessage = (data) => {
+      dispatch(gameActions.addMessage({ data }));
+    };
+
+    socket.on('getMessages', setMessages);
+    socket.on('message', addMessage);
+
+    return () => {
+      socket.off('message', addMessage);
+      socket.off('getMessages', setMessages);
+    };
+  }, [dispatch]);
 
   useEffect(() => {
     const handleWindowResize = () => {
@@ -482,6 +503,8 @@ export const FunctionProvider = ({ children }) => {
       isOpenMenu,
       setOpenMenu,
       fontVal,
+      isOpenChat,
+      setOpenChat,
     }}
     >
       {children}

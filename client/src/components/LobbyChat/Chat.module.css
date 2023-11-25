@@ -1,5 +1,7 @@
 .window {
-  width: 100%;
+  position: absolute;
+  top: 0;
+  right: 0;
   height: 100vh;
   display: flex;
   flex-direction: wrap;
@@ -9,7 +11,14 @@
   margin: auto auto; /* 15% from the top and centered */
   padding: 1rem;
   border: 1px solid #888;
-  width: 370px; /* Could be more or less, depending on screen size */
-  height: 340px;
   border-radius: 10px;
+  transition: all 0.3s linear;
+}
+
+.open {
+  transform: translateX(0);
+}
+
+.closed {
+  transform: translateX(100%);
 }

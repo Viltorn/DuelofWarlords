@@ -61,7 +61,7 @@ const Card = ({
   const handleMouseEnter = () => {
     let nextSib = cardElement.current.nextSibling;
     while (nextSib) {
-      nextSib.style.left = `${marginRight + 1}rem`;
+      nextSib.style.left = `${marginRight + 0.2}rem`;
       nextSib = nextSib.nextSibling;
     }
   };

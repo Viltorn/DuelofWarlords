@@ -7,6 +7,7 @@ const initialState = {
   name: '',
   onlineCount: '',
   socketId: '',
+  messages: [],
 };
 
 const gameSlice = createSlice({
@@ -51,6 +52,15 @@ const gameSlice = createSlice({
     setOnlineCount(state, { payload }) {
       const { count } = payload;
       state.onlineCount = count;
+    },
+
+    addMessage(state, { payload }) {
+      const { data } = payload;
+      state.messages = [...state.messages, data];
+    },
+    setMessages(state, { payload }) {
+      const { data } = payload;
+      state.messages = [...data];
     },
   },
 });

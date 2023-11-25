@@ -1,4 +1,5 @@
 .container {
+  position: relative;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
@@ -11,6 +12,7 @@
   min-height: 100vh;
   padding: 3rem 2rem;
   gap: 45px;
+  overflow: hidden;
 }
 
 .header {
@@ -54,6 +56,12 @@
   transform: scale(1.1);
 }
 
+.chatBtn {
+  border: none;
+  background: none;
+  cursor: pointer;
+}
+
 .divider {
   border: 5px solid var(--golden);
   border-radius: 10px;
@@ -63,14 +71,14 @@
 .infoContainer {
  display: flex;
  flex-wrap: wrap;
- gap: 30px;
+ gap: 25px;
  justify-content: flex-start;
 }
 
 .infoBlock {
   display: flex;
   align-items: center;
-  gap: 20px;
+  gap: 15px;
 }
 
 .nameText {

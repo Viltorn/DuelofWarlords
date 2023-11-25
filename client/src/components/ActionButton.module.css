@@ -9,7 +9,7 @@
   align-items: center;
   gap: 0.5rem;
   flex-shrink: 0;
-  border: 3px solid var(--golden);
+  border: 0.2rem solid var(--golden);
   background: var(--dark-blue);
   transition: transform 0.3s;
   cursor: pointer;

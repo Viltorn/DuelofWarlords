@@ -9,7 +9,7 @@ import { createServer } from 'http';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-const redis = new Redis('redis://red-cldnrljmot1c73dr4glg:6379');
+const redis = new Redis(process.env.REDIS_URL);
 
 const app = express(); // initialize express
 
@@ -36,6 +36,7 @@ const io = new Server(server, {
 });
 
 const rooms = new Map();
+const messages = [];
 
 // io.connection
 io.on('connection', (socket) => {
@@ -76,7 +77,8 @@ io.on('connection', (socket) => {
     socket.data.username = args.username;
     console.log(getRooms());
     const count = io.engine.clientsCount;
-    io.emit('clientsCount', count);
+    io.emit('clientsCount', count); 
+    io.to(socket.id).emit('getMessages', messages);
     callback(socket.id, getRooms());
   });
 
@@ -204,6 +206,17 @@ io.on('connection', (socket) => {
       }
     }
   });
+
+  socket.on('message', (data) => {
+    const { name, message } = data;
+    const id = uuidV4();
+    const newData = { senderName: name, body: message, id }
+    if (messages.length >= 50) {
+      messages.shift();
+    }
+    messages.push(newData);
+    io.emit('message', newData);
+  })
 
 });
 

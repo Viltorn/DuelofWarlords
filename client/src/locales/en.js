@@ -7,11 +7,11 @@ import academiaCardsNames from './academiaCardsNamesEN';
 
 export default {
   translation: {
-    mainDescription: ` - is collectible card game created on basis of Might and Magic: Duel of Champions (MMDoС) that is no longer officially supported.
-      MMDoC had many fans but it also had pretty complicated gameplay for average player and could exist as computer game only. In Duel of Warlords original mechanic of MMDoC was reworked:
-      it become simplier but new features were also added in order to make it still exciting to play, and overall allows new game to be made as board game alongside with digital version!`,
+    mainDescription: ` - is a collectible card game created on basis of Might and Magic: Duel of Champions (MMDoС) that is no longer officially supported.
+    MMDoC had many fans, but it also had pretty complicated gameplay for average players and could exist as computer game only. In Duel of Warlords original mechanic of MMDoC was reworked:
+    it has become simpler to understand but new features were also added in order to make it exciting to play and hard to master, overall this allows a new game to be made as a board game alongside with a digital version!`,
     gameDescription: `The game is a 2-player tactical duel in a fantasy world inspired by the Heroes of Might and Magic series of games.
-    Each of the players controls one of the unique warlord in the game belonging to the chosen faction.
+    Each of the players controls one of the unique warlords in the game belonging to the chosen faction.
     During the game, opponents take turns playing spells and warriors cards, as well as moving them around the battlefield to achieve the main goal - to reduce the enemy warlord's health to 0 points`,
     gameFactions: `Choose one of the 4 available factions in the game:
     The Castle - strong warriors of the light, the Academy - powerful wizards, the Dungeon - dangerous killers, the Forest - adherents of the magic of nature.`,
@@ -25,9 +25,9 @@ export default {
     You need to place them correctly on the battlefield to take advantage of each class.
     Move the warriors around the battlefield to prevent the enemy from attacking your warlord!`,
     HeroPowerDescription: `Warlords are directly involved in the battle: they attack the enemy or use useful spells!
-    Each warlord has a standard ability and a unique one that should be taken into account when you assembling your deck.`,
-    SpellsDescription: '6 spells schools and three types of magic cards: make strikes against enemy warriors with instant type of magic, take control over battlefield with temporary effects or increase your warriors power with permanent spells!',
-    PostponedDescription: 'You can make any card postponed during your turn that allows you to perform one of the following moves: increase spell power of attacking spells, make unexpected strike agains your enemy or simply play combo of your own!',
+    Each warlord has a standard ability and a unique one that should be taken into account when you are assembling your deck.`,
+    SpellsDescription: '6 spells schools and three types of magic cards: make strikes against enemy warriors with an instant type of magic, take control over battlefield with temporary effects or increase your warriors power with permanent spells!',
+    PostponedDescription: 'You can make any card postponed during your turn that allows you to perform one of the following moves: increase spell power of attacking spells, make an unexpected strike agains your enemy or simply play combo of your own!',
     GameDescriptTitle: 'GAME DESCRIPTION',
     GameFactionsTitle: 'GAME FACTIONS',
     GameFeaturesTitle: 'GAME FEATURES',
@@ -90,10 +90,11 @@ export default {
     GOLOBBY: 'GO TO LOBBY',
     Tips: 'TIPS',
     Tip1: 'You can always click on the graveyard to see the cards played by you or your opponent',
-    Tip2: 'In the first round of the game, you can one time throw any number of cards from your hand to the end of the deck and take the same number in return from top of your deck',
-    Tip3: 'During game, once per round, a player can put 1 card from his hand into the deck and draw a new card in return',
-    Tip4: 'In the game menu, you can see a description of special effects such as: STUN, EVASION, etc.',
+    Tip2: 'In the first round of the game, you can one time throw any number of cards from your hand to the end of the deck and take the same number in return from the top of your deck',
+    Tip3: 'During the game, once per round, a player can put 1 card from his hand into the deck and draw a new card in return',
+    Tip4: 'On the game menu, you can see a description of special effects such as: STUN, EVASION, etc.',
     Tip5: 'If you are player#1 so the current number of cards in the opponent\'s hand is displayed in the right upper corner of the playing field, if you are player#2 then in the left upper corner',
+    ChatHeader: 'Welcome to the chat!',
     CurrentRooms: 'CURRENT GAMES',
     YourName: 'Your name',
     Password: 'Password...',
@@ -105,8 +106,9 @@ export default {
     YouDisconnected: 'You disconnected from the server',
     GameEnd: 'The game is over! Player won: ',
     ResetWarning: 'If you continue current progress will be reset. Continue?',
-    EndTurnWarning: 'You have active warriors on battlefield, are you sure you want to continue?',
+    EndTurnWarning: 'You have an active warriors on the battlefield, are you sure you want to continue?',
     CurrentOnline: 'Players online',
+    Chat: 'Chat:',
     ConnectProblem: 'One of the players experiencing connection problem: try to perform action one more time',
     errors: {
       RoomNotExist: 'The room doesn\'t exist!',
