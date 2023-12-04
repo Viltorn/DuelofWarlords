@@ -23,7 +23,6 @@ const LoginSignUp = () => {
   const token = useMemo(() => getAuthToken(), []);
   const user = useMemo(() => (token ? token.login : ''), [token]);
   const pass = useMemo(() => (token ? token.pass : ''), [token]);
-  console.log(user);
 
   const handleClose = () => {
     dispatch(modalActions.closeModal());

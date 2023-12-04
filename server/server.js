@@ -85,17 +85,17 @@ io.on('connection', (socket) => {
     const { username, password } = data;
     const rawRes = redis.get(username, function(err, result) {
       if (err) {
-        return { error: true, message: 'DatabaseError' };
+        console.log('DatabaseError');
       } else if (result === null) {
-        return { error: true, message: 'UserDoesNotExist' };
+        console.log('UserDoesNotExist');
       } else {
-        return result;
+        console.log(result);
       }
     });
+    console.log(rawRes)
 
-    if (rawRes.error) {
-      console.log(message);
-      callback({error: rawRes.error, message: rawRes.message});
+    if (rawRes === null) {
+      callback({error: true, message: 'UserDoesNotExist'});
       return;
     }
 
@@ -121,15 +121,14 @@ io.on('connection', (socket) => {
     const { username, password } = args;
     const rawRes = redis.get(username, function(err, result) {
       if (err) {
-        return { error: true, message: 'DatabaseError' };
+        console.log('DatabaseError');
       } else if (result !== null) {
-        return { error: true, message: 'UserAlreadyExist' };
+        console.log('UserAlreadyExist');
       }
     });
 
-    if (rawRes.error) {
-      console.log(message);
-      callback({error: rawRes.error, message: rawRes.message});
+    if (rawRes !== null) {
+      callback({error: true, message:  'UserAlreadyExist' });
       return;
     }
     
