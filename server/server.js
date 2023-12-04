@@ -51,7 +51,6 @@ io.on('connection', (socket) => {
     const room = io.sockets.adapter.rooms.get(roomId);
     return room.size === 2;
   }
-  
 
   const getRooms = () => Array.from(rooms.values());
 
@@ -72,9 +71,74 @@ io.on('connection', (socket) => {
   io.emit('clientsCount', userCount);
   io.to(socket.id).emit('getSocketId', socket.id);
 
-  socket.on('username', (args, callback) => {
-    console.log('username:', args.username);
-    socket.data.username = args.username;
+  // socket.on('username', (args, callback) => {
+  //   console.log('username:', args.username);
+  //   socket.data.username = args.username;
+  //   console.log(getRooms());
+  //   const count = io.engine.clientsCount;
+  //   io.emit('clientsCount', count); 
+  //   io.to(socket.id).emit('getMessages', messages);
+  //   callback(socket.id, getRooms());
+  // });
+
+  socket.on('logIn', (data, callback) => {
+    const { username, password } = data;
+    redis.get(username, function(err, result) {
+      let error, message;
+      if (err) {
+        error = true;
+        message = 'DatabaseError';
+      } else if (result === null) {
+        error = true;
+        message = 'UserDoesNotExist';
+      }
+
+      if (error) {
+        callback({ error, message});
+        return;
+      }
+
+      const res = JSON.parse(result);
+      const { pass } = res;
+      
+      if (pass !== password) {
+        error = true;
+        message = 'WrongPass';
+        callback({ error, message });
+        return;
+      }
+
+      socket.data.username = username;
+      console.log(getRooms());
+      const count = io.engine.clientsCount;
+      io.emit('clientsCount', count); 
+      io.to(socket.id).emit('getMessages', messages);
+      callback(socket.id, getRooms());
+    });
+  });
+
+  socket.on('signUp', (args, callback) => {
+    const { username, password } = args;
+    redis.get(username, function(err, result) {
+      let error, message;
+      if (err) {
+        error = true;
+        message = 'DatabaseError';
+      } else if (result !== null) {
+        error = true;
+        message = 'UserAlreadyExist';
+      }
+
+      if (error) {
+        callback({ error, message});
+        return;
+      }
+    });
+    
+    const jsonData = JSON.stringify({ pass: password });
+    redis.set(username, jsonData);
+  
+    socket.data.username = username;
     console.log(getRooms());
     const count = io.engine.clientsCount;
     io.emit('clientsCount', count); 

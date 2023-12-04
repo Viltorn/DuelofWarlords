@@ -14,8 +14,10 @@ import PlayerVictory from './playerVictory.jsx';
 import WarningResetWindow from './warningResetWindow.jsx';
 import ConnectProblem from './connectProblem.jsx';
 import EndTurnWarning from './endTurnWarning.jsx';
+import LoginSignUp from './Login/LoginSignUp.jsx';
 
 const modals = {
+  loginWindow: LoginSignUp,
   endTurnWarning: EndTurnWarning,
   connectProblem: ConnectProblem,
   warningWindow: WarningResetWindow,

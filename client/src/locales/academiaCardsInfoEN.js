@@ -8,7 +8,7 @@ export default {
   FireGolem: 'FIGHTER. Before death, attack all warriors in the row where standing with power 1',
   Rakshasa: 'FIGHTER. Has EVASION',
   YoungGenie: 'FLYER.  On game entering, can move any enemy warrior to the next cell (if possible)',
-  EnergyElemental: 'SHOOTER. On his attack, additionally attack another enemy warrior in the row with power 2',
+  EnergyElemental: 'SHOOTER. Имеет ПРОНИКАЮЩУЮ АТАКУ 2',
   IceGiant: 'FIGHTER. On game entering, stun all warriors in the row he entered',
   ArcaneArmor: 'REACTION: Absorbs damage of warrior\'s attack with power 3 or more',
   Blizzard: 'Put on central cell. Attack all warriors in the row with power 2. TURN START: attack all warriors in the row with power 2',

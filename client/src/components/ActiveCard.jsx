@@ -16,6 +16,7 @@ const ActiveCard = ({ activeCard, playerType }) => {
     block1: playerType === 'player1',
     block2: playerType === 'player2',
   });
+
   const { gameMode } = useSelector((state) => state.gameReducer);
   const { tutorStep } = useContext(functionContext);
 
@@ -64,7 +65,12 @@ const ActiveCard = ({ activeCard, playerType }) => {
           <ActionButton card={activeCard} type="graveyard" />
         )}
       </div>
-      <Card card={activeCard} activeCard={activeCard} active />
+      <Card
+        card={activeCard}
+        activeCard={activeCard}
+        active
+        playerType={playerType}
+      />
     </div>
   );
 };

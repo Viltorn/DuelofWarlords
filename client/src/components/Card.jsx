@@ -25,7 +25,7 @@ const Card = ({
     currentC,
     faction,
   } = card;
-  const { getActiveCard, handleAnimation } = useContext(functionContext);
+  const { getActiveCard, handleAnimation, toogleInfoWindow } = useContext(functionContext);
 
   const marginRight = active ? 0 : Math.min(content.length * 0.5, 5.6); /*  empirical number */
 
@@ -52,9 +52,10 @@ const Card = ({
       handleAnimation(activeCard, 'delete');
       dispatch(battleActions.addActiveCard({ card, player }));
       handleAnimation(card, 'add');
-    } else {
+    } else if (activeId) {
       dispatch(battleActions.deleteActiveCard({ player: thisPlayer }));
       handleAnimation(activeCard, 'delete');
+      toogleInfoWindow(false);
     }
   };
 
@@ -74,9 +75,17 @@ const Card = ({
     }
   };
 
+  const handleInfoClick = () => {
+    if (active) {
+      toogleInfoWindow((prev) => !prev);
+    } else {
+      handleClick();
+    }
+  };
+
   return (
-    <button className={classes} type="button" ref={cardElement} onClick={handleClick} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave} style={{ marginRight: `-${marginRight}rem` }}>
-      <div className={cn([styles.imageContainer], { [styles.active]: active })}>
+    <div className={classes} ref={cardElement} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave} style={{ marginRight: `-${marginRight}rem` }}>
+      <button className={cn([styles.imageContainer], { [styles.active]: active })} type="button" onClick={handleClick}>
         <h2 className={titleClasses}>{t(`titles.${faction}.${description}`)}</h2>
         {type === 'warrior' && (
         <>
@@ -91,11 +100,11 @@ const Card = ({
           <h3 className={styles.heroHealth}>{health}</h3>
         )}
         <img className={styles.mainImage} src={img} alt={name} />
-      </div>
-      <div className={styles.description}>
+      </button>
+      <button className={styles.description} onClick={handleInfoClick} type="button" aria-label="cardinfo">
         <p className={descriptClasses}>{t(`description.${faction}.${description}`)}</p>
-      </div>
-    </button>
+      </button>
+    </div>
   );
 };
 

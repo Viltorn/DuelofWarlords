@@ -8,6 +8,8 @@ const initialState = {
   onlineCount: '',
   socketId: '',
   messages: [],
+  logged: false,
+  userType: '',
 };
 
 const gameSlice = createSlice({
@@ -61,6 +63,14 @@ const gameSlice = createSlice({
     setMessages(state, { payload }) {
       const { data } = payload;
       state.messages = [...data];
+    },
+    setLogged(state, { payload }) {
+      const { logged } = payload;
+      state.logged = logged;
+    },
+    setUserType(state, { payload }) {
+      const { userType } = payload;
+      state.userType = userType;
     },
   },
 });

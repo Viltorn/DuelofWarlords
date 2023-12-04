@@ -52,6 +52,32 @@
   right: 1rem;
 }
 
+.loginBtn {
+  position: absolute;
+  height: 40px;
+  width: fit-content;
+  min-width: 80px;
+  font-weight: 600;
+  top: 1rem;
+  left: 1rem;
+  padding: 5px 10px;
+  font-family: Roboto;
+  cursor: pointer;
+}
+
+.loginBtn.primary {
+  background-color: var(--golden);
+  border-color: var(--dark-blue);
+  color: var(--dark-blue);
+}
+
+.loginBtn.secondary {
+  background-color: var(--light-gray);
+  border-color: var(--purple);
+  color: var(--dark-color);
+}
+
+
 @media (max-width: 767px) {
   .header {
     font-size: 14px;

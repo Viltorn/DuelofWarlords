@@ -50,7 +50,7 @@ const PrimaryButton = ({
 
 PrimaryButton.propTypes = {
   text: PropTypes.string,
-  stateProp: PropTypes.oneOf(['disabled', 'hover', 'default']),
+  stateProp: PropTypes.oneOf(['disabled', 'hover', 'default', 'absolute']),
   variant: PropTypes.oneOf(['primary', 'secondary']),
 };
 

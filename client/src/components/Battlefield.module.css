@@ -11,6 +11,7 @@
   background-image: url("../assets/battlefield/BattlefieldOption.png");
   background-position: center;
   height: 100vh;
+  overflow: hidden;
   padding: 0;
 }
 
@@ -28,6 +29,7 @@
 }
 
 .handsContainer {
+  position: relative;
   display: flex;
   flex-direction: column;
   justify-content: space-between;

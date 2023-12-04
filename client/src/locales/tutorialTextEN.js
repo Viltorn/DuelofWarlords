@@ -31,7 +31,7 @@ export default {
   step29: 'All right, now select your "Imperial Griffon" and attack the enemy warlord with it: you can do this since there are no enemy warriors in the row with the Griffon who would protect the warlord',
   step30: 'All your warriors on the battlefield are in an inactive state - this means they no longer can move or attack in this turn. Time to click "end turn"',
   step31: 'An instant spell card has come to you - such cards act once and after using the effect are sent to the grave',
-  step32: 'The "Hammer of Justice" is an attacking spell (this is written in its description). Such spells usually only work on warriors, you must use your warriors to do damage to the enemy warlord',
+  step32: 'The "Hammer of Justice" is an attacking spell (this is written in its description). Such spells usually only work on warriors, you must use your warriors to inflict damage to the enemy warlord',
   step33: 'Select your spell and attack the enemy "Earth Golem"',
   step34: 'Good! Now you have action points left, but there are no cards in your hand - it\'s time to try the standard warlord ability',
   step35: 'The warlord\'s standard ability is "Warlord\'s strength": spend 1 action point and take a card from the deck into your hand - every warlord has this ability. After that the warlord turns in inactive state. Try to select your warlord and click the ABILITY button',

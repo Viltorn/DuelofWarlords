@@ -12,6 +12,7 @@ import Header from './Header.jsx';
 import RotateScreen from './RotateScreen.jsx';
 import TutorialStepsWindow from '../modals/Tutorial/TutorialStepsWindow';
 import ActiveCard from './ActiveCard.jsx';
+import ActiveCardInfo from './ActiveCardInfo';
 import InGameMenu from './InGameMenu/InGameMenu.jsx';
 import styles from './Battlefield.module.css';
 import getModal from '../modals/index.js';
@@ -19,6 +20,7 @@ import { actions as modalsActions } from '../slices/modalsSlice.js';
 import { actions as battleActions } from '../slices/battleSlice.js';
 import { actions as gameActions } from '../slices/gameSlice';
 import AbilitiesContext from '../contexts/abilityActions';
+import FunctionContext from '../contexts/functionsContext';
 
 const Battlefield = () => {
   const dispatch = useDispatch();
@@ -32,6 +34,7 @@ const Battlefield = () => {
     endTurn,
     makeMove,
   } = useContext(AbilitiesContext);
+  const { isOpenInfo } = useContext(FunctionContext);
   const {
     activeCardPlayer1,
     activeCardPlayer2,
@@ -49,6 +52,7 @@ const Battlefield = () => {
   const topSpellsPlayer2 = useMemo(() => fieldCells.filter((cell) => cell.player === 'player2' && cell.type === 'topSpell'), [fieldCells]);
   const bigSpell = useMemo(() => fieldCells.find((cell) => cell.type === 'bigSpell'), [fieldCells]);
   const midPells = useMemo(() => fieldCells.filter((cell) => cell.type === 'midSpell'), [fieldCells]);
+  const activeCard = thisPlayer === 'player1' ? activeCardPlayer1 : activeCardPlayer2;
 
   const renderModal = (status, option) => {
     if (!status) {
@@ -62,11 +66,7 @@ const Battlefield = () => {
     if (gameMode === 'hotseat') {
       dispatch(modalsActions.openModal({ type: 'openHotSeatMenu' }));
     }
-    // if (gameMode === 'tutorial') {
-    //   dispatch(modalsActions.openModal({ type: 'tutorial' }));
-    // }
-  // eslint-disable-next-line
-  }, [gameMode]);
+  }, [gameMode, dispatch]);
 
   useEffect(() => {
     if (gameMode === 'online' && curRoom !== '') {
@@ -181,9 +181,13 @@ const Battlefield = () => {
         {gameMode === 'tutorial' && (
           <TutorialStepsWindow />
         )}
+        {isOpenInfo && activeCard && (
+        <ActiveCardInfo info={activeCard.featInfo} player={thisPlayer} />
+        )}
         {thisPlayer === 'player1' ? (
           <div className={styles.handsContainer}>
             <Header />
+            <InGameMenu />
             <div className={styles.heropad1}>
               {activeCardPlayer1 && (
               <ActiveCard activeCard={activeCardPlayer1} playerType="player1" />
@@ -310,6 +314,7 @@ const Battlefield = () => {
         {thisPlayer === 'player2' ? (
           <div className={styles.handsContainer}>
             <Header />
+            <InGameMenu />
             <div className={styles.heropad2}>
               <HeroPad type="first" player={thisPlayer} />
               {activeCardPlayer2 && (
@@ -343,7 +348,6 @@ const Battlefield = () => {
         ) : (<HeroPad type="second" player="player2" />)}
       </div>
       {renderModal(isOpened, type)}
-      <InGameMenu />
     </div>
   );
 };

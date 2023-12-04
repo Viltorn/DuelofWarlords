@@ -5,6 +5,7 @@ const dummyCard = {
   name: 'Dummy',
   type: 'spell',
   subtype: 'instant',
+  featInfo: [],
   description: 'DummyCard',
   cost: 0,
   currentC: 0,

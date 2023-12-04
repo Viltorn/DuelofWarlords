@@ -19,7 +19,7 @@ const OnlineLobby = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const {
-    rooms, name, onlineCount, socketId,
+    rooms, name, onlineCount, socketId, logged,
   } = useSelector((state) => state.gameReducer);
   const { isOpened, type } = useSelector((state) => state.modalsReducer);
   const { setOpenChat, isOpenChat } = useContext(functionContext);
@@ -41,9 +41,9 @@ const OnlineLobby = () => {
   };
 
   useEffect(() => {
-    if (name === '') {
-      dispatch(modalsActions.openModal({ type: 'enterUsername' }));
-    }
+    // if (name === '') {
+    //   dispatch(modalsActions.openModal({ type: 'enterUsername' }));
+    // }
     const updateLobbyRooms = (data) => {
       dispatch(gameActions.updateRooms({ rooms: data }));
     };
@@ -56,7 +56,8 @@ const OnlineLobby = () => {
     const updateSocketId = (id) => {
       if (socketId !== id && socketId !== '') {
         dispatch(gameActions.setSocketId({ socketId: id }));
-        dispatch(gameActions.setPlayerName({ name: '' }));
+        dispatch(gameActions.setLogged({ logged: false }));
+        navigate('/choose');
       }
     };
 
@@ -69,7 +70,7 @@ const OnlineLobby = () => {
       socket.off('rooms', updateLobbyRooms);
       socket.off('clientsCount', updatePlayersOnline);
     };
-  }, [name, dispatch, socketId]);
+  }, [name, dispatch, socketId, logged, navigate]);
 
   return (
     <div className={styles.container}>

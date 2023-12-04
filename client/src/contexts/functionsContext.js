@@ -24,6 +24,7 @@ export const FunctionProvider = ({ children }) => {
   const currentPoints = playerPoints.find((item) => item.player === thisPlayer).points;
   const [fontVal, setFontVal] = useState(0);
   const [isOpenChat, setOpenChat] = useState(false);
+  const [isOpenInfo, toogleInfoWindow] = useState(false);
 
   useEffect(() => {
     window.addEventListener('beforeinstallprompt', (event) => {
@@ -292,7 +293,7 @@ export const FunctionProvider = ({ children }) => {
       return acc;
     }, 0);
     const totalPower = currentP + attachPowerValue + powerCellValue;
-    return totalPower;
+    return totalPower >= 0 ? totalPower : 0;
   };
 
   const checkMeetCondition = (attacking, protecting, spell, type) => {
@@ -505,6 +506,8 @@ export const FunctionProvider = ({ children }) => {
       fontVal,
       isOpenChat,
       setOpenChat,
+      isOpenInfo,
+      toogleInfoWindow,
     }}
     >
       {children}

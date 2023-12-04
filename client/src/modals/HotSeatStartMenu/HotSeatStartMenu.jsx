@@ -115,6 +115,7 @@ const HotSeatMenu = () => {
               <Link to="/choose" className={styles.link}>
                 <PrimaryButton
                   showIcon={false}
+                  onClick={handleClose}
                   state="default"
                   text={t('BACK')}
                   variant="secondary"

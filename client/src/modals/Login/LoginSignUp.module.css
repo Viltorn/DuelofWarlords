@@ -15,35 +15,67 @@
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: 35px;
+  gap: 20px;
   background-color: var(--dark-blue);
   margin: auto auto; /* 15% from the top and centered */
-  padding: 20px 30px;
+  padding: 15px 30px;
   border: 1px solid #888;
   width: 370px; /* Could be more or less, depending on screen size */
-  height: 340px;
-  border-radius: 10px;
+  height: 450px;
+  border-radius: 5px;
 }
 
 .header {
   color: var(--light-gray);
-  font-size: 35px;
+  font-size: 25px;
+}
+
+.guestBlock {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  width: 100%;
+  align-items: center;
+}
+
+form {
+  width: 100%;
+}
+
+.guestBtn {
+  border: 1px solid var(--golden);
+  font-family: Roboto;
+  padding: 10px;
+  text-align: center;
+  font-size: 14px;
+  color: var(--light-gray);
+  border-radius: 5px;
+  width: 100%;
+  height: 40px;
+  background-color: var(--dark-blue);
+  cursor: pointer;
+}
+
+.cantBuild {
+  font-size: 13px;
+  color: #888;
 }
 
 .fieldset {
   border: none;
+  width: 100%;
   display: flex;
   flex-direction: column;
-  gap: 50px;
+  gap: 30px;
 }
 
 .input {
-  height: 60px;
-  width: 300px;
-  font-weight: 600;
+  height: 40px;
+  width: 100%;
+  font-weight: 400;
   border-radius: 10px;
   padding: 20px;
-  font-size: 25px;
+  font-size: 20px;
   background-color: var(--dark-blue);
   color: var(--light-gray);
   text-align: start;
@@ -51,16 +83,98 @@
   outline-color: var(--golden);
 }
 
-.inputBlock {
+.inputContainer {
   display: flex;
   flex-direction: column;
   gap: 10px;
-  height: 80px;
+  width: 100%;
+  height: 200px;
+}
+
+.inputBlock {
+  height: 60px;
+}
+
+.submitBlock {
+  margin: 0;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
 }
 
 .invalidFeedback {
   color: var(--red-light);
+  margin-top: 5px;
+  font-size: 14px;
+}
+
+.questionText {
+  color: var(--light-gray);
+  font-size: 15px;
+}
+
+.changeFormBtn {
+  margin-top: 5px;
+  font-size: 18px;
+  border: none;
+  background: none;
+  color: var(--light-gray);
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+@media (max-width: 767px) {
+ .content {
+   height: 350px;
+   width: 300px;
+   padding: 15px;
+   gap: 15px;
+ }
+
+ .header {
   font-size: 20px;
+ }
+
+ .input {
+   height: 25px;
+   font-size: 14px;
+   padding: 10px;
+   border-radius: 5px;
+ }
+
+ .guestBtn {
+  height: 30px;
+  padding: 5px;
+ }
+
+ .inputContainer {
+  height: 160px;
+ }
+
+ .invalidFeedback {
+  font-size: 12px;
+ }
+
+ .inputBlock {
+  height: 45px;
+}
+
+.fieldset {
+  gap: 18px;
+}
+
+ .cantBuild {
+  font-size: 11px;
+ }
+
+ .questionText {
+  font-size: 12px;
+ }
+
+ .changeFormBtn {
+  font-size: 14px;
+ }
+  
 }
 
 

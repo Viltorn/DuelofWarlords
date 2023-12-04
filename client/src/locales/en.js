@@ -110,6 +110,12 @@ export default {
     CurrentOnline: 'Players online',
     Chat: 'Chat:',
     ConnectProblem: 'One of the players experiencing connection problem: try to perform action one more time',
+    LogIn: 'Log in',
+    SignUp: 'Sign up',
+    SIGNUP: 'SIGN UP',
+    ENTER: 'LOG IN',
+    CantBuildDeck: '(You will not be able to build your own deck)',
+    GuestSignIn: 'Continue as a guest',
     errors: {
       RoomNotExist: 'The room doesn\'t exist!',
       RoomEmpty: 'This room is empty!',
