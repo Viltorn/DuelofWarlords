@@ -10,16 +10,6 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const app = express(); // initialize express
-
-const redis = createClient({
-  url: process.env.REDIS_URL
-});
-
-const redisConnect = async () => {
-  redis.on('error', (err) => console.log('Redis Client Error', err));
-  await redis.connect();
-}
-
 const server = createServer(app);
 
 // set port to value received from environment variable or 8080 if null
@@ -29,6 +19,14 @@ app.use(express.static(path.join(__dirname, "../client/build")));
 
 app.get("/", function(req, res) {
   res.sendFile(path.join(__dirname, "../client/build", "index.html"));
+});
+
+const redis = createClient({
+  url: process.env.REDIS_URL
+});
+
+redis.on('connect', () => {
+  console.log('Connected to Redis server');
 });
 
 // upgrade http server to websocket server
@@ -49,7 +47,6 @@ const messages = [];
 io.on('connection', (socket) => {
   // socket refers to the client socket that just got connected.
   // each socket is assigned an id
-
   const isRoomEmpty = (roomid) => {
     const room = io.sockets.adapter.rooms.get(roomid);
     return room ? room.size === 0 : true;
@@ -91,7 +88,6 @@ io.on('connection', (socket) => {
 
   socket.on('logIn', async (data, callback) => {
     const { username, password } = data;
-    await redisConnect();
     const rawRes = await redis.get(username, function(err, result) {
       if (err) {
         console.log('DatabaseError');
