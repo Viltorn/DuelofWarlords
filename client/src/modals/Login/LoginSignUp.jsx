@@ -1,4 +1,6 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, {
+  useEffect, useRef, useState, useMemo,
+} from 'react';
 import { useDispatch } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { useFormik } from 'formik';
@@ -18,8 +20,10 @@ const LoginSignUp = () => {
   const dispatch = useDispatch();
   const [error, setError] = useState(false);
   const [signUp, setSignUp] = useState(false);
-  const user = getAuthToken() ? getAuthToken.login : '';
-  const pass = getAuthToken() ? getAuthToken.pass : '';
+  const token = useMemo(() => getAuthToken(), []);
+  const user = useMemo(() => (token ? token.login : ''), [token]);
+  const pass = useMemo(() => (token ? token.pass : ''), [token]);
+  console.log(user);
 
   const handleClose = () => {
     dispatch(modalActions.closeModal());
@@ -49,7 +53,7 @@ const LoginSignUp = () => {
         const emitType = signUp ? 'signUp' : 'logIn';
         socket.emit(emitType, { username, password }, (res) => {
           if (res.error) {
-            setError(res);
+            setError(res.message);
             formik.setSubmitting(false);
             inputEl.current.focus();
             return;

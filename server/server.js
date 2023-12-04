@@ -83,57 +83,55 @@ io.on('connection', (socket) => {
 
   socket.on('logIn', (data, callback) => {
     const { username, password } = data;
-    redis.get(username, function(err, result) {
-      let error, message;
+    const rawRes = redis.get(username, function(err, result) {
       if (err) {
-        error = true;
-        message = 'DatabaseError';
+        return { error: true, message: 'DatabaseError' };
       } else if (result === null) {
-        error = true;
-        message = 'UserDoesNotExist';
+        return { error: true, message: 'UserDoesNotExist' };
+      } else {
+        return result;
       }
-
-      if (error) {
-        callback({ error, message});
-        return;
-      }
-
-      const res = JSON.parse(result);
-      const { pass } = res;
-      
-      if (pass !== password) {
-        error = true;
-        message = 'WrongPass';
-        callback({ error, message });
-        return;
-      }
-
-      socket.data.username = username;
-      console.log(getRooms());
-      const count = io.engine.clientsCount;
-      io.emit('clientsCount', count); 
-      io.to(socket.id).emit('getMessages', messages);
-      callback(socket.id, getRooms());
     });
+
+    if (rawRes.error) {
+      console.log(message);
+      callback({error: rawRes.error, message: rawRes.message});
+      return;
+    }
+
+    const res = JSON.parse(rawRes);
+    const { pass } = res;
+      
+    if (pass !== password) {
+      const error = true;
+      const message = 'WrongPass';
+      callback({ error, message });
+      return;
+    }
+
+    socket.data.username = username;
+    console.log(getRooms());
+    const count = io.engine.clientsCount;
+    io.emit('clientsCount', count); 
+    io.to(socket.id).emit('getMessages', messages);
+    callback({ id: socket.id, rooms: getRooms()});
   });
 
   socket.on('signUp', (args, callback) => {
     const { username, password } = args;
-    redis.get(username, function(err, result) {
-      let error, message;
+    const rawRes = redis.get(username, function(err, result) {
       if (err) {
-        error = true;
-        message = 'DatabaseError';
+        return { error: true, message: 'DatabaseError' };
       } else if (result !== null) {
-        error = true;
-        message = 'UserAlreadyExist';
-      }
-
-      if (error) {
-        callback({ error, message});
-        return;
+        return { error: true, message: 'UserAlreadyExist' };
       }
     });
+
+    if (rawRes.error) {
+      console.log(message);
+      callback({error: rawRes.error, message: rawRes.message});
+      return;
+    }
     
     const jsonData = JSON.stringify({ pass: password });
     redis.set(username, jsonData);
@@ -143,7 +141,7 @@ io.on('connection', (socket) => {
     const count = io.engine.clientsCount;
     io.emit('clientsCount', count); 
     io.to(socket.id).emit('getMessages', messages);
-    callback(socket.id, getRooms());
+    callback({ id: socket.id, rooms: getRooms()});
   });
 
   socket.on('createRoom', async (args, callback) => { // callback here refers to the callback function from the client passed as data
