@@ -1,5 +1,5 @@
 import express from 'express';
-import Redis from 'ioredis'
+import { createClient } from 'redis';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { Server } from "socket.io";
@@ -9,9 +9,16 @@ import { createServer } from 'http';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-const redis = new Redis(process.env.REDIS_URL);
-
 const app = express(); // initialize express
+
+const redis = createClient({
+  url: process.env.REDIS_URL
+});
+
+const redisConnect = async () => {
+  redis.on('error', (err) => console.log('Redis Client Error', err));
+  await redis.connect();
+}
 
 const server = createServer(app);
 
@@ -42,6 +49,7 @@ const messages = [];
 io.on('connection', (socket) => {
   // socket refers to the client socket that just got connected.
   // each socket is assigned an id
+
   const isRoomEmpty = (roomid) => {
     const room = io.sockets.adapter.rooms.get(roomid);
     return room ? room.size === 0 : true;
@@ -81,9 +89,10 @@ io.on('connection', (socket) => {
   //   callback(socket.id, getRooms());
   // });
 
-  socket.on('logIn', (data, callback) => {
+  socket.on('logIn', async (data, callback) => {
     const { username, password } = data;
-    const rawRes = redis.get(username, function(err, result) {
+    await redisConnect();
+    const rawRes = await redis.get(username, function(err, result) {
       if (err) {
         console.log('DatabaseError');
       } else if (result === null) {
@@ -117,9 +126,10 @@ io.on('connection', (socket) => {
     callback({ id: socket.id, rooms: getRooms()});
   });
 
-  socket.on('signUp', (args, callback) => {
+  socket.on('signUp', async (args, callback) => {
     const { username, password } = args;
-    const rawRes = redis.get(username, function(err, result) {
+    await redisConnect();
+    const rawRes = await redis.get(username, function(err, result) {
       if (err) {
         console.log('DatabaseError');
       } else if (result !== null) {
@@ -133,7 +143,7 @@ io.on('connection', (socket) => {
     }
     
     const jsonData = JSON.stringify({ pass: password });
-    redis.set(username, jsonData);
+    await redis.set(username, jsonData);
   
     socket.data.username = username;
     console.log(getRooms());
