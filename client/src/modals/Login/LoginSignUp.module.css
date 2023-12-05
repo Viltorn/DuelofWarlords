@@ -123,6 +123,10 @@ form {
   cursor: pointer;
 }
 
+.visuallyHidden {
+  visibility: hidden;
+}
+
 @media (max-width: 767px) {
  .content {
    height: 350px;

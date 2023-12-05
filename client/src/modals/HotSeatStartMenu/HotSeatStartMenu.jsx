@@ -110,7 +110,7 @@ const HotSeatMenu = () => {
                 state="default"
                 text={t('CONTINUE')}
                 variant="primary"
-                type="submit"
+                type="button"
               />
               <Link to="/choose" className={styles.link}>
                 <PrimaryButton

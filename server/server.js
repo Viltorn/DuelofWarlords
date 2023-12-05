@@ -21,13 +21,28 @@ app.get("/", function(req, res) {
   res.sendFile(path.join(__dirname, "../client/build", "index.html"));
 });
 
-const redis = createClient({
-  url: process.env.REDIS_URL
-});
+const redisClient = async () => {
+  const client = createClient({
+      url: 'rediss://red-cldnrljmot1c73dr4glg:zsrKGr8afwWEuZphsru5GwyKzJRgsiKI@frankfurt-redis.render.com:6379',
+  });
 
-redis.on('connect', () => {
-  console.log('Connected to Redis server');
-});
+  client.on('error', (err) => console.log('Redis Client Error', err));
+
+  await client.connect();
+
+  // Send and retrieve some values
+  console.log('redis connected');
+  // const rawRes = await client.get(key, function(err, result) {
+  //   if (err) {
+  //     console.log('DatabaseError');
+  //   } else if (result === null) {
+  //     console.log('UserDoesNotExist');
+  //   } else {
+  //     console.log(result);
+  //   }
+  // });
+  return client;
+};
 
 // upgrade http server to websocket server
 const io = new Server(server, {
@@ -44,7 +59,7 @@ const rooms = new Map();
 const messages = [];
 
 // io.connection
-io.on('connection', (socket) => {
+io.on('connection', async (socket) => {
   // socket refers to the client socket that just got connected.
   // each socket is assigned an id
   const isRoomEmpty = (roomid) => {
@@ -86,45 +101,50 @@ io.on('connection', (socket) => {
   //   callback(socket.id, getRooms());
   // });
 
+  const redis = await redisClient();
+
   socket.on('logIn', async (data, callback) => {
-    const { username, password } = data;
-    const rawRes = await redis.get(username, function(err, result) {
-      if (err) {
-        console.log('DatabaseError');
-      } else if (result === null) {
-        console.log('UserDoesNotExist');
-      } else {
-        console.log(result);
-      }
-    });
-    console.log(rawRes)
-
-    if (rawRes === null) {
-      callback({error: true, message: 'UserDoesNotExist'});
-      return;
-    }
-
-    const res = JSON.parse(rawRes);
-    const { pass } = res;
+    try {
+      const { username, password } = data;
+      console.log('log1');
+      const rawRes = await redis.get(username, function(err, result) {
+          if (err) {
+            console.log('DatabaseError');
+          } else if (result === null) {
+            console.log('UserDoesNotExist');
+          } else {
+            console.log(result);
+          }
+        });
       
-    if (pass !== password) {
-      const error = true;
-      const message = 'WrongPass';
-      callback({ error, message });
+      if (rawRes === null) {
+        callback({error: true, message: 'UserDoesNotExist'});
+        return;
+      }
+
+      const res = JSON.parse(rawRes);
+      const { pass } = res;
+        
+      if (pass !== password) {
+        const error = true;
+        const message = 'WrongPass';
+        callback({ error, message });
+        return;
+      }
+
+      socket.data.username = username;
+      console.log(getRooms());
+      const count = io.engine.clientsCount;
+      io.emit('clientsCount', count); 
+      io.to(socket.id).emit('getMessages', messages);
+      callback({ id: socket.id, rooms: getRooms()});
+    } catch (e) {
       return;
     }
-
-    socket.data.username = username;
-    console.log(getRooms());
-    const count = io.engine.clientsCount;
-    io.emit('clientsCount', count); 
-    io.to(socket.id).emit('getMessages', messages);
-    callback({ id: socket.id, rooms: getRooms()});
   });
 
   socket.on('signUp', async (args, callback) => {
     const { username, password } = args;
-    await redisConnect();
     const rawRes = await redis.get(username, function(err, result) {
       if (err) {
         console.log('DatabaseError');
@@ -244,7 +264,6 @@ io.on('connection', (socket) => {
 
   socket.on('makeMove', (data, callback) => {
     const { room, move } = data;
-    console.log(move);
     if (isRoomFull(room)) {
       socket.to(room).emit('makeMove', data);
       callback({ error: false });
