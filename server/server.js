@@ -23,7 +23,7 @@ app.get("/", function(req, res) {
 
 const redisClient = async () => {
   const client = createClient({
-      url: 'rediss://red-cldnrljmot1c73dr4glg:zsrKGr8afwWEuZphsru5GwyKzJRgsiKI@frankfurt-redis.render.com:6379',
+      url: process.env.REDIS_URL
   });
 
   client.on('error', (err) => console.log('Redis Client Error', err));
