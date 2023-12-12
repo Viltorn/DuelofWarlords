@@ -30,6 +30,6 @@ export default {
   IceArrow: 'Attack warrior with power 2 and stun this warrior',
   IceArmor: 'Attach to your hero or ally warrior. During enemy\'s turn decrease all attacks power on this warrior or hero by 1',
   YoungGenieCast: 'Choose warrior to move',
-  NalaHero: 'Magic arrow: hit enemy warrior with power of 1 - 2p. Strength: take a card from your deck into your hand - 1p.',
+  NalaHero: 'Magic arrow: hit an enemy warrior with power of 1 - 2p. Strength: take a card from your deck into your hand - 1p.',
   factionInfo: 'Magicians who command elementals and are proficient in control spells',
 };

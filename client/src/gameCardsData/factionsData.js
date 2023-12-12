@@ -1,8 +1,8 @@
 import _ from 'lodash';
 import CastleLogo from '../assets/MainPage/Castle_logo.png';
 import AcademiaLogo from '../assets/MainPage/Academia_logo.png';
-import academiaDeck from './academiaDeck.js';
-import castleDeck from './castleDeck.js';
+import academiaDeck from './academiaFaction.js';
+import castleDeck from './castleFaction.js';
 import ZigfridHero from '../assets/CastleDeck/ZigfridHero.png';
 import NalaHero from '../assets/AcademiaDeck/NalaHero.png';
 import makeInitialDeck from '../utils/makeInitialDeck';
@@ -71,6 +71,6 @@ export const heroes = [
 ];
 
 export const decks = {
-  Castle: makeInitialDeck(castleDeck),
-  Academia: makeInitialDeck(academiaDeck),
+  Castle: () => makeInitialDeck(castleDeck),
+  Academia: () => makeInitialDeck(academiaDeck),
 };

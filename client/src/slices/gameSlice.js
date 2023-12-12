@@ -10,6 +10,7 @@ const initialState = {
   messages: [],
   logged: false,
   userType: '',
+  playersDecks: [],
 };
 
 const gameSlice = createSlice({
@@ -71,6 +72,10 @@ const gameSlice = createSlice({
     setUserType(state, { payload }) {
       const { userType } = payload;
       state.userType = userType;
+    },
+    setDecks(state, { payload }) {
+      const { decks } = payload;
+      state.playersDecks = decks;
     },
   },
 });

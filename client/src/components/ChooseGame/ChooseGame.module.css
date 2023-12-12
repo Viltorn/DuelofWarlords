@@ -10,6 +10,7 @@
   background-image: url("../../assets/ChooseGameCover.png");
   background-position: center;
   height: 100vh;
+  width: 100%;
 }
 
 .options {

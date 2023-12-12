@@ -14,24 +14,23 @@
 .contentDark {
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
-  gap: 3rem;
+  gap: 50px;
   background-color: var(--purple);
   margin: auto; /* 15% from the top and centered */
   padding: 2rem 2rem;
   border: 1px solid #888;
-  width: 40rem; /* Could be more or less, depending on screen size */
-  min-width: 600px;
-  height: 35rem;
-  min-height: 375px;
+  width: fit-content; /* Could be more or less, depending on screen size */
+  min-width: 400px;
+  height: fit-content;
   border-radius: 0.5rem;
   color: var(--light-gray);
 }
 
 .headerLight {
   color: var(--light-gray);
-  font-size: 1.2rem;
+  font-size: 2rem;
   text-align: center;
 }
 
@@ -44,13 +43,22 @@
   border: none;
   display: flex;
   flex-direction: column;
-  gap: 2rem;
-  justify-content: space-between;
+  gap: 30px;
+  justify-content: center;
+}
+
+.slidesContainer {
+ display: flex;
+ justify-content: space-around;
+ gap: 50px;
 }
 
 .playerSlides {
   display: flex;
-  justify-content: space-around;
+  flex-direction: column;
+  width: 12rem;
+  justify-content: center;
+  gap: 2rem;
   align-items: center;
 }
 
@@ -71,7 +79,7 @@
   width: 4rem;
   font-weight: 600;
   padding: 0.5rem;
-  font-size: 1.5rem;
+  font-size: 1.2rem;
   background-color: transparent;
   color: var(--light-gray);
   border: none;
@@ -84,8 +92,7 @@
 
 .player {
   color: var(--golden);
-  font-size: 30px;
-  width: 10rem;
+  font-size: 1.5rem;
 }
 
 .link {
@@ -100,11 +107,12 @@
   gap: 1rem;
 }
 
+.btnBlock {
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: center;
+  gap: 20px;
+}
+
 @media (max-width: 900px) {
-  .player {
-    font-size: 18px;
-  }
-  .fieldset {
-    justify-content: flex-start;
-  }
 }

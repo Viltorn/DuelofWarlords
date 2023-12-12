@@ -35,6 +35,7 @@ const CellCard = ({
     makeFight,
     actionPerforming,
     makeOnlineAction,
+    invoking,
   } = useContext(abilityContext);
   const cardElement = useRef();
   const dispatch = useDispatch();
@@ -99,6 +100,9 @@ const CellCard = ({
   };
 
   const handleCardClick = () => {
+    if (invoking) {
+      return;
+    }
     if (gameMode === 'online' && actionPerforming) {
       return;
     }

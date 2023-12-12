@@ -6,6 +6,7 @@ import { actions as battleActions } from '../slices/battleSlice.js';
 import isInvisible from '../utils/isInvisible.js';
 import warSubtypes from '../gameData/warriorsSubtypes.js';
 import { actions as gameActions } from '../slices/gameSlice';
+import findNextRows from '../utils/findNextRowCells.js';
 import socket from '../socket.js';
 
 const FunctionContext = createContext({});
@@ -113,6 +114,7 @@ export const FunctionProvider = ({ children }) => {
     const row = cellArr[0];
     const line = cellArr[1];
     const attackingLines = line <= 2 ? ['3', '4'] : ['1', '2'];
+    const alliedFrontLine = line <= 2 ? '1' : '3';
     const attackingRowCells = fieldCells
       .filter((cell) => cell.row === row && !isInvisible(cell)
         && attackingLines.includes(cell.line) && cell.content.length !== 0 && !cell.disabled)
@@ -125,7 +127,7 @@ export const FunctionProvider = ({ children }) => {
         .map((cell) => changeToRedirect(cell, card));
 
     const attackingHero = fieldCells.find((cell) => cell.type === 'hero' && cell.player !== thisPlayer);
-    if (card.subtype === 'shooter') {
+    if (card.subtype === 'shooter' || card.subtype === 'flyer') {
       if (attackingCells.length !== 0) {
         attackingCells.forEach((cell) => {
           dispatch(battleActions.addAnimation({ cell, type: 'red' }));
@@ -137,7 +139,12 @@ export const FunctionProvider = ({ children }) => {
         setAttackCells((prev) => [...prev, attackingHero.id]);
       }
     }
-    if (card.subtype === 'fighter' || card.subtype === 'flyer') {
+    if (card.subtype === 'fighter') {
+      const blockingAlly = fieldCells.find((cell) => cell.row === row
+        && cell.line === alliedFrontLine && cell.content.length !== 0 && !isInvisible(cell));
+      if ((line === '4' || line === '2') && blockingAlly) {
+        return;
+      }
       if (attackingCells.length > 1 && !hasMassAttack) {
         const attackCell = attackingCells.find((cell) => attackingLines[0] === cell.line);
         dispatch(battleActions.addAnimation({ cell: attackCell, type: 'red' }));
@@ -156,11 +163,19 @@ export const FunctionProvider = ({ children }) => {
     }
   };
 
+  const showNextRowCells = (cell) => {
+    const { topRowCell, bottomRowCell } = findNextRows(cell, fieldCells);
+    setMoveCells([topRowCell?.id, bottomRowCell?.id]);
+    dispatch(battleActions.addAnimation({ cell: topRowCell, type: 'green' }));
+    dispatch(battleActions.addAnimation({ cell: bottomRowCell, type: 'green' }));
+  };
+
   const findFieldCells = (card) => {
     const isPlayerEmptyCell = (checkingCell) => checkingCell.type === 'field' && checkingCell.player === thisPlayer && checkingCell.content.length === 0;
     if (card.subtype === 'fighter') {
       fieldCells.forEach((cell) => {
-        if (isPlayerEmptyCell(cell) && (cell.line === '1' || cell.line === '3') && !cell.disabled) {
+        if (isPlayerEmptyCell(cell)
+        && (cell.line === '1' || cell.line === '3') && !cell.disabled) {
           dispatch(battleActions.addAnimation({ cell, type: 'green' }));
           setMoveCells((prev) => [...prev, cell.id]);
         }
@@ -168,11 +183,18 @@ export const FunctionProvider = ({ children }) => {
     }
     if (card.subtype === 'shooter') {
       fieldCells.forEach((cell) => {
-        if (isPlayerEmptyCell(cell) && (cell.line === '2' || cell.line === '4') && !cell.disabled) {
+        if (isPlayerEmptyCell(cell) && !cell.disabled) {
           dispatch(battleActions.addAnimation({ cell, type: 'green' }));
           setMoveCells((prev) => [...prev, cell.id]);
         }
       });
+      // fieldCells.forEach((cell) => {
+      //   if (isPlayerEmptyCell(cell)
+      //    && (cell.line === '2' || cell.line === '4') && !cell.disabled) {
+      //     dispatch(battleActions.addAnimation({ cell, type: 'green' }));
+      //     setMoveCells((prev) => [...prev, cell.id]);
+      //   }
+      // });
     }
     if (card.subtype === 'flyer') {
       fieldCells.forEach((cell) => {
@@ -335,6 +357,8 @@ export const FunctionProvider = ({ children }) => {
     return true;
   };
 
+  const findAttachmentType = (attachment, type) => attachment?.type === type || attachment?.type === 'all';
+
   const handleAnimation = (activeCard, option) => {
     if (option === 'delete') {
       dispatch(battleActions.deleteAnimation());
@@ -343,15 +367,14 @@ export const FunctionProvider = ({ children }) => {
       setCastCells([]);
       return;
     }
-    if (!isAllowedCost(activeCard) || activeCard.player !== thisPlayer
-      || activeCard.disabled || gameTurn !== thisPlayer) {
+
+    if (!isAllowedCost(activeCard) || activeCard.disabled || gameTurn !== thisPlayer) {
       return;
     }
 
     const {
       type, status, attachments, turn,
     } = activeCard;
-
     const isCardPostponed = activeCard.cellId === 'postponed1' || activeCard.cellId === 'postponed2';
 
     if (type === 'warrior') {
@@ -359,34 +382,44 @@ export const FunctionProvider = ({ children }) => {
       const cardImmobileAttachment = attachments.find((feature) => feature.name === 'immobile' && checkMeetCondition(activeCard, feature, 'warrior'));
       const cellImmobileAttachment = currentCell?.attachments?.find((feature) => feature.name === 'immobile' && feature.aim.includes(activeCard.subtype) && checkMeetCondition(activeCard, null, feature, 'warrior'));
       const movingAttachment = attachments.find((feature) => feature.name === 'moving' && checkMeetCondition(activeCard, null, feature, 'warrior'));
-      const canMove = (!cardImmobileAttachment && !activeCard.features.find((feature) => feature.name === 'immobile')
-        && turn === 0 && !cellImmobileAttachment) || movingAttachment;
+      const moverowAttachment = attachments.find((feature) => feature.name === 'moverow' && checkMeetCondition(activeCard, null, feature, 'warrior'));
+      const canMove = !cardImmobileAttachment && !activeCard.features.find((feature) => feature.name === 'immobile')
+        && turn === 0 && !cellImmobileAttachment;
       const cellUnarmedAttachment = currentCell?.attachments?.find((feature) => feature.name === 'unarmed' && feature.aim.includes(activeCard.subtype) && checkMeetCondition(activeCard, null, feature, 'warrior'));
       const cardUnarmedAttachment = attachments.find((feature) => feature.name === 'unarmed' && checkMeetCondition(activeCard, null, feature, 'warrior'));
       const canAttack = !activeCard.features.find((feature) => feature.name === 'unarmed') && turn === 0
         && !cardUnarmedAttachment && !cellUnarmedAttachment;
-      if (status === 'hand' || isCardPostponed) {
+      if ((status === 'hand' || isCardPostponed) && activeCard.player === thisPlayer) {
         findFieldCells(activeCard);
       }
-      if (status === 'field' && canMove) {
+      if ((findAttachmentType(moverowAttachment, 'bad') && activeCard.player !== thisPlayer)
+      || (findAttachmentType(moverowAttachment, 'good') && activeCard.player === thisPlayer)) {
+        showNextRowCells(currentCell);
+      }
+      if ((findAttachmentType(movingAttachment, 'bad') && activeCard.player !== thisPlayer)
+      || (findAttachmentType(movingAttachment, 'good') && activeCard.player === thisPlayer)) {
         findFieldCells(activeCard);
       }
-      if (canAttack) {
+      if (status === 'field' && canMove && activeCard.player === thisPlayer) {
+        findFieldCells(activeCard);
+      }
+
+      if (canAttack && activeCard.player === thisPlayer) {
         findEnemies(activeCard);
       }
     }
 
-    if (type === 'hero' && turn === 0) {
+    if (type === 'hero' && turn === 0 && activeCard.player === thisPlayer) {
       findCellsForCast(activeCard);
     }
 
-    if (type === 'spell' && (status === 'hand' || isCardPostponed)) {
+    if (type === 'spell' && (status === 'hand' || isCardPostponed) && activeCard.player === thisPlayer) {
       findCellsForCast(activeCard);
     }
 
     const postponedCell = fieldCells.find((cell) => cell.type === 'postponed' && cell.player === thisPlayer);
     const cantPostpone = activeCard.features.find((feat) => feat.name === 'cantPostpone');
-    if (status === 'hand' && postponedCell.content.length === 0 && !postponedCell.disabled && !cantPostpone) {
+    if (status === 'hand' && postponedCell.content.length === 0 && !postponedCell.disabled && !cantPostpone && activeCard.player === thisPlayer) {
       dispatch(battleActions.addAnimation({ cell: postponedCell, type: 'green' }));
     }
   };

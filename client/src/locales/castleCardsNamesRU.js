@@ -6,7 +6,7 @@ export default {
   ValorKnight: 'Благородный рыцарь',
   Bannerman: 'Знаменосец',
   Defender: 'Заступник',
-  RigheousFighter: 'Праведная воительница',
+  RighteousFighter: 'Праведная воительница',
   KnightGuardian: 'Рыцарь-защитник',
   ImperialGriffon: 'Имперский Гриффон',
   TemplarChampion: 'Тамплиер Чемпион',

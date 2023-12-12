@@ -9,6 +9,7 @@ import { useFormik } from 'formik';
 import { actions as modalActions } from '../../slices/modalsSlice.js';
 import { actions as gameActions } from '../../slices/gameSlice';
 import { SignUpSchema, LogInSchema } from '../../utils/validation.js';
+import standartDecks from '../../gameCardsData/standartDecks.js';
 import LogInForm from './LogInForm.jsx';
 import SignUpForm from './SignUpFrom.jsx';
 import setAuthToken from '../../utils/setAuthToken.js';
@@ -25,11 +26,6 @@ const LoginSignUp = () => {
   const user = useMemo(() => (token ? token.login : ''), [token]);
   const pass = useMemo(() => (token ? token.pass : ''), [token]);
 
-  // const repeatPassClass = cn({
-  //   [styles.input]: true,
-  //   [styles.visuallyHidden]: !signUp,
-  // });
-
   const handleClose = () => {
     dispatch(modalActions.closeModal());
   };
@@ -39,13 +35,9 @@ const LoginSignUp = () => {
     setTimeout(() => setError(false), 2000);
   };
 
-  // useEffect(() => {
-  //   inputEl.current.focus();
-  //   inputEl.current.select();
-  // }, []);
-
   const handleGuestClick = () => {
     dispatch(gameActions.setUserType({ userType: 'guest' }));
+    dispatch(gameActions.setDecks({ decks: standartDecks }));
     dispatch(modalActions.closeModal());
   };
 
@@ -55,19 +47,20 @@ const LoginSignUp = () => {
       const { username, password } = values;
       // await axios.get('https://duelsofwarlords.onrender.com');
       console.log(type);
-      socket.emit(type, { username, password }, (res) => {
+      socket.emit(type, { username, password, decks: standartDecks }, (res) => {
         if (res.error) {
           handleError(res);
           formik.setSubmitting(false);
           // inputEl.current.focus();
           return;
         }
-        const { id, rooms } = res;
+        const { id, rooms, decks } = res;
         dispatch(gameActions.setPlayerName({ name: username }));
         dispatch(gameActions.updateRooms({ rooms }));
         dispatch(gameActions.setSocketId({ socketId: id }));
         dispatch(gameActions.setLogged({ logged: true }));
         dispatch(gameActions.setUserType({ userType: 'logged' }));
+        dispatch(gameActions.setDecks({ decks }));
         if (type === 'signUp') {
           setAuthToken({ login: username, pass: password });
         }

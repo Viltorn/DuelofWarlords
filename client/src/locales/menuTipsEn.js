@@ -11,6 +11,11 @@ export const menuTipsHeaders = {
   LASTCAST: 'LAST CAST',
   PROTECTOR: 'PROTECTOR',
   IMMOBILIZED: 'IMMOBILIZED',
+  FIGHTER: 'FIGHTER',
+  SHOOTER: 'SHOOTER',
+  FLYER: 'FLYER',
+  SWIFT: 'SWIFTNESS',
+  PIERCING: 'PIERCING ATTACK X',
 };
 
 export const menuTipsText = {
@@ -26,5 +31,9 @@ export const menuTipsText = {
   POISONATTACK: 'When warrior attacks on his turn, he attaches X "Poison" spells to the target (spells can be taken from warrior\'s owner grave or deck)',
   PROTECTOR: 'Enemy warriors can\'t attack another warrior in the row where PROTECTOR stands',
   IMMOBILIZED: 'This warrior can\'t move',
-
+  FIGHTER: 'Enters battlefield on the front line. Attacks warriors that are not blocked by other warriors',
+  FLYER: 'Enters battlefield on the any line. Attacks warriors that are not blocked by other warriors',
+  SHOOTER: 'Enters battlefield on the back line. Attacks any warrior in the row. Has no retaliation himself and ignores retaliation',
+  SWIFT: 'Warrior with swiftness can move and then attack in the same turn',
+  PIERCING: 'When this warrior make an attack on his turn, inflict X damage to another enemy warrior in the row',
 };

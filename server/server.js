@@ -32,17 +32,10 @@ const redisClient = async () => {
 
   // Send and retrieve some values
   console.log('redis connected');
-  // const rawRes = await client.get(key, function(err, result) {
-  //   if (err) {
-  //     console.log('DatabaseError');
-  //   } else if (result === null) {
-  //     console.log('UserDoesNotExist');
-  //   } else {
-  //     console.log(result);
-  //   }
-  // });
   return client;
 };
+
+const redis = await redisClient();
 
 // upgrade http server to websocket server
 const io = new Server(server, {
@@ -101,8 +94,6 @@ io.on('connection', async (socket) => {
   //   callback(socket.id, getRooms());
   // });
 
-  const redis = await redisClient();
-
   socket.on('logIn', async (data, callback) => {
     try {
       const { username, password } = data;
@@ -123,7 +114,7 @@ io.on('connection', async (socket) => {
       }
 
       const res = JSON.parse(rawRes);
-      const { pass } = res;
+      const { pass, decks } = res;
         
       if (pass !== password) {
         const error = true;
@@ -137,14 +128,14 @@ io.on('connection', async (socket) => {
       const count = io.engine.clientsCount;
       io.emit('clientsCount', count); 
       io.to(socket.id).emit('getMessages', messages);
-      callback({ id: socket.id, rooms: getRooms()});
+      callback({ id: socket.id, rooms: getRooms(), decks });
     } catch (e) {
       return;
     }
   });
 
   socket.on('signUp', async (args, callback) => {
-    const { username, password } = args;
+    const { username, password, decks } = args;
     const rawRes = await redis.get(username, function(err, result) {
       if (err) {
         console.log('DatabaseError');
@@ -158,7 +149,7 @@ io.on('connection', async (socket) => {
       return;
     }
     
-    const jsonData = JSON.stringify({ pass: password });
+    const jsonData = JSON.stringify({ pass: password, decks });
     await redis.set(username, jsonData);
   
     socket.data.username = username;
@@ -166,7 +157,7 @@ io.on('connection', async (socket) => {
     const count = io.engine.clientsCount;
     io.emit('clientsCount', count); 
     io.to(socket.id).emit('getMessages', messages);
-    callback({ id: socket.id, rooms: getRooms()});
+    callback({ id: socket.id, rooms: getRooms(), decks });
   });
 
   socket.on('createRoom', async (args, callback) => { // callback here refers to the callback function from the client passed as data

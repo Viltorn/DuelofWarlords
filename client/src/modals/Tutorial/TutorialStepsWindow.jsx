@@ -4,10 +4,13 @@ import { useTranslation } from 'react-i18next';
 import { actions as battleActions } from '../../slices/battleSlice.js';
 import { actions as modalActions } from '../../slices/modalsSlice.js';
 import styles from './TutorialStepsWindow.module.css';
-import castleDeck from '../../gameCardsData/castleDeck.js';
-import academiaDeck from '../../gameCardsData/academiaDeck.js';
+// import castleDeck from '../../gameCardsData/castleFaction.js';
+// import academiaDeck from '../../gameCardsData/academiaFaction.js';
 import { spellsCells } from '../../gameData/heroes&spellsCellsData.js';
-import { heroes } from '../../gameCardsData/factionsData';
+// import { heroes } from '../../gameCardsData/factionsData';
+import NalaDeck from '../../gameCardsData/NalaDeck.js';
+import ZigfridDeck from '../../gameCardsData/ZigfridDeck.js';
+import gameCardsData from '../../gameCardsData/index.js';
 import tutorialStepsData from '../../gameData/tutorialStepsData';
 import makeDeckForPLayer from '../../utils/makeDeckForPlayer.js';
 import abilityContext from '../../contexts/abilityActions.js';
@@ -24,8 +27,13 @@ const TutorialStepsWindow = () => {
     deleteCardfromSource, tutorStep, changeTutorStep,
   } = useContext(functionContext);
 
-  const madeCastleDeck = useMemo(() => makeDeckForPLayer(makeInitialDeck(castleDeck), 'player1'), []);
-  const madeAcademiaDeck = useMemo(() => makeDeckForPLayer(makeInitialDeck(academiaDeck), 'player2'), []);
+  const hero1 = ZigfridDeck.hero;
+  const hero2 = NalaDeck.hero;
+  const player1HeroData = gameCardsData[hero1.faction][hero1.name];
+  const player2HeroData = gameCardsData[hero2.faction][hero2.name];
+
+  const madeCastleDeck = useMemo(() => makeDeckForPLayer(makeInitialDeck(ZigfridDeck.cards), 'player1'), []);
+  const madeAcademiaDeck = useMemo(() => makeDeckForPLayer(makeInitialDeck(NalaDeck.cards), 'player2'), []);
 
   const cards = {
     shooter: madeCastleDeck.find((el) => el.name === 'Imperial Shooter'),
@@ -80,8 +88,8 @@ const TutorialStepsWindow = () => {
     const stepFunctions = {
       tutorialSetUp: () => {
         dispatch(battleActions.changePlayer({ newPlayer: 'player1' }));
-        dispatch(battleActions.setHero({ hero: heroes[0], player: 'player1' }));
-        dispatch(battleActions.setHero({ hero: heroes[1], player: 'player2' }));
+        dispatch(battleActions.setHero({ hero: player1HeroData, player: 'player1' }));
+        dispatch(battleActions.setHero({ hero: player2HeroData, player: 'player2' }));
       },
       step1: () => fieldCells
         .filter((cell) => (cell.type === 'field' || cell.type === 'hero') && cell.player === 'player1')

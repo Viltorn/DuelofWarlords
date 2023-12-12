@@ -4,11 +4,12 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useFormik } from 'formik';
 import { useNavigate } from 'react-router-dom';
 // import axios from 'axios';
-import { factionsData, heroes, decks } from '../gameCardsData/factionsData.js';
 import { startCardsNumber1, startCardsNumber2 } from '../gameData/gameLimits.js';
 import { actions as modalsActions } from '../slices/modalsSlice.js';
 import { actions as battleActions } from '../slices/battleSlice.js';
 import { actions as gameActions } from '../slices/gameSlice';
+import cardsData from '../gameCardsData/index.js';
+import makeInitialDeck from '../utils/makeInitialDeck.js';
 import PrimaryButton from '../components/PrimaryButton.jsx';
 import socket from '../socket';
 import styles from './onlineGameStart.module.css';
@@ -19,8 +20,7 @@ import dummyCard from '../gameCardsData/dummyCard.js';
 import { passwordYup } from '../utils/validation.js';
 
 const OnlineGameStart = () => {
-  const [factionNumber, setFactionSlide] = useState(0);
-  const [heroNumber, setHero] = useState(0);
+  const [deckNumber, setDeckSlide] = useState(0);
   const [error, setError] = useState(false);
   const { t } = useTranslation();
   const inputEl = useRef();
@@ -29,32 +29,21 @@ const OnlineGameStart = () => {
 
   const { roomId, name, password } = useSelector((state) => state.modalsReducer);
 
-  const playerFaction = factionsData[factionNumber];
-  const playerHeroes = heroes.filter((hero) => hero.faction === playerFaction.id);
-  const currentFactionId = playerFaction.id;
-  const currentHero = playerHeroes[heroNumber];
+  const { playersDecks } = useSelector((state) => state.gameReducer);
+  const playerDeck = playersDecks[deckNumber];
+  const heroFaction = playerDeck.hero.faction;
+  const heroName = playerDeck.hero.name;
+  const playerHeroData = cardsData[heroFaction][heroName];
 
   const changeFaction = (number) => {
-    const maxNumber = factionsData.length - 1;
-    const newNumber = factionNumber + number;
+    const maxNumber = playersDecks.length - 1;
+    const newNumber = deckNumber + number;
     if (newNumber < 0) {
-      setFactionSlide(maxNumber);
+      setDeckSlide(maxNumber);
     } else if (newNumber > maxNumber) {
-      setFactionSlide(0);
+      setDeckSlide(0);
     } else {
-      setFactionSlide(newNumber);
-    }
-  };
-
-  const changeHero = (number) => {
-    const maxNumber = playerHeroes.length - 1;
-    const newNumber = heroNumber + number;
-    if (newNumber < 0) {
-      setHero(maxNumber);
-    } else if (newNumber > maxNumber) {
-      setHero(0);
-    } else {
-      setHero(newNumber);
+      setDeckSlide(newNumber);
     }
   };
 
@@ -64,9 +53,8 @@ const OnlineGameStart = () => {
 
   const formik = useFormik({
     initialValues: {
-      playerFaction,
-      playerHero: playerHeroes[heroNumber],
-      playerDeck: decks[playerFaction.id],
+      playerHero: playerHeroData,
+      playerDeck: playerDeck.cards,
       password: '',
     },
     validationSchema: passwordYup,
@@ -78,12 +66,16 @@ const OnlineGameStart = () => {
         // await axios.get('https://duelsofwarlords.onrender.com');
         const player = !roomId ? 'player1' : 'player2';
         const startCardsNum = player === 'player1' ? startCardsNumber1 : startCardsNumber2;
-        const playerFullDeck = createDeckForPLayer(makeShaffledDeck(values.playerDeck), player);
+        const playerDeckData = makeInitialDeck(values.playerDeck);
+        const playerFullDeck = createDeckForPLayer(makeShaffledDeck(playerDeckData), player);
         const playerHand = player === 'player1' ? playerFullDeck.slice(0, startCardsNum) : [...playerFullDeck.slice(0, startCardsNum), dummyCard];
-        const playerDeck = playerFullDeck.slice(startCardsNum);
+        const playerFinalDeck = playerFullDeck.slice(startCardsNum);
         if (player === 'player1' && socket.connected) {
           socket.emit('createRoom', {
-            deck: playerDeck, hand: playerHand, hero: values.playerHero, password: values.password,
+            deck: playerFinalDeck,
+            hand: playerHand,
+            hero: values.playerHero,
+            password: values.password,
           }, (res) => {
             console.log(res);
             handleClose();
@@ -139,37 +131,25 @@ const OnlineGameStart = () => {
   return (
     <dialog className={styles.container}>
       <div className={styles.contentDark}>
-        <form className={styles.hotseatForm} onSubmit={formik.handleSubmit}>
+        <form className={styles.formBlock} onSubmit={formik.handleSubmit}>
+          <h2 className={styles.headerLight}>{t('ChooseFactions')}</h2>
           <fieldset className={styles.fieldset} disabled={formik.isSubmitting}>
-            <h2 className={styles.headerLight}>{t('ChooseFactions')}</h2>
             <div className={styles.playerSlides}>
               <div className={styles.slideBlock}>
-                <MenuSlider item={playerFaction} player="player1" changeSlide={changeFaction} />
+                <MenuSlider item={playerHeroData} player="player1" changeSlide={changeFaction} />
                 <input
                   className={styles.slideInput}
-                  id="player1Faction"
+                  id="playerHero"
                   type="text"
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
-                  value={playerFaction.id}
-                  name="player1Faction"
+                  value={heroName}
+                  name="playerHero"
                 />
-                <label htmlFor="player1Faction" className={styles.label}>{playerFaction.id}</label>
-                <p className={styles.description}>{t(`description.${currentFactionId}.factionInfo`)}</p>
-              </div>
-              <div className={styles.slideBlock}>
-                <MenuSlider item={currentHero} player="player1" changeSlide={changeHero} />
-                <input
-                  className={styles.slideInput}
-                  id="player1Hero"
-                  type="text"
-                  onChange={formik.handleChange}
-                  onBlur={formik.handleBlur}
-                  value={playerHeroes[heroNumber].name}
-                  name="player1Hero"
-                />
-                <label htmlFor="player1Hero" className={styles.label}>{currentHero.name}</label>
-                <p className={styles.description}>{t(`description.${currentFactionId}.${currentHero.description}`)}</p>
+                <label htmlFor="player1Faction" className={styles.label}>{playerDeck.deckName}</label>
+                {/* <p className={styles.description}>
+                {t(`description.${heroFaction}.factionInfo`)}</p> */}
+                <p className={styles.description}>{t(`description.${heroFaction}.${heroName}`)}</p>
               </div>
             </div>
             <div className={styles.inputBlock}>
@@ -193,39 +173,39 @@ const OnlineGameStart = () => {
                 <div className={styles.invalidFeedback}>{t(`errors.${formik.errors.password}`)}</div>
               ) : null}
               {error && (<div className={styles.invalidFeedback}>{t(`errors.${error.message}`)}</div>)}
-            </div>
-            <div className={styles.lowerBlock}>
-              {name && (
-              <p className={styles.roomsOwner}>
-                {t('RoomsOwner')}
-                {name}
-              </p>
-              )}
-              <div className={styles.btnBlock}>
-                {!roomId ? (
-                  <PrimaryButton
-                    showIcon={false}
-                    state="default"
-                    text={t('CREATE')}
-                    variant="primary"
-                    type="submit"
-                  />
-                ) : (
-                  <PrimaryButton
-                    showIcon={false}
-                    state="default"
-                    text={t('JOIN')}
-                    variant="primary"
-                    type="submit"
-                  />
+              <div className={styles.lowerBlock}>
+                {name && (
+                <p className={styles.roomsOwner}>
+                  {t('RoomsOwner')}
+                  {name}
+                </p>
                 )}
-                <PrimaryButton
-                  onClick={handleClose}
-                  showIcon={false}
-                  state="default"
-                  text={t('CLOSE')}
-                  variant="secondary"
-                />
+                <div className={styles.btnBlock}>
+                  {!roomId ? (
+                    <PrimaryButton
+                      showIcon={false}
+                      state="default"
+                      text={t('CREATE')}
+                      variant="primary"
+                      type="submit"
+                    />
+                  ) : (
+                    <PrimaryButton
+                      showIcon={false}
+                      state="default"
+                      text={t('JOIN')}
+                      variant="primary"
+                      type="submit"
+                    />
+                  )}
+                  <PrimaryButton
+                    onClick={handleClose}
+                    showIcon={false}
+                    state="default"
+                    text={t('CLOSE')}
+                    variant="secondary"
+                  />
+                </div>
               </div>
             </div>
           </fieldset>

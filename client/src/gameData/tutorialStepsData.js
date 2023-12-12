@@ -134,9 +134,10 @@ const data = [
   {
     step: 'step44', func: '', left: 38, next: false, back: false, disEndTurn: true, disAbility: true,
   },
-  {
-    step: 'step45', func: '', left: 38, next: false, back: false, disEndTurn: true, disAbility: true,
-  },
+  // {
+  //   step: 'step45',
+  // func: '', left: 38, next: false, back: false, disEndTurn: true, disAbility: true,
+  // },
   {
     step: 'step46', func: 'disableCells', left: 38, next: false, back: false, disEndTurn: false, disAbility: true,
   },

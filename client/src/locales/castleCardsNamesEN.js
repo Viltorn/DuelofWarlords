@@ -6,7 +6,7 @@ export default {
   ValorKnight: 'Valor knight',
   Bannerman: 'Bannerman',
   Defender: 'Defender',
-  RigheousFighter: 'Righteous fighter',
+  RighteousFighter: 'Righteous fighter',
   KnightGuardian: 'Knight guardian',
   ImperialGriffon: 'Imperial griffon',
   TemplarChampion: 'Templar champion',
