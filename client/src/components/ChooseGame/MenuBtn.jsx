@@ -38,6 +38,8 @@ const MenuBtn = ({
     dispatch(gameActions.setGameMode({ gameMode }));
     if (gameMode === 'online') {
       navigate('/lobby');
+    } else if (gameMode === 'build') {
+      navigate('/choosedeck');
     } else {
       navigate('/battle');
     }

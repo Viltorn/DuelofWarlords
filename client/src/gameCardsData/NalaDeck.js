@@ -5,6 +5,9 @@ export default {
   },
   cards: [
     {
+      name: 'LivingWall', type: 'warrior', faction: 'Academia', qty: 1,
+    },
+    {
       name: 'MageApprentice', type: 'warrior', faction: 'Academia', qty: 2,
     },
     {

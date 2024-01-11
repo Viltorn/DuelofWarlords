@@ -22,6 +22,7 @@
 
 .secondary {
   background-color: var(--golden);
+  font-size: 13px;
   color: var(--dark-color);
 }
 
@@ -29,6 +30,6 @@
   .btn {
     font-size: 12px;
     height: 35px;
-    width: 120px;
+    width: 140px;
   }
 }

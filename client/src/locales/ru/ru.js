@@ -4,6 +4,14 @@ import AcademiaInfo from './academiaCardsInfoRU';
 import CastleInfo from './castleCardsInfoRU';
 import castleCardsNamesRU from './castleCardsNamesRU';
 import academiaCardsNamesRU from './academiaCardsNamesRU';
+import airSpellsInfo from './Spells/airSpellsInfoRU';
+import airSpellsNames from './Spells/airSpellsNamesRU';
+import lightSpellsInfoRU from './Spells/lightSpellsInfoRU';
+import lightSpellsNamesRU from './Spells/lightSpellsNamesRU';
+import shadowSpellsInfoRU from './Spells/shadowSpellsInfoRU';
+import shadowSpellsNamesRU from './Spells/shadowSpellsNamesRU';
+import waterSpellsInfoRU from './Spells/waterSpellsInfoRU';
+import waterSpellsNamesRU from './Spells/waterSpellsNamesRU';
 
 export default {
   translation: {
@@ -58,6 +66,8 @@ export default {
     ability: 'СПОСОБНОСТЬ',
     graveyard: 'В СТОК',
     switchcard: 'ЗАМЕНИТЬ',
+    addToDeck: 'ДОБАВИТЬ',
+    deleteFromDeck: 'УДАЛИТЬ',
     CLOSE: 'ЗАКРЫТЬ',
     Change: 'ИЗМЕНИТЬ',
     ChangeHP: 'ПОМЕНЯТЬ ЗДОРОВЬЕ',
@@ -67,6 +77,15 @@ export default {
     Tutorial: 'ОБУЧЕНИЕ',
     HotSeat: 'ТРЕНИРОВКА',
     OnlineGame: 'ОНЛАЙН',
+    DeckBuilder: 'КОЛОДОСТРОЕНИЕ',
+    CREATEDECK: 'СОЗДАТЬ НОВУЮ',
+    SAVEDECK: 'СОХРАНИТЬ КОЛОДУ',
+    DeckName: 'Название колоды',
+    YourDecks: 'Вашы колоды',
+    AvailableCards: 'Доступные карты',
+    DeckSaved: 'Ваша колода успешно сохранена!',
+    DeleteDeckWarn: 'Вы уверены, что хотите удалить колоду?',
+    SaveChangesWarn: 'Вы уверены, что хотите выйти без сохранения изменений?',
     ChooseFactions: 'ВЫБЕРИТЕ ФРАКЦИЮ И ГЕРОЯ',
     START: 'НАЧАТЬ',
     BACK: 'НАЗАД',
@@ -74,6 +93,7 @@ export default {
     DrawCard: 'ВЗЯТЬ',
     ResetBtn: 'СБРОСИТЬ',
     CONTINUE: 'ПРОДОЛЖИТЬ',
+    DELETE: 'УДАЛИТЬ',
     Install: 'УСТАНОВИТЬ',
     EndTurn: 'ЗАКОНЧИТЬ ХОД',
     Exit: 'ВЫЙТИ',
@@ -141,29 +161,32 @@ export default {
       Required: 'Обязательное поле',
       OnlyNumber: 'Допустимы только цифры',
       Min3Max10: 'Длина от 3 до 10 символов',
+      Min3Max20: 'Длина от 3 до 20 символов',
       Min6: 'Не менее 6 символов',
       Unique: 'Этот чат уже добавлен',
       UniqueName: 'Такое имя уже есть',
       Identical: 'Пароли должны совпадать',
       NetworkError: 'Ошибка соединения',
-      'Network Error': 'Ошибка соединения',
+      meetDeckRequirments: 'Выберите героя!',
+      MaximumDecks: 'Вы уже создали максимальное количество колод!',
+      YouNeedOneDeck: 'У вас должна быть хотя бы 1 колода!',
       false: '',
-    },
-    messages: {
-      counter_zero: '{{count}} сообщений',
-      counter_one: '{{count}} сообщение',
-      counter_two: '{{count}} сообщения',
-      counter_few: '{{count}} сообщения',
-      counter_many: '{{count}} сообщений',
-      counter_other: '{{count}} сообщений',
     },
     description: {
       Castle: CastleInfo,
       Academia: AcademiaInfo,
+      Air: airSpellsInfo,
+      Light: lightSpellsInfoRU,
+      Shadow: shadowSpellsInfoRU,
+      Water: waterSpellsInfoRU,
     },
     titles: {
       Castle: castleCardsNamesRU,
       Academia: academiaCardsNamesRU,
+      Air: airSpellsNames,
+      Light: lightSpellsNamesRU,
+      Shadow: shadowSpellsNamesRU,
+      Water: waterSpellsNamesRU,
     },
     tutorialSteps: tutorialTextRU,
     menuTipsHeader: menuTipsHeaders,

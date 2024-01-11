@@ -7,7 +7,7 @@ import functionContext from '../contexts/functionsContext.js';
 import styles from './Card.module.css';
 
 const Card = ({
-  card, active, content,
+  card, active, content, builder,
 }) => {
   const dispatch = useDispatch();
   const { t } = useTranslation();
@@ -24,10 +24,13 @@ const Card = ({
     player,
     currentC,
     faction,
+    school,
   } = card;
   const { getActiveCard, handleAnimation, toogleInfoWindow } = useContext(functionContext);
+  const cardsFeature = faction ?? school;
 
-  const marginRight = active ? 0 : Math.min(content.length * 0.5, 5.6); /*  empirical number */
+  const marginRight = active || builder ? 0 : Math.min(content.length * 0.5, 5.6);
+  /*  empirical number */
 
   const classes = cn({
     [styles.cardBlock]: true,
@@ -40,7 +43,8 @@ const Card = ({
   });
 
   const titleClasses = cn({
-    [styles.cardName]: type !== 'hero',
+    [styles.cardName]: true,
+    [styles.nameLeft]: type === 'hero',
     [styles.cardNameActive]: type !== 'hero' && active,
     [styles.heroNameActive]: type === 'hero' && active,
   });
@@ -86,7 +90,7 @@ const Card = ({
   return (
     <div className={classes} ref={cardElement} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave} style={{ marginRight: `-${marginRight}rem` }}>
       <button className={cn([styles.imageContainer], { [styles.active]: active })} type="button" onClick={handleClick}>
-        <h2 className={titleClasses}>{t(`titles.${faction}.${description}`)}</h2>
+        <h2 className={titleClasses}>{t(`titles.${cardsFeature}.${description}`)}</h2>
         {type === 'warrior' && (
         <>
           <h3 className={cn([styles.warriorPower], { [styles.active]: active })}>{power}</h3>
@@ -102,7 +106,7 @@ const Card = ({
         <img className={styles.mainImage} src={img} alt={name} />
       </button>
       <button className={styles.description} onClick={handleInfoClick} type="button" aria-label="cardinfo">
-        <p className={descriptClasses}>{t(`description.${faction}.${description}`)}</p>
+        <p className={descriptClasses}>{t(`description.${cardsFeature}.${description}`)}</p>
       </button>
     </div>
   );

@@ -3,13 +3,14 @@ import cn from 'classnames';
 import { useTranslation } from 'react-i18next';
 import styles from './ActiveCardInfo.module.css';
 
-const ActiveCardInfo = ({ info, player }) => {
+const ActiveCardInfo = ({ info, type }) => {
   const { t } = useTranslation();
 
   const infoClass = cn({
     [styles.infoWindow]: true,
-    [styles.marginRight]: player === 'player1',
-    [styles.marginLeft]: player === 'player2',
+    [styles.marginRight]: type === 'player1',
+    [styles.marginLeft]: type === 'player2',
+    [styles.buildType]: type === 'build',
   });
 
   return (

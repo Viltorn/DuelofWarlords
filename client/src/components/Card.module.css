@@ -38,6 +38,7 @@
   width: 100%;
   height: 70%;
   border: none;
+  cursor: pointer;
 }
 
 .mainImage {
@@ -106,9 +107,11 @@
   word-break: normal;
   overflow: hidden;
   border: none;
+  cursor: pointer;
 }
 
 .font {
+  font-family: Roboto;
   font-size: 0.5rem;
   font-weight: 400;
   line-height: 0.6rem;
@@ -116,6 +119,7 @@
 }
 
 .fontActive {
+  font-family: Roboto;
   text-align: start;
   font-size: 0.8rem;
   font-weight: 600;
@@ -124,11 +128,17 @@
 }
 
 .cardName {
+  font-family: Roboto;
   position: absolute;
   font-size: 0.5rem;
   color: var(--black-font);
   right: 0.4rem;
   margin-top: 0.15rem;
+}
+
+.cardName.nameLeft {
+  left: 0.6rem;
+  right: auto;
 }
 
 .cardNameActive {

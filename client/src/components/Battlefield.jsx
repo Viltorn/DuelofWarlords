@@ -182,7 +182,7 @@ const Battlefield = () => {
           <TutorialStepsWindow />
         )}
         {isOpenInfo && activeCard && (
-        <ActiveCardInfo info={activeCard.featInfo} player={thisPlayer} />
+        <ActiveCardInfo info={activeCard.featInfo} type={thisPlayer} />
         )}
         {thisPlayer === 'player1' ? (
           <div className={styles.handsContainer}>

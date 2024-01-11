@@ -32,12 +32,13 @@ const LogInForm = ({ formik, error, changeType }) => {
             {formik.touched.username && formik.errors.username ? (
               <div className={styles.invalidFeedback}>{t(`errors.${formik.errors.username}`)}</div>
             ) : null}
+            <label htmlFor="username" className="visually-hidden">{t('UserName')}</label>
           </div>
           <div className={styles.inputBlock}>
             <input
               className={styles.input}
               id="password"
-              type="text"
+              type="password"
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
               value={formik.values.password}
@@ -48,12 +49,13 @@ const LogInForm = ({ formik, error, changeType }) => {
             {formik.touched.password && formik.errors.password ? (
               <div className={styles.invalidFeedback}>{t(`errors.${formik.errors.password}`)}</div>
             ) : null}
+            <label htmlFor="password" className="visually-hidden">{t('Password')}</label>
           </div>
           <div className={styles.inputBlock}>
             <input
               className={styles.input}
               id="repeatpass"
-              type="text"
+              type="password"
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
               value={formik.values.repeatpass}
@@ -64,6 +66,7 @@ const LogInForm = ({ formik, error, changeType }) => {
             {formik.errors.repeatpass && (
             <div className={styles.invalidFeedback}>{t(`errors.${formik.errors.repeatpass}`)}</div>
             )}
+            <label htmlFor="repeatpass" className="visually-hidden">{t('Repeatpass')}</label>
           </div>
           {error && (<div className={styles.invalidFeedback}>{t(`errors.${error}`)}</div>)}
         </div>

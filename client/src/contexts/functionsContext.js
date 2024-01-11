@@ -22,10 +22,10 @@ export const FunctionProvider = ({ children }) => {
   const [moveCells, setMoveCells] = useState([]);
   const [tutorStep, changeTutorStep] = useState(0);
   const [isOpenMenu, setOpenMenu] = useState(false);
-  const currentPoints = playerPoints.find((item) => item.player === thisPlayer).points;
   const [fontVal, setFontVal] = useState(0);
   const [isOpenChat, setOpenChat] = useState(false);
   const [isOpenInfo, toogleInfoWindow] = useState(false);
+  const currentPoints = playerPoints.find((item) => item.player === thisPlayer).points;
 
   useEffect(() => {
     window.addEventListener('beforeinstallprompt', (event) => {
@@ -66,7 +66,7 @@ export const FunctionProvider = ({ children }) => {
         const fontSize = `${fontValue}px`;
         setFontVal(fontValue);
         document.documentElement.style.setProperty('font-size', fontSize);
-      }, 200);
+      }, 300);
       // setWindowWidth({ winHeight: window.innerHeight, winWidth: window.innerWidth });
     };
 

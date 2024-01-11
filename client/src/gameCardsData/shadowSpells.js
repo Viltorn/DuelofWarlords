@@ -17,7 +17,6 @@ export default {
     currentC: 1,
     featInfo: ['REACTION'],
     description: 'ArcaneArmor',
-    faction: 'Academia',
     school: 'Shadow',
     place: 'postponed',
     features: [{
@@ -35,7 +34,6 @@ export default {
     currentC: 3,
     featInfo: [],
     description: 'CursedChackle',
-    faction: 'Academia',
     school: 'Shadow',
     place: 'warrior',
     features: [
@@ -61,7 +59,6 @@ export default {
     currentC: 1,
     featInfo: ['INVISIBILITY', 'MAGICSHIELD'],
     description: 'InvisibilityCloak',
-    faction: 'Academia',
     school: 'Shadow',
     place: 'warrior',
     features: [
@@ -87,7 +84,6 @@ export default {
     currentC: 5,
     featInfo: [],
     description: 'SoulDrain',
-    faction: 'Academia',
     school: 'Shadow',
     place: '',
     features: [{
@@ -105,7 +101,6 @@ export default {
     currentC: 1,
     featInfo: [],
     description: 'Teleport',
-    faction: 'Academia',
     school: 'Shadow',
     place: '',
     features: [{
@@ -123,7 +118,6 @@ export default {
     currentC: 3,
     featInfo: [],
     description: 'TownPortal',
-    faction: 'Academia',
     school: 'Shadow',
     place: '',
     features: [{
@@ -141,7 +135,6 @@ export default {
     currentC: 1,
     featInfo: [],
     description: 'Transformation',
-    faction: 'Academia',
     school: 'Shadow',
     place: '',
     features: [{

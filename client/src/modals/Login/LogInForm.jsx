@@ -27,22 +27,25 @@ const LogInForm = ({ formik, error, changeType }) => {
               value={formik.values.username}
               placeholder={t('LoginName')}
               data-testid="input-body"
+              autoComplete="username"
               name="username"
             />
             {formik.touched.username && formik.errors.username ? (
               <div className={styles.invalidFeedback}>{t(`errors.${formik.errors.username}`)}</div>
             ) : null}
+            <label htmlFor="username" className="visually-hidden">{t('UserName')}</label>
           </div>
           <div className={styles.inputBlock}>
             <input
               className={styles.input}
               id="password"
-              type="text"
+              type="password"
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
               value={formik.values.password}
               placeholder={t('Password')}
               data-testid="input-body"
+              autoComplete="password"
               name="password"
             />
             {formik.touched.password && formik.errors.password ? (
@@ -50,6 +53,7 @@ const LogInForm = ({ formik, error, changeType }) => {
             ) : null}
           </div>
           {error && (<div className={styles.invalidFeedback}>{t(`errors.${error}`)}</div>)}
+          <label htmlFor="password" className="visually-hidden">{t('Password')}</label>
         </div>
         <label htmlFor="username" className="visually-hidden">{t('YourName')}</label>
         <div className={styles.submitBlock}>

@@ -94,9 +94,9 @@ const ChooseGame = () => {
       </button>
       <p className={styles.version}>{gameVersion}</p>
       <div className={styles.options}>
-        {/* {showInstall && (
-          <MenuBtn text={t('Install')} data="install" type="secondary" />
-        )} */}
+        {logged && (
+          <MenuBtn text={t('DeckBuilder')} data="build" type="secondary" />
+        )}
         <hr className={styles.divider} />
         <h2 className={styles.header}>{t('ChooseGame')}</h2>
         <MenuBtn text={t('Tutorial')} data="tutorial" type="primary" />

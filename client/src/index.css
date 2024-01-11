@@ -73,7 +73,6 @@ code {
   display: none;
 }
 
-
 :root {
   /* colors */
   --main-background: linear-gradient(180deg, rgba(233, 205, 191, 0.8) 0%, rgb(224, 169, 127) 100%);
@@ -104,6 +103,21 @@ code {
 .border-black {
   border: 0.2rem solid var(--black-color);
   border-radius: 0.5rem;
+}
+
+/* Works on Chrome, Edge, and Safari */
+*::-webkit-scrollbar {
+  width: 0.3rem;
+}
+
+*::-webkit-scrollbar-track {
+  background: none;
+}
+
+*::-webkit-scrollbar-thumb {
+  background-color: var(--dark-golden);
+  border-radius: 0.3rem;
+  border: none;
 }
 
 

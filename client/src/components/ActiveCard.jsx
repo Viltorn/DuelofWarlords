@@ -7,9 +7,11 @@ import ActionButton from './ActionButton';
 import Card from './Card';
 import styles from './ActiveCard.module.css';
 
-const ActiveCard = ({ activeCard, playerType }) => {
+const ActiveCard = ({
+  activeCard, playerType, selectedHero, changeQuantity,
+}) => {
   const {
-    status, type,
+    status, type, qty,
   } = activeCard;
 
   const cardClasses = cn({
@@ -19,12 +21,12 @@ const ActiveCard = ({ activeCard, playerType }) => {
 
   const { gameMode } = useSelector((state) => state.gameReducer);
   const { tutorStep } = useContext(functionContext);
-
   const { disAbility } = tutorialStepsData[tutorStep];
 
   const {
     thisPlayer, playerPoints, fieldCells, commonPoints, gameTurn, players,
   } = useSelector((state) => state.battleReducer);
+
   const firstRound = commonPoints === 1;
   const currentPoints = playerPoints.find((item) => item.player === thisPlayer).points;
   const { cardsdrawn, switchedcard } = players[thisPlayer];
@@ -34,6 +36,12 @@ const ActiveCard = ({ activeCard, playerType }) => {
     .find((cell) => cell.type === 'graveyard' && cell.player === thisPlayer)
     .attachments.find((feat) => feat.name === 'ressurect' && feat.aim.includes(activeCard.type));
   const leftPoints = insteadatk?.cost ? currentPoints - insteadatk.cost : 0;
+
+  const canSwitchCard = !switchedcard && thisPlayer === activeCard.player && legalTurn && type !== 'hero' && status === 'hand';
+  const canReturnCard = firstRound && thisPlayer === activeCard.player && !cardsdrawn && legalTurn;
+  const canUseAbility = insteadatk && activeCard.turn === 0 && leftPoints >= 0 && !disAbility && legalTurn && status !== 'graveyard';
+  const canRessurectCard = status !== 'hand' && (type !== 'hero') && ressurect && activeCard.status === 'graveyard' && legalTurn;
+  const canBeSentToGrave = type !== 'hero' && status !== 'graveyard' && gameMode === 'hotseat';
 
   return (
     <div className={styles[cardClasses]}>
@@ -45,24 +53,30 @@ const ActiveCard = ({ activeCard, playerType }) => {
             <ActionButton card={activeCard} type="turnRight" />
           </>
         )} */}
-        {!switchedcard && thisPlayer === activeCard.player && legalTurn && type !== 'hero' && status === 'hand' && (
-          <ActionButton card={activeCard} ability={insteadatk} type="switchcard" />
-        )}
-        {((firstRound && thisPlayer === activeCard.player && !cardsdrawn && legalTurn) || gameMode === 'hotseat') && (type !== 'hero') && (
-        <ActionButton card={activeCard} ability={insteadatk} type="deckreturn" />
-        )}
-        {insteadatk && activeCard.turn === 0 && leftPoints >= 0 && !disAbility && legalTurn && status !== 'graveyard' && (
-          <ActionButton card={activeCard} ability={insteadatk} type="ability" />
-        )}
         {/* {(status === 'field') && (type === 'warrior' || type === 'hero')
         && gameMode === 'hotseat' && (
           <ActionButton card={activeCard} type="healthBar" />
         )} */}
-        {((status !== 'hand' && (type !== 'hero') && ressurect && activeCard.status === 'graveyard' && legalTurn) || gameMode === 'hotseat') && (
+        {canSwitchCard && gameMode !== 'build' && (
+          <ActionButton card={activeCard} ability={insteadatk} type="switchcard" />
+        )}
+        {(canReturnCard || gameMode === 'hotseat') && (type !== 'hero') && gameMode !== 'build' && (
+          <ActionButton card={activeCard} ability={insteadatk} type="deckreturn" />
+        )}
+        {canUseAbility && gameMode !== 'build' && (
+          <ActionButton card={activeCard} ability={insteadatk} type="ability" />
+        )}
+        {(canRessurectCard || gameMode === 'hotseat') && gameMode !== 'build' && (
           <ActionButton card={activeCard} type="return" ressurect={ressurect} />
         )}
-        {type !== 'hero' && status !== 'graveyard' && gameMode === 'hotseat' && (
+        {canBeSentToGrave && gameMode !== 'build' && (
           <ActionButton card={activeCard} type="graveyard" />
+        )}
+        {gameMode === 'build' && ((!selectedHero && type === 'hero') || (type !== 'hero')) && (
+          <ActionButton card={activeCard} type="addToDeck" changeQty={changeQuantity} />
+        )}
+        {gameMode === 'build' && qty !== 0 && selectedHero && (
+          <ActionButton card={activeCard} type="deleteFromDeck" changeQty={changeQuantity} />
         )}
       </div>
       <Card

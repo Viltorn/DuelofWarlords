@@ -7,8 +7,9 @@ import { actions as battleActions } from '../../slices/battleSlice.js';
 import PrimaryButton from '../../components/PrimaryButton.jsx';
 // import { factionsData, heroes, decks } from '../../gameCardsData/factionsData.js';
 import cardsData from '../../gameCardsData/index.js';
-import { startCardsNumber1, startCardsNumber2 } from '../../gameData/gameLimits.js';
+import { startCardsNumber1, startCardsNumber2, minDeckCards } from '../../gameData/gameLimits.js';
 import { actions as modalsActions } from '../../slices/modalsSlice.js';
+import countDeckCards from '../../utils/countDeckCards.js';
 import styles from './HotSeatStartMenu.module.css';
 import MenuSlider from '../MenuSlider.jsx';
 import makeInitialDeck from '../../utils/makeInitialDeck.js';
@@ -24,17 +25,21 @@ const HotSeatMenu = () => {
   const dispatch = useDispatch();
 
   const { playersDecks } = useSelector((state) => state.gameReducer);
-  const player1Deck = playersDecks[deckNumber.player1];
+  const playableDecks = playersDecks.filter((deck) => {
+    const cardsNumb = countDeckCards(deck.cards).cardsNmb;
+    return cardsNumb >= minDeckCards;
+  });
+  const player1Deck = playableDecks[deckNumber.player1];
   const hero1Faction = player1Deck.hero.faction;
   const hero1Name = player1Deck.hero.name;
-  const player2Deck = playersDecks[deckNumber.player2];
+  const player2Deck = playableDecks[deckNumber.player2];
   const hero2Faction = player2Deck.hero.faction;
   const hero2Name = player2Deck.hero.name;
   const player1HeroData = cardsData[hero1Faction][hero1Name];
   const player2HeroData = cardsData[hero2Faction][hero2Name];
 
   const changeDeck = (number, player) => {
-    const maxNumber = playersDecks.length - 1;
+    const maxNumber = playableDecks.length - 1;
     const newNumber = deckNumber[player] + number;
     if (newNumber < 0) {
       setDeckNumber({ ...deckNumber, [player]: maxNumber });

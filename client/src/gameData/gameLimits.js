@@ -9,3 +9,7 @@ export const startCardsNumber1 = 5;
 export const startCardsNumber2 = 5;
 
 export const startCards2AfterDraw = 7;
+
+export const maxCardsDeckCopy = 3;
+
+export const minDeckCards = 30;

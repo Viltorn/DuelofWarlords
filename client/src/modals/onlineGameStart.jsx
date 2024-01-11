@@ -4,10 +4,11 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useFormik } from 'formik';
 import { useNavigate } from 'react-router-dom';
 // import axios from 'axios';
-import { startCardsNumber1, startCardsNumber2 } from '../gameData/gameLimits.js';
+import { startCardsNumber1, startCardsNumber2, minDeckCards } from '../gameData/gameLimits.js';
 import { actions as modalsActions } from '../slices/modalsSlice.js';
 import { actions as battleActions } from '../slices/battleSlice.js';
 import { actions as gameActions } from '../slices/gameSlice';
+import countDeckCards from '../utils/countDeckCards.js';
 import cardsData from '../gameCardsData/index.js';
 import makeInitialDeck from '../utils/makeInitialDeck.js';
 import PrimaryButton from '../components/PrimaryButton.jsx';
@@ -30,13 +31,17 @@ const OnlineGameStart = () => {
   const { roomId, name, password } = useSelector((state) => state.modalsReducer);
 
   const { playersDecks } = useSelector((state) => state.gameReducer);
-  const playerDeck = playersDecks[deckNumber];
+  const playableDecks = playersDecks.filter((deck) => {
+    const cardsNumb = countDeckCards(deck.cards).cardsNmb;
+    return cardsNumb >= minDeckCards;
+  });
+  const playerDeck = playableDecks[deckNumber];
   const heroFaction = playerDeck.hero.faction;
   const heroName = playerDeck.hero.name;
   const playerHeroData = cardsData[heroFaction][heroName];
 
   const changeFaction = (number) => {
-    const maxNumber = playersDecks.length - 1;
+    const maxNumber = playableDecks.length - 1;
     const newNumber = deckNumber + number;
     if (newNumber < 0) {
       setDeckSlide(maxNumber);
@@ -86,7 +91,7 @@ const OnlineGameStart = () => {
         } else if (socket.connected) {
           socket.emit('joinRoom', {
             room: roomId,
-            deck: playerDeck,
+            deck: playerFinalDeck,
             hand: playerHand,
             hero: values.playerHero,
             password: values.password,

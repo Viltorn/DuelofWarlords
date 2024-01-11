@@ -73,6 +73,12 @@ const gameSlice = createSlice({
       const { userType } = payload;
       state.userType = userType;
     },
+    deleteDeck(state, { payload }) {
+      const { deck } = payload;
+      const newDecks = state.playersDecks.filter((item) => item.deckName !== deck);
+      state.playersDecks = newDecks;
+    },
+
     setDecks(state, { payload }) {
       const { decks } = payload;
       state.playersDecks = decks;

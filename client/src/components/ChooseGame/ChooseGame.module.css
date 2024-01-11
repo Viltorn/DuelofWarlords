@@ -9,7 +9,8 @@
   background-repeat: no-repeat;
   background-image: url("../../assets/ChooseGameCover.png");
   background-position: center;
-  height: 100vh;
+  min-height: 100svh;
+  height: 100%;
   width: 100%;
 }
 

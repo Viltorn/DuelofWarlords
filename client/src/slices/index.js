@@ -2,9 +2,11 @@ import { configureStore } from '@reduxjs/toolkit';
 import battleReducer from './battleSlice.js';
 import gameReducer from './gameSlice.js';
 import modalsReducer from './modalsSlice.js';
+import deckbuilderReducer from './deckbuilderSlice.js';
 
 export default configureStore({
   reducer: {
+    deckbuilderReducer,
     gameReducer,
     battleReducer,
     modalsReducer,

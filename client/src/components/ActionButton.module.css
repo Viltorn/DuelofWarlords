@@ -35,3 +35,7 @@
   height: 1.25rem;
 }
 
+.redBack {
+  background: var(--dark-red-color);
+}
+

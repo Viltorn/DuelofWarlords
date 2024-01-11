@@ -8,6 +8,14 @@ export const userName = Yup.object().shape({
     .max(10, 'Min3Max10'),
 });
 
+export const deckNameValidation = Yup.object().shape({
+  deckName: Yup
+    .string()
+    .required('Required')
+    .min(3, 'Min3Max20')
+    .max(20, 'Min3Max20'),
+});
+
 export const passwordYup = Yup.object().shape({
   password: Yup
     .string()

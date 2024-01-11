@@ -41,8 +41,9 @@ const CellCard = ({
   const dispatch = useDispatch();
   const { t } = useTranslation();
   const {
-    cellId, turn, faction, description,
+    cellId, turn, faction, description, school,
   } = item;
+  const cardsFeature = faction ?? school;
   const { thisPlayer, fieldCells, playerPoints } = useSelector((state) => state.battleReducer);
   const { curRoom, gameMode } = useSelector((state) => state.gameReducer);
   const currentCell = fieldCells.find((cell) => cell.id === cellId);
@@ -128,7 +129,7 @@ const CellCard = ({
       className={cardStyles}
       style={{ marginTop: `-${marginTop}rem`, marginRight: `-${marginRight}rem` }}
     >
-      <h2 className={titleClasses}>{t(`titles.${faction}.${description}`)}</h2>
+      <h2 className={titleClasses}>{t(`titles.${cardsFeature}.${description}`)}</h2>
       {item.type === 'warrior' && (
         <>
           <h3 className={styles.warriorPower}>{getWarriorPower(item)}</h3>

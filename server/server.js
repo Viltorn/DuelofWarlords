@@ -51,6 +51,18 @@ const io = new Server(server, {
 const rooms = new Map();
 const messages = [];
 
+const isDeckExist = (deck, decks) => decks.find((item) => item.deckName === deck.deckName);
+
+const renewPlayersDecks = (deck, decks) => {
+  const newDecks = decks.map((item) => {
+    if (item.deckName === deck.deckName) {
+      return deck;
+    }
+    return item;
+  });
+  return newDecks;
+};
+
 // io.connection
 io.on('connection', async (socket) => {
   // socket refers to the client socket that just got connected.
@@ -94,6 +106,67 @@ io.on('connection', async (socket) => {
   //   callback(socket.id, getRooms());
   // });
 
+  socket.on('saveDeck', async (data, callback) => {
+    try {
+      const { deck, username } = data;
+      const rawRes = await redis.get(username, function(err, result) {
+        if (err) {
+          console.log('DatabaseError');
+        } else if (result === null) {
+          console.log('UserDoesNotExist');
+        } else {
+          console.log(result);
+        }
+      });
+    
+      const res = JSON.parse(rawRes);
+      const { decks } = res;
+      console.log(decks);
+      if (isDeckExist(deck, decks)) {
+        const newDecks = renewPlayersDecks(deck, decks);
+        const jsonData = JSON.stringify({ ...res, decks: newDecks });
+        await redis.set(username, jsonData);
+        callback({ decks: newDecks });
+        return;
+      }
+      if (!isDeckExist(deck, decks) && decks.length < 10) {
+        const newDecks = [deck, ...decks ];
+        const jsonData = JSON.stringify({ ...res, decks: newDecks });
+        await redis.set(username, jsonData);
+        callback({ decks: newDecks });
+        return;
+      }
+      callback({ error: true, message: 'MaximumDecks' });
+      } catch (e) {
+        return;
+      }
+  });
+
+  socket.on('deleteDeck', async (data, callback) => {
+    const { deckName, username } = data;
+    const rawRes = await redis.get(username, function(err, result) {
+      if (err) {
+        console.log('DatabaseError');
+      } else if (result === null) {
+        console.log('UserDoesNotExist');
+      } else {
+        console.log(result);
+      }
+    });
+    const res = JSON.parse(rawRes);
+    const { decks } = res;
+
+    if (decks.length === 1) {
+      callback({ error: true, message: 'YouNeedOneDeck' });
+      return;
+    }
+
+    const newDecks = decks.filter((item) => item.deckName !== deckName);
+    const jsonData = JSON.stringify({ ...res, decks: newDecks });
+    await redis.set(username, jsonData);
+    callback({ decks: newDecks });
+});
+
   socket.on('logIn', async (data, callback) => {
     try {
       const { username, password } = data;
@@ -109,7 +182,7 @@ io.on('connection', async (socket) => {
         });
       
       if (rawRes === null) {
-        callback({error: true, message: 'UserDoesNotExist'});
+        callback({ error: true, message: 'UserDoesNotExist' });
         return;
       }
 

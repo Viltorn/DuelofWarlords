@@ -1,0 +1,103 @@
+.container {
+  width: 300px;
+  height: 300px;
+  padding: 10px;
+  border: 1px solid #888;
+  border-radius: 10px;
+  background: var(--dark-blue);
+  box-sizing: border-box;
+  box-shadow: 0px 5px 15px 5px var(--dark-blue);
+}
+
+.infoBlock {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  background: var(--dark-blue);
+  justify-content: space-between;
+  align-items: center;
+  border: none;
+  gap: 10px;
+}
+
+.container.active {
+  border: 4px solid var(--golden);
+}
+
+.imageBlock {
+  display: grid;
+  width: 100%;
+  gap: 5px;
+  grid-template-columns: repeat(2, auto);
+  grid-template-rows: repeat(3, auto);
+  justify-content: space-between;
+  background: none;
+  border: 2px solid var(--golden);
+  border-radius: 5px;
+  padding: 10px;
+  cursor: pointer;
+}
+
+.heroImg {
+  border-radius: 5px;
+  width: 160px;
+  height: 160px;
+  grid-row-start: span 3;
+}
+
+.featBlock {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  gap: 5px;
+}
+
+.icon {
+  width: 50px;
+  height: 50px;
+}
+
+.quantity {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--white-color);
+}
+
+.deckName {
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--white-color);
+}
+
+.modifyBlock {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 30px;
+}
+
+.modifyBtn {
+  width: 50px;
+  height: 50px;
+  background-color: var(--golden);
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.deleteBtn {
+  width: 50px;
+  height: 50px;
+  background-color: var(--dark-red-color);
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.btnIcon {
+  width: 35px;
+  height: 35px;
+}
+
+
+

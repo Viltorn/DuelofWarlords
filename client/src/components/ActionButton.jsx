@@ -1,14 +1,17 @@
 import React, { useEffect, useContext, useRef } from 'react';
+import cn from 'classnames';
 import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { actions as modalsActions } from '../slices/modalsSlice.js';
 import { actions as battleActions } from '../slices/battleSlice.js';
+import { actions as deckbuilderActions } from '../slices/deckbuilderSlice.js';
+import { maxCardsDeckCopy } from '../gameData/gameLimits.js';
 import functionContext from '../contexts/functionsContext.js';
 import abilityContext from '../contexts/abilityActions.js';
 import styles from './ActionButton.module.css';
 
 const ActionButton = ({
-  type, card, ability, ressurect,
+  type, card, ability, ressurect, changeQty,
 }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -42,6 +45,11 @@ const ActionButton = ({
   const { curRoom, gameMode } = useSelector((state) => state.gameReducer);
   const currentPoints = playerPoints.find((item) => item.player === thisPlayer).points;
   const currentCell = fieldCells.find((item) => item.id === cellId);
+
+  const classes = cn({
+    [styles.btn]: true,
+    [styles.redBack]: card.qty === maxCardsDeckCopy && type === 'addToDeck',
+  });
 
   const performClick = (btnType) => {
     if (gameMode === 'online' && actionPerforming) {
@@ -87,6 +95,16 @@ const ActionButton = ({
         break;
       case 'turnRight':
         makeTurn('turnRight');
+        break;
+      case 'addToDeck':
+        if (card.qty < maxCardsDeckCopy) {
+          changeQty(card, 1);
+          dispatch(deckbuilderActions.setChanges({ changesMade: true }));
+        }
+        break;
+      case 'deleteFromDeck':
+        changeQty(card, -1);
+        dispatch(deckbuilderActions.setChanges({ changesMade: true }));
         break;
       case 'graveyard':
         handleAnimation(card, 'delete');
@@ -168,7 +186,7 @@ const ActionButton = ({
 
   return (
     <button
-      className={styles.btn}
+      className={classes}
       type="button"
       ref={element}
       onClick={handleButtonClick}

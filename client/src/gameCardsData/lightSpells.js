@@ -22,7 +22,7 @@ export default {
     currentC: 4,
     featInfo: [],
     description: 'Resurrection',
-    faction: 'Castle',
+    school: 'Light',
     id: _.uniqueId(),
     place: 'grave',
     turn: 0,
@@ -42,7 +42,7 @@ export default {
     currentC: 2,
     featInfo: ['LASTCAST'],
     description: 'AttackAura',
-    faction: 'Castle',
+    school: 'Light',
     id: _.uniqueId(),
     place: 'warrior',
     features: [
@@ -65,7 +65,7 @@ export default {
     currentC: 1,
     featInfo: [],
     description: 'Retribution',
-    faction: 'Castle',
+    school: 'Light',
     id: _.uniqueId(),
     place: 'warrior',
     features: [{
@@ -90,7 +90,7 @@ export default {
     currentC: 1,
     featInfo: [],
     description: 'HealingLight',
-    faction: 'Castle',
+    school: 'Light',
     id: _.uniqueId(),
     place: '',
     features: [{
@@ -108,7 +108,7 @@ export default {
     currentC: 3,
     featInfo: [],
     description: 'Enlightenment',
-    faction: 'Castle',
+    school: 'Light',
     id: _.uniqueId(),
     place: 'bigSpell',
     features: [{
@@ -126,7 +126,7 @@ export default {
     currentC: 1,
     featInfo: [],
     description: 'HeavenProtection',
-    faction: 'Castle',
+    school: 'Light',
     id: _.uniqueId(),
     place: 'warrior',
     features: [{
@@ -149,7 +149,7 @@ export default {
     currentC: 2,
     featInfo: [],
     description: 'Bless',
-    faction: 'Castle',
+    school: 'Light',
     id: _.uniqueId(),
     place: 'warrior',
     features: [{
@@ -171,7 +171,7 @@ export default {
     currentC: 1,
     featInfo: [],
     description: 'HolyLand',
-    faction: 'Castle',
+    school: 'Light',
     id: _.uniqueId(),
     place: 'midSpell',
     features: [{
@@ -192,7 +192,7 @@ export default {
     currentC: 2,
     featInfo: [],
     description: 'HeavenShock',
-    faction: 'Castle',
+    school: 'Light',
     id: _.uniqueId(),
     place: '',
     features: [{
@@ -214,7 +214,7 @@ export default {
     currentC: 4,
     featInfo: [],
     description: 'SaintWord',
-    faction: 'Castle',
+    school: 'Light',
     id: _.uniqueId(),
     place: '',
     features: [{
@@ -236,7 +236,7 @@ export default {
     currentC: 1,
     featInfo: [],
     description: 'LightShield',
-    faction: 'Castle',
+    school: 'Light',
     id: _.uniqueId(),
     place: 'warrior',
     features: [{
@@ -265,7 +265,7 @@ export default {
     currentC: 2,
     featInfo: ['REACTION'],
     description: 'LastChance',
-    faction: 'Castle',
+    school: 'Light',
     id: _.uniqueId(),
     place: 'postponed',
     features: [{
@@ -283,7 +283,7 @@ export default {
     currentC: 5,
     featInfo: [],
     description: 'Conciliation',
-    faction: 'Castle',
+    school: 'Light',
     id: _.uniqueId(),
     place: 'bigSpell',
     features: [{

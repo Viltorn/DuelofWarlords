@@ -22,7 +22,6 @@ export default {
     currentC: 2,
     featInfo: ['LASTCAST'],
     description: 'Blizzard',
-    faction: 'Academia',
     school: 'Water',
     place: 'midSpell',
     features: [
@@ -45,7 +44,6 @@ export default {
     currentC: 2,
     featInfo: [],
     description: 'Frostbite',
-    faction: 'Academia',
     school: 'Water',
     place: 'warrior',
     features: [
@@ -69,7 +67,6 @@ export default {
     currentC: 2,
     featInfo: ['REACTION'],
     description: 'FrostTrap',
-    faction: 'Academia',
     school: 'Water',
     place: 'postponed',
     features: [{
@@ -90,7 +87,6 @@ export default {
     currentC: 3,
     featInfo: [],
     description: 'IceBlock',
-    faction: 'Academia',
     school: 'Water',
     place: 'warrior',
     features: [
@@ -114,7 +110,6 @@ export default {
     currentC: 3,
     featInfo: [],
     description: 'IceSpikes',
-    faction: 'Academia',
     school: 'Water',
     place: '',
     features: [{
@@ -132,7 +127,6 @@ export default {
     currentC: 1,
     featInfo: [],
     description: 'IceWall',
-    faction: 'Academia',
     school: 'Water',
     place: 'midSpell',
     features: [
@@ -154,7 +148,6 @@ export default {
     currentC: 4,
     featInfo: [],
     description: 'IceWeapon',
-    faction: 'Academia',
     school: 'Water',
     place: 'warrior',
     features: [{
@@ -176,7 +169,6 @@ export default {
     currentC: 2,
     featInfo: [],
     description: 'Icing',
-    faction: 'Academia',
     school: 'Water',
     place: 'midSpell',
     features: [
@@ -204,7 +196,6 @@ export default {
     currentC: 7,
     featInfo: [],
     description: 'Tsunami',
-    faction: 'Academia',
     school: 'Water',
     place: '',
     features: [{
@@ -222,7 +213,6 @@ export default {
     currentC: 2,
     featInfo: [],
     description: 'Waterfall',
-    faction: 'Academia',
     school: 'Water',
     place: 'bigSpell',
     features: [{
@@ -240,7 +230,6 @@ export default {
     currentC: 2,
     featInfo: ['STUN'],
     description: 'IceArrow',
-    faction: 'Academia',
     school: 'Water',
     place: '',
     features: [{
@@ -260,7 +249,6 @@ export default {
     currentC: 1,
     featInfo: [],
     description: 'IceArmor',
-    faction: 'Academia',
     school: 'Water',
     place: 'warrior',
     features: [{

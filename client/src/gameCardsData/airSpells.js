@@ -11,7 +11,7 @@ export default {
     currentC: 2,
     featInfo: [],
     description: 'Swiftness',
-    faction: 'Castle',
+    school: 'Air',
     id: _.uniqueId(),
     place: 'warrior',
     features: [{
@@ -32,7 +32,7 @@ export default {
     currentC: 4,
     featInfo: [],
     description: 'ThunderBlast',
-    faction: 'Castle',
+    school: 'Air',
     id: _.uniqueId(),
     place: '',
     features: [{
