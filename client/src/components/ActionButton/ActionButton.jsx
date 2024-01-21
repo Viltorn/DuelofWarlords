@@ -1,8 +1,7 @@
 import React, { useEffect, useContext, useRef } from 'react';
 import cn from 'classnames';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
-import { actions as modalsActions } from '../../slices/modalsSlice.js';
 import { maxCardsDeckCopy } from '../../gameData/gameLimits.js';
 import abilityContext from '../../contexts/abilityActions.js';
 import styles from './ActionButton.module.css';
@@ -11,7 +10,6 @@ const ActionButton = ({
   type, card, ability, ressurect,
 }) => {
   const { t } = useTranslation();
-  const dispatch = useDispatch();
   const element = useRef();
 
   const {
@@ -21,7 +19,7 @@ const ActionButton = ({
     makeGameAction,
   } = useContext(abilityContext);
   const {
-    id, cellId,
+    cellId,
   } = card;
 
   const cost = ressurect?.resCost ?? card.cost;
@@ -76,9 +74,6 @@ const ActionButton = ({
     };
 
     switch (btnType) {
-      case 'healthBar':
-        dispatch(modalsActions.openModal({ type: 'changeStats', id, cellId }));
-        break;
       case 'addToDeck':
         changeCardsInDeckBuilder(card, 1);
         break;

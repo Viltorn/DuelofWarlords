@@ -46,17 +46,6 @@ const ActiveCard = ({
   return (
     <div className={styles[cardClasses]}>
       <div className={styles.buttons}>
-        {/* {(status === 'field') && (type === 'warrior' || type === 'hero')
-        && gameMode === 'hotseat' && (
-          <>
-            <ActionButton card={activeCard} type="turnLeft" />
-            <ActionButton card={activeCard} type="turnRight" />
-          </>
-        )} */}
-        {/* {(status === 'field') && (type === 'warrior' || type === 'hero')
-        && gameMode === 'hotseat' && (
-          <ActionButton card={activeCard} type="healthBar" />
-        )} */}
         {canSwitchCard && gameMode !== 'build' && (
           <ActionButton card={activeCard} ability={insteadatk} type="switchcard" />
         )}

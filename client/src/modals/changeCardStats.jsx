@@ -71,7 +71,7 @@ const ChangeCardStats = () => {
               name="health"
             />
             {formik.errors.health ? (
-              <div className="invalid-feedback">{t(`errors.${formik.errors.phone}`)}</div>
+              <div className="invalid-feedback">{t(`errors.${formik.errors.health}`)}</div>
             ) : null}
             <label htmlFor="health" className="visually-hidden">{t('ChangeHP')}</label>
             <div className="modal-window__buttons">

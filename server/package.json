@@ -10,6 +10,9 @@
     "start-local": "npm run build-client && PORT=8080 nodemon server",
     "build-client": "cd ../client && npm run build && cd .."
   },
+  "engines": {
+    "node": ">=18.18.0 <19.0.0"
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",
