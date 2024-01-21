@@ -10,7 +10,7 @@ import HeroPad from '../HeroPad/HeroPad.jsx';
 import Card from '../Card/Card.jsx';
 import Header from '../BattleHeader/BattleHeader.jsx';
 import RotateScreen from '../RotateScreen/RotateScreen.jsx';
-import TutorialStepsWindow from '../../modals/Tutorial/TutorialStepsWindow.jsx';
+import TutorialStepsWindow from '../../modals/TutorialModals/TutorialStepsWindow.jsx';
 import ActiveCard from '../ActiveCard/ActiveCard.jsx';
 import ActiveCardInfo from '../ActiveCard/ActiveCardInfo.jsx';
 import InGameMenu from '../InGameMenu/InGameMenu.jsx';

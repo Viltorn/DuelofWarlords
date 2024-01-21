@@ -1,11 +1,11 @@
 import React, { useContext } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
-import { actions as modalActions } from '../slices/modalsSlice.js';
-import abilityContext from '../contexts/abilityActions.js';
-import PrimaryButton from '../components/PrimaryButton/PrimaryButton.jsx';
-import { startCardsNumber1, startCards2AfterDraw } from '../gameData/gameLimits.js';
-import './Modals.css';
+import { actions as modalActions } from '../../slices/modalsSlice.js';
+import abilityContext from '../../contexts/abilityActions.js';
+import PrimaryButton from '../../components/PrimaryButton/PrimaryButton.jsx';
+import { startCardsNumber1, startCards2AfterDraw } from '../../gameData/gameLimits.js';
+import '../Modals.css';
 
 const ChangeStartCards = () => {
   const { t } = useTranslation();

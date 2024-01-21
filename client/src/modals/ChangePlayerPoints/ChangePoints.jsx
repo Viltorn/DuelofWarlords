@@ -2,10 +2,10 @@ import React, { useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useSelector, useDispatch } from 'react-redux';
 import { useFormik } from 'formik';
-import { actions as modalActions } from '../slices/modalsSlice.js';
-import { actions as battleActions } from '../slices/battleSlice.js';
-import PrimaryButton from '../components/PrimaryButton/PrimaryButton.jsx';
-import './Modals.css';
+import { actions as modalActions } from '../../slices/modalsSlice.js';
+import { actions as battleActions } from '../../slices/battleSlice.js';
+import PrimaryButton from '../../components/PrimaryButton/PrimaryButton.jsx';
+import '../Modals.css';
 
 const ChangePoints = () => {
   const { t } = useTranslation();

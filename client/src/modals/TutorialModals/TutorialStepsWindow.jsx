@@ -11,7 +11,7 @@ import { spellsCells } from '../../gameData/heroes&spellsCellsData.js';
 import NalaDeck from '../../gameCardsData/standardDecks/NalaDeck.js';
 import ZigfridDeck from '../../gameCardsData/standardDecks/ZigfridDeck.js';
 import gameCardsData from '../../gameCardsData/index.js';
-import tutorialStepsData from '../../gameData/tutorialStepsData';
+import tutorialStepsData from '../../gameData/tutorialStepsData.js';
 import makeDeckForPLayer from '../../utils/makeDeckForPlayer.js';
 import abilityContext from '../../contexts/abilityActions.js';
 import functionContext from '../../contexts/functionsContext.js';
