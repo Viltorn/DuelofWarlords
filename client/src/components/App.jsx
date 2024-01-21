@@ -6,9 +6,9 @@ import {
   Route,
 } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import ErrorPage from './ErrorPage.jsx';
+import ErrorPage from './ErrorPage/ErrorPage.jsx';
 import MainPage from './MainPage/MainPage.jsx';
-import Battlefield from './Battlefield.jsx';
+import Battlefield from './BattleField/Battlefield.jsx';
 import ChooseGame from './ChooseGame/ChooseGame.jsx';
 import OnlineLobby from './OnlineLobby/OnlineLobby.jsx';
 import ChooseDeckWindow from './DeckBuilder/ChooseDeckWindow.jsx';

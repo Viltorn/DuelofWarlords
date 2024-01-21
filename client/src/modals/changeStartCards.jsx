@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { actions as modalActions } from '../slices/modalsSlice.js';
 import abilityContext from '../contexts/abilityActions.js';
-import PrimaryButton from '../components/PrimaryButton';
+import PrimaryButton from '../components/PrimaryButton/PrimaryButton.jsx';
 import { startCardsNumber1, startCards2AfterDraw } from '../gameData/gameLimits.js';
 import './Modals.css';
 
@@ -12,9 +12,8 @@ const ChangeStartCards = () => {
   const dispatch = useDispatch();
 
   const {
-    drawCards,
     actionPerforming,
-    makeOnlineAction,
+    makeGameAction,
   } = useContext(abilityContext);
 
   const { playersHands } = useSelector((state) => state.battleReducer);
@@ -39,11 +38,7 @@ const ChangeStartCards = () => {
       player,
       number: diffSize,
     };
-    if (gameMode === 'online') {
-      makeOnlineAction(data);
-    } else {
-      drawCards(data);
-    }
+    makeGameAction(data, gameMode);
   };
 
   return (

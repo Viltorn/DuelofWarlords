@@ -9,7 +9,7 @@ import { useFormik } from 'formik';
 import { actions as modalActions } from '../../slices/modalsSlice.js';
 import { actions as gameActions } from '../../slices/gameSlice';
 import { SignUpSchema, LogInSchema } from '../../utils/validation.js';
-import standartDecks from '../../gameCardsData/standartDecks.js';
+import standartDecks from '../../gameCardsData/standardDecks/standartDecks.js';
 import LogInForm from './LogInForm.jsx';
 import SignUpForm from './SignUpFrom.jsx';
 import setAuthToken from '../../utils/setAuthToken.js';

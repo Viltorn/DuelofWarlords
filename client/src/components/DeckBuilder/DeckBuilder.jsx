@@ -8,7 +8,7 @@ import { actions as battleActions } from '../../slices/battleSlice.js';
 import { actions as gameActions } from '../../slices/gameSlice';
 import { actions as deckbuilderActions } from '../../slices/deckbuilderSlice.js';
 import { deckNameValidation } from '../../utils/validation.js';
-import RotateScreen from '../RotateScreen.jsx';
+import RotateScreen from '../RotateScreen/RotateScreen.jsx';
 import countDeckCards from '../../utils/countDeckCards';
 import makeDeckForDB from '../../utils/makeDeckForDB.js';
 import Cards from '../../assets/DeckBuilder/CardsIcon.svg';
@@ -16,11 +16,11 @@ import Lightning from '../../assets/DeckBuilder/LightningIcon.svg';
 import Sword from '../../assets/DeckBuilder/SwordIcon.svg';
 import gameCardsData from '../../gameCardsData/index';
 import functionContext from '../../contexts/functionsContext.js';
-import ActiveCardInfo from '../ActiveCardInfo.jsx';
+import ActiveCardInfo from '../ActiveCard/ActiveCardInfo.jsx';
 import WarnWindow from './WarnWindow.jsx';
 import DeckCards from './DeckCards';
-import ActiveCard from '../ActiveCard';
-import PrimaryButton from '../PrimaryButton';
+import ActiveCard from '../ActiveCard/ActiveCard';
+import PrimaryButton from '../PrimaryButton/PrimaryButton.jsx';
 import AvailableCardsList from './AvailbleCardsList';
 import styles from './DeckBuilder.module.css';
 import socket from '../../socket.js';
@@ -65,42 +65,6 @@ const DeckBuilder = () => {
       dispatch(deckbuilderActions.selectCards({ selectedCards: cardsData }));
     }
   }, [chosenDeck, dispatch]);
-
-  const changeQuantity = (card, value) => {
-    const initialQty = card.qty ?? 0;
-    const newQty = initialQty + value;
-    const newCard = { ...card, qty: newQty };
-    const removeCard = newQty === 0 && card.type !== 'hero';
-    const removeHero = newQty === 0 && card.type === 'hero';
-    const addNewCard = card.qty === 0 && newQty === 1 && card.type !== 'hero';
-    const changeCardQty = newQty !== 0 && card.type !== 'hero';
-    const addHero = newQty !== 0 && card.type === 'hero';
-
-    if (removeCard) {
-      const newSelectedCards = selectedCards.filter((el) => el.description !== card.description);
-      dispatch(deckbuilderActions.selectCards({ selectedCards: newSelectedCards }));
-    } else if (removeHero) {
-      dispatch(deckbuilderActions.selectHero({ selectedHero: null }));
-      dispatch(deckbuilderActions.selectCards({ selectedCards: [] }));
-    } else if (addNewCard) {
-      dispatch(deckbuilderActions.selectCards({ selectedCards: [...selectedCards, newCard] }));
-    } else if (changeCardQty) {
-      const index = selectedCards.findIndex((el) => el.description === card.description);
-      const newSelectedCards = [...selectedCards];
-      newSelectedCards[index] = newCard;
-      dispatch(deckbuilderActions.selectCards({ selectedCards: newSelectedCards }));
-    } else if (addHero) {
-      dispatch(deckbuilderActions.selectHero({ selectedHero: newCard }));
-    }
-
-    if (removeCard || removeHero || addHero) {
-      dispatch(battleActions.deleteActiveCard({ player: 'player1' }));
-    }
-
-    if (addNewCard || changeCardQty) {
-      dispatch(battleActions.addActiveCard({ card: newCard, player: 'player1' }));
-    }
-  };
 
   const handleError = (err) => {
     setError(err.message);
@@ -227,7 +191,6 @@ const DeckBuilder = () => {
             <ActiveCard
               activeCard={activeCardPlayer1}
               selectedHero={selectedHero}
-              changeQuantity={changeQuantity}
               playerType="player1"
             />
             )}

@@ -1,7 +1,7 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import gameCardsData from '../../gameCardsData/index';
-import Card from '../Card';
+import Card from '../Card/Card';
 import heroesList from '../../gameCardsData/heroesList';
 import styles from './AvailableCardsList.module.css';
 

@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { actions as modalsActions } from '../../slices/modalsSlice.js';
 import { actions as gameActions } from '../../slices/gameSlice';
-import PrimaryButton from '../PrimaryButton.jsx';
+import PrimaryButton from '../PrimaryButton/PrimaryButton.jsx';
 import getModal from '../../modals/index.js';
 import GameRoom from './GameRoom';
 import Chat from '../LobbyChat/Chat.jsx';

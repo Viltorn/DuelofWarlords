@@ -4,14 +4,14 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useFormik } from 'formik';
 import { Link } from 'react-router-dom';
 import { actions as battleActions } from '../../slices/battleSlice.js';
-import PrimaryButton from '../../components/PrimaryButton.jsx';
+import PrimaryButton from '../../components/PrimaryButton/PrimaryButton.jsx';
 // import { factionsData, heroes, decks } from '../../gameCardsData/factionsData.js';
 import cardsData from '../../gameCardsData/index.js';
 import { startCardsNumber1, startCardsNumber2, minDeckCards } from '../../gameData/gameLimits.js';
 import { actions as modalsActions } from '../../slices/modalsSlice.js';
 import countDeckCards from '../../utils/countDeckCards.js';
 import styles from './HotSeatStartMenu.module.css';
-import MenuSlider from '../MenuSlider.jsx';
+import MenuSlider from '../MenuSlider/MenuSlider.jsx';
 import makeInitialDeck from '../../utils/makeInitialDeck.js';
 import makeShaffledDeck from '../../utils/makeShaffledDeck.js';
 import createDeckForPLayer from '../../utils/makeDeckForPlayer.js';
@@ -49,18 +49,6 @@ const HotSeatMenu = () => {
       setDeckNumber({ ...deckNumber, [player]: newNumber });
     }
   };
-
-  // const changeHero = (number, player) => {
-  //   const maxNumber = player === 'player1' ? player1Heroes.length - 1 : player2Heroes.length - 1;
-  //   const newNumber = heroNumber[player] + number;
-  //   if (newNumber < 0) {
-  //     setHero({ ...heroNumber, [player]: maxNumber });
-  //   } else if (newNumber > maxNumber) {
-  //     setHero({ ...heroNumber, [player]: 0 });
-  //   } else {
-  //     setHero({ ...heroNumber, [player]: newNumber });
-  //   }
-  // };
 
   const handleClose = () => {
     dispatch(modalsActions.closeModal());
@@ -150,6 +138,7 @@ const HotSeatMenu = () => {
                 </div>
               </div>
             </div>
+
             <footer className={styles.btnBlock}>
               <PrimaryButton
                 showIcon={false}
@@ -176,43 +165,7 @@ const HotSeatMenu = () => {
                 />
               </Link>
             </footer>
-            {/* <hr className={styles.hr} /> */}
-            {/* <div className={styles.playerSlides}>
-              <h3 className={styles.player}>
-                {t('Player2')}
-              </h3>
-              <div className={styles.slideBlock}>
-                <MenuSlider item={player2Faction} player="player2" changeSlide={changeFaction} />
-                <input
-                  className={styles.slideInput}
-                  id="player1Faction"
-                  type="text"
-                  ref={inputEl}
-                  onChange={formik.handleChange}
-                  onBlur={formik.handleBlur}
-                  value={player2Faction.id}
-                  data-testid="input-body"
-                  name="player1Faction"
-                />
-                <label htmlFor="player1Faction" className={styles.label}>{player2Faction.id}</label>
-              </div> */}
-            {/* <div className={styles.slideBlock}>
-                <MenuSlider item={player2Heroes[heroNumber.player2]} player="player2"
-                changeSlide={changeHero} />
-                <input
-                  className={styles.slideInput}
-                  id="player1Hero"
-                  type="text"
-                  ref={inputEl}
-                  onChange={formik.handleChange}
-                  onBlur={formik.handleBlur}
-                  value={player2Heroes[heroNumber.player2].name}
-                  data-testid="input-body"
-                  name="player1Hero"
-                />
-                <label htmlFor="player1Hero"
-                className={styles.label}>{player2Heroes[heroNumber.player2].name}</label>
-              </div> */}
+
           </fieldset>
         </form>
       </div>

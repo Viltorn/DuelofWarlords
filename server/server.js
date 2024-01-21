@@ -5,14 +5,18 @@ import { fileURLToPath } from 'url';
 import { Server } from "socket.io";
 import { v4 as uuidV4 } from 'uuid';
 import { createServer } from 'http';
+import isDeckExist from './utils/isDeckExist.js';
+import renewPlayerDecks from './utils/renewPlayerDecks.js';
+import isRoomEmpty from './utils/isRoomEmpty.js';
+import isRoomFull from './utils/isRoomFull.js';
+import getRooms from './utils/getRooms.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-const app = express(); // initialize express
+const app = express();
 const server = createServer(app);
 
-// set port to value received from environment variable or 8080 if null
 const port = process.env.PORT || 80
 
 app.use(express.static(path.join(__dirname, "../client/build")));
@@ -21,6 +25,7 @@ app.get("/", function(req, res) {
   res.sendFile(path.join(__dirname, "../client/build", "index.html"));
 });
 
+// redis client
 const redisClient = async () => {
   const client = createClient({
       url: process.env.REDIS_URL
@@ -51,40 +56,16 @@ const io = new Server(server, {
 const rooms = new Map();
 const messages = [];
 
-const isDeckExist = (deck, decks) => decks.find((item) => item.deckName === deck.deckName);
-
-const renewPlayersDecks = (deck, decks) => {
-  const newDecks = decks.map((item) => {
-    if (item.deckName === deck.deckName) {
-      return deck;
-    }
-    return item;
-  });
-  return newDecks;
-};
-
 // io.connection
+
 io.on('connection', async (socket) => {
-  // socket refers to the client socket that just got connected.
-  // each socket is assigned an id
-  const isRoomEmpty = (roomid) => {
-    const room = io.sockets.adapter.rooms.get(roomid);
-    return room ? room.size === 0 : true;
-  };
-
-  const isRoomFull = (roomId) => {
-    const room = io.sockets.adapter.rooms.get(roomId);
-    return room.size === 2;
-  }
-
-  const getRooms = () => Array.from(rooms.values());
 
   console.log(socket.id, 'connected');
 
-  const currentRooms = getRooms(); // <- 1
+  const currentRooms = getRooms(rooms);
 
-  currentRooms.forEach(async (room) => { // <- 2
-    const roomUser = room.players.find((player) => player.id === socket.id); // <- 3
+  currentRooms.forEach(async (room) => {
+    const roomUser = room.players.find((player) => player.id === socket.id);
 
     if (roomUser) {
       await socket.join(room.roomId);
@@ -95,16 +76,6 @@ io.on('connection', async (socket) => {
   const userCount = io.engine.clientsCount;
   io.emit('clientsCount', userCount);
   io.to(socket.id).emit('getSocketId', socket.id);
-
-  // socket.on('username', (args, callback) => {
-  //   console.log('username:', args.username);
-  //   socket.data.username = args.username;
-  //   console.log(getRooms());
-  //   const count = io.engine.clientsCount;
-  //   io.emit('clientsCount', count); 
-  //   io.to(socket.id).emit('getMessages', messages);
-  //   callback(socket.id, getRooms());
-  // });
 
   socket.on('saveDeck', async (data, callback) => {
     try {
@@ -123,7 +94,7 @@ io.on('connection', async (socket) => {
       const { decks } = res;
       console.log(decks);
       if (isDeckExist(deck, decks)) {
-        const newDecks = renewPlayersDecks(deck, decks);
+        const newDecks = renewPlayerDecks(deck, decks);
         const jsonData = JSON.stringify({ ...res, decks: newDecks });
         await redis.set(username, jsonData);
         callback({ decks: newDecks });
@@ -137,9 +108,9 @@ io.on('connection', async (socket) => {
         return;
       }
       callback({ error: true, message: 'MaximumDecks' });
-      } catch (e) {
-        return;
-      }
+    } catch (e) {
+      return;
+    }
   });
 
   socket.on('deleteDeck', async (data, callback) => {
@@ -197,11 +168,10 @@ io.on('connection', async (socket) => {
       }
 
       socket.data.username = username;
-      console.log(getRooms());
-      const count = io.engine.clientsCount;
-      io.emit('clientsCount', count); 
+      const userCount = io.engine.clientsCount;
+      io.emit('clientsCount', userCount); 
       io.to(socket.id).emit('getMessages', messages);
-      callback({ id: socket.id, rooms: getRooms(), decks });
+      callback({ id: socket.id, rooms: getRooms(rooms), decks });
     } catch (e) {
       return;
     }
@@ -226,11 +196,10 @@ io.on('connection', async (socket) => {
     await redis.set(username, jsonData);
   
     socket.data.username = username;
-    console.log(getRooms());
-    const count = io.engine.clientsCount;
-    io.emit('clientsCount', count); 
+    const userCount = io.engine.clientsCount;
+    io.emit('clientsCount', userCount); 
     io.to(socket.id).emit('getMessages', messages);
-    callback({ id: socket.id, rooms: getRooms(), decks });
+    callback({ id: socket.id, rooms: getRooms(rooms), decks });
   });
 
   socket.on('createRoom', async (args, callback) => { // callback here refers to the callback function from the client passed as data
@@ -246,7 +215,7 @@ io.on('connection', async (socket) => {
     });
 
     callback(roomId); // <- 4 respond with roomId to client by calling the callback function from the client
-    io.emit('rooms', getRooms());
+    io.emit('rooms', getRooms(rooms));
   });
 
   socket.on('joinRoom', async (args, callback) => {
@@ -272,10 +241,6 @@ io.on('connection', async (socket) => {
 
     if (error) {
       // if there's an error, check if the client passed a callback,
-      // call the callback (if it exists) with an error object and exit or 
-      // just exit if the callback is not given
-
-      // if user passed a callback, call it with an error payload
         callback({
           error,
           message
@@ -298,37 +263,35 @@ io.on('connection', async (socket) => {
     console.log(roomUpdate);
 
     rooms.set(room, roomUpdate);
-    // respond to the client with the room details.
-    // emit an 'opponentJoined' event to the room to tell the other player that an opponent has joined
     socket.to(room).emit('opponentJoined', roomUpdate);
-    io.emit('rooms', getRooms());
+    io.emit('rooms', getRooms(rooms));
     callback(roomUpdate);
   });
 
   socket.on('disconnect', () => {
-    const gameRooms = getRooms(); // <- 1
+    const gameRooms = getRooms(rooms);
 
-    gameRooms.forEach((room) => { // <- 2
-      const userInRoom = room.players.find((player) => player.id === socket.id); // <- 3
+    gameRooms.forEach((room) => {
+      const userInRoom = room.players.find((player) => player.id === socket.id);
 
       if (userInRoom) {
-        if (room.players.length < 2 || isRoomEmpty(room.roomId)) {
+        if (room.players.length < 2 || isRoomEmpty(room.roomId, io)) {
           // if there's only 1 player in the room, close it and exit.
           rooms.delete(room.roomId);
           return;
         }
         socket.leave(room.roomId);
-        socket.to(room.roomId).emit('playerDisconnected', userInRoom); // <- 4
+        socket.to(room.roomId).emit('playerDisconnected', userInRoom);
       }
     });
-    io.emit('rooms', getRooms());
-    const count = io.engine.clientsCount;
-    io.emit('clientsCount', count);
+    io.emit('rooms', getRooms(rooms));
+    const userCount = io.engine.clientsCount;
+    io.emit('clientsCount', userCount);
   });
 
   socket.on('makeMove', (data, callback) => {
-    const { room, move } = data;
-    if (isRoomFull(room)) {
+    const { room } = data;
+    if (isRoomFull(room, io)) {
       socket.to(room).emit('makeMove', data);
       callback({ error: false });
     } else {
@@ -341,18 +304,18 @@ io.on('connection', async (socket) => {
     if (rooms.get(roomId)) {
       console.log('closing room');
       socket.to(roomId).emit('closeRoom', data);
-      const clientSockets = await io.in(roomId).fetchSockets(); // <- 2 get all sockets in a room
+      const clientSockets = await io.in(roomId).fetchSockets();
 
       // loop over each socket client
       clientSockets.forEach((s) => {
-        s.leave(roomId); // <- 3 and make them leave the room on socket.io
+        s.leave(roomId);
       });
 
-      rooms.delete(roomId); // <- 4 delete room from rooms map
+      rooms.delete(roomId);
       
-      io.emit('rooms', getRooms());
+      io.emit('rooms', getRooms(rooms));
       if (callback) {
-        callback(getRooms());
+        callback(getRooms(rooms));
       }
     }
   });

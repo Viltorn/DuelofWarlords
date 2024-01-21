@@ -1,9 +1,9 @@
-import castleFaction from './castleFaction';
-import academiaFaction from './academiaFaction';
-import airSpells from './airSpells';
-import shadowSpells from './shadowSpells';
-import waterSpells from './waterSpells';
-import lightSpells from './lightSpells';
+import castleFaction from './factionsData/castleFaction';
+import academiaFaction from './factionsData/academiaFaction';
+import airSpells from './spellSchoolsData/airSpells';
+import shadowSpells from './spellSchoolsData/shadowSpells';
+import waterSpells from './spellSchoolsData/waterSpells';
+import lightSpells from './spellSchoolsData/lightSpells';
 
 export default {
   Castle: castleFaction,

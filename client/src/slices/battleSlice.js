@@ -29,6 +29,8 @@ const initialState = {
     ...postponed,
     ...graveyard,
   ],
+  activeCells: { cellsForAttack: [], cellsForSpellCast: [], cellsForWarMove: [] },
+  lastCellWithAction: {},
   activeCardPlayer1: null,
   activeCardPlayer2: null,
 };
@@ -38,6 +40,21 @@ const battleSlice = createSlice({
   initialState,
   reducers: {
     resetState: () => initialState,
+
+    setLastCellWithAction(state, { payload }) {
+      const { cellActionData } = payload;
+      state.lastCellWithAction = cellActionData;
+    },
+
+    setActiveCells(state, { payload }) {
+      const { cellsIds, type } = payload;
+      state.activeCells[type] = cellsIds;
+    },
+
+    addActiveCells(state, { payload }) {
+      const { cellsIds, type } = payload;
+      state.activeCells[type] = [...state.activeCells[type], ...cellsIds];
+    },
 
     setThisPlayer(state, { payload }) {
       const { player } = payload;

@@ -3,8 +3,9 @@ import { useTranslation } from 'react-i18next';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { actions as deckbuilderActions } from '../../slices/deckbuilderSlice.js';
+import { actions as battleActions } from '../../slices/battleSlice.js';
 import { actions as gameActions } from '../../slices/gameSlice';
-import PrimaryButton from '../PrimaryButton';
+import PrimaryButton from '../PrimaryButton/PrimaryButton.jsx';
 import styles from './WarnWindow.module.css';
 import socket from '../../socket';
 
@@ -34,6 +35,7 @@ const WarnWindow = ({
       if (type === 'changesMade') {
         dispatch(deckbuilderActions.setChosenDeck({ chosenDeck: null }));
         dispatch(deckbuilderActions.setWarnWindow({ windowType: null }));
+        dispatch(battleActions.deleteActiveCard({ player: 'player1' }));
         navigate('/choosedeck');
       }
     } catch (e) {

@@ -4,8 +4,8 @@ import { useDispatch } from 'react-redux';
 import { actions as modalActions } from '../../slices/modalsSlice.js';
 import { actions as battleActions } from '../../slices/battleSlice.js';
 import { heroes } from '../../gameCardsData/factionsData';
-import PrimaryButton from '../../components/PrimaryButton';
-import styles from './greetingWindow.module.css';
+import PrimaryButton from '../../components/PrimaryButton/PrimaryButton.jsx';
+import styles from './GreetingWindow.module.css';
 
 const GreetingWindow = () => {
   const { t } = useTranslation();

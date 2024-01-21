@@ -1,5 +1,5 @@
 import React from 'react';
-import Card from '../Card';
+import Card from '../Card/Card';
 import CardsCounter from '../../assets/DeckBuilder/CardsCounter.svg';
 import styles from './DeckCards.module.css';
 

@@ -4,9 +4,9 @@ import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { actions as battleActions } from '../../slices/battleSlice.js';
 import { actions as modalsActions } from '../../slices/modalsSlice.js';
-import PrimaryButton from '../../components/PrimaryButton';
+import PrimaryButton from '../../components/PrimaryButton/PrimaryButton.jsx';
 import functionContext from '../../contexts/functionsContext.js';
-import styles from './lastStepWindow.module.css';
+import styles from './LastStepWindow.module.css';
 
 const GreetingWindow = () => {
   const { t } = useTranslation();

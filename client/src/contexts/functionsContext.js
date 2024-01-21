@@ -3,10 +3,13 @@ import {
 } from 'react';
 import { useDispatch, useStore, useSelector } from 'react-redux';
 import { actions as battleActions } from '../slices/battleSlice.js';
-import isInvisible from '../utils/isInvisible.js';
-import warSubtypes from '../gameData/warriorsSubtypes.js';
 import { actions as gameActions } from '../slices/gameSlice';
-import findNextRows from '../utils/findNextRowCells.js';
+import isInvisible from '../utils/supportFunc/isInvisible.js';
+import warSubtypes from '../gameData/warriorsSubtypes.js';
+import findNextRows from '../utils/supportFunc/findNextRowCells.js';
+import getEnemyPlayer from '../utils/supportFunc/getEnemyPlayer.js';
+import findCellsForMassAttack from '../utils/supportFunc/findCellsForMassAttack.js';
+import findCellsInRowForAttack from '../utils/supportFunc/findCellsInRowForAttack.js';
 import socket from '../socket.js';
 
 const FunctionContext = createContext({});
@@ -15,11 +18,9 @@ export const FunctionProvider = ({ children }) => {
   const dispatch = useDispatch();
   const store = useStore();
   const {
-    thisPlayer, fieldCells, playerPoints, gameTurn,
+    thisPlayer, fieldCells, playerPoints, gameTurn, activeCells,
   } = useSelector((state) => state.battleReducer);
-  const [attackCells, setAttackCells] = useState([]);
-  const [castCells, setCastCells] = useState([]);
-  const [moveCells, setMoveCells] = useState([]);
+  const { cellsForAttack, cellsForWarMove, cellsForSpellCast } = activeCells;
   const [tutorStep, changeTutorStep] = useState(0);
   const [isOpenMenu, setOpenMenu] = useState(false);
   const [fontVal, setFontVal] = useState(0);
@@ -67,7 +68,6 @@ export const FunctionProvider = ({ children }) => {
         setFontVal(fontValue);
         document.documentElement.style.setProperty('font-size', fontSize);
       }, 300);
-      // setWindowWidth({ winHeight: window.innerHeight, winWidth: window.innerWidth });
     };
 
     handleWindowResize();
@@ -96,47 +96,31 @@ export const FunctionProvider = ({ children }) => {
     return false;
   };
 
-  const findCellByContentId = (id) => fieldCells
-    .find((cell) => cell.content.find((el) => el.id === id));
-
-  const changeToRedirect = (checkingCell, card) => {
-    const redirectSpell = checkingCell.attachments?.find((feat) => feat.name === 'redirect');
-    const cardType = card.type === 'spell' ? 'spell' : card.subtype;
-    if (redirectSpell && redirectSpell.aim.includes(cardType)) {
-      return findCellByContentId(redirectSpell.id);
-    }
-    return checkingCell;
+  const addCellsForAttack = (attackingCells) => {
+    attackingCells.forEach((cell) => dispatch(battleActions.addAnimation({ cell, type: 'red' })));
+    const cellsIds = attackingCells.map((cell) => cell.id);
+    dispatch(battleActions.addActiveCells({ cellsIds, type: 'cellsForAttack' }));
   };
 
-  const findEnemies = (card) => {
+  const showCellsForWarAttack = (card) => {
     const { cellId } = card;
     const cellArr = cellId.split('.');
     const row = cellArr[0];
     const line = cellArr[1];
     const attackingLines = line <= 2 ? ['3', '4'] : ['1', '2'];
     const alliedFrontLine = line <= 2 ? '1' : '3';
-    const attackingRowCells = fieldCells
-      .filter((cell) => cell.row === row && !isInvisible(cell)
-        && attackingLines.includes(cell.line) && cell.content.length !== 0 && !cell.disabled)
-      .map((cell) => changeToRedirect(cell, card));
+    const attackingRowCells = findCellsInRowForAttack(fieldCells, attackingLines, row, card);
     const hasMassAttack = card.features.find((feat) => feat.name === 'massAttack');
     const attackingCells = !hasMassAttack
-      ? attackingRowCells
-      : fieldCells
-        .filter((cell) => cell.type === 'field' && cell.content.length !== 0 && attackingLines.includes(cell.line))
-        .map((cell) => changeToRedirect(cell, card));
+      ? attackingRowCells : findCellsForMassAttack(fieldCells, attackingLines, card);
+    const attackingHeroCell = fieldCells.find((cell) => cell.type === 'hero' && cell.player !== thisPlayer);
 
-    const attackingHero = fieldCells.find((cell) => cell.type === 'hero' && cell.player !== thisPlayer);
     if (card.subtype === 'shooter' || card.subtype === 'flyer') {
       if (attackingCells.length !== 0) {
-        attackingCells.forEach((cell) => {
-          dispatch(battleActions.addAnimation({ cell, type: 'red' }));
-          setAttackCells((prev) => [...prev, cell.id]);
-        });
+        addCellsForAttack(attackingCells);
       }
-      if (attackingRowCells.length === 0 && !attackingHero.disabled) {
-        dispatch(battleActions.addAnimation({ cell: attackingHero, type: 'red' }));
-        setAttackCells((prev) => [...prev, attackingHero.id]);
+      if (attackingRowCells.length === 0 && !attackingHeroCell.disabled) {
+        addCellsForAttack([attackingHeroCell]);
       }
     }
     if (card.subtype === 'fighter') {
@@ -147,47 +131,32 @@ export const FunctionProvider = ({ children }) => {
       }
       if (attackingCells.length > 1 && !hasMassAttack) {
         const attackCell = attackingCells.find((cell) => attackingLines[0] === cell.line);
-        dispatch(battleActions.addAnimation({ cell: attackCell, type: 'red' }));
-        setAttackCells([attackCell.id]);
-      } else if (attackingCells.length === 1) {
-        dispatch(battleActions.addAnimation({ cell: attackingCells[0], type: 'red' }));
-        setAttackCells([attackingCells[0].id]);
-      } else if (hasMassAttack) {
-        attackingCells.forEach((cell) => dispatch(battleActions.addAnimation({ cell, type: 'red' })));
-        setAttackCells(attackingCells.map((cell) => cell.id));
+        addCellsForAttack([attackCell]);
+      } else if (attackingCells.length === 1 || hasMassAttack) {
+        addCellsForAttack(attackingCells);
       }
-      if (attackingRowCells.length === 0 && !attackingHero.disabled) {
-        dispatch(battleActions.addAnimation({ cell: attackingHero, type: 'red' }));
-        setAttackCells((prev) => [...prev, attackingHero.id]);
+      if (attackingRowCells.length === 0 && !attackingHeroCell.disabled) {
+        addCellsForAttack([attackingHeroCell]);
       }
     }
   };
 
-  const showNextRowCells = (cell) => {
-    const { topRowCell, bottomRowCell } = findNextRows(cell, fieldCells);
-    setMoveCells([topRowCell?.id, bottomRowCell?.id]);
-    dispatch(battleActions.addAnimation({ cell: topRowCell, type: 'green' }));
-    dispatch(battleActions.addAnimation({ cell: bottomRowCell, type: 'green' }));
+  const addCellsForWarMove = (cellsToMove) => {
+    cellsToMove.forEach((cell) => dispatch(battleActions.addAnimation({ cell, type: 'green' })));
+    const cellsIds = cellsToMove.map((cell) => cell.id);
+    dispatch(battleActions.addActiveCells({ cellsIds, type: 'cellsForWarMove' }));
   };
 
-  const findFieldCells = (card) => {
+  const showCellsForWarMove = (card) => {
     const isPlayerEmptyCell = (checkingCell) => checkingCell.type === 'field' && checkingCell.player === thisPlayer && checkingCell.content.length === 0;
     if (card.subtype === 'fighter') {
-      fieldCells.forEach((cell) => {
-        if (isPlayerEmptyCell(cell)
-        && (cell.line === '1' || cell.line === '3') && !cell.disabled) {
-          dispatch(battleActions.addAnimation({ cell, type: 'green' }));
-          setMoveCells((prev) => [...prev, cell.id]);
-        }
-      });
+      const cellsToMove = fieldCells.filter((cell) => isPlayerEmptyCell(cell)
+        && (cell.line === '1' || cell.line === '3') && !cell.disabled);
+      addCellsForWarMove(cellsToMove);
     }
     if (card.subtype === 'shooter') {
-      fieldCells.forEach((cell) => {
-        if (isPlayerEmptyCell(cell) && !cell.disabled) {
-          dispatch(battleActions.addAnimation({ cell, type: 'green' }));
-          setMoveCells((prev) => [...prev, cell.id]);
-        }
-      });
+      const cellsToMove = fieldCells.filter((cell) => isPlayerEmptyCell(cell) && !cell.disabled);
+      addCellsForWarMove(cellsToMove);
       // fieldCells.forEach((cell) => {
       //   if (isPlayerEmptyCell(cell)
       //    && (cell.line === '2' || cell.line === '4') && !cell.disabled) {
@@ -197,81 +166,61 @@ export const FunctionProvider = ({ children }) => {
       // });
     }
     if (card.subtype === 'flyer') {
-      fieldCells.forEach((cell) => {
-        if (isPlayerEmptyCell(cell) && !cell.disabled) {
-          dispatch(battleActions.addAnimation({ cell, type: 'green' }));
-          setMoveCells((prev) => [...prev, cell.id]);
-        }
-      });
+      const cellsToMove = fieldCells.filter((cell) => isPlayerEmptyCell(cell) && !cell.disabled);
+      addCellsForWarMove(cellsToMove);
     }
   };
 
-  const findCellsForCast = (spellcard) => {
+  const addCellsForSpellCast = (cellsToCast, featureType) => {
+    cellsToCast
+      .forEach((cell) => dispatch(battleActions.addAnimation({ cell, type: featureType })));
+    const cellsIds = cellsToCast.map((cell) => cell.id);
+    dispatch(battleActions.addActiveCells({ cellsIds, type: 'cellsForSpellCast' }));
+  };
+
+  const showCellsForCast = (spellcard) => {
     const isCellwithAlly = (checkingCell) => checkingCell.type === 'field' && checkingCell.content.length !== 0;
     const feature = spellcard.features[0];
+    const { type, attach, aim } = feature;
     const { place } = spellcard;
-    if (feature.type === 'good' && place === '') {
-      fieldCells.forEach((cell) => {
-        if (isCellwithAlly(cell) && cell.player === thisPlayer && !cell.disabled) {
-          dispatch(battleActions.addAnimation({ cell, type: 'green' }));
-          setCastCells((prev) => [...prev, cell.id]);
-        }
+    const aimPlayer = type === 'good' ? thisPlayer : getEnemyPlayer(thisPlayer);
+    const cellColor = type === 'good' ? 'green' : 'red';
+    if (type !== 'all' && place === '') {
+      const cellsForCast = fieldCells.filter((cell) => isCellwithAlly(cell)
+      && cell.player === aimPlayer && !cell.disabled);
+      addCellsForSpellCast(cellsForCast, cellColor);
+    } else if (type === 'all' && place === '') {
+      const cellsForCast = fieldCells.filter((cell) => {
+        const rightSubtype = cell.content.find((card) => aim.includes(card.subtype));
+        return isCellwithAlly(cell) && !cell.disabled && rightSubtype;
       });
-    } else if (feature.type === 'bad' && place === '') {
-      fieldCells.forEach((cell) => {
-        if (isCellwithAlly(cell) && cell.player !== thisPlayer && !cell.disabled) {
-          dispatch(battleActions.addAnimation({ cell, type: 'red' }));
-          setCastCells((prev) => [...prev, cell.id]);
-        }
-      });
-    } else if (feature.type === 'all' && place === '') {
-      fieldCells.forEach((cell) => {
-        const rightSubtype = cell.content.find((item) => feature.aim.includes(item.subtype));
-        if (isCellwithAlly(cell) && !cell.disabled && rightSubtype) {
-          dispatch(battleActions.addAnimation({ cell, type: 'red' }));
-          setCastCells((prev) => [...prev, cell.id]);
-        }
-      });
-    } else if (place === 'warrior') {
-      const { type, attach } = feature;
-      fieldCells.forEach((cell) => {
+      addCellsForSpellCast(cellsForCast, 'red');
+    } else if (place === 'warrior' && attach.includes('warrior') && type !== 'all') {
+      const cellsForCast = fieldCells.filter((cell) => {
         const isPlayerOccupiedCell = cell.content.length > 0 && cell.content.length < 3;
-        if (isPlayerOccupiedCell && type === 'good' && !cell.disabled && cell.player === thisPlayer) {
-          if (cell.type === 'field' && attach.includes('warrior')) {
-            dispatch(battleActions.addAnimation({ cell, type: 'green' }));
-            setCastCells((prev) => [...prev, cell.id]);
-          }
-          if (cell.type === 'hero' && attach.includes('hero') && !cell.disabled) {
-            dispatch(battleActions.addAnimation({ cell, type: 'green' }));
-            setCastCells((prev) => [...prev, cell.id]);
-          }
-        }
-        if (isPlayerOccupiedCell && type === 'bad' && cell.player !== thisPlayer) {
-          if (cell.type === 'field' && attach.includes('warrior') && !cell.disabled) {
-            dispatch(battleActions.addAnimation({ cell, type: 'red' }));
-            setCastCells((prev) => [...prev, cell.id]);
-          }
-          if (cell.type === 'hero' && attach.includes('hero') && !cell.disabled) {
-            dispatch(battleActions.addAnimation({ cell, type: 'red' }));
-            setCastCells((prev) => [...prev, cell.id]);
-          }
-        }
+        return isPlayerOccupiedCell && !cell.disabled && cell.player === aimPlayer && cell.type === 'field';
       });
+      addCellsForSpellCast(cellsForCast, cellColor);
+    } else if (place === 'warrior' && attach.includes('warrior') && type === 'all') {
+      const cellsForCast = fieldCells.filter((cell) => {
+        const isPlayerOccupiedCell = cell.content.length > 0 && cell.content.length < 3;
+        return isPlayerOccupiedCell && !cell.disabled && cell.type === 'field';
+      });
+      addCellsForSpellCast(cellsForCast, 'red');
+    } else if (place === 'warrior' && attach.includes('hero')) {
+      const cellsForCast = fieldCells.filter((cell) => !cell.disabled && cell.player === aimPlayer && cell.type === 'hero');
+      addCellsForSpellCast(cellsForCast, cellColor);
     } else if (place !== 'postponed') {
-      fieldCells.forEach((cell) => {
-        if (place === cell.type && (cell.content.length === 0 || place === 'bigSpell') && !cell.disabled) {
-          dispatch(battleActions.addAnimation({ cell, type: 'green' }));
-          setCastCells((prev) => [...prev, cell.id]);
-        }
-      });
+      const cellsForCast = fieldCells.filter((cell) => place === cell.type
+      && (cell.content.length === 0 || place === 'bigSpell') && !cell.disabled);
+      addCellsForSpellCast(cellsForCast, 'green');
     }
   };
 
-  const findDependValue = (spell, spellOwner) => {
+  const findDependValue = (spell, spellOwner, allFieldCells) => {
     const { depend, dependValue, value } = spell;
-    const curFieldCells = store.getState().battleReducer.fieldCells;
     if (depend === 'goodattachments') {
-      const goodAttach = curFieldCells.filter((cell) => cell.content.length !== 0 && cell.type !== 'graveyard')
+      const goodAttach = allFieldCells.filter((cell) => cell.content.length !== 0 && cell.type !== 'graveyard')
         .reduce((acc, cell) => {
           const goodContent = cell.content.filter((el) => el.type === 'spell' && el.player === spellOwner);
           acc = [...acc, ...goodContent];
@@ -280,16 +229,16 @@ export const FunctionProvider = ({ children }) => {
       return dependValue * goodAttach.length;
     }
     if (depend === 'warriorsdiff') {
-      const goodWarriors = curFieldCells.filter((cell) => cell.content.length !== 0
+      const goodWarriors = allFieldCells.filter((cell) => cell.content.length !== 0
         && cell.type === 'field' && cell.player === spellOwner).length;
       const enemyPlayer = spellOwner === 'player1' ? 'player2' : 'player1';
-      const badWarriors = curFieldCells.filter((cell) => cell.content.length !== 0
+      const badWarriors = allFieldCells.filter((cell) => cell.content.length !== 0
       && cell.type === 'field' && cell.player === enemyPlayer).length;
       const diff = badWarriors - goodWarriors > 0 ? badWarriors - goodWarriors : 0;
       return value + dependValue * diff;
     }
     if (depend === 'postponed') {
-      const cellWithFeatureType = curFieldCells
+      const cellWithFeatureType = allFieldCells
         .find((cell) => cell.content.find((item) => item.id === spell.id))?.type;
       if (cellWithFeatureType === 'postponed') {
         return dependValue;
@@ -298,29 +247,30 @@ export const FunctionProvider = ({ children }) => {
     return value;
   };
 
+  const getAddedWarPower = (curFieldCells, player, spells) => {
+    const totalPower = spells.reduce((acc, spell) => {
+      const spellPower = spell.depend
+        ? findDependValue(spell, player, curFieldCells) : spell.value;
+      acc += spellPower;
+      return acc;
+    }, 0);
+    return totalPower;
+  };
+
   const getWarriorPower = (card) => {
-    const { attachments, currentP } = card;
-    const newField = store.getState().battleReducer.fieldCells;
-    const cardCell = newField.find((cell) => cell.id === card.cellId);
+    const { attachments, currentP, player } = card;
+    const newFieldCells = store.getState().battleReducer.fieldCells;
+    const cardCell = newFieldCells.find((cell) => cell.id === card.cellId);
     const powerCellAttach = cardCell.attachments.filter((spell) => spell.name === 'power');
-    const powerCellValue = powerCellAttach.reduce((acc, spell) => {
-      const spellPower = spell.depend ? findDependValue(spell, card.player) : spell.value;
-      acc += spellPower;
-      return acc;
-    }, 0);
+    const powerCellValue = getAddedWarPower(newFieldCells, player, powerCellAttach);
     const powerCardAttach = attachments.filter((spell) => spell.name === 'power');
-    const attachPowerValue = powerCardAttach.reduce((acc, spell) => {
-      const spellPower = spell.depend ? findDependValue(spell, card.player) : spell.value;
-      acc += spellPower;
-      return acc;
-    }, 0);
+    const attachPowerValue = getAddedWarPower(newFieldCells, player, powerCardAttach);
     const totalPower = currentP + attachPowerValue + powerCellValue;
     return totalPower >= 0 ? totalPower : 0;
   };
 
-  const checkMeetCondition = (attacking, protecting, spell, type) => {
+  const checkMeetCondition = (attacking, protecting, spell, type, allFieldCells) => {
     const { condition, conditionValue } = spell;
-    const curFieldCells = store.getState().battleReducer.fieldCells;
     if (type === 'warrior' || warSubtypes.includes(type)) {
       if (condition && condition === 'minPower') {
         const attackingPower = getWarriorPower(attacking);
@@ -342,14 +292,14 @@ export const FunctionProvider = ({ children }) => {
         return currentHP - (attackingPower + attackingAddPower) <= 0;
       }
       if (condition && condition === 'nextRowCell') {
-        const protectCell = curFieldCells.find((cell) => cell.id === protecting.cellId);
+        const protectCell = allFieldCells.find((cell) => cell.id === protecting.cellId);
         const curRowNumber = parseInt(protectCell.row, 10);
         const currentline = protectCell.line;
         const topRowNumber = (curRowNumber - 1).toString();
         const bottomRowNumber = (curRowNumber + 1).toString();
-        const topRowCell = curFieldCells.find((cell) => cell.row === topRowNumber
+        const topRowCell = allFieldCells.find((cell) => cell.row === topRowNumber
             && cell.line === currentline && cell.content.length === 0);
-        const bottomRowCell = curFieldCells.find((cell) => cell.row === bottomRowNumber
+        const bottomRowCell = allFieldCells.find((cell) => cell.row === bottomRowNumber
             && cell.line === currentline && cell.content.length === 0);
         return (topRowCell || bottomRowCell) && protecting.turn !== 2;
       }
@@ -359,12 +309,19 @@ export const FunctionProvider = ({ children }) => {
 
   const findAttachmentType = (attachment, type) => attachment?.type === type || attachment?.type === 'all';
 
+  const showNextRowCells = (cell) => {
+    const { topRowCell, bottomRowCell } = findNextRows(cell, fieldCells);
+    dispatch(battleActions.addActiveCells({ cellsIds: [topRowCell?.id, bottomRowCell?.id], type: 'cellsForWarMove' }));
+    dispatch(battleActions.addAnimation({ cell: topRowCell, type: 'green' }));
+    dispatch(battleActions.addAnimation({ cell: bottomRowCell, type: 'green' }));
+  };
+
   const handleAnimation = (activeCard, option) => {
     if (option === 'delete') {
       dispatch(battleActions.deleteAnimation());
-      setMoveCells([]);
-      setAttackCells([]);
-      setCastCells([]);
+      dispatch(battleActions.setActiveCells({ cellsIds: [], type: 'cellsForWarMove' }));
+      dispatch(battleActions.setActiveCells({ cellsIds: [], type: 'cellsForSpellCast' }));
+      dispatch(battleActions.setActiveCells({ cellsIds: [], type: 'cellsForAttack' }));
       return;
     }
 
@@ -382,7 +339,7 @@ export const FunctionProvider = ({ children }) => {
       const cardImmobileAttachment = attachments.find((feature) => feature.name === 'immobile' && checkMeetCondition(activeCard, feature, 'warrior'));
       const cellImmobileAttachment = currentCell?.attachments?.find((feature) => feature.name === 'immobile' && feature.aim.includes(activeCard.subtype) && checkMeetCondition(activeCard, null, feature, 'warrior'));
       const movingAttachment = attachments.find((feature) => feature.name === 'moving' && checkMeetCondition(activeCard, null, feature, 'warrior'));
-      const moverowAttachment = attachments.find((feature) => feature.name === 'moverow' && checkMeetCondition(activeCard, null, feature, 'warrior'));
+      const moverowAttachment = attachments.find((feature) => feature.name === 'moveNextRow' && checkMeetCondition(activeCard, null, feature, 'warrior'));
       const canMove = !cardImmobileAttachment && !activeCard.features.find((feature) => feature.name === 'immobile')
         && turn === 0 && !cellImmobileAttachment;
       const cellUnarmedAttachment = currentCell?.attachments?.find((feature) => feature.name === 'unarmed' && feature.aim.includes(activeCard.subtype) && checkMeetCondition(activeCard, null, feature, 'warrior'));
@@ -390,7 +347,7 @@ export const FunctionProvider = ({ children }) => {
       const canAttack = !activeCard.features.find((feature) => feature.name === 'unarmed') && turn === 0
         && !cardUnarmedAttachment && !cellUnarmedAttachment;
       if ((status === 'hand' || isCardPostponed) && activeCard.player === thisPlayer) {
-        findFieldCells(activeCard);
+        showCellsForWarMove(activeCard);
       }
       if ((findAttachmentType(moverowAttachment, 'bad') && activeCard.player !== thisPlayer)
       || (findAttachmentType(moverowAttachment, 'good') && activeCard.player === thisPlayer)) {
@@ -398,23 +355,23 @@ export const FunctionProvider = ({ children }) => {
       }
       if ((findAttachmentType(movingAttachment, 'bad') && activeCard.player !== thisPlayer)
       || (findAttachmentType(movingAttachment, 'good') && activeCard.player === thisPlayer)) {
-        findFieldCells(activeCard);
+        showCellsForWarMove(activeCard);
       }
       if (status === 'field' && canMove && activeCard.player === thisPlayer) {
-        findFieldCells(activeCard);
+        showCellsForWarMove(activeCard);
       }
 
       if (canAttack && activeCard.player === thisPlayer) {
-        findEnemies(activeCard);
+        showCellsForWarAttack(activeCard);
       }
     }
 
     if (type === 'hero' && turn === 0 && activeCard.player === thisPlayer) {
-      findCellsForCast(activeCard);
+      showCellsForCast(activeCard);
     }
 
     if (type === 'spell' && (status === 'hand' || isCardPostponed) && activeCard.player === thisPlayer) {
-      findCellsForCast(activeCard);
+      showCellsForCast(activeCard);
     }
 
     const postponedCell = fieldCells.find((cell) => cell.type === 'postponed' && cell.player === thisPlayer);
@@ -452,21 +409,21 @@ export const FunctionProvider = ({ children }) => {
   };
 
   const canBeAttacked = (cellcard) => {
-    if (attackCells.includes(cellcard.cellId) && (cellcard.type === 'warrior' || cellcard.type === 'hero')) {
+    if (cellsForAttack.includes(cellcard.cellId) && (cellcard.type === 'warrior' || cellcard.type === 'hero')) {
       return true;
     }
     return false;
   };
 
   const canBeCast = (CellId) => {
-    if (castCells.includes(CellId)) {
+    if (cellsForSpellCast.includes(CellId)) {
       return true;
     }
     return false;
   };
 
   const canBeMoved = (CellId) => {
-    if (moveCells.includes(CellId)) {
+    if (cellsForWarMove.includes(CellId)) {
       return true;
     }
     return false;
@@ -515,9 +472,6 @@ export const FunctionProvider = ({ children }) => {
   return (
     <FunctionContext.Provider value={{
       checkMeetCondition,
-      findFieldCells,
-      setMoveCells,
-      setCastCells,
       getWarriorPower,
       isKilled,
       changeCardHP,

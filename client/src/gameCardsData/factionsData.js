@@ -1,11 +1,8 @@
 import _ from 'lodash';
 import CastleLogo from '../assets/MainPage/Castle_logo.png';
 import AcademiaLogo from '../assets/MainPage/Academia_logo.png';
-import academiaDeck from './academiaFaction.js';
-import castleDeck from './castleFaction.js';
 import ZigfridHero from '../assets/CastleDeck/ZigfridHero.png';
 import NalaHero from '../assets/AcademiaDeck/NalaHero.png';
-import makeInitialDeck from '../utils/makeInitialDeck';
 
 export const factionsData = [
   { id: 'Castle', img: CastleLogo, description: 'Castle' },
@@ -35,7 +32,7 @@ export const heroes = [
       attach: false, type: 'bad', aim: ['warrior'], name: 'moverow',
     },
     {
-      attach: false, type: 'all', aim: ['warrior'], name: 'drawcard', condition: 'insteadatk', cost: 1,
+      attach: false, type: 'all', aim: ['warrior'], name: 'drawCard', condition: 'insteadatk', cost: 1,
     },
     ],
     img: ZigfridHero,
@@ -69,8 +66,3 @@ export const heroes = [
     turn: 0,
   },
 ];
-
-export const decks = {
-  Castle: () => makeInitialDeck(castleDeck),
-  Academia: () => makeInitialDeck(academiaDeck),
-};
