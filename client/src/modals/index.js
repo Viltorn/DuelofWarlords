@@ -1,4 +1,3 @@
-import ChangeCardStats from './ChangeCardStats.jsx';
 import CheckGraveyard from './CheckGraveyard/CheckGraveyard.jsx';
 import ChangePoints from './ChangePoints.jsx';
 import HotSeatMenu from './HotSeatStartMenu/HotSeatStartMenu.jsx';
@@ -30,7 +29,6 @@ const modals = {
   tutorial: GreetingWindow,
   tutorialFinish: TutorialFinish,
   drawCards: ChangeStartCards,
-  changeStats: ChangeCardStats,
   openGraveyard: CheckGraveyard,
   openPointsCounter: ChangePoints,
   openHotSeatMenu: HotSeatMenu,
