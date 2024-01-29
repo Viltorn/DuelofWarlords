@@ -1,22 +1,22 @@
 import _ from 'lodash';
-import BannerMan from '../../assets/castleDeck/Bannerman.png';
-import Defender from '../../assets/castleDeck/Defender.png';
-import ImperialGriffon from '../../assets/castleDeck/ImperialGriffon.png';
-import ImperialShooter from '../../assets/castleDeck/ImperialShooter.png';
-import KnightGuardian from '../../assets/castleDeck/KnightGuardian.png';
-import MasterOfLight from '../../assets/castleDeck/MasterOfLight.png';
-import MasterShooter from '../../assets/castleDeck/MasterShooter.png';
-import TemplarChampion from '../../assets/castleDeck/TemplarChampion.png';
-import ValorKnight from '../../assets/castleDeck/ValorKnight.png';
-import WarriorOfLight from '../../assets/castleDeck/WarriorOfLight.png';
-import YoungPriestess from '../../assets/castleDeck/YoungPriestess.png';
-import RighteousFighter from '../../assets/castleDeck/RighteousFighter.png';
-import ZigfridHero from '../../assets/castleDeck/ZigfridHero.png';
+import BannerMan from '../../assets/castleCards/Bannerman.png';
+import Defender from '../../assets/castleCards/Defender.png';
+import ImperialGriffon from '../../assets/castleCards/ImperialGriffon.png';
+import ImperialShooter from '../../assets/castleCards/ImperialShooter.png';
+import KnightGuardian from '../../assets/castleCards/KnightGuardian.png';
+import MasterOfLight from '../../assets/castleCards/MasterOfLight.png';
+import MasterShooter from '../../assets/castleCards/MasterShooter.png';
+import TemplarChampion from '../../assets/castleCards/TemplarChampion.png';
+import ValorKnight from '../../assets/castleCards/ValorKnight.png';
+import WarriorOfLight from '../../assets/castleCards/WarriorOfLight.png';
+import YoungPriestess from '../../assets/castleCards/YoungPriestess.png';
+import RighteousFighter from '../../assets/castleCards/RighteousFighter.png';
+import ZigfridHero from '../../assets/castleCards/ZigfridHero.png';
 
 // SPELLS
-import RetaliationHammer from '../../assets/castleDeck/RetaliationHammer.png';
-import RighteousHammer from '../../assets/castleDeck/RighteousHammer.png';
-import YouthFountain from '../../assets/castleDeck/YouthFountain.png';
+import RetaliationHammer from '../../assets/castleCards/RetaliationHammer.png';
+import RighteousHammer from '../../assets/castleCards/RighteousHammer.png';
+import YouthFountain from '../../assets/castleCards/YouthFountain.png';
 
 const castleDeck = {
   ZigfridHero: {

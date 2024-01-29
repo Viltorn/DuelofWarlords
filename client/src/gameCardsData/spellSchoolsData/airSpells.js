@@ -1,6 +1,6 @@
 import _ from 'lodash';
-import Swift from '../../assets/castleDeck/Swift.png';
-import ThunderBlast from '../../assets/castleDeck/ThunderBlast.png';
+import Swift from '../../assets/castleCards/Swift.png';
+import ThunderBlast from '../../assets/castleCards/ThunderBlast.png';
 
 export default {
   Swiftness: {

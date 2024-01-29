@@ -15,7 +15,7 @@
   height: 100vh;
   background-size: cover;
   background-repeat: no-repeat;
-  background-image: url("@assets/mainPage/Cover_back.png");
+  background-image: url("@assets/mainPageIcons/Cover_back.png");
   background-position: center;
   display: flex;
   justify-content: center;

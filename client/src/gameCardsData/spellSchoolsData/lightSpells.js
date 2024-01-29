@@ -1,17 +1,17 @@
 import _ from 'lodash';
-import Сonciliation from '../../assets/castleDeck/Сonciliation.png';
-import Bless from '../../assets/castleDeck/Bless.png';
-import Enlightenment from '../../assets/castleDeck/Enlightenment.png';
-import HealingLight from '../../assets/castleDeck/HealingLight.png';
-import HeavenProtection from '../../assets/castleDeck/HeavenProtection.png';
-import HeavenShock from '../../assets/castleDeck/HeavenShock.png';
-import HolyLand from '../../assets/castleDeck/HolyLand.png';
-import AttackAura from '../../assets/castleDeck/AttackAura.png';
-import LastChance from '../../assets/castleDeck/LastChance.png';
-import LightShield from '../../assets/castleDeck/LightShield.png';
-import Resurrection from '../../assets/castleDeck/Resurrection.png';
-import Retribution from '../../assets/castleDeck/Retribution.png';
-import SaintWord from '../../assets/castleDeck/SaintWord.png';
+import Сonciliation from '../../assets/castleCards/Сonciliation.png';
+import Bless from '../../assets/castleCards/Bless.png';
+import Enlightenment from '../../assets/castleCards/Enlightenment.png';
+import HealingLight from '../../assets/castleCards/HealingLight.png';
+import HeavenProtection from '../../assets/castleCards/HeavenProtection.png';
+import HeavenShock from '../../assets/castleCards/HeavenShock.png';
+import HolyLand from '../../assets/castleCards/HolyLand.png';
+import AttackAura from '../../assets/castleCards/AttackAura.png';
+import LastChance from '../../assets/castleCards/LastChance.png';
+import LightShield from '../../assets/castleCards/LightShield.png';
+import Resurrection from '../../assets/castleCards/Resurrection.png';
+import Retribution from '../../assets/castleCards/Retribution.png';
+import SaintWord from '../../assets/castleCards/SaintWord.png';
 
 export default {
   Resurrection: {

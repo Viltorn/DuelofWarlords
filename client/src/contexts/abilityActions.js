@@ -404,39 +404,32 @@ export const AbilityProvider = ({ children }) => {
       }
     } else if (aim.includes('otherWarInRow')) {
       if (type === 'bad') {
-        const foundCell = currentFieldCells.find((cell) => cell.player === aimCell.player && cell.type === 'field'
+        const foundCell = currentFieldCells.find((cell) => cell.player !== aimCell.player && cell.type === 'field'
           && cell.row === aimCell.row && !isCellEmpty(currentFieldCards, cell.id) && cell.line !== aimCell.line);
-        if (foundCell) {
-          return [foundCell];
-        }
+        return foundCell ?? [];
       }
     } else if (aim.includes('closestEnemyInRow')) {
       const foundCell = findClosestWarrior(currentFieldCells, currentFieldCards, aimCell);
-      if (foundCell) {
-        return [foundCell];
-      }
+      return foundCell ?? [];
     } else if (aim.includes('otherAllyInRow')) {
       const foundCell = currentFieldCells.find((cell) => cell.player === aimCell.player && cell.type === 'field'
         && cell.row === aimCell.row && !isCellEmpty(currentFieldCards, cell.id) && cell.id !== aimCell.id);
-      if (foundCell) {
-        return [foundCell];
-      }
+      return foundCell ?? [];
     } else if (aim.includes('nextWarsInLine')) {
       return findNextCellsInLine(currentFieldCells, currentFieldCards, aimCell);
     } else if (aim.includes('adjacent')) {
       if (type === 'all') {
-        return findAdjasentCells(currentFieldCells, currentFieldCards, aimCell);
+        return findAdjasentCells(currentFieldCells, aimCell)
+          .filter((cell) => !isCellEmpty(currentFieldCards, cell.id));
       }
       if (type === 'good') {
-        return findAdjasentCells(currentFieldCells, currentFieldCards, aimCell)
-          .filter((cell) => cell.player === player);
+        return findAdjasentCells(currentFieldCells, aimCell)
+          .filter((cell) => !isCellEmpty(currentFieldCards, cell.id) && cell.player === player);
       }
     } else if (aim.includes('oneAdjacent')) {
-      const adjasentCells = findAdjasentCells(currentFieldCells, currentFieldCards, aimCell);
-      if (adjasentCells.length !== 0) {
-        const chosenCell = adjasentCells[0];
-        return [chosenCell];
-      }
+      const adjasentCells = findAdjasentCells(currentFieldCells, aimCell)
+        .filter((cell) => !isCellEmpty(currentFieldCards, cell.id));
+      return adjasentCells.length !== 0 ? adjasentCells[0] : [];
     }
     return null;
   };
@@ -526,7 +519,7 @@ export const AbilityProvider = ({ children }) => {
 
   const findCellsToAttachCast = (data) => {
     const {
-      currentFieldCells, currentFieldCards, feature, castingPlayer, enemyPlayer, aimCell,
+      currentFieldCells, feature, castingPlayer, enemyPlayer, aimCell,
     } = data;
     const { type, attach } = feature;
     if (attach.includes('spells')) {
@@ -555,11 +548,11 @@ export const AbilityProvider = ({ children }) => {
       }
     } else if (attach.includes('adjacent')) {
       if (type === 'good') {
-        const adjacentCells = findAdjasentCells(currentFieldCells, currentFieldCards, aimCell);
+        const adjacentCells = findAdjasentCells(currentFieldCells, aimCell);
         return adjacentCells.filter((cell) => cell.player === castingPlayer);
       }
     } else if (attach.includes('nextcells')) {
-      const adjacentCells = findAdjasentCells(currentFieldCells, currentFieldCards, aimCell);
+      const adjacentCells = findAdjasentCells(currentFieldCells, aimCell);
       return adjacentCells.filter((cell) => cell.line === aimCell.line);
     } else if (attach.includes('grave')) {
       if (type === 'good') {

@@ -1,16 +1,16 @@
 import _ from 'lodash';
-import Blizzard from '../../assets/academiaDeck/Blizzard.png';
-import Frostbite from '../../assets/academiaDeck/Frostbite.png';
-import FrostTrap from '../../assets/academiaDeck/FrostTrap.png';
-import IceBlock from '../../assets/academiaDeck/IceBlock.png';
-import IceSpikes from '../../assets/academiaDeck/IceSpikes.png';
-import IceWall from '../../assets/academiaDeck/IceWall.png';
-import IceWeapon from '../../assets/academiaDeck/IceWeapon.png';
-import Icing from '../../assets/academiaDeck/Icing.png';
-import Tsunami from '../../assets/academiaDeck/Tsunami.png';
-import Waterfall from '../../assets/academiaDeck/Waterfall.png';
-import IceArrow from '../../assets/academiaDeck/IceArrow.png';
-import IceArmor from '../../assets/academiaDeck/IceArmor.png';
+import Blizzard from '../../assets/academiaCards/Blizzard.png';
+import Frostbite from '../../assets/academiaCards/Frostbite.png';
+import FrostTrap from '../../assets/academiaCards/FrostTrap.png';
+import IceBlock from '../../assets/academiaCards/IceBlock.png';
+import IceSpikes from '../../assets/academiaCards/IceSpikes.png';
+import IceWall from '../../assets/academiaCards/IceWall.png';
+import IceWeapon from '../../assets/academiaCards/IceWeapon.png';
+import Icing from '../../assets/academiaCards/Icing.png';
+import Tsunami from '../../assets/academiaCards/Tsunami.png';
+import Waterfall from '../../assets/academiaCards/Waterfall.png';
+import IceArrow from '../../assets/academiaCards/IceArrow.png';
+import IceArmor from '../../assets/academiaCards/IceArmor.png';
 
 export default {
   Blizzard: {

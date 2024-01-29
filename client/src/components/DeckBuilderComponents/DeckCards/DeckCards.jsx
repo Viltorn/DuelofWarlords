@@ -1,6 +1,6 @@
 import React from 'react';
 import Card from '@components/CardComponents/Card/Card';
-import CardsCounter from '@assets/deckBuilder/CardsCounter.svg';
+import CardsCounter from '@assets/deckBuilderIcons/CardsCounter.svg';
 import styles from './DeckCards.module.css';
 
 const DeckCards = ({ hero, cards, activeCard }) => (

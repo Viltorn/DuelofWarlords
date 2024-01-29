@@ -7,7 +7,7 @@ import { actions as gameActions } from '@slices/gameSlice';
 import PrimaryButton from '@components/Buttons/PrimaryButton/PrimaryButton.jsx';
 import GameRoom from '@components/LobbyComponents/GameRoom/GameRoom';
 import Chat from '@components/LobbyComponents/LobbyChat/Chat.jsx';
-import DiscordLogo from '@assets/mainPage/discord.svg';
+import DiscordLogo from '@assets/mainPageIcons/discord.svg';
 import ChatLogo from '@assets/ChatRoom.png';
 import functionContext from '../../contexts/functionsContext.js';
 import getModal from '../../modals/index.js';

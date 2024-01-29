@@ -1,8 +1,8 @@
 import _ from 'lodash';
-import CastleLogo from '@assets/mainPage/Castle_logo.png';
-import AcademiaLogo from '@assets/mainPage/Academia_logo.png';
-import ZigfridHero from '@assets/castleDeck/ZigfridHero.png';
-import NalaHero from '@assets/academiaDeck/NalaHero.png';
+import CastleLogo from '@assets/mainPageIcons/Castle_logo.png';
+import AcademiaLogo from '@assets/mainPageIcons/Academia_logo.png';
+import ZigfridHero from '@assets/castleCards/ZigfridHero.png';
+import NalaHero from '@assets/academiaCards/NalaHero.png';
 
 export const factionsData = [
   { id: 'Castle', img: CastleLogo, description: 'Castle' },
