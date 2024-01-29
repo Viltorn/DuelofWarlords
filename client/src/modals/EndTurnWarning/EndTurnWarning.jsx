@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import { actions as modalsActions } from '../../slices/modalsSlice.js';
 import abilityContext from '../../contexts/abilityActions.js';
-import PrimaryButton from '../../components/PrimaryButton/PrimaryButton.jsx';
+import PrimaryButton from '../../components/Buttons/PrimaryButton/PrimaryButton.jsx';
 import styles from './EndTurnWarning.module.css';
 
 const EndTurnWarning = () => {

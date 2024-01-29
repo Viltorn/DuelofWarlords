@@ -2,7 +2,7 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch } from 'react-redux';
 import { actions as modalsActions } from '../../slices/modalsSlice.js';
-import PrimaryButton from '../../components/PrimaryButton/PrimaryButton.jsx';
+import PrimaryButton from '../../components/Buttons/PrimaryButton/PrimaryButton.jsx';
 import styles from './ConnectProblem.module.css';
 
 const ConnectProblem = () => {

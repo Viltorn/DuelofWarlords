@@ -1,11 +1,11 @@
 import _ from 'lodash';
-import ArcaneArmor from '../../assets/AcademiaDeck/ArcaneArmor.png';
-import CursedShackle from '../../assets/AcademiaDeck/CursedShackle.png';
-import InvisibilityCloak from '../../assets/AcademiaDeck/InvisibilityCloak.png';
-import SoulDrain from '../../assets/AcademiaDeck/SoulDrain.png';
-import Teleport from '../../assets/AcademiaDeck/Teleport.png';
-import TownPortal from '../../assets/AcademiaDeck/TownPortal.png';
-import Transformation from '../../assets/AcademiaDeck/Transformation.png';
+import ArcaneArmor from '../../assets/academiaDeck/ArcaneArmor.png';
+import CursedShackle from '../../assets/academiaDeck/CursedShackle.png';
+import InvisibilityCloak from '../../assets/academiaDeck/InvisibilityCloak.png';
+import SoulDrain from '../../assets/academiaDeck/SoulDrain.png';
+import Teleport from '../../assets/academiaDeck/Teleport.png';
+import TownPortal from '../../assets/academiaDeck/TownPortal.png';
+import Transformation from '../../assets/academiaDeck/Transformation.png';
 
 export default {
   ArcaneArmor: {

@@ -11,7 +11,7 @@ import { actions as gameActions } from '../../slices/gameSlice.js';
 import countDeckCards from '../../utils/countDeckCards.js';
 import cardsData from '../../gameCardsData/index.js';
 import makeInitialDeck from '../../utils/makeInitialDeck.js';
-import PrimaryButton from '../../components/PrimaryButton/PrimaryButton.jsx';
+import PrimaryButton from '../../components/Buttons/PrimaryButton/PrimaryButton.jsx';
 import socket from '../../socket.js';
 import styles from './OnlineGameStart.module.css';
 import MenuSlider from '../MenuSlider/MenuSlider.jsx';

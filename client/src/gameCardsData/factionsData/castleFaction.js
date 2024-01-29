@@ -1,22 +1,22 @@
 import _ from 'lodash';
-import BannerMan from '../../assets/CastleDeck/Bannerman.png';
-import Defender from '../../assets/CastleDeck/Defender.png';
-import ImperialGriffon from '../../assets/CastleDeck/ImperialGriffon.png';
-import ImperialShooter from '../../assets/CastleDeck/ImperialShooter.png';
-import KnightGuardian from '../../assets/CastleDeck/KnightGuardian.png';
-import MasterOfLight from '../../assets/CastleDeck/MasterOfLight.png';
-import MasterShooter from '../../assets/CastleDeck/MasterShooter.png';
-import TemplarChampion from '../../assets/CastleDeck/TemplarChampion.png';
-import ValorKnight from '../../assets/CastleDeck/ValorKnight.png';
-import WarriorOfLight from '../../assets/CastleDeck/WarriorOfLight.png';
-import YoungPriestess from '../../assets/CastleDeck/YoungPriestess.png';
-import RighteousFighter from '../../assets/CastleDeck/RighteousFighter.png';
-import ZigfridHero from '../../assets/CastleDeck/ZigfridHero.png';
+import BannerMan from '../../assets/castleDeck/Bannerman.png';
+import Defender from '../../assets/castleDeck/Defender.png';
+import ImperialGriffon from '../../assets/castleDeck/ImperialGriffon.png';
+import ImperialShooter from '../../assets/castleDeck/ImperialShooter.png';
+import KnightGuardian from '../../assets/castleDeck/KnightGuardian.png';
+import MasterOfLight from '../../assets/castleDeck/MasterOfLight.png';
+import MasterShooter from '../../assets/castleDeck/MasterShooter.png';
+import TemplarChampion from '../../assets/castleDeck/TemplarChampion.png';
+import ValorKnight from '../../assets/castleDeck/ValorKnight.png';
+import WarriorOfLight from '../../assets/castleDeck/WarriorOfLight.png';
+import YoungPriestess from '../../assets/castleDeck/YoungPriestess.png';
+import RighteousFighter from '../../assets/castleDeck/RighteousFighter.png';
+import ZigfridHero from '../../assets/castleDeck/ZigfridHero.png';
 
 // SPELLS
-import RetaliationHammer from '../../assets/CastleDeck/RetaliationHammer.png';
-import RighteousHammer from '../../assets/CastleDeck/RighteousHammer.png';
-import YouthFountain from '../../assets/CastleDeck/YouthFountain.png';
+import RetaliationHammer from '../../assets/castleDeck/RetaliationHammer.png';
+import RighteousHammer from '../../assets/castleDeck/RighteousHammer.png';
+import YouthFountain from '../../assets/castleDeck/YouthFountain.png';
 
 const castleDeck = {
   ZigfridHero: {
@@ -69,7 +69,7 @@ const castleDeck = {
     faction: 'Castle',
     id: _.uniqueId(),
     features: [{
-      name: 'heal', condition: 'onturnstart', aim: ['oneAdjacent', 'warrior'], value: 1, aimStatus: 'field', type: 'good',
+      name: 'heal', condition: 'onTurnStart', aim: ['oneAdjacent', 'warrior'], value: 1, aimStatus: 'field', type: 'good',
     }],
     attachments: [],
     img: YoungPriestess,
@@ -317,7 +317,7 @@ const castleDeck = {
     id: _.uniqueId(),
     place: '',
     features: [{
-      attach: false, aim: ['warrior', 'flyer', 'shooter', 'fighter'], type: 'bad', name: 'attack', value: 3, depend: 'warriorsdiff', dependValue: 1, aimStatus: 'field',
+      attach: false, aim: ['warrior', 'flyer', 'shooter', 'fighter'], type: 'bad', name: 'attack', value: 3, depend: 'warriorsDiff', dependValue: 1, aimStatus: 'field',
     }],
     img: RighteousHammer,
     status: 'hand',

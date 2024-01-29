@@ -1,11 +1,13 @@
-const findNextRowToApply = (aimCell, currentFieldCells, player) => {
+import isCellEmpty from './isCellEmpty';
+
+const findNextRowToApply = (aimCell, fieldCells, fieldCards, player) => {
   const currentRowNumber = parseInt(aimCell.row, 10);
   const topRowNumber = (currentRowNumber - 1).toString();
   const bottomRowNumber = (currentRowNumber + 1).toString();
-  const topRowCells = currentFieldCells.filter((cell) => cell.row === topRowNumber
-    && cell.content.length !== 0 && cell.player !== player && cell.type === 'field');
-  const bottomRowCells = currentFieldCells.filter((cell) => cell.row === bottomRowNumber
-    && cell.content.length !== 0 && cell.player !== player && cell.type === 'field');
+  const topRowCells = fieldCells.filter((cell) => cell.row === topRowNumber
+    && !isCellEmpty(fieldCards, cell.id) && cell.player !== player && cell.type === 'field');
+  const bottomRowCells = fieldCells.filter((cell) => cell.row === bottomRowNumber
+    && !isCellEmpty(fieldCards, cell.id) && cell.player !== player && cell.type === 'field');
   return topRowCells.length !== 0 ? topRowCells : bottomRowCells;
 };
 

@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useFormik } from 'formik';
 import { Link } from 'react-router-dom';
 import { actions as battleActions } from '../../slices/battleSlice.js';
-import PrimaryButton from '../../components/PrimaryButton/PrimaryButton.jsx';
+import PrimaryButton from '../../components/Buttons/PrimaryButton/PrimaryButton.jsx';
 // import { factionsData, heroes, decks } from '../../gameCardsData/factionsData.js';
 import cardsData from '../../gameCardsData/index.js';
 import { startCardsNumber1, startCardsNumber2, minDeckCards } from '../../gameData/gameLimits.js';

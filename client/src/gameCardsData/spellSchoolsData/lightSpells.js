@@ -1,17 +1,17 @@
 import _ from 'lodash';
-import Сonciliation from '../../assets/CastleDeck/Сonciliation.png';
-import Bless from '../../assets/CastleDeck/Bless.png';
-import Enlightenment from '../../assets/CastleDeck/Enlightenment.png';
-import HealingLight from '../../assets/CastleDeck/HealingLight.png';
-import HeavenProtection from '../../assets/CastleDeck/HeavenProtection.png';
-import HeavenShock from '../../assets/CastleDeck/HeavenShock.png';
-import HolyLand from '../../assets/CastleDeck/HolyLand.png';
-import AttackAura from '../../assets/CastleDeck/AttackAura.png';
-import LastChance from '../../assets/CastleDeck/LastChance.png';
-import LightShield from '../../assets/CastleDeck/LightShield.png';
-import Resurrection from '../../assets/CastleDeck/Resurrection.png';
-import Retribution from '../../assets/CastleDeck/Retribution.png';
-import SaintWord from '../../assets/CastleDeck/SaintWord.png';
+import Сonciliation from '../../assets/castleDeck/Сonciliation.png';
+import Bless from '../../assets/castleDeck/Bless.png';
+import Enlightenment from '../../assets/castleDeck/Enlightenment.png';
+import HealingLight from '../../assets/castleDeck/HealingLight.png';
+import HeavenProtection from '../../assets/castleDeck/HeavenProtection.png';
+import HeavenShock from '../../assets/castleDeck/HeavenShock.png';
+import HolyLand from '../../assets/castleDeck/HolyLand.png';
+import AttackAura from '../../assets/castleDeck/AttackAura.png';
+import LastChance from '../../assets/castleDeck/LastChance.png';
+import LightShield from '../../assets/castleDeck/LightShield.png';
+import Resurrection from '../../assets/castleDeck/Resurrection.png';
+import Retribution from '../../assets/castleDeck/Retribution.png';
+import SaintWord from '../../assets/castleDeck/SaintWord.png';
 
 export default {
   Resurrection: {
@@ -74,7 +74,7 @@ export default {
       type: 'good',
       name: 'power',
       value: 1,
-      depend: 'goodattachments',
+      depend: 'goodAttachments',
       dependValue: 1,
       charges: 1,
       aimStatus: 'field',
@@ -202,7 +202,7 @@ export default {
       attach: false, aim: ['warrior', 'flyer', 'shooter', 'fighter'], type: 'bad', name: 'attack', value: 2, aimStatus: 'field',
     },
     {
-      attach: false, aim: ['hero'], type: 'good', name: 'heroheal', value: 2, aimStatus: 'field',
+      attach: false, aim: ['hero'], type: 'good', name: 'heroHeal', value: 2, aimStatus: 'field',
     },
     ],
     img: HeavenShock,

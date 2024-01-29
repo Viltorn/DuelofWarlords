@@ -7,7 +7,7 @@ import { actions as modalActions } from '../../slices/modalsSlice.js';
 import { actions as gameActions } from '../../slices/gameSlice.js';
 import { userName } from '../../utils/validation.js';
 import socket from '../../socket.js';
-import PrimaryButton from '../../components/PrimaryButton/PrimaryButton.jsx';
+import PrimaryButton from '../../components/Buttons/PrimaryButton/PrimaryButton.jsx';
 import styles from './EnterUsername.module.css';
 
 const EnterUsername = () => {

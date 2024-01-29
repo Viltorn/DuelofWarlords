@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
-import PrimaryButton from '../../components/PrimaryButton/PrimaryButton';
+import PrimaryButton from '../../components/Buttons/PrimaryButton/PrimaryButton';
 import styles from './LoginSignUp.module.css';
 
 const LogInForm = ({ formik, error, changeType }) => {

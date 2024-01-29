@@ -2,8 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useSelector, useDispatch } from 'react-redux';
 import { actions as modalActions } from '../../slices/modalsSlice.js';
-import Card from '../../components/Card/Card.jsx';
-import PrimaryButton from '../../components/PrimaryButton/PrimaryButton.jsx';
+import Card from '../../components/CardComponents/Card/Card.jsx';
+import PrimaryButton from '../../components/Buttons/PrimaryButton/PrimaryButton.jsx';
 import styles from './CheckGraveyard.module.css';
 
 const Graveyard = () => {
@@ -11,9 +11,9 @@ const Graveyard = () => {
   const dispatch = useDispatch();
 
   const { player, data } = useSelector((state) => state.modalsReducer);
-  const { fieldCells, playersDecks } = useSelector((state) => state.battleReducer);
-  const currentGraveyard = fieldCells.find((cell) => cell.player === player && cell.type === 'graveyard');
-  const graveyardContent = currentGraveyard.content;
+  const { fieldCells, fieldCards, playersDecks } = useSelector((state) => state.battleReducer);
+  const graveyardCellId = fieldCells.find((cell) => cell.player === player && cell.type === 'graveyard').id;
+  const graveyardContent = fieldCards.filter((card) => card.cellId === graveyardCellId);
   const deckToShow = playersDecks[player];
 
   const [isShowAnimation, setShowAnimation] = useState(false);

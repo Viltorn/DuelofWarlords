@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 import {
   useContext, createContext, useState,
 } from 'react';
@@ -11,7 +12,6 @@ import { actions as battleActions } from '../slices/battleSlice.js';
 import { actions as deckbuilderActions } from '../slices/deckbuilderSlice.js';
 import getEnemyPlayer from '../utils/supportFunc/getEnemyPlayer';
 import findClosestWarrior from '../utils/supportFunc/findClosestWarrior';
-import findCardBySpellId from '../utils/supportFunc/findCardBySpellId';
 import findNextRowsCells from '../utils/supportFunc/findNextRowCells.js';
 import getProtectionVal from '../utils/supportFunc/getProtectionVal.js';
 import findTriggerSpells from '../utils/supportFunc/findTriggerSpells.js';
@@ -20,6 +20,7 @@ import findAdjasentCells from '../utils/supportFunc/findAdjasentCells.js';
 import findNextCellsInLine from '../utils/supportFunc/findNextCellsInLine';
 import findNextRowToApply from '../utils/supportFunc/findNextRowToApply';
 import socket from '../socket';
+import isCellEmpty from '../utils/supportFunc/isCellEmpty.js';
 
 // const getRandomIndex = (range) => Math.floor(Math.random() * range);
 
@@ -114,20 +115,20 @@ export const AbilityProvider = ({ children }) => {
 
   // FIND SPELL
 
-  const findSpell = (attacking, protecting, attackType, spellName, allFieldCells) => {
-    const protectingCell = allFieldCells.find((cell) => cell.id === protecting.cellId);
-    const cardAttachSpell = protecting.attachments.find((spell) => spell.name === spellName
+  const findSpell = (attackingCard, defendingCard, attackType, spellName, allFieldCells) => {
+    const protectingCell = allFieldCells.find((cell) => cell.id === defendingCard.cellId);
+    const cardAttachSpell = defendingCard.attachments.find((spell) => spell.name === spellName
       && spell.aim.includes(attackType));
-    const cardFeatureSpell = protecting.features.find((spell) => spell.name === spellName
+    const cardFeatureSpell = defendingCard.features.find((spell) => spell.name === spellName
     && spell.aim.includes(attackType));
     const cellAttachSpell = protectingCell.attachments.find((spell) => spell.name === spellName
       && spell.aim.includes(attackType));
     const canUseCellAttach = cellAttachSpell
-      && checkMeetCondition(attacking, protecting, cellAttachSpell, attackType, allFieldCells);
+      && checkMeetCondition(attackingCard, defendingCard, cellAttachSpell, attackType, allFieldCells);
     const canUseCardAttach = cardAttachSpell
-      && checkMeetCondition(attacking, protecting, cardAttachSpell, attackType, allFieldCells);
+      && checkMeetCondition(attackingCard, defendingCard, cardAttachSpell, attackType, allFieldCells);
     const canUseCardFeature = cardFeatureSpell
-      && checkMeetCondition(attacking, protecting, cardFeatureSpell, attackType, allFieldCells);
+      && checkMeetCondition(attackingCard, defendingCard, cardFeatureSpell, attackType, allFieldCells);
     if (canUseCardAttach) {
       return cardAttachSpell;
     }
@@ -156,9 +157,12 @@ export const AbilityProvider = ({ children }) => {
 
   // SEND CARD FROM THE FIELD
 
-  const sendCardFromField = (card, castFunc, destination, cardCost) => {
+  const sendCardFromField = (data) => {
+    const {
+      card, castFunc, destination, cardCost, cellsOnField,
+    } = data;
     const { type, status } = card;
-    const cardCell = fieldCells.find((cell) => cell.id === card.cellId);
+    const cardCell = cellsOnField.find((cell) => cell.id === card.cellId);
     const lastSpells = type === 'warrior' ? findTriggerSpells(card, cardCell, 'lastcall', 'warrior') : findTriggerSpells(card, cardCell, 'lastcall', 'spell');
     if (lastSpells && destination === 'grave' && status === 'field') {
       lastSpells.forEach((spell) => castFunc(spell, cardCell, card, card.player));
@@ -177,11 +181,16 @@ export const AbilityProvider = ({ children }) => {
 
   // MAKE CARD ATTACK
 
-  const deleteChargedSpellCard = (spell, allFieldCells, castFunc) => {
-    const spellCardOnField = findCardBySpellId(spell.id, allFieldCells);
-    console.log(spellCardOnField);
+  const deleteChargedSpellCard = (spell, allFieldCards, allFieldCells, castFunc) => {
+    const spellCardOnField = allFieldCards.find((card) => card.id === spell.id);
     if (spellCardOnField) {
-      sendCardFromField(spellCardOnField, castFunc, 'grave', null);
+      sendCardFromField({
+        card: spellCardOnField,
+        castFunc,
+        destination: 'grave',
+        cardCost: null,
+        cellsOnField: allFieldCells,
+      });
     } else {
       dispatch(battleActions.deleteAttachment({ spellId: spell.id }));
     }
@@ -191,19 +200,20 @@ export const AbilityProvider = ({ children }) => {
     const {
       feature,
       aimCard,
-      applyingCell,
       currentFieldCells,
+      currentFieldCards,
       castingPlayer,
       castFunc,
     } = data;
     const receivedHealth = aimCard.currentHP;
-    const spellPower = findDependValue(feature, castingPlayer, currentFieldCells);
-    const protection = findSpell(feature, aimCard, 'spell', 'protection', currentFieldCells);
-    const protectionVal = protection
-      ? getProtectionVal(spellPower, protection, receivedHealth) : 0;
+    const spellPower = findDependValue(feature, castingPlayer, currentFieldCells, currentFieldCards);
+    const protectSpell = findSpell(feature, aimCard, 'spell', 'protection', currentFieldCells);
+    const protectionVal = protectSpell
+      ? getProtectionVal(spellPower, protectSpell, receivedHealth) : 0;
     const calculatedPower = spellPower - protectionVal > 0 ? spellPower - protectionVal : 0;
+    const applyingCell = currentFieldCells.find((cell) => cell.id === aimCard.cellId);
 
-    dispatch(battleActions.addAnimation({ cell: applyingCell, type: 'attacked' }));
+    dispatch(battleActions.addAnimation({ cellId: applyingCell.id, type: 'attacked' }));
     if (isKilled(calculatedPower, receivedHealth)) {
       const cardCell = currentFieldCells.find((cell) => cell.id === aimCard.cellId);
       const lastSpells = findTriggerSpells(aimCard, cardCell, 'lastcall', 'warrior');
@@ -216,8 +226,8 @@ export const AbilityProvider = ({ children }) => {
     if (!isKilled(calculatedPower, receivedHealth)) {
       changeCardHP(calculatedPower, receivedHealth, aimCard);
     }
-    if (!isKilled(calculatedPower, receivedHealth) && protection && protection?.charges === 1) {
-      deleteChargedSpellCard(protection, currentFieldCells, castFunc);
+    if (!isKilled(calculatedPower, receivedHealth) && protectSpell && protectSpell?.charges === 1) {
+      deleteChargedSpellCard(protectSpell, currentFieldCards, currentFieldCells, castFunc);
     }
   };
 
@@ -225,31 +235,26 @@ export const AbilityProvider = ({ children }) => {
 
   const makeCardHeal = (data, type) => {
     const {
-      feature, castingPlayer, currentFieldCells, aimCard, applyingCell,
+      feature, castingPlayer, currentFieldCards, aimCard, currentFieldCells,
     } = data;
-    let appliedCell;
     let appliedCard;
     if (type === 'enemyHeroHeal') {
       const enemyPlayer = castingPlayer === 'player1' ? 'player2' : 'player1';
-      appliedCell = currentFieldCells.find((cell) => cell.type === 'hero' && cell.player === enemyPlayer);
-      appliedCard = appliedCell.content.find((el) => el.type === 'hero');
+      appliedCard = currentFieldCards.find((card) => card.type === 'hero' && card.player === enemyPlayer);
     }
     if (type === 'heroHeal') {
-      appliedCell = currentFieldCells.find((cell) => cell.type === 'hero' && cell.player === castingPlayer);
-      appliedCard = appliedCell.content.find((el) => el.type === 'hero');
+      appliedCard = currentFieldCards.find((card) => card.type === 'hero' && card.player === castingPlayer);
     }
     if (type === 'heal') {
-      appliedCell = applyingCell;
       appliedCard = aimCard;
     }
     const spellPower = findDependValue(feature, castingPlayer, currentFieldCells);
     const newHealth = (appliedCard.currentHP + spellPower) >= appliedCard.health
       ? appliedCard.health : appliedCard.currentHP + spellPower;
-    dispatch(battleActions.addAnimation({ cell: appliedCell, type: 'healed' }));
+    dispatch(battleActions.addAnimation({ cellId: appliedCard.cellId, type: 'healed' }));
     dispatch(battleActions.changeHP({
       health: newHealth,
       cardId: appliedCard.id,
-      cellId: appliedCard.cellId,
     }));
   };
 
@@ -259,28 +264,28 @@ export const AbilityProvider = ({ children }) => {
     },
     selfHeroAttack: (data) => {
       const {
-        currentFieldCells, castingPlayer, feature, aimCard,
+        currentFieldCards, castingPlayer, feature, aimCard,
       } = data;
       const { value } = feature;
-      const heroCell = currentFieldCells.find((cell) => cell.type === 'hero' && cell.player === castingPlayer);
-      const heroCard = heroCell.content.find((el) => el.type === 'hero');
+      const heroCard = currentFieldCards.find((card) => card.type === 'hero' && card.player === castingPlayer);
       const receivedHealth = heroCard.currentHP;
       if (value === 'power') {
         const attackingPower = getWarriorPower(aimCard);
-        dispatch(battleActions.addAnimation({ cell: heroCell, type: 'attacked' }));
+        dispatch(battleActions.addAnimation({ cellId: heroCard.cellId, type: 'attacked' }));
         changeCardHP(attackingPower, receivedHealth, heroCard);
       }
     },
     evade: (data) => {
-      const { currentFieldCells, aimCard, applyingCell } = data;
-      const { topRowCell, bottomRowCell } = findNextRowsCells(applyingCell, currentFieldCells);
+      const {
+        currentFieldCells, currentFieldCards, aimCard, applyingCell,
+      } = data;
+      const { topRowCell, bottomRowCell } = findNextRowsCells(applyingCell, currentFieldCells, currentFieldCards);
       const choosenCell = topRowCell ?? bottomRowCell;
       const turnQty = aimCard.turn === 0 ? 2 : 1;
       deleteCardfromSource(aimCard);
       dispatch(battleActions.addFieldContent({ card: aimCard, id: choosenCell.id }));
       dispatch(battleActions.turnCardLeft({
         cardId: aimCard.id,
-        cellId: choosenCell.id,
         qty: turnQty,
       }));
       moveAttachedSpells(aimCard.cellId, choosenCell.id, 'move');
@@ -296,7 +301,6 @@ export const AbilityProvider = ({ children }) => {
       const newTurn = turn === 0 ? 2 : 1;
       dispatch(battleActions.turnCardLeft({
         cardId: aimCard.id,
-        cellId: aimCard.cellId,
         qty: newTurn,
       }));
     },
@@ -328,7 +332,6 @@ export const AbilityProvider = ({ children }) => {
       dispatch(battleActions.changeHP({
         health: newHealth,
         cardId: aimCard.id,
-        cellId: aimCard.cellId,
       }));
     },
     invoke: (data) => {
@@ -363,150 +366,103 @@ export const AbilityProvider = ({ children }) => {
   };
 
   const applySpellOnWarsInCells = (cells, featAim, actionData) => {
-    cells.forEach((cell) => {
-      const warriorCard = cell.content.find((item) => item.type === 'warrior' && featAim.includes(item.subtype));
-      console.log(warriorCard);
-      if (warriorCard) {
-        applySpellEffect({ ...actionData, applyingCell: cell, aimCard: warriorCard });
-      }
-    });
+    const { currentFieldCards } = actionData;
+    const cellIds = cells.map((cell) => cell.id);
+    const cardsToApply = currentFieldCards.filter((card) => cellIds.includes(card.cellId)
+    && card.type === 'warrior' && featAim.includes(card.subtype));
+    cardsToApply.forEach((card) => applySpellEffect({ ...actionData, aimCard: card }));
   };
 
   // MAKE FEATURE CAST
 
-  const makeFeatureCast = (feature, aimCell, applyingCard, player) => {
-    const currentFieldCells = store.getState().battleReducer.fieldCells;
-    const newAimCell = currentFieldCells.find((cell) => cell.id === aimCell?.id);
-    const aimCard = applyingCard ?? newAimCell?.content?.find((item) => item.type === 'warrior' || item.type === 'hero');
+  const findCellsForSpellApply = (data) => {
     const {
-      type, aim, name,
-    } = feature;
+      feature, aimCell, player, currentFieldCells, currentFieldCards,
+    } = data;
+    const { type, aim } = feature;
     if (aim.includes('field')) {
       if (type === 'all') {
-        const cellsToApply = currentFieldCells.filter((cell) => cell.content.length !== 0 && cell.type === 'field');
-        applySpellOnWarsInCells(cellsToApply, aim, {
-          feature, currentFieldCells, castingPlayer: player, castFunc: makeFeatureCast,
-        });
+        return currentFieldCells.filter((cell) => cell.type === 'field');
       }
     } else if (aim.includes('line')) {
       const { line } = aimCell;
-      const cellsToApply = currentFieldCells.filter((cell) => cell.line === line && cell.content.length !== 0 && cell.type === 'field');
-      applySpellOnWarsInCells(cellsToApply, aim, {
-        feature, currentFieldCells, castingPlayer: player, castFunc: makeFeatureCast,
-      });
+      return currentFieldCells.filter((cell) => cell.line === line && !isCellEmpty(currentFieldCards, cell.id) && cell.type === 'field');
     } else if (aim.includes('row')) {
       if (type === 'all') {
         const { row } = aimCell;
-        const cellsToApply = currentFieldCells.filter((cell) => cell.row === row && cell.content.length !== 0 && cell.type === 'field');
-        applySpellOnWarsInCells(cellsToApply, aim, {
-          feature, currentFieldCells, castingPlayer: player, castFunc: makeFeatureCast,
-        });
+        return currentFieldCells.filter((cell) => cell.row === row && !isCellEmpty(currentFieldCards, cell.id) && cell.type === 'field');
       }
       if (type === 'bad') {
         const { row } = aimCell;
-        const cellsToApply = currentFieldCells
-          .filter((cell) => cell.row === row && cell.content.length !== 0
+        return currentFieldCells
+          .filter((cell) => cell.row === row && !isCellEmpty(currentFieldCards, cell.id)
             && cell.type === 'field' && cell.player !== player);
-        applySpellOnWarsInCells(cellsToApply, aim, {
-          feature, currentFieldCells, castingPlayer: player, castFunc: makeFeatureCast,
-        });
       }
     } else if (aim.includes('randomNextRow')) {
       if (type === 'bad') {
-        const cellsToApply = findNextRowToApply(aimCell, currentFieldCells, player);
-        applySpellOnWarsInCells(cellsToApply, aim, {
-          feature, currentFieldCells, castingPlayer: player, castFunc: makeFeatureCast,
-        });
+        return findNextRowToApply(aimCell, currentFieldCells, currentFieldCards, player);
       }
     } else if (aim.includes('otherWarInRow')) {
       if (type === 'bad') {
         const foundCell = currentFieldCells.find((cell) => cell.player === aimCell.player && cell.type === 'field'
-          && cell.row === aimCell.row && cell.content.length !== 0 && cell.line !== aimCell.line);
+          && cell.row === aimCell.row && !isCellEmpty(currentFieldCards, cell.id) && cell.line !== aimCell.line);
         if (foundCell) {
-          const warrior = foundCell.content.find((el) => el.type === 'warrior');
-          applySpellEffect({
-            feature,
-            aimCard: warrior,
-            currentFieldCells,
-            applyingCell: foundCell,
-            castingPlayer: player,
-            castFunc: makeFeatureCast,
-          });
+          return [foundCell];
         }
       }
     } else if (aim.includes('closestEnemyInRow')) {
-      const foundCell = findClosestWarrior(currentFieldCells, aimCell);
+      const foundCell = findClosestWarrior(currentFieldCells, currentFieldCards, aimCell);
       if (foundCell) {
-        const warrior = foundCell.content.find((el) => el.type === 'warrior');
-        applySpellEffect({
-          feature,
-          aimCard: warrior,
-          currentFieldCells,
-          applyingCell: foundCell,
-          castingPlayer: player,
-          castFunc: makeFeatureCast,
-        });
+        return [foundCell];
       }
     } else if (aim.includes('otherAllyInRow')) {
       const foundCell = currentFieldCells.find((cell) => cell.player === aimCell.player && cell.type === 'field'
-        && cell.row === aimCell.row && cell.content.length !== 0 && cell.id !== aimCell.id);
+        && cell.row === aimCell.row && !isCellEmpty(currentFieldCards, cell.id) && cell.id !== aimCell.id);
       if (foundCell) {
-        const warrior = foundCell.content.find((el) => el.type === 'warrior');
-        applySpellEffect({
-          feature,
-          aimCard: warrior,
-          currentFieldCells,
-          applyingCell: foundCell,
-          castingPlayer: player,
-          castFunc: makeFeatureCast,
-        });
+        return [foundCell];
       }
     } else if (aim.includes('nextWarsInLine')) {
-      const nextCellsWithWars = findNextCellsInLine(aimCell, currentFieldCells, player);
-      const cellsToApply = name === 'heal' ? nextCellsWithWars.filter((cell) => {
-        const warCard = cell.content.find((el) => el.type === 'warrior');
-        return warCard.health > warCard.currentHP;
-      }) : nextCellsWithWars;
-      applySpellOnWarsInCells(cellsToApply, aim, {
-        feature, currentFieldCells, castingPlayer: player, castFunc: makeFeatureCast,
-      });
+      return findNextCellsInLine(currentFieldCells, currentFieldCards, aimCell);
     } else if (aim.includes('adjacent')) {
       if (type === 'all') {
-        const cellsToApply = findAdjasentCells(aimCell, currentFieldCells);
-        applySpellOnWarsInCells(cellsToApply, aim, {
-          feature, currentFieldCells, castingPlayer: player, castFunc: makeFeatureCast,
-        });
+        return findAdjasentCells(currentFieldCells, currentFieldCards, aimCell);
       }
       if (type === 'good') {
-        const cellsToApply = findAdjasentCells(aimCell, currentFieldCells)
+        return findAdjasentCells(currentFieldCells, currentFieldCards, aimCell)
           .filter((cell) => cell.player === player);
-        applySpellOnWarsInCells(cellsToApply, aim, {
-          feature, currentFieldCells, castingPlayer: player, castFunc: makeFeatureCast,
-        });
       }
     } else if (aim.includes('oneAdjacent')) {
-      const adjasentCells = findAdjasentCells(aimCell, currentFieldCells);
-      const filteredCells = name === 'heal' ? adjasentCells.filter((cell) => {
-        const warCard = cell.content.find((el) => el.type === 'warrior');
-        return warCard.health > warCard.currentHP;
-      }) : adjasentCells;
-      if (filteredCells.length !== 0) {
-        const chosenCell = filteredCells[0];
-        const warriorCard = chosenCell.content.find((item) => item.type === 'warrior');
-        applySpellEffect({
-          feature,
-          aimCard: warriorCard,
-          currentFieldCells,
-          applyingCell: chosenCell,
-          castingPlayer: player,
-          castFunc: makeFeatureCast,
-        });
+      const adjasentCells = findAdjasentCells(currentFieldCells, currentFieldCards, aimCell);
+      if (adjasentCells.length !== 0) {
+        const chosenCell = adjasentCells[0];
+        return [chosenCell];
       }
+    }
+    return null;
+  };
+
+  const makeFeatureCast = (feature, aimCell, applyingCard, player) => {
+    const currentFieldCells = store.getState().battleReducer.fieldCells;
+    const currentFieldCards = store.getState().battleReducer.fieldCards;
+    const aimCard = applyingCard ?? currentFieldCards.find((card) => card.cellId === aimCell?.id
+    && (card.type === 'warrior' || card.type === 'hero'));
+    const cellsToApplyCast = findCellsForSpellApply({
+      feature, aimCell, applyingCard, player, currentFieldCells, currentFieldCards,
+    });
+    if (cellsToApplyCast) {
+      applySpellOnWarsInCells(cellsToApplyCast, feature.aim, {
+        feature,
+        currentFieldCells,
+        currentFieldCards,
+        castingPlayer: player,
+        castFunc: makeFeatureCast,
+      });
     } else {
       applySpellEffect({
         feature,
         aimCard,
         currentFieldCells,
+        currentFieldCards,
         applyingCell: aimCell,
         castingPlayer: player,
         castFunc: makeFeatureCast,
@@ -514,7 +470,7 @@ export const AbilityProvider = ({ children }) => {
     }
 
     if (feature.charges === 1) {
-      deleteChargedSpellCard(feature, currentFieldCells, makeFeatureCast);
+      deleteChargedSpellCard(feature, currentFieldCards, currentFieldCells, makeFeatureCast);
     }
   };
 
@@ -523,39 +479,40 @@ export const AbilityProvider = ({ children }) => {
   const attachSpellEffect = {
     moving: (data) => {
       const {
-        aimCell, aimCard, castingPlayer, feature,
+        aimCard, castingPlayer, feature,
       } = data;
-      dispatch(battleActions.addAttachment({ cellId: aimCell.id, feature }));
-      const newFieldCells = store.getState().battleReducer.fieldCells;
-      const currentCell = newFieldCells.find((cell) => cell.id === aimCard.cellId);
-      const movingCard = currentCell.content.find((item) => item.type === 'warrior');
-      dispatch(battleActions.addActiveCard({ card: movingCard, player: castingPlayer }));
-      handleAnimation(movingCard, 'add');
+      dispatch(battleActions.addWarriorAttachment({ cellId: aimCard.cellId, feature }));
+      const newFieldCards = store.getState().battleReducer.fieldCards;
+      const newAimCard = newFieldCards.find((card) => card.id === aimCard.id);
+      dispatch(battleActions.addActiveCard({ card: newAimCard, player: castingPlayer }));
+      handleAnimation(newAimCard, 'add');
     },
     moveNextRow: (data) => {
       const {
         aimCell, aimCard, currentFieldCells, castingPlayer, feature,
       } = data;
-      dispatch(battleActions.addAttachment({ cellId: aimCell.id, feature }));
+      dispatch(battleActions.addWarriorAttachment({ cellId: aimCard.cellId, feature }));
       const { topRowCell, bottomRowCell } = findNextRowsCells(aimCell, currentFieldCells);
-      const newFieldCells = store.getState().battleReducer.fieldCells;
-      const currentCell = newFieldCells.find((cell) => cell.id === aimCard.cellId);
-      const movingCard = currentCell.content.find((item) => item.type === 'warrior');
+      const newFieldCards = store.getState().battleReducer.fieldCards;
+      const newAimCard = newFieldCards.find((card) => card.id === aimCard.id);
       dispatch(battleActions.addActiveCells({ cellsIds: [topRowCell?.id, bottomRowCell?.id], type: 'cellsForWarMove' }));
-      dispatch(battleActions.addAnimation({ cell: topRowCell, type: 'green' }));
-      dispatch(battleActions.addAnimation({ cell: bottomRowCell, type: 'green' }));
-      dispatch(battleActions.addActiveCard({ card: movingCard, player: castingPlayer }));
+      dispatch(battleActions.addAnimation({ cellId: topRowCell.id, type: 'green' }));
+      dispatch(battleActions.addAnimation({ cellId: bottomRowCell.id, type: 'green' }));
+      dispatch(battleActions.addActiveCard({ card: newAimCard, player: castingPlayer }));
     },
   };
 
   const attachSpellEffectOnCells = (cellsArr, feature) => {
     const cellsIds = cellsArr.map((cell) => cell.id);
-    cellsIds.forEach((id) => dispatch(battleActions.addAttachment({ cellId: id, feature, type: 'cell' })));
+    cellsIds.forEach((id) => dispatch(battleActions.addCellAttachment({ cellId: id, feature })));
   };
 
-  const attachSpellEffectOnWar = (aimCell, feature, castingPlayer, currentFieldCells) => {
-    const currentAimCell = currentFieldCells.find((cell) => cell.id === aimCell.id);
-    const aimCard = currentAimCell.content.find((item) => item.type === 'warrior' || item.type === 'hero');
+  const attachSpellEffectOnWar = (data) => {
+    const {
+      aimCell, feature, castingPlayer, currentFieldCards, currentFieldCells,
+    } = data;
+    const aimCard = currentFieldCards.find((card) => card.cellId === aimCell.id
+    && (card.type === 'warrior' || card.type === 'hero'));
     const { name } = feature;
     if (feature.immediate && aimCard && aimCard.status === feature.aimStatus) {
       attachSpellEffect[name]({
@@ -563,63 +520,73 @@ export const AbilityProvider = ({ children }) => {
       });
     }
     if (!feature.immediate) {
-      dispatch(battleActions.addAttachment({ cellId: aimCell.id, feature }));
+      dispatch(battleActions.addWarriorAttachment({ cellId: aimCard.cellId, feature }));
     }
+  };
+
+  const findCellsToAttachCast = (data) => {
+    const {
+      currentFieldCells, currentFieldCards, feature, castingPlayer, enemyPlayer, aimCell,
+    } = data;
+    const { type, attach } = feature;
+    if (attach.includes('spells')) {
+      return currentFieldCells.filter((cell) => spellsCells.includes(cell.type));
+    }
+    if (attach.includes('field') && type === 'all') {
+      return currentFieldCells.filter((cell) => (cell.type === 'field' && attach.includes('warrior'))
+        || (cell.type === 'hero' && attach.includes('hero')));
+    } if (attach.includes('field') && type === 'good') {
+      return currentFieldCells.filter((cell) => cell.player === castingPlayer && ((cell.type === 'field' && attach.includes('warrior'))
+        || (cell.type === 'hero' && attach.includes('hero'))));
+    } if (attach.includes('field') && type === 'bad') {
+      return currentFieldCells.filter((cell) => cell.player === enemyPlayer && ((cell.type === 'field' && attach.includes('warrior'))
+      || (cell.type === 'hero' && attach.includes('hero'))));
+    } if (attach.includes('row')) {
+      if (type === 'all') {
+        return currentFieldCells.filter((cell) => cell.row === aimCell.row);
+      }
+      if (type === 'bad') {
+        return currentFieldCells
+          .filter((cell) => cell.row === aimCell.row && cell.player === enemyPlayer);
+      }
+      if (type === 'good') {
+        return currentFieldCells
+          .filter((cell) => cell.row === aimCell.row && cell.player === castingPlayer);
+      }
+    } else if (attach.includes('adjacent')) {
+      if (type === 'good') {
+        const adjacentCells = findAdjasentCells(currentFieldCells, currentFieldCards, aimCell);
+        return adjacentCells.filter((cell) => cell.player === castingPlayer);
+      }
+    } else if (attach.includes('nextcells')) {
+      const adjacentCells = findAdjasentCells(currentFieldCells, currentFieldCards, aimCell);
+      return adjacentCells.filter((cell) => cell.line === aimCell.line);
+    } else if (attach.includes('grave')) {
+      if (type === 'good') {
+        return currentFieldCells.filter((cell) => cell.type === 'graveyard' && cell.player === castingPlayer);
+      }
+    }
+    return null;
   };
 
   const makeFeatureAttach = (feature, aimCell, castingPlayer) => {
     const currentFieldCells = store.getState().battleReducer.fieldCells;
-    const { type, attach } = feature;
+    const currentFieldCards = store.getState().battleReducer.fieldCards;
     const enemyPlayer = getEnemyPlayer(castingPlayer);
-    if (attach.includes('spells')) {
-      const cellsToApply = currentFieldCells.filter((cell) => spellsCells.includes(cell.type));
-      attachSpellEffectOnCells(cellsToApply, feature, 'cell');
+    const { attach } = feature;
+    const cellsToAttach = findCellsToAttachCast({
+      currentFieldCells, currentFieldCards, feature, castingPlayer, enemyPlayer, aimCell,
+    });
+    if (cellsToAttach) {
+      attachSpellEffectOnCells(cellsToAttach, feature);
     }
-    if (attach.includes('field') && type === 'all') {
-      const cellsToApply = currentFieldCells.filter((cell) => (cell.type === 'field' && attach.includes('warrior'))
-        || (cell.type === 'hero' && attach.includes('hero')));
-      attachSpellEffectOnCells(cellsToApply, feature, 'cell');
-    } else if (attach.includes('field') && type === 'good') {
-      const cellsToApply = currentFieldCells.filter((cell) => cell.player === castingPlayer && ((cell.type === 'field' && attach.includes('warrior'))
-        || (cell.type === 'hero' && attach.includes('hero'))));
-      attachSpellEffectOnCells(cellsToApply, feature, 'cell');
-    } else if (attach.includes('field') && type === 'bad') {
-      const cellsToApply = currentFieldCells.filter((cell) => cell.player === enemyPlayer && ((cell.type === 'field' && attach.includes('warrior'))
-      || (cell.type === 'hero' && attach.includes('hero'))));
-      attachSpellEffectOnCells(cellsToApply, feature, 'cell');
-    } else if (attach.includes('row')) {
-      if (type === 'all') {
-        const cellsToApply = currentFieldCells.filter((cell) => cell.row === aimCell.row);
-        attachSpellEffectOnCells(cellsToApply, feature, 'cell');
-      }
-      if (type === 'bad') {
-        const cellsToApply = currentFieldCells
-          .filter((cell) => cell.row === aimCell.row && cell.player === enemyPlayer);
-        attachSpellEffectOnCells(cellsToApply, feature, 'cell');
-      }
-      if (type === 'good') {
-        const cellsToApply = currentFieldCells
-          .filter((cell) => cell.row === aimCell.row && cell.player === castingPlayer);
-        attachSpellEffectOnCells(cellsToApply, feature, 'cell');
-      }
-    } else if (attach.includes('adjacent')) {
-      if (type === 'good') {
-        const adjacentCells = findAdjasentCells(aimCell, currentFieldCells);
-        const cellsToApply = adjacentCells.filter((cell) => cell.player === castingPlayer);
-        attachSpellEffectOnCells(cellsToApply, feature, 'cell');
-      }
-    } else if (attach.includes('nextcells')) {
-      const adjacentCells = findAdjasentCells(aimCell, currentFieldCells);
-      const cellsToApply = adjacentCells.filter((cell) => cell.line === aimCell.line);
-      attachSpellEffectOnCells(cellsToApply, feature, 'cell');
-    } else if (attach.includes('grave')) {
-      if (type === 'good') {
-        const cellsToApply = currentFieldCells.filter((cell) => cell.type === 'graveyard' && cell.player === castingPlayer);
-        attachSpellEffectOnCells(cellsToApply, feature, 'cell');
-        dispatch(modalsActions.openModal({ type: 'openGraveyard', player: castingPlayer }));
-      }
-    } else if (attach.includes('warrior') || attach.includes('hero')) {
-      attachSpellEffectOnWar(aimCell, feature, castingPlayer, currentFieldCells);
+    if (cellsToAttach && attach.includes('grave')) {
+      dispatch(modalsActions.openModal({ type: 'openGraveyard', player: castingPlayer }));
+    }
+    if (!cellsToAttach && (attach.includes('warrior') || attach.includes('hero'))) {
+      attachSpellEffectOnWar({
+        aimCell, feature, castingPlayer, currentFieldCards, currentFieldCells,
+      });
     }
   };
 
@@ -632,9 +599,10 @@ export const AbilityProvider = ({ children }) => {
       canRetaliate,
       retaliateSpell,
       newfieldCells,
+      newfieldCards,
     } = data;
     const strikingCell = newfieldCells.find((cell) => cell.id === strikingCard.cellId);
-    dispatch(battleActions.addAnimation({ cell: strikingCell, type: 'makeattack' }));
+    dispatch(battleActions.addAnimation({ cellId: strikingCell.id, type: 'makeattack' }));
     const strikePower = canRetaliate ? getWarriorPower(strikingCard) : 0;
     const spellRetaliatePower = retaliateSpell ? retaliateSpell.value : 0;
     const totalStrikePower = strikePower + spellRetaliatePower;
@@ -646,7 +614,13 @@ export const AbilityProvider = ({ children }) => {
       ? totalStrikePower - retaliateProtectVal : 0;
 
     if (isKilled(calcRetaliatePower, recieveHealth)) {
-      sendCardFromField(recievingCard, makeFeatureCast, 'grave');
+      sendCardFromField({
+        card: recievingCard,
+        castFunc: makeFeatureCast,
+        destination: 'grave',
+        cardCost: null,
+        cellsOnField: newfieldCells,
+      });
       moveAttachedSpells(recievingCard.cellId, null, 'kill');
     } else {
       changeCardHP(calcRetaliatePower, recieveHealth, recievingCard);
@@ -654,7 +628,7 @@ export const AbilityProvider = ({ children }) => {
     const powerSpells = strikingCard.attachments.filter((spell) => spell.name === 'power');
     powerSpells.forEach((spell) => {
       if (spell.charges === 1) {
-        deleteChargedSpellCard(spell, newfieldCells, makeFeatureCast);
+        deleteChargedSpellCard(spell, newfieldCards, newfieldCells, makeFeatureCast);
       }
     });
   };
@@ -666,10 +640,9 @@ export const AbilityProvider = ({ children }) => {
     dispatch(battleActions.deleteActiveCard({ player: attackingCard.player }));
     dispatch(battleActions.turnCardLeft({
       cardId: attackingCard.id,
-      cellId: attackingCard.cellId,
       qty: 1,
     }));
-    dispatch(battleActions.addAnimation({ cell: attackingCell, type: 'makeattack' }));
+    dispatch(battleActions.addAnimation({ cellId: attackingCell.id, type: 'makeattack' }));
     const onAttackSpells = findTriggerSpells(attackingCard, attackedCell, 'onattack', 'warrior');
     onAttackSpells.forEach((spell) => {
       if (spell.apply === 'attacked') {
@@ -683,6 +656,7 @@ export const AbilityProvider = ({ children }) => {
   const makeFight = (actionData) => {
     const { card1, card2 } = actionData;
     const newfieldCells = store.getState().battleReducer.fieldCells;
+    const newfieldCards = store.getState().battleReducer.fieldCards;
     const attackedCell = newfieldCells.find((cell) => cell.id === card2.cellId);
 
     if (gameMode === 'tutorial' && card1.player === 'player1') {
@@ -702,9 +676,9 @@ export const AbilityProvider = ({ children }) => {
     const attackingAddPower = attackingPowerFeature?.value || 0;
     const attackingPower = attackingInitPower + attackingAddPower;
     const attackedHealth = card2.currentHP;
-    const protection = findSpell(card1, card2, card1.subtype, 'protection', newfieldCells);
-    const protectionVal = protection
-      ? getProtectionVal(attackingPower, protection, attackedHealth) : 0;
+    const protectSpell = findSpell(card1, card2, card1.subtype, 'protection', newfieldCells);
+    const protectionVal = protectSpell
+      ? getProtectionVal(attackingPower, protectSpell, attackedHealth) : 0;
 
     const attachedRetaliate = findSpell(card1, card2, card1.subtype, 'retaliation', newfieldCells);
     const retaliateSpell = findSpell(card1, card2, card1.subtype, 'retaliatestrike', newfieldCells);
@@ -716,17 +690,23 @@ export const AbilityProvider = ({ children }) => {
     const powerSpells = card1.attachments.filter((spell) => spell.name === 'power');
     powerSpells.forEach((spell) => {
       if (spell.charges === 1) {
-        deleteChargedSpellCard(spell, newfieldCells, makeFeatureCast);
+        deleteChargedSpellCard(spell, newfieldCards, newfieldCells, makeFeatureCast);
       }
     });
 
-    if (protection && protection.charges === 1) {
-      deleteChargedSpellCard(protection, newfieldCells, makeFeatureCast);
+    if (protectSpell && protectSpell.charges === 1) {
+      deleteChargedSpellCard(protectSpell, newfieldCards, newfieldCells, makeFeatureCast);
     }
 
-    dispatch(battleActions.addAnimation({ cell: attackedCell, type: 'attacked' }));
+    dispatch(battleActions.addAnimation({ cellId: attackedCell.id, type: 'attacked' }));
     if (isKilled(calculatedPower, attackedHealth)) {
-      sendCardFromField(card2, makeFeatureCast, 'grave');
+      sendCardFromField({
+        card: card2,
+        castFunc: makeFeatureCast,
+        destination: 'grave',
+        cardCost: null,
+        cellsOnField: newfieldCells,
+      });
       moveAttachedSpells(card2.cellId, null, 'kill');
       checkIfIsVictory(card2);
     }
@@ -740,6 +720,7 @@ export const AbilityProvider = ({ children }) => {
         canRetaliate,
         retaliateSpell: attachedRetaliate,
         newfieldCells,
+        newfieldCards,
       });
     }
     if (retaliateSpell) {
@@ -749,6 +730,7 @@ export const AbilityProvider = ({ children }) => {
         canRetaliate: null,
         retaliateSpell,
         newfieldCells,
+        newfieldCards,
       });
     }
   };
@@ -758,8 +740,9 @@ export const AbilityProvider = ({ children }) => {
   const addCardToField = (actionData) => {
     deleteImmediateSpells();
     const {
-      card, player, points, curCell, field,
+      card, player, points, curCell, fieldCards, cellsOnField,
     } = actionData;
+    const { type, place } = card;
     const cellId = curCell.id;
     if (gameMode === 'tutorial') {
       changeTutorStep((prev) => prev + 1);
@@ -772,10 +755,8 @@ export const AbilityProvider = ({ children }) => {
     deleteCardfromSource(card);
     dispatch(battleActions.addFieldContent({ card, id: cellId }));
     dispatch(battleActions.deleteActiveCard({ player }));
-    if (curCell.type === 'postponed') {
-      if (card.type === 'spell' && card.place === 'postponed') {
-        card.features.forEach((feature) => makeFeatureAttach(feature, curCell, player));
-      }
+    if (curCell.type === 'postponed' && type === 'spell' && place === 'postponed') {
+      card.features.forEach((feature) => makeFeatureAttach(feature, curCell, player));
       return;
     }
     dispatch(battleActions.setLastCellWithAction({
@@ -795,13 +776,12 @@ export const AbilityProvider = ({ children }) => {
       if (!hasSwift && card.player === player && !movingAttachment) {
         dispatch(battleActions.turnCardLeft({
           cardId: card.id,
-          cellId,
           qty: 1,
         }));
       }
       [movingAttachment, hasSwift]
         .filter((spell) => spell && spell.charges === 1)
-        .forEach((spell) => deleteChargedSpellCard(spell, field, makeFeatureCast));
+        .forEach((spell) => deleteChargedSpellCard(spell, fieldCards, cellsOnField, makeFeatureCast));
     }
     if (card.type === 'spell') {
       card.features
@@ -817,12 +797,18 @@ export const AbilityProvider = ({ children }) => {
 
   // SEND CARD TO GRAVE BTN
 
-  const sendCardToGraveAction = (card, player) => {
+  const sendCardToGraveAction = (card, player, cellsOnField) => {
     handleAnimation(card, 'delete');
     moveAttachedSpells(card, null, 'kill');
     dispatch(battleActions.deleteActiveCard({ player }));
     deleteOtherActiveCard(activeCardPlayer1, activeCardPlayer2, player);
-    sendCardFromField(card, makeFeatureCast, 'grave');
+    sendCardFromField({
+      card,
+      castFunc: makeFeatureCast,
+      destination: 'grave',
+      cardCost: null,
+      cellsOnField,
+    });
   };
 
   // END TURN //////
@@ -836,9 +822,10 @@ export const AbilityProvider = ({ children }) => {
       postponedCell,
       temporarySpells,
       turnSpells,
+      cardsOnField,
+      cellsOnField,
     } = actionData;
     const prevPlayer = newPlayer === 'player1' ? 'player2' : 'player1';
-    const currentfieldCells = store.getState().battleReducer.fieldCells;
     if (newPlayer === 'player2') {
       dispatch(battleActions.setPlayerPoints({ points: commonPoints, player: 'player2' }));
     } else {
@@ -850,8 +837,14 @@ export const AbilityProvider = ({ children }) => {
       dispatch(battleActions.setCardSwitchStatus({ player: 'player2', status: false }));
     }
     if (postponedCell.status === 'face') {
-      const card = postponedCell.content[0];
-      sendCardFromField(card, makeFeatureCast, 'return');
+      const card = cardsOnField.find((cardEl) => cardEl.cellId === postponedCell.id);
+      sendCardFromField({
+        card,
+        castFunc: makeFeatureCast,
+        destination: 'return',
+        cardCost: null,
+        cellsOnField,
+      });
       dispatch(battleActions.deleteActiveCard({ player: prevPlayer }));
       deleteOtherActiveCard(activeCardPlayer1, activeCardPlayer2, prevPlayer);
     }
@@ -863,14 +856,20 @@ export const AbilityProvider = ({ children }) => {
     dispatch(battleActions.drawCard({ player: newPlayer }));
     dispatch(battleActions.massTurnCards({ player: newPlayer }));
     dispatch(battleActions.changeTurn({ player: newPlayer }));
-    [...turnSpells, ...temporarySpells].forEach((spell) => sendCardFromField(spell, makeFeatureCast, 'grave'));
+    [...turnSpells, ...temporarySpells].forEach((spell) => sendCardFromField({
+      card: spell,
+      castFunc: makeFeatureCast,
+      destination: 'grave',
+      cardCost: null,
+      cellsOnField,
+    }));
 
-    currentfieldCells
-      .filter((cell) => cell.content.length !== 0 && cell.type === 'field' && cell.player === newPlayer)
-      .forEach((cell) => {
-        const warrior = cell.content.find((el) => el.type === 'warrior');
-        const onTurnStartSpells = findTriggerSpells(warrior, cell, 'onturnstart', 'warrior');
-        onTurnStartSpells.forEach((spell) => makeFeatureCast(spell, cell, null, newPlayer));
+    cardsOnField
+      .filter((card) => card.player === newPlayer)
+      .forEach((card) => {
+        const cardsCell = cellsOnField.find((cell) => cell.id === card.cellId);
+        const onTurnStartSpells = findTriggerSpells(card, cardsCell, 'onTurnStart', 'warrior');
+        onTurnStartSpells.forEach((spell) => makeFeatureCast(spell, cardsCell, null, newPlayer));
       });
     play();
   };
@@ -919,7 +918,6 @@ export const AbilityProvider = ({ children }) => {
     if (card.type === 'hero') {
       dispatch(battleActions.turnCardLeft({
         cardId: card.id,
-        cellId: card.cellId,
         qty: 1,
       }));
     }
@@ -941,7 +939,7 @@ export const AbilityProvider = ({ children }) => {
   const returnCardToHand = (actionData) => {
     deleteImmediateSpells();
     const {
-      card, player, cost, spellId,
+      card, player, cost, spellId, cellsOnField,
     } = actionData;
     if (card.status === 'field') {
       moveAttachedSpells(card.cellId, null, 'return');
@@ -949,7 +947,13 @@ export const AbilityProvider = ({ children }) => {
     handleAnimation(card, 'delete');
     dispatch(battleActions.deleteActiveCard({ player }));
     deleteOtherActiveCard(activeCardPlayer1, activeCardPlayer2, player);
-    sendCardFromField(card, makeFeatureCast, 'return', cost);
+    sendCardFromField({
+      card,
+      castFunc: makeFeatureCast,
+      destination: 'return',
+      cardCost: cost,
+      cellsOnField,
+    });
     dispatch(battleActions.deleteAttachment({ spellId }));
   };
 
@@ -985,11 +989,7 @@ export const AbilityProvider = ({ children }) => {
       deleteCardfromSource(card);
       dispatch(battleActions.addToGraveyard({ card }));
     } else {
-      dispatch(battleActions.turnCardLeft({
-        cardId: card.id,
-        cellId: card.cellId,
-        qty: 1,
-      }));
+      dispatch(battleActions.turnCardLeft({ cardId: card.id, qty: 1 }));
     }
   };
 

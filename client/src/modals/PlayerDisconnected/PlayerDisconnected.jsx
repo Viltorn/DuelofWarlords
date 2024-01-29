@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { actions as gameActions } from '../../slices/gameSlice.js';
 import { actions as modalsActions } from '../../slices/modalsSlice.js';
 import { actions as battleActions } from '../../slices/battleSlice.js';
-import PrimaryButton from '../../components/PrimaryButton/PrimaryButton.jsx';
+import PrimaryButton from '../../components/Buttons/PrimaryButton/PrimaryButton.jsx';
 import styles from './PlayerDisconnected.module.css';
 import socket from '../../socket.js';
 

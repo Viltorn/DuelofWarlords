@@ -1,9 +1,15 @@
 import changeAttackToRedirectCard from './changeAttackToRedirectCard';
+import isCellEmpty from './isCellEmpty';
 import isInvisible from './isInvisible';
 
-const findCellsInRowForAttack = (curFieldCells, attackingLines, row, card) => curFieldCells
-  .filter((cell) => cell.row === row && !isInvisible(cell)
-  && attackingLines.includes(cell.line) && cell.content.length !== 0 && !cell.disabled)
-  .map((cell) => changeAttackToRedirectCard(cell, card, curFieldCells));
+const findCellsInRowForAttack = (data) => {
+  const {
+    fieldCards, fieldCells, attackingLines, row, card,
+  } = data;
+  return fieldCells
+    .filter((cell) => cell.row === row && !isInvisible(cell, card)
+      && attackingLines.includes(cell.line) && !cell.disabled && !isCellEmpty(fieldCards, cell.id))
+    .map((cell) => changeAttackToRedirectCard(cell, card, fieldCells, fieldCards));
+};
 
 export default findCellsInRowForAttack;

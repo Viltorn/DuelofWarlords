@@ -1,18 +1,18 @@
 /* eslint-disable max-len */
 import _ from 'lodash';
 // Warriors
-import EarthGolem from '../../assets/AcademiaDeck/EarthGolem.png';
-import LivingWall from '../../assets/AcademiaDeck/LivingWall.png';
-import Gargoyle from '../../assets/AcademiaDeck/Gargoyle.png';
-import MageApprentice from '../../assets/AcademiaDeck/MageApprentice.png';
-import Rakshasa from '../../assets/AcademiaDeck/Rakshasa.png';
-import EnergyElemental from '../../assets/AcademiaDeck/EnergyElemental.png';
-import FireGolem from '../../assets/AcademiaDeck/FireGolem.png';
-import GremlinShooter from '../../assets/AcademiaDeck/GremlinShooter.png';
-import IceElemental from '../../assets/AcademiaDeck/IceElemental.png';
-import IceGiant from '../../assets/AcademiaDeck/IceGiant.png';
-import YoungGenie from '../../assets/AcademiaDeck/YoungGenie.png';
-import NalaHero from '../../assets/AcademiaDeck/NalaHero.png';
+import EarthGolem from '../../assets/academiaDeck/EarthGolem.png';
+import LivingWall from '../../assets/academiaDeck/LivingWall.png';
+import Gargoyle from '../../assets/academiaDeck/Gargoyle.png';
+import MageApprentice from '../../assets/academiaDeck/MageApprentice.png';
+import Rakshasa from '../../assets/academiaDeck/Rakshasa.png';
+import EnergyElemental from '../../assets/academiaDeck/EnergyElemental.png';
+import FireGolem from '../../assets/academiaDeck/FireGolem.png';
+import GremlinShooter from '../../assets/academiaDeck/GremlinShooter.png';
+import IceElemental from '../../assets/academiaDeck/IceElemental.png';
+import IceGiant from '../../assets/academiaDeck/IceGiant.png';
+import YoungGenie from '../../assets/academiaDeck/YoungGenie.png';
+import NalaHero from '../../assets/academiaDeck/NalaHero.png';
 // Spells
 
 export const types = ['beforeturn', 'afterplay', 'protection', 'afterdeath'];

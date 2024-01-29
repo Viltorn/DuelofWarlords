@@ -1,4 +1,9 @@
-const findCellByContentId = (id, curFieldCells) => curFieldCells
-  .find((cell) => cell.content.find((el) => el.id === id));
+const findCellByContentId = (spellId, curFieldCells, curFieldCards) => {
+  const redirectCard = curFieldCards.find((card) => card.id === spellId);
+  if (redirectCard) {
+    return curFieldCells.find((cell) => cell.id === redirectCard.cellId);
+  }
+  return null;
+};
 
 export default findCellByContentId;

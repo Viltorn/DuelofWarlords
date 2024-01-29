@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { actions as modalActions } from '../../slices/modalsSlice.js';
 import abilityContext from '../../contexts/abilityActions.js';
-import PrimaryButton from '../../components/PrimaryButton/PrimaryButton.jsx';
+import PrimaryButton from '../../components/Buttons/PrimaryButton/PrimaryButton.jsx';
 import { startCardsNumber1, startCards2AfterDraw } from '../../gameData/gameLimits.js';
 import '../Modals.css';
 
