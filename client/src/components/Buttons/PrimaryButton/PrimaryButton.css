@@ -46,12 +46,12 @@
 
 .primary-button.default.secondary {
   background-color: var(--light-gray);
-  border-color: var(--purple);
+  border-color: var(--dark-blue);
 }
 
 .primary-button.hover.primary {
   background-color: var(--golden);
-  border-color: var(--purple);
+  border-color: var(--dark-blue);
 }
 
 .primary-button.disabled.primary {
@@ -66,7 +66,7 @@
 
 .primary-button.default.primary {
   background-color: var(--dark-red-color);
-  border-color: var(--purple);
+  border-color: var(--dark-blue);
 }
 
 .primary-button.disabled.secondary {
@@ -76,11 +76,11 @@
 }
 
 .primary-button.default.secondary .label {
-  color: var(--purple);
+  color: var(--dark-blue);
 }
 
 .primary-button.hover.primary .label {
-  color: var(--purple);
+  color: var(--dark-blue);
 }
 
 .primary-button.disabled.primary .label {

@@ -1,8 +1,8 @@
 import isCellEmpty from './isCellEmpty';
 
-const findNextRows = (fieldCell, cellsfield, fieldCards) => {
-  const currentRowNumber = parseInt(fieldCell.row, 10);
-  const currentline = fieldCell.line;
+const findNextRowCells = (aimCell, cellsfield, fieldCards) => {
+  const currentRowNumber = parseInt(aimCell.row, 10);
+  const currentline = aimCell.line;
   const topRowNumber = (currentRowNumber - 1).toString();
   const bottomRowNumber = (currentRowNumber + 1).toString();
   const topRowCell = cellsfield.find((cell) => cell.row === topRowNumber
@@ -12,4 +12,4 @@ const findNextRows = (fieldCell, cellsfield, fieldCards) => {
   return { topRowCell, bottomRowCell };
 };
 
-export default findNextRows;
+export default findNextRowCells;

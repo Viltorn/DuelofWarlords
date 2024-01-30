@@ -69,7 +69,7 @@ const castleDeck = {
     faction: 'Castle',
     id: _.uniqueId(),
     features: [{
-      name: 'heal', condition: 'onTurnStart', aim: ['oneAdjacent', 'warrior'], value: 1, aimStatus: 'field', type: 'good',
+      name: 'heal', condition: 'onTurnStart', aim: ['oneAdjacent', 'warrior', 'flyer', 'shooter', 'fighter'], value: 1, aimStatus: 'field', type: 'good',
     }],
     attachments: [],
     img: YoungPriestess,

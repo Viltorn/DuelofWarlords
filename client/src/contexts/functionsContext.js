@@ -7,7 +7,7 @@ import { actions as battleActions } from '../slices/battleSlice.js';
 import { actions as gameActions } from '../slices/gameSlice';
 import isInvisible from '../utils/supportFunc/isInvisible.js';
 import warSubtypes from '../gameData/warriorsSubtypes.js';
-import findNextRows from '../utils/supportFunc/findNextRowCells.js';
+import findNextRowCells from '../utils/supportFunc/findNextRowCells.js';
 import getEnemyPlayer from '../utils/supportFunc/getEnemyPlayer.js';
 import isCellEmpty from '../utils/supportFunc/isCellEmpty.js';
 import findCellsForMassAttack from '../utils/supportFunc/findCellsForMassAttack.js';
@@ -131,7 +131,7 @@ export const FunctionProvider = ({ children }) => {
     }
     if (card.subtype === 'fighter') {
       const blockingAlly = fieldCells.find((cell) => cell.row === row
-        && cell.line === alliedFrontLine && cell.content.length !== 0 && !isInvisible(cell));
+        && cell.line === alliedFrontLine && cell.content.length !== 0 && !isInvisible(cell, card));
       if ((line === '4' || line === '2') && blockingAlly) {
         return;
       }
@@ -237,13 +237,16 @@ export const FunctionProvider = ({ children }) => {
       depend, dependValue, value, id,
     } = spell;
     if (depend === 'goodAttachments') {
-      const goodAttach = curFieldCards.filter((card) => card.type === 'spell' && card.player === spellOwner);
+      const goodAttach = curFieldCards.filter((card) => card.type === 'spell'
+        && card.player === spellOwner && card.status === 'field');
       return dependValue * goodAttach.length;
     }
     if (depend === 'warriorsDiff') {
-      const goodWarriorsQty = curFieldCards.filter((card) => card.type === 'warrior' && card.player === spellOwner).length;
+      const goodWarriorsQty = curFieldCards.filter((card) => card.type === 'warrior'
+        && card.player === spellOwner && card.status === 'field').length;
       const enemyPlayer = spellOwner === 'player1' ? 'player2' : 'player1';
-      const badWarriorsQty = curFieldCards.filter((card) => card.type === 'warrior' && card.player === enemyPlayer).length;
+      const badWarriorsQty = curFieldCards.filter((card) => card.type === 'warrior'
+        && card.player === enemyPlayer && card.status === 'field').length;
       const diff = badWarriorsQty - goodWarriorsQty > 0 ? badWarriorsQty - goodWarriorsQty : 0;
       return value + dependValue * diff;
     }
@@ -321,10 +324,10 @@ export const FunctionProvider = ({ children }) => {
   const findAttachmentType = (attachment, type) => attachment?.type === type || attachment?.type === 'all';
 
   const showNextRowCells = (cell) => {
-    const { topRowCell, bottomRowCell } = findNextRows(cell, fieldCells);
+    const { topRowCell, bottomRowCell } = findNextRowCells(cell, fieldCells, fieldCards);
     dispatch(battleActions.addActiveCells({ cellsIds: [topRowCell?.id, bottomRowCell?.id], type: 'cellsForWarMove' }));
-    dispatch(battleActions.addAnimation({ cellId: topRowCell.id, type: 'green' }));
-    dispatch(battleActions.addAnimation({ cellId: bottomRowCell.id, type: 'green' }));
+    dispatch(battleActions.addAnimation({ cellId: topRowCell?.id, type: 'green' }));
+    dispatch(battleActions.addAnimation({ cellId: bottomRowCell?.id, type: 'green' }));
   };
 
   const handleAnimation = (activeCard, option) => {
@@ -356,7 +359,7 @@ export const FunctionProvider = ({ children }) => {
       const cellUnarmedAttachment = currentCell?.attachments?.find((feature) => feature.name === 'unarmed' && feature.aim.includes(activeCard.subtype) && checkMeetCondition(activeCard, null, feature, 'warrior'));
       const cardUnarmedAttachment = attachments.find((feature) => feature.name === 'unarmed' && checkMeetCondition(activeCard, null, feature, 'warrior'));
       const canAttack = !activeCard.features.find((feature) => feature.name === 'unarmed') && turn === 0
-        && !cardUnarmedAttachment && !cellUnarmedAttachment;
+        && !cardUnarmedAttachment && !cellUnarmedAttachment && status === 'field';
       if ((status === 'hand' || isCardPostponed) && activeCard.player === thisPlayer) {
         showCellsForWarMove(activeCard);
       }

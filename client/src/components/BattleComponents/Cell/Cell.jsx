@@ -52,7 +52,6 @@ const Cell = ({ props, id }) => {
     if (returnSpell) {
       makeFeatureCast(returnSpell, thisCell, card, card.player);
     } else {
-      console.log(onTriggerSpells);
       onTriggerSpells.forEach((spell) => makeFeatureCast(spell, thisCell, card, card.player));
     }
   };

@@ -116,7 +116,9 @@ const battleSlice = createSlice({
     addAnimation(state, { payload }) {
       const { cellId, type } = payload;
       const index = state.fieldCells.findIndex((cell) => cell.id === cellId);
-      state.fieldCells[index].animation = type;
+      if (index >= 0) {
+        state.fieldCells[index].animation = type;
+      }
     },
 
     deleteAnimation(state) {
@@ -234,11 +236,11 @@ const battleSlice = createSlice({
 
     returnCard(state, { payload }) {
       const { card, cost } = payload;
-      const { health, player } = card;
+      const { health, player, type } = card;
       const changedBasic = {
         ...card, status: 'hand', cellId: '', currentC: cost,
       };
-      const changedCard = card.type === 'warrior' ? {
+      const changedCard = type === 'warrior' ? {
         ...changedBasic, currentHP: health, turn: 1, attachments: [],
       } : { ...changedBasic };
       state.playersHands[player].push(changedCard);
@@ -255,7 +257,7 @@ const battleSlice = createSlice({
         ...changedBasic, turn: 1, currentHP: health, attachments: [], currentC: cost,
       }
         : changedBasic;
-      state.fieldCards.push(newCard);
+      state.fieldCards.unshift(newCard);
     },
 
     turnCardLeft(state, { payload }) {

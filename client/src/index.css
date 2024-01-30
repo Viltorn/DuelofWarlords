@@ -1,8 +1,3 @@
-/* @import url('./src/components/MainPage/MainPage.css');
-@import url('./src/components/PrimaryButton.css');
-@import url('./src/components/Battlefield.css');
-@import url('./src/components/ErrorPage.css');
-@import url('./src/modals/Modals.css'); */
 
 @font-face {
   font-weight: 400; /* Соответствует значению normal */
@@ -86,7 +81,6 @@ code {
   --black-color: rgb(21, 21, 21);
   --dark-blue: #484860;
   --red: #850409;
-  --purple: #484860;
   --light-gray: #e1e1e1;
   --dark-gray: #868686;
   --green: rgb(46, 135, 46);
@@ -97,7 +91,6 @@ code {
   --cell-width: 7.4rem;
   --cell-content-width: 6rem;
 
-  --cursor-gold: url('./assets/CursorRed.svg'), auto;
 }
 
 .border-black {
@@ -115,7 +108,7 @@ code {
 }
 
 *::-webkit-scrollbar-thumb {
-  background-color: var(--dark-golden);
+  background-color: var(--dark-blue);
   border-radius: 0.3rem;
   border: none;
 }

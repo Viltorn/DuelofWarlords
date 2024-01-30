@@ -18,5 +18,14 @@ Trading card game based on the Duels of Champions computer game (MMDoC). In the 
   3. Online -  play online against another player
   3. Deckbuilder - assemble your own deck
 
+### Installation Guide:
+
+* ```$ git clone: https://github.com/Viltorn/DuelofWarlords.git```
+* ```go to client folder inside project directory```
+* ```$ npm install```
+* ```$ npm start``
+* ```$ to start local server go to server folder```
+* ```$ npm install && PORT=8080 nodemon server.js```
+
 Other features in development...
 Code is being refactored...

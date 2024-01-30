@@ -8,7 +8,7 @@ const findCellsForMassAttack = (data) => {
   } = data;
 
   return fieldCells
-    .filter((cell) => cell.type === 'field' && !isInvisible(cell, card)
+    .filter((cell) => cell.type === 'field' && !isInvisible(cell, fieldCards)
     && attackingLines.includes(cell.line) && !cell.disabled && !isCellEmpty(fieldCards, cell.id))
     .map((cell) => changeAttackToRedirectCard(cell, card, fieldCells, fieldCards));
 };

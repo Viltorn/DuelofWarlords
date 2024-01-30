@@ -17,7 +17,7 @@
   justify-content: center;
   align-items: center;
   gap: 30px;
-  background-color: var(--purple);
+  background-color: var(--dark-blue);
   margin: auto; /* 15% from the top and centered */
   padding: 30px 30px;
   border: 1px solid #888;
@@ -156,10 +156,6 @@
 
 @media (max-width: 900px) {
   .fieldset {
-    /* display: grid;
-    grid-template-columns: repeat(2, auto);
-    grid-template-rows: repeat(2, auto);
-    grid-auto-flow: column; */
     flex-direction: row;
     justify-content: center;
     align-content: center;

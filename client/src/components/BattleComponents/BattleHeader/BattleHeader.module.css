@@ -67,7 +67,7 @@
 }
 
 .endturnBtn {
-  border: 0.3rem solid var(--purple);
+  border: 0.3rem solid var(--dark-blue);
   border-radius: 50%;
   background: var(--dark-red-color);
   height: 4rem;
