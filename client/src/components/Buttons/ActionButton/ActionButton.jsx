@@ -1,4 +1,4 @@
-import React, { useEffect, useContext, useRef } from 'react';
+import React, { useContext, useRef } from 'react';
 import cn from 'classnames';
 import { useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
@@ -105,39 +105,39 @@ const ActionButton = ({
     performClick(type);
   };
 
-  function handleKeyDown(e) {
-    e.preventDefault();
-    const { key } = e;
-    switch (key) {
-      case '1':
-        performClick('turnLeft');
-        break;
-      case '2':
-        performClick('turnRight');
-        break;
-      case 'q':
-        performClick('healthBar');
-        break;
-      case 'r':
-        performClick('return');
-        break;
-      case 'z':
-        performClick('graveyard');
-        break;
-      case 'd':
-        performClick('deckreturn');
-        break;
-      default:
-        break;
-    }
-  }
+  // function handleKeyDown(e) {
+  //   e.preventDefault();
+  //   const { key } = e;
+  //   switch (key) {
+  //     case '1':
+  //       performClick('turnLeft');
+  //       break;
+  //     case '2':
+  //       performClick('turnRight');
+  //       break;
+  //     case 'q':
+  //       performClick('healthBar');
+  //       break;
+  //     case 'r':
+  //       performClick('return');
+  //       break;
+  //     case 'z':
+  //       performClick('graveyard');
+  //       break;
+  //     case 'd':
+  //       performClick('deckreturn');
+  //       break;
+  //     default:
+  //       break;
+  //   }
+  // }
 
-  useEffect(() => {
-    window.addEventListener('keydown', handleKeyDown);
-    return () => {
-      window.removeEventListener('keydown', handleKeyDown);
-    };
-  });
+  // useEffect(() => {
+  //   window.addEventListener('keydown', handleKeyDown);
+  //   return () => {
+  //     window.removeEventListener('keydown', handleKeyDown);
+  //   };
+  // });
 
   return (
     <button

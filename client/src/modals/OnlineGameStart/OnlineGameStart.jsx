@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useFormik } from 'formik';
 import { useNavigate } from 'react-router-dom';
 // import axios from 'axios';
+import LoadSpinner from '@components/LoadSpinner/LoadSpinner.jsx';
 import { startCardsNumber1, startCardsNumber2, minDeckCards } from '../../gameData/gameLimits.js';
 import { actions as modalsActions } from '../../slices/modalsSlice.js';
 import { actions as battleActions } from '../../slices/battleSlice.js';
@@ -135,87 +136,91 @@ const OnlineGameStart = () => {
 
   return (
     <dialog className={styles.container}>
-      <div className={styles.contentDark}>
-        <form className={styles.formBlock} onSubmit={formik.handleSubmit}>
-          <h2 className={styles.headerLight}>{t('ChooseFactions')}</h2>
-          <fieldset className={styles.fieldset} disabled={formik.isSubmitting}>
-            <div className={styles.playerSlides}>
-              <div className={styles.slideBlock}>
-                <MenuSlider item={playerHeroData} player="player1" changeSlide={changeFaction} />
-                <input
-                  className={styles.slideInput}
-                  id="playerHero"
-                  type="text"
-                  onChange={formik.handleChange}
-                  onBlur={formik.handleBlur}
-                  value={heroName}
-                  name="playerHero"
-                />
-                <label htmlFor="player1Faction" className={styles.label}>{playerDeck.deckName}</label>
-                {/* <p className={styles.description}>
-                {t(`description.${heroFaction}.factionInfo`)}</p> */}
-                <p className={styles.description}>{t(`description.${heroFaction}.${heroName}`)}</p>
-              </div>
-            </div>
-            <div className={styles.inputBlock}>
-              {roomId && password === '' ? (
-                null
-              ) : (
-                <input
-                  className={styles.input}
-                  id="password"
-                  type="text"
-                  ref={inputEl}
-                  onChange={onChangeInput}
-                  onBlur={formik.handleBlur}
-                  value={formik.values.password}
-                  placeholder={t('Password')}
-                  data-testid="input-body"
-                  name="password"
-                />
-              )}
-              {formik.errors.password ? (
-                <div className={styles.invalidFeedback}>{t(`errors.${formik.errors.password}`)}</div>
-              ) : null}
-              {error && (<div className={styles.invalidFeedback}>{t(`errors.${error.message}`)}</div>)}
-              <div className={styles.lowerBlock}>
-                {name && (
-                <p className={styles.roomsOwner}>
-                  {t('RoomsOwner')}
-                  {name}
-                </p>
-                )}
-                <div className={styles.btnBlock}>
-                  {!roomId ? (
-                    <PrimaryButton
-                      showIcon={false}
-                      state="default"
-                      text={t('CREATE')}
-                      variant="primary"
-                      type="submit"
-                    />
-                  ) : (
-                    <PrimaryButton
-                      showIcon={false}
-                      state="default"
-                      text={t('JOIN')}
-                      variant="primary"
-                      type="submit"
-                    />
-                  )}
-                  <PrimaryButton
-                    onClick={handleClose}
-                    showIcon={false}
-                    state="default"
-                    text={t('CLOSE')}
-                    variant="secondary"
+      {formik.isSubmitting ? (
+        <LoadSpinner />
+      ) : (
+        <div className={styles.contentDark}>
+          <form className={styles.formBlock} onSubmit={formik.handleSubmit}>
+            <h2 className={styles.headerLight}>{t('ChooseFactions')}</h2>
+            <fieldset className={styles.fieldset} disabled={formik.isSubmitting}>
+              <div className={styles.playerSlides}>
+                <div className={styles.slideBlock}>
+                  <MenuSlider item={playerHeroData} player="player1" changeSlide={changeFaction} />
+                  <input
+                    className={styles.slideInput}
+                    id="playerHero"
+                    type="text"
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    value={heroName}
+                    name="playerHero"
                   />
+                  <label htmlFor="player1Faction" className={styles.label}>{playerDeck.deckName}</label>
+                  {/* <p className={styles.description}>
+                {t(`description.${heroFaction}.factionInfo`)}</p> */}
+                  <p className={styles.description}>{t(`description.${heroFaction}.${heroName}`)}</p>
                 </div>
               </div>
-            </div>
-          </fieldset>
-        </form>
-      </div>
+              <div className={styles.inputBlock}>
+                {roomId && password === '' ? (
+                  null
+                ) : (
+                  <input
+                    className={styles.input}
+                    id="password"
+                    type="text"
+                    ref={inputEl}
+                    onChange={onChangeInput}
+                    onBlur={formik.handleBlur}
+                    value={formik.values.password}
+                    placeholder={t('Password')}
+                    data-testid="input-body"
+                    name="password"
+                  />
+                )}
+                {formik.errors.password ? (
+                  <div className={styles.invalidFeedback}>{t(`errors.${formik.errors.password}`)}</div>
+                ) : null}
+                {error && (<div className={styles.invalidFeedback}>{t(`errors.${error.message}`)}</div>)}
+                <div className={styles.lowerBlock}>
+                  {name && (
+                  <p className={styles.roomsOwner}>
+                    {t('RoomsOwner')}
+                    {name}
+                  </p>
+                  )}
+                  <div className={styles.btnBlock}>
+                    {!roomId ? (
+                      <PrimaryButton
+                        showIcon={false}
+                        state="default"
+                        text={t('CREATE')}
+                        variant="primary"
+                        type="submit"
+                      />
+                    ) : (
+                      <PrimaryButton
+                        showIcon={false}
+                        state="default"
+                        text={t('JOIN')}
+                        variant="primary"
+                        type="submit"
+                      />
+                    )}
+                    <PrimaryButton
+                      onClick={handleClose}
+                      showIcon={false}
+                      state="default"
+                      text={t('CLOSE')}
+                      variant="secondary"
+                    />
+                  </div>
+                </div>
+              </div>
+            </fieldset>
+          </form>
+        </div>
+      )}
     </dialog>
   );
 };

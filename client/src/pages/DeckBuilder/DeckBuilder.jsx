@@ -17,6 +17,7 @@ import Lightning from '@assets/deckBuilderIcons/LightningIcon.svg';
 import Sword from '@assets/deckBuilderIcons/SwordIcon.svg';
 import ActiveCardInfo from '@components/CardComponents/ActiveCard/ActiveCardInfo.jsx';
 import AvailableCardsList from '@components/DeckBuilderComponents/AvailableCards/AvailableCardsList.jsx';
+import LoadSpinner from '../../components/LoadSpinner/LoadSpinner.jsx';
 import { deckNameValidation } from '../../utils/validation.js';
 import countDeckCards from '../../utils/countDeckCards.js';
 import makeDeckForDB from '../../utils/makeDeckForDB.js';
@@ -120,90 +121,94 @@ const DeckBuilder = () => {
       {orientation.type === 'portrait-primary' && (
         <RotateScreen />
       )}
-      <main className={styles.main}>
-        <div className={styles.leftBlock}>
-          <div className={styles.headerBlock}>
-            <h2 className={styles.title}>{t('DeckBuilder')}</h2>
-            <form className={styles.form} onSubmit={formik.handleSubmit}>
-              <fieldset className={styles.fieldset} disabled={formik.isSubmitting}>
-                <div className={styles.deckInfoBlock}>
-                  <div className={styles.inputBlock}>
-                    <input
-                      className={styles.input}
-                      id="deckName"
-                      type="text"
-                      onChange={(e) => makeInputChange(e)}
-                      onBlur={formik.handleBlur}
-                      value={formik.values.deckName}
-                      placeholder={t('DeckName')}
-                      data-testid="input-body"
-                      name="deckName"
-                    />
-                    {formik.errors.deckName && formik.touched ? (
-                      <div className={styles.invalidFeedback}>{t(`errors.${formik.errors.deckName}`)}</div>
-                    ) : null}
-                    {error && (<div className={styles.invalidFeedback}>{t(`errors.${error}`)}</div>)}
-                    <label htmlFor="deckName" className="visually-hidden">{t('DeckName')}</label>
-                  </div>
+      {formik.isSubmitting ? (
+        <LoadSpinner />
+      ) : (
+        <main className={styles.main}>
+          <div className={styles.leftBlock}>
+            <div className={styles.headerBlock}>
+              <h2 className={styles.title}>{t('DeckBuilder')}</h2>
+              <form className={styles.form} onSubmit={formik.handleSubmit}>
+                <fieldset className={styles.fieldset} disabled={formik.isSubmitting}>
                   <div className={styles.deckInfoBlock}>
-                    <div className={styles.featBlock}>
-                      <img src={Cards} className={styles.icon} alt="cards" />
-                      <p className={styles.quantity}>{cardsNmb}</p>
+                    <div className={styles.inputBlock}>
+                      <input
+                        className={styles.input}
+                        id="deckName"
+                        type="text"
+                        onChange={(e) => makeInputChange(e)}
+                        onBlur={formik.handleBlur}
+                        value={formik.values.deckName}
+                        placeholder={t('DeckName')}
+                        data-testid="input-body"
+                        name="deckName"
+                      />
+                      {formik.errors.deckName && formik.touched ? (
+                        <div className={styles.invalidFeedback}>{t(`errors.${formik.errors.deckName}`)}</div>
+                      ) : null}
+                      {error && (<div className={styles.invalidFeedback}>{t(`errors.${error}`)}</div>)}
+                      <label htmlFor="deckName" className="visually-hidden">{t('DeckName')}</label>
                     </div>
-                    <div className={styles.featBlock}>
-                      <img src={Lightning} className={styles.icon} alt="cards" />
-                      <p className={styles.quantity}>{spellsNmb}</p>
-                    </div>
-                    <div className={styles.featBlock}>
-                      <img src={Sword} className={styles.icon} alt="cards" />
-                      <p className={styles.quantity}>{warriorsNmb}</p>
+                    <div className={styles.deckInfoBlock}>
+                      <div className={styles.featBlock}>
+                        <img src={Cards} className={styles.icon} alt="cards" />
+                        <p className={styles.quantity}>{cardsNmb}</p>
+                      </div>
+                      <div className={styles.featBlock}>
+                        <img src={Lightning} className={styles.icon} alt="cards" />
+                        <p className={styles.quantity}>{spellsNmb}</p>
+                      </div>
+                      <div className={styles.featBlock}>
+                        <img src={Sword} className={styles.icon} alt="cards" />
+                        <p className={styles.quantity}>{warriorsNmb}</p>
+                      </div>
                     </div>
                   </div>
-                </div>
-                <div className={styles.btnBlock}>
-                  <PrimaryButton
-                    showIcon={false}
-                    state="default"
-                    text={t('SAVEDECK')}
-                    variant="primary"
-                    type="submit"
-                  />
-                  <PrimaryButton
-                    onClick={handleBackClick}
-                    showIcon={false}
-                    state="default"
-                    text={t('BACK')}
-                    variant="secondary"
-                  />
-                </div>
-              </fieldset>
-            </form>
-          </div>
-          <AvailableCardsList
-            hero={selectedHero}
-            cards={selectedCards}
-            activeCard={activeCardPlayer1}
-          />
-        </div>
-        <div className={styles.rightBlock}>
-          <div className={styles.activeBlock}>
-            {activeCardPlayer1 && (
-            <ActiveCard
+                  <div className={styles.btnBlock}>
+                    <PrimaryButton
+                      showIcon={false}
+                      state="default"
+                      text={t('SAVEDECK')}
+                      variant="primary"
+                      type="submit"
+                    />
+                    <PrimaryButton
+                      onClick={handleBackClick}
+                      showIcon={false}
+                      state="default"
+                      text={t('BACK')}
+                      variant="secondary"
+                    />
+                  </div>
+                </fieldset>
+              </form>
+            </div>
+            <AvailableCardsList
+              hero={selectedHero}
+              cards={selectedCards}
               activeCard={activeCardPlayer1}
-              selectedHero={selectedHero}
-              playerType="player1"
             />
-            )}
-            {isOpenInfo && activeCardPlayer1 && (
-            <ActiveCardInfo info={activeCardPlayer1.featInfo} type="build" />
-            )}
           </div>
-          <div className={styles.deckContainer}>
-            {selectedHero && (<DeckCards hero={selectedHero} cards={selectedCards} />)}
+          <div className={styles.rightBlock}>
+            <div className={styles.activeBlock}>
+              {activeCardPlayer1 && (
+              <ActiveCard
+                activeCard={activeCardPlayer1}
+                selectedHero={selectedHero}
+                playerType="player1"
+              />
+              )}
+              {isOpenInfo && activeCardPlayer1 && (
+              <ActiveCardInfo info={activeCardPlayer1.featInfo} type="build" />
+              )}
+            </div>
+            <div className={styles.deckContainer}>
+              {selectedHero && (<DeckCards hero={selectedHero} cards={selectedCards} />)}
+            </div>
           </div>
-        </div>
-        {warnWindow && (<WarnWindow type={warnWindow} />)}
-      </main>
+          {warnWindow && (<WarnWindow type={warnWindow} />)}
+        </main>
+      )}
     </div>
   );
 };

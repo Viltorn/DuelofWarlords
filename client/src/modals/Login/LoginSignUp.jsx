@@ -6,6 +6,7 @@ import { useTranslation } from 'react-i18next';
 import { useFormik } from 'formik';
 // import cn from 'classnames';
 // import axios from 'axios';
+import LoadSpinner from '@components/LoadSpinner/LoadSpinner.jsx';
 import { actions as modalActions } from '../../slices/modalsSlice.js';
 import { actions as gameActions } from '../../slices/gameSlice';
 import { SignUpSchema, LogInSchema } from '../../utils/validation.js';
@@ -46,7 +47,6 @@ const LoginSignUp = () => {
       setError(false);
       const { username, password } = values;
       // await axios.get('https://duelsofwarlords.onrender.com');
-      console.log(type);
       socket.emit(type, { username, password, decks: standartDecks }, (res) => {
         if (res.error) {
           handleError(res);
@@ -99,20 +99,25 @@ const LoginSignUp = () => {
     validateOnChange: true,
   });
 
+  console.log(loginFormik.isSubmitting);
   return (
     <dialog className={styles.window}>
-      <div className={styles.content}>
-        <h2 className={styles.header}>{signUp ? t('SignUp') : t('LogIn')}</h2>
-        <div className={styles.guestBlock}>
-          <button type="button" className={styles.guestBtn} onClick={handleGuestClick}>{t('GuestSignIn')}</button>
-          <p className={styles.cantBuild}>{t('CantBuildDeck')}</p>
+      {loginFormik.isSubmitting || signUpFormik.isSubmitting ? (
+        <LoadSpinner />
+      ) : (
+        <div className={styles.content}>
+          <h2 className={styles.header}>{signUp ? t('SignUp') : t('LogIn')}</h2>
+          <div className={styles.guestBlock}>
+            <button type="button" className={styles.guestBtn} onClick={handleGuestClick}>{t('GuestSignIn')}</button>
+            <p className={styles.cantBuild}>{t('CantBuildDeck')}</p>
+          </div>
+          {signUp ? (
+            <SignUpForm error={error} changeType={setSignUp} formik={signUpFormik} />
+          ) : (
+            <LogInForm error={error} changeType={setSignUp} formik={loginFormik} />
+          )}
         </div>
-        {signUp ? (
-          <SignUpForm error={error} changeType={setSignUp} formik={signUpFormik} />
-        ) : (
-          <LogInForm error={error} changeType={setSignUp} formik={loginFormik} />
-        )}
-      </div>
+      )}
     </dialog>
   );
 };

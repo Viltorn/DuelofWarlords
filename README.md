@@ -23,7 +23,7 @@ Trading card game based on the Duels of Champions computer game (MMDoC). In the 
 * ```$ git clone: https://github.com/Viltorn/DuelofWarlords.git```
 * ```go to client folder inside project directory```
 * ```$ npm install```
-* ```$ npm start``
+* ```$ npm start```
 * ```$ to start local server go to server folder```
 * ```$ npm install && PORT=8080 nodemon server.js```
 
