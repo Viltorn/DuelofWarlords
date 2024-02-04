@@ -13,7 +13,6 @@ import ZigfridDeck from '../../gameCardsData/standardDecks/ZigfridDeck.js';
 import gameCardsData from '../../gameCardsData/index.js';
 import tutorialStepsData from '../../gameData/tutorialStepsData.js';
 import makeDeckForPLayer from '../../utils/makeDeckForPlayer.js';
-import abilityContext from '../../contexts/abilityActions.js';
 import functionContext from '../../contexts/functionsContext.js';
 import makeInitialDeck from '../../utils/makeInitialDeck.js';
 
@@ -22,9 +21,13 @@ const TutorialStepsWindow = () => {
   const dispatch = useDispatch();
   const { fieldCells, fieldCards, thisPlayer } = useSelector((state) => state.battleReducer);
 
-  const { sendCardFromField, makeGameAction, makeFeatureCast } = useContext(abilityContext);
   const {
-    deleteCardfromSource, tutorStep, changeTutorStep,
+    deleteCardfromSource,
+    tutorStep,
+    changeTutorStep,
+    sendCardFromField,
+    makeGameAction,
+    makeFeatureCast,
   } = useContext(functionContext);
 
   const hero1 = ZigfridDeck.hero;

@@ -6,7 +6,6 @@ import AttackIcon from '@assets/battlefield/Sword.png';
 import Healed from '@assets/battlefield/Healing.svg';
 import { actions as battleActions } from '../../../slices/battleSlice.js';
 import functionContext from '../../../contexts/functionsContext.js';
-import abilityContext from '../../../contexts/abilityActions.js';
 import styles from './CellCard.module.css';
 
 const getTopMargin = (cardtype) => {
@@ -30,12 +29,10 @@ const CellCard = ({
     canBeCast,
     canBeAttacked,
     toogleInfoWindow,
-  } = useContext(functionContext);
-  const {
     actionPerforming,
     makeGameAction,
     invoking,
-  } = useContext(abilityContext);
+  } = useContext(functionContext);
   const cardElement = useRef();
   const dispatch = useDispatch();
   const { t } = useTranslation();

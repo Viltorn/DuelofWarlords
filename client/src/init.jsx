@@ -6,7 +6,6 @@ import store from './slices/index.js';
 import App from './App.jsx';
 import resources from './locales/index.js';
 import { FunctionProvider } from './contexts/functionsContext.js';
-import { AbilityProvider } from './contexts/abilityActions.js';
 
 const Init = async () => {
   const i18n = i18next.createInstance();
@@ -26,9 +25,7 @@ const Init = async () => {
     <I18nextProvider i18n={i18n}>
       <StoreProvider store={store}>
         <FunctionProvider>
-          <AbilityProvider>
-            <App />
-          </AbilityProvider>
+          <App />
         </FunctionProvider>
       </StoreProvider>
     </I18nextProvider>

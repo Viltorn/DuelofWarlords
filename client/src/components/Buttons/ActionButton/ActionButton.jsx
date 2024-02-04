@@ -3,7 +3,8 @@ import cn from 'classnames';
 import { useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { maxCardsDeckCopy } from '../../../gameData/gameLimits.js';
-import abilityContext from '../../../contexts/abilityActions.js';
+import useDeckBuilderActions from '../../../hooks/useDeckBuilderActions.js';
+import functionContext from '../../../contexts/functionsContext.js';
 import styles from './ActionButton.module.css';
 
 const ActionButton = ({
@@ -14,10 +15,9 @@ const ActionButton = ({
 
   const {
     sendCardToGraveAction,
-    changeCardsInDeckBuilder,
     actionPerforming,
     makeGameAction,
-  } = useContext(abilityContext);
+  } = useContext(functionContext);
   const {
     cellId,
   } = card;
@@ -29,6 +29,7 @@ const ActionButton = ({
     fieldCells,
     playerPoints,
   } = useSelector((state) => state.battleReducer);
+  const { changeCardsInDeckBuilder } = useDeckBuilderActions();
   const { curRoom, gameMode } = useSelector((state) => state.gameReducer);
   const currentPoints = playerPoints.find((item) => item.player === thisPlayer).points;
   const currentCell = fieldCells.find((item) => item.id === cellId);

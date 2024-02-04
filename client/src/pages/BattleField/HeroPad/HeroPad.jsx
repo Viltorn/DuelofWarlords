@@ -10,7 +10,6 @@ import CardCounter from '@assets/battlefield/CardCounter.png';
 import { actions as modalsActions } from '../../../slices/modalsSlice.js';
 import { actions as battleActions } from '../../../slices/battleSlice.js';
 import functionContext from '../../../contexts/functionsContext.js';
-import abilityContext from '../../../contexts/abilityActions.js';
 import CellCard from '../CellCard/CellCard.jsx';
 import styles from './HeroPad.module.css';
 
@@ -19,10 +18,8 @@ const HeroPad = ({ type, player }) => {
   const deck = useRef();
   const dispatch = useDispatch();
   const {
-    getActiveCard, handleAnimation, isAllowedCost,
+    getActiveCard, handleAnimation, isAllowedCost, actionPerforming, makeGameAction,
   } = useContext(functionContext);
-
-  const { actionPerforming, makeGameAction } = useContext(abilityContext);
 
   const {
     fieldCells, fieldCards, playersHands, thisPlayer, playerPoints, commonPoints, players, gameTurn,
@@ -71,7 +68,7 @@ const HeroPad = ({ type, player }) => {
     if (gameMode === 'online' && actionPerforming) {
       return;
     }
-    if ((activeCard && !isAllowedCost(activeCard)) || postponedCell.disabled) {
+    if ((activeCard && !isAllowedCost(activeCard, currentPoints)) || postponedCell.disabled) {
       return;
     }
 

@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import WarnWindow from '@components/WarnWindow/WarnWindow';
 import PrimaryButton from '@components/Buttons/PrimaryButton/PrimaryButton';
-import DeckImage from '@components/ChooseDeckComponents/DeckImage/DeckImage';
+import DeckImage from './DeckImage/DeckImage';
 import styles from './ChooseDeck.module.css';
 
 const ChooseDeck = () => {

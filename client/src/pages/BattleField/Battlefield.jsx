@@ -5,21 +5,20 @@ import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import { useOrientation } from '@uidotdev/usehooks';
 import { useNavigate } from 'react-router-dom';
 import socket from '../../socket.js';
-import Cell from '../../components/BattleComponents/Cell/Cell.jsx';
-import HeroPad from '../../components/BattleComponents/HeroPad/HeroPad.jsx';
+import Cell from './Cell/Cell.jsx';
+import HeroPad from './HeroPad/HeroPad.jsx';
 import Card from '../../components/CardComponents/Card/Card.jsx';
-import Header from '../../components/BattleComponents/BattleHeader/BattleHeader.jsx';
+import Header from './BattleHeader/BattleHeader.jsx';
 import RotateScreen from '../../components/RotateScreen/RotateScreen.jsx';
 import TutorialStepsWindow from '../../modals/TutorialModals/TutorialStepsWindow.jsx';
 import ActiveCard from '../../components/CardComponents/ActiveCard/ActiveCard.jsx';
 import ActiveCardInfo from '../../components/CardComponents/ActiveCard/ActiveCardInfo.jsx';
-import InGameMenu from '../../components/BattleComponents/InGameMenu/InGameMenu.jsx';
+import InGameMenu from './InGameMenu/InGameMenu.jsx';
 import styles from './Battlefield.module.css';
 import getModal from '../../modals/index.js';
 import { actions as modalsActions } from '../../slices/modalsSlice.js';
 import { actions as battleActions } from '../../slices/battleSlice.js';
 import { actions as gameActions } from '../../slices/gameSlice.js';
-import AbilitiesContext from '../../contexts/abilityActions.js';
 import FunctionContext from '../../contexts/functionsContext.js';
 
 const Battlefield = () => {
@@ -32,8 +31,8 @@ const Battlefield = () => {
     addCardToField,
     endTurn,
     makeMove,
-  } = useContext(AbilitiesContext);
-  const { isOpenInfo } = useContext(FunctionContext);
+    isOpenInfo,
+  } = useContext(FunctionContext);
   const {
     activeCardPlayer1,
     activeCardPlayer2,

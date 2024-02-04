@@ -11,7 +11,6 @@ import findTempSpellsOnField from '../../../utils/supportFunc/findTempSpellsOnFi
 import findTurnSpellsOnField from '../../../utils/supportFunc/findTurnSpellsOnField.js';
 import tutorialStepsData from '../../../gameData/tutorialStepsData.js';
 import functionContext from '../../../contexts/functionsContext.js';
-import abilityContext from '../../../contexts/abilityActions.js';
 import styles from './BattleHeader.module.css';
 
 const BattleHeader = () => {
@@ -29,12 +28,9 @@ const BattleHeader = () => {
 
   const { gameMode, curRoom } = useSelector((state) => state.gameReducer);
   const {
-    changeTutorStep, tutorStep, setOpenMenu, isOpenMenu,
-  } = useContext(functionContext);
-  const {
-    actionPerforming,
+    changeTutorStep, tutorStep, setOpenMenu, isOpenMenu, actionPerforming,
     makeGameAction,
-  } = useContext(abilityContext);
+  } = useContext(functionContext);
   const player1Points = playerPoints.find((item) => item.player === 'player1').points;
   const player2Points = playerPoints.find((item) => item.player === 'player2').points;
   const { disEndTurn } = tutorialStepsData[tutorStep];

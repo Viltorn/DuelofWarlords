@@ -46,7 +46,6 @@ const LoginSignUp = () => {
     try {
       setError(false);
       const { username, password } = values;
-      // await axios.get('https://duelsofwarlords.onrender.com');
       socket.emit(type, { username, password, decks: standartDecks }, (res) => {
         if (res.error) {
           handleError(res);

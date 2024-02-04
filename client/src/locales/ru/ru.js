@@ -145,6 +145,7 @@ export default {
     RepeatPassword: 'Повторите пароль...',
     CantBuildDeck: '(Вы не сможете собрать колоды и играть онлайн)',
     GuestSignIn: 'Продолжить как гость',
+    Loading: 'Загрузка...',
     errors: {
       RoomNotExist: 'Комната не найдена!',
       RoomEmpty: 'Эта комната пустая!',

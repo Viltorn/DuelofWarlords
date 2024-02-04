@@ -16,8 +16,8 @@ import Hunter from '@assets/mainPageIcons/Hunter_logo.png';
 import Assasin from '@assets/mainPageIcons/Assasin_logo.png';
 import PostponedCover from '@assets/mainPageIcons/PostponedCover.png';
 import DiscordLogo from '@assets/mainPageIcons/discord.svg';
-import GameFeature from '@components/MainPageComponents/GameFeature/GameFeature';
-import GameFaction from '@components/MainPageComponents/GameFaction/GameFaction';
+import GameFeature from './GameFeature/GameFeature';
+import GameFaction from './GameFaction/GameFaction';
 import styles from './MainPage.module.css';
 
 const MainPage = () => {

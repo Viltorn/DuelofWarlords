@@ -135,6 +135,7 @@ export default {
     RepeatPassword: 'Repeat password...',
     CantBuildDeck: '(You will not be able to build your own deck)',
     GuestSignIn: 'Continue as a guest',
+    Loading: 'Loading...',
     errors: {
       RoomNotExist: 'The room doesn\'t exist!',
       RoomEmpty: 'This room is empty!',

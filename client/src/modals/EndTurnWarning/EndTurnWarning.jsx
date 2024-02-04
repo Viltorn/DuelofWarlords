@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import { actions as modalsActions } from '../../slices/modalsSlice.js';
-import abilityContext from '../../contexts/abilityActions.js';
+import functionsContext from '../../contexts/functionsContext.js';
 import PrimaryButton from '../../components/Buttons/PrimaryButton/PrimaryButton.jsx';
 import styles from './EndTurnWarning.module.css';
 
@@ -11,7 +11,7 @@ const EndTurnWarning = () => {
   const dispatch = useDispatch();
   const {
     makeGameAction,
-  } = useContext(abilityContext);
+  } = useContext(functionsContext);
   const { data } = useSelector((state) => state.modalsReducer);
   const { gameMode } = useSelector((state) => state.gameReducer);
 

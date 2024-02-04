@@ -1,0 +1,26 @@
+.container {
+  position: fixed;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 30px;
+  background-color: var(--dark-blue);
+  margin: auto auto; /* 15% from the top and centered */
+  padding: 2rem 2rem;
+  border: 1px solid #888;
+  width: 100%; /* Could be more or less, depending on screen size */
+  height: 100%;
+  border-radius: 0.5rem;
+  left: 0;
+  right: 0;
+  z-index: 100;
+}
+
+.container h2 {
+  font-size: 2rem;
+  text-shadow: 1px 0 0 var(--dark-color),0 1px 0 var(--dark-color), -1px 0 0 var(--dark-color),0 -1px 0 var(--dark-color);
+  color: var(--white-color);
+}
+
+

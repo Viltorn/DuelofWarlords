@@ -6,7 +6,6 @@ import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import CellCard from '../CellCard/CellCard.jsx';
 import styles from './Cell.module.css';
 import functionContext from '../../../contexts/functionsContext.js';
-import abilityContext from '../../../contexts/abilityActions.js';
 import findTriggerSpells from '../../../utils/supportFunc/findTriggerSpells.js';
 
 const Cell = ({ props, id }) => {
@@ -28,12 +27,12 @@ const Cell = ({ props, id }) => {
     getActiveCard,
     canBeMoved,
     canBeCast,
+    makeFeatureCast,
+    actionPerforming,
+    makeGameAction,
   } = useContext(functionContext);
 
   const { curRoom, gameMode } = useSelector((state) => state.gameReducer);
-  const {
-    makeFeatureCast, actionPerforming, makeGameAction,
-  } = useContext(abilityContext);
   const currentCell = fieldCells.find((cell) => cell.id === id);
   const currentPoints = playerPoints.find((item) => item.player === thisPlayer).points;
 
@@ -99,7 +98,7 @@ const Cell = ({ props, id }) => {
       return;
     }
 
-    if (activeCard && !isAllowedCost(activeCard)) {
+    if (activeCard && !isAllowedCost(activeCard, currentPoints)) {
       return;
     }
 
