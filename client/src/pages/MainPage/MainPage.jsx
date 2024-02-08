@@ -47,8 +47,8 @@ const MainPage = () => {
           </div>
         </div>
       </div>
-      <section className={styles.main} id="description">
-        <div className={styles.mainDescription}>
+      <main className={styles.main} id="description">
+        <article className={styles.mainDescription}>
           <h1 className={styles.mainTitle}>
             Duel of Warlords
           </h1>
@@ -60,16 +60,16 @@ const MainPage = () => {
             {' '}
             {t('moreAboutMMdoc')}
           </a>
-        </div>
-        <div className={styles.gameDescription}>
+        </article>
+        <article className={styles.gameDescription}>
           <h2 className={styles.h2Title}>
             {t('GameDescriptTitle')}
           </h2>
           <p className={styles.descriptionNormal}>
             {t('gameDescription')}
           </p>
-        </div>
-        <div className={styles.gameDescription}>
+        </article>
+        <article className={styles.gameDescription}>
           <h2 className={styles.h2Title}>
             {t('GameFactionsTitle')}
           </h2>
@@ -85,8 +85,8 @@ const MainPage = () => {
             <GameFaction faction={AcademiaLogo} hero={Mage} />
             <GameFaction faction={DungeonLogo} hero={Assasin} />
           </div>
-        </div>
-        <div className={styles.gameDescription}>
+        </article>
+        <article className={styles.gameDescription}>
           <h2 className={styles.h2Title}>
             {t('GameFeaturesTitle')}
           </h2>
@@ -97,11 +97,11 @@ const MainPage = () => {
           <GameFeature img={SpellCast} direction="normal" h1={t('Spells')} p={t('SpellsDescription')} />
           <hr className={styles.devider} />
           <GameFeature img={PostponedCover} direction="reverse" h1={t('PostponedCard')} p={t('PostponedDescription')} />
-        </div>
+        </article>
         <Link to="/choose" className={styles.link}>
           <PrimaryButton showIcon={false} state="default" text={t('PLAY')} variant="primary" />
         </Link>
-      </section>
+      </main>
       <footer className={styles.footer}>
         <div className={styles.footerBlock}>
           <h3 className={styles.footTitle}>Duel of Warlords</h3>

@@ -12,7 +12,7 @@ import ErrorPage from './pages/ErrorPage/ErrorPage.jsx';
 
 const MainPage = lazy(() => import('./pages/MainPage/MainPage.jsx'));
 const Battlefield = lazy(() => import('./pages/BattleField/Battlefield.jsx'));
-const OnlineLobby = lazy(() => import('./pages/BattleField/Battlefield.jsx'));
+const OnlineLobby = lazy(() => import('./pages/OnlineLobby/OnlineLobby.jsx'));
 const ChooseDeckWindow = lazy(() => import('./pages/ChooseDeck/ChooseDeck.jsx'));
 const DeckBuilder = lazy(() => import('./pages/DeckBuilder/DeckBuilder.jsx'));
 const ChooseGame = lazy(() => import('./pages/ChooseGame/ChooseGame.jsx'));
