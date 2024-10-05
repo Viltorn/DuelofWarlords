@@ -3,6 +3,7 @@ import findAdjasentCells from './findAdjasentCells';
 import findNextCellsInLine from './findNextCellsInLine';
 import findClosestWarrior from './findClosestWarrior';
 import findNextRowToApply from './findNextRowToApply';
+import isRightPlayerCellForSpell from './isRightPlayerCellForSpell';
 
 const findCellsForSpellApply = (data) => {
   const {
@@ -28,9 +29,7 @@ const findCellsForSpellApply = (data) => {
           && cell.type === 'field' && cell.player !== player);
     }
   } else if (aim.includes('randomNextRow')) {
-    if (type === 'bad') {
-      return findNextRowToApply(aimCell, currentFieldCells, currentFieldCards, player);
-    }
+    return findNextRowToApply(aimCell, currentFieldCells, currentFieldCards, player, type);
   } else if (aim.includes('otherWarInRow')) {
     if (type === 'bad') {
       const foundCell = currentFieldCells.find((cell) => cell.player === aimCell.player && cell.type === 'field'
@@ -59,7 +58,8 @@ const findCellsForSpellApply = (data) => {
     }
   } else if (aim.includes('oneAdjacent')) {
     const adjasentCells = findAdjasentCells(currentFieldCells, aimCell)
-      .filter((cell) => !isCellEmpty(currentFieldCards, cell.id));
+      .filter((cell) => !isCellEmpty(currentFieldCards, cell.id)
+        && isRightPlayerCellForSpell(cell, player, type));
     return adjasentCells.length !== 0 ? [adjasentCells[0]] : [];
   }
   return null;

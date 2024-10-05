@@ -6,14 +6,14 @@ import {
 } from '../gameData/heroes&spellsCellsData.js';
 
 const initialState = {
-  commonPoints: 0,
-  playerPoints: [{ player: 'player1', points: 1 }, { player: 'player2', points: 1 }],
+  roundNumber: 1,
+  playerPoints: [{ player: 'player1', maxPoints: 1, points: 1 }, { player: 'player2', maxPoints: 1, points: 1 }],
   players: {
     player1: {
-      name: '', id: 'player1', cardsdrawn: false, switchedcard: true,
+      name: '', id: 'player1', cardsdrawn: false, sucrificedCard: true, type: 'human',
     },
     player2: {
-      name: '', id: 'player2', cardsdrawn: false, switchedcard: true,
+      name: '', id: 'player2', cardsdrawn: false, sucrificedCard: true, type: 'human',
     },
   },
   thisPlayer: 'player1',
@@ -41,6 +41,10 @@ const battleSlice = createSlice({
   initialState,
   reducers: {
     resetState: () => initialState,
+
+    changeRound(state) {
+      state.roundNumber += 1;
+    },
 
     setLastCellWithAction(state, { payload }) {
       const { cellActionData } = payload;
@@ -133,9 +137,9 @@ const battleSlice = createSlice({
       state.players[player].cardsdrawn = status;
     },
 
-    setCardSwitchStatus(state, { payload }) {
+    setCardSucrificeStatus(state, { payload }) {
       const { player, status } = payload;
-      state.players[player].switchedcard = status;
+      state.players[player].sucrificedCard = status;
     },
 
     turnPostponed(state, { payload }) {
@@ -178,6 +182,11 @@ const battleSlice = createSlice({
       state.players[player].name = name;
     },
 
+    setPlayerType(state, { payload }) {
+      const { type, player } = payload;
+      state.players[player].type = type;
+    },
+
     drawCard(state, { payload }) {
       const { player } = payload;
       if (state.playersDecks[player].length !== 0) {
@@ -200,8 +209,15 @@ const battleSlice = createSlice({
     setPlayerPoints(state, { payload }) {
       const { points, player } = payload;
       state.playerPoints = state.playerPoints.map((item) => {
-        const newPoints = item.player === player ? points : item.points;
-        item.points = newPoints;
+        if (item.player === player) item.points = points >= 0 ? points : 0;
+        return item;
+      });
+    },
+
+    setPlayerMaxPoints(state, { payload }) {
+      const { maxPoints, player } = payload;
+      state.playerPoints = state.playerPoints.map((item) => {
+        item.maxPoints = item.player === player ? maxPoints : item.maxPoints;
         return item;
       });
     },

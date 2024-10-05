@@ -15,6 +15,7 @@ export default {
     id: _.uniqueId(),
     place: 'warrior',
     features: [{
+      spell: true,
       attach: ['warrior', 'flyer', 'shooter', 'fighter'],
       aim: ['warrior'],
       type: 'good',
@@ -37,10 +38,10 @@ export default {
     id: _.uniqueId(),
     place: '',
     features: [{
-      attach: false, type: 'bad', aim: ['warrior', 'fighter', 'shooter', 'flyer'], name: 'attack', value: 3, depend: 'postponed', dependValue: 4, aimStatus: 'field',
+      spell: true, attach: false, type: 'bad', aim: ['warrior', 'fighter', 'shooter', 'flyer'], name: 'attack', value: 4, depend: 'postponed', dependValue: 4, aimStatus: 'field',
     },
     {
-      attach: false, type: 'all', aim: ['adjacent', 'warrior', 'fighter', 'shooter', 'flyer'], name: 'stun', aimStatus: 'field',
+      spell: true, attach: false, type: 'all', aim: ['adjacent', 'warrior', 'fighter', 'shooter', 'flyer'], name: 'stun', aimStatus: 'field',
     }],
     img: ThunderBlast,
     status: 'hand',

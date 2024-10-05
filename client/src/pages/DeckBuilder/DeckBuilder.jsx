@@ -7,6 +7,7 @@ import { useOrientation } from '@uidotdev/usehooks';
 import { actions as battleActions } from '@slices/battleSlice.js';
 import { actions as gameActions } from '@slices/gameSlice.js';
 import { actions as deckbuilderActions } from '@slices/deckbuilderSlice.js';
+import axios from 'axios';
 import RotateScreen from '@components/RotateScreen/RotateScreen.jsx';
 import WarnWindow from '@components/WarnWindow/WarnWindow.jsx';
 import ActiveCard from '@components/CardComponents/ActiveCard/ActiveCard.jsx';
@@ -14,6 +15,7 @@ import PrimaryButton from '@components/Buttons/PrimaryButton/PrimaryButton.jsx';
 import Cards from '@assets/deckBuilderIcons/CardsIcon.svg';
 import Lightning from '@assets/deckBuilderIcons/LightningIcon.svg';
 import Sword from '@assets/deckBuilderIcons/SwordIcon.svg';
+import DollarSign from '@assets/deckBuilderIcons/DollarSign.png';
 import ActiveCardInfo from '@components/CardComponents/ActiveCard/ActiveCardInfo.jsx';
 import DeckCards from './DeckCards/DeckCards.jsx';
 import AvailableCardsList from './AvailableCards/AvailableCardsList.jsx';
@@ -24,7 +26,8 @@ import makeDeckForDB from '../../utils/makeDeckForDB.js';
 import gameCardsData from '../../gameCardsData/index';
 import functionContext from '../../contexts/functionsContext.js';
 import styles from './DeckBuilder.module.css';
-import socket from '../../socket.js';
+import routes from '../../api/routes.js';
+import isDeckExist from '../../utils/isDeckExist.js';
 
 const DeckBuilder = () => {
   const { t } = useTranslation();
@@ -38,8 +41,11 @@ const DeckBuilder = () => {
   const {
     chosenDeckName, selectedCards, selectedHero, warnWindow, isChangesMade,
   } = useSelector((state) => state.deckbuilderReducer);
+  console.log(selectedHero);
   const chosenDeck = playersDecks.find((deck) => deck.deckName === chosenDeckName);
-  const { cardsNmb, spellsNmb, warriorsNmb } = countDeckCards(selectedCards);
+  const {
+    cardsNmb, spellsNmb, warriorsNmb, avarageCardCost,
+  } = countDeckCards(selectedCards);
 
   const handleBackClick = () => {
     if (isChangesMade) {
@@ -80,7 +86,6 @@ const DeckBuilder = () => {
     onSubmit: async ({ deckName }) => {
       try {
         setError(false);
-        console.log(1);
         if (!selectedHero) {
           handleError({ message: 'meetDeckRequirments' });
           return;
@@ -91,19 +96,24 @@ const DeckBuilder = () => {
         const cards = makeDeckForDB(selectedCards);
         const deck = { deckName, hero, cards };
         const username = name;
-        socket.emit('saveDeck', { deck, username }, (res) => {
-          if (res.error) {
-            handleError(res.error);
-            return;
-          }
-          const { decks } = res;
-          dispatch(gameActions.setDecks({ decks }));
+        let newDecks;
+        if (isDeckExist(deck, playersDecks)) {
+          newDecks = [...playersDecks];
+          const idx = newDecks.findIndex((item) => item.deckName === deck.deckName);
+          newDecks[idx] = deck;
+        }
+        if (!isDeckExist(deck, playersDecks)) {
+          newDecks = [deck, ...playersDecks];
+        }
+        const res = await axios.patch(routes.getURL('accounts'), { username, decks: newDecks });
+        if (res.status === 200) {
+          dispatch(gameActions.setDecks({ decks: newDecks }));
           dispatch(deckbuilderActions.setChanges({ changesMade: false }));
           dispatch(deckbuilderActions.setChosenDeck({ chosenDeckName: deckName }));
           dispatch(deckbuilderActions.setWarnWindow({ windowType: 'deckSaved' }));
-        });
+        }
       } catch (err) {
-        setError(err.message);
+        handleError(err);
         console.log(err);
         formik.setSubmitting(false);
       }
@@ -151,16 +161,20 @@ const DeckBuilder = () => {
                     </div>
                     <div className={styles.deckInfoBlock}>
                       <div className={styles.featBlock}>
-                        <img src={Cards} className={styles.icon} alt="cards" />
+                        <img src={Cards} className={styles.icon} alt="all cards" />
                         <p className={styles.quantity}>{cardsNmb}</p>
                       </div>
                       <div className={styles.featBlock}>
-                        <img src={Lightning} className={styles.icon} alt="cards" />
+                        <img src={Lightning} className={styles.icon} alt="spell cards" />
                         <p className={styles.quantity}>{spellsNmb}</p>
                       </div>
                       <div className={styles.featBlock}>
-                        <img src={Sword} className={styles.icon} alt="cards" />
+                        <img src={Sword} className={styles.icon} alt="warrior cards" />
                         <p className={styles.quantity}>{warriorsNmb}</p>
+                      </div>
+                      <div className={styles.featBlock}>
+                        <img src={DollarSign} className={styles.icon} alt="avarage card cost" />
+                        <p className={styles.quantity}>{avarageCardCost}</p>
                       </div>
                     </div>
                   </div>

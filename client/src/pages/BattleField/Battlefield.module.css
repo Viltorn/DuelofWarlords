@@ -1,4 +1,5 @@
 /* Battlfield */
+/* BattlefieldOption */
 
 .container {
   display: flex;
@@ -8,7 +9,7 @@
   align-items: flex-start;
   background-size: cover;
   background-repeat: no-repeat;
-  background-image: url("../../assets/battlefield/BattlefieldOption.png");
+  background-image: url("../../assets/battlefield/BattleFieldCastles.png");
   background-position: center;
   height: 100vh;
   overflow: hidden;

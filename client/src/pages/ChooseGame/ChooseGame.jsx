@@ -6,9 +6,9 @@ import getModal from '../../modals/index.js';
 import { actions as modalsActions } from '../../slices/modalsSlice.js';
 import { actions as gameActions } from '../../slices/gameSlice';
 import gameVersion from '../../gameData/currentGameVer';
-import socket from '../../socket.js';
 import MenuBtn from '../../components/Buttons/MenuBtn/MenuBtn.jsx';
 import styles from './ChooseGame.module.css';
+import socket from '../../socket.js';
 
 const ChooseGame = () => {
   const { t } = useTranslation();
@@ -35,7 +35,8 @@ const ChooseGame = () => {
   const handleLogBtnClick = () => {
     if (logged) {
       dispatch(gameActions.setLogged({ logged: false }));
-    } else {
+    }
+    if (!logged) {
       dispatch(gameActions.setUserType({ userType: '' }));
     }
   };
@@ -63,7 +64,6 @@ const ChooseGame = () => {
     socket.on('getSocketId', updateSockId);
     socket.on('rooms', updateOnlineRooms);
     socket.on('clientsCount', updateCurOnline);
-
     return () => {
       socket.off('getSocketId', updateSockId);
       socket.off('rooms', updateOnlineRooms);

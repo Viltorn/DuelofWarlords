@@ -12,15 +12,15 @@ export default {
     name: 'Arcane armor',
     id: _.uniqueId(),
     type: 'spell',
-    subtype: 'instant',
+    subtype: 'reaction',
     cost: 1,
     currentC: 1,
     featInfo: ['REACTION'],
     description: 'ArcaneArmor',
     school: 'Shadow',
-    place: 'postponed',
+    place: 'bigSpell',
     features: [{
-      attach: ['field', 'warrior', 'hero'], aim: ['warrior', 'fighter', 'shooter', 'flyer'], type: 'good', name: 'protection', value: { type: 'number', val: 100 }, charges: 1, condition: 'minPower', conditionValue: 3, aimStatus: 'field',
+      spell: true, attach: ['field', 'warrior', 'hero'], aim: ['warrior', 'fighter', 'shooter', 'flyer'], type: 'good', name: 'protection', value: { type: 'number', val: 100 }, charges: 1, condition: 'minPower', conditionValue: 3, aimStatus: 'field', cost: 1,
     }],
     img: ArcaneArmor,
     status: 'hand',
@@ -38,7 +38,8 @@ export default {
     place: 'warrior',
     features: [
       {
-        attach: ['warrior'],
+        spell: true,
+        attach: ['warrior', 'flyer', 'shooter', 'fighter'],
         aim: ['warrior', 'flyer', 'shooter', 'fighter'],
         type: 'bad',
         condition: 'onattack',
@@ -64,14 +65,15 @@ export default {
     place: 'warrior',
     features: [
       {
-        attach: ['warrior'],
+        spell: true,
+        attach: ['warrior', 'flyer', 'shooter', 'fighter'],
         aim: ['warrior', 'flyer', 'shooter', 'fighter'],
         type: 'good',
         name: 'invisible',
         aimStatus: 'field',
       },
       {
-        attach: ['warrior'], type: 'good', name: 'protection', value: { type: 'percent', val: 0.5 }, aim: ['spell'], aimStatus: 'field',
+        spell: true, attach: ['warrior'], type: 'good', name: 'protection', value: { type: 'percent', val: 0.5 }, aim: ['spell'], aimStatus: 'field',
       },
     ],
     img: InvisibilityCloak,
@@ -89,7 +91,7 @@ export default {
     school: 'Shadow',
     place: '',
     features: [{
-      attach: false, type: 'bad', name: 'attack', value: 200, aim: ['warrior', 'flyer', 'shooter', 'fighter'], aimStatus: 'field',
+      spell: true, attach: false, type: 'bad', name: 'attack', value: 200, aim: ['warrior', 'flyer', 'shooter', 'fighter'], aimStatus: 'field',
     }],
     img: SoulDrain,
     status: 'hand',
@@ -106,7 +108,7 @@ export default {
     school: 'Shadow',
     place: '',
     features: [{
-      attach: ['warrior'], type: 'good', aim: ['warrior', 'flyer', 'shooter', 'fighter'], charges: 1, name: 'moving', aimStatus: 'field', immediate: true,
+      spell: true, attach: ['warrior', 'flyer', 'shooter', 'fighter'], type: 'good', aim: ['warrior', 'flyer', 'shooter', 'fighter'], charges: 1, name: 'moving', aimStatus: 'field', immediate: true,
     }],
     img: Teleport,
     status: 'hand',
@@ -123,7 +125,7 @@ export default {
     school: 'Shadow',
     place: '',
     features: [{
-      attach: false, type: 'bad', name: 'return', aim: ['warrior', 'flyer', 'shooter', 'fighter'], aimStatus: 'field',
+      spell: true, attach: false, type: 'bad', name: 'return', aim: ['warrior', 'flyer', 'shooter', 'fighter'], aimStatus: 'field',
     }],
     img: TownPortal,
     status: 'hand',
@@ -140,9 +142,9 @@ export default {
     school: 'Shadow',
     place: '',
     features: [{
-      attach: false, type: 'bad', name: 'stun', aim: 'warrior', aimStatus: 'field',
+      spell: true, attach: false, type: 'bad', name: 'stun', aim: 'warrior', aimStatus: 'field',
     }, {
-      attach: ['warrior'], aim: ['warrior', 'flyer', 'shooter', 'fighter'], type: 'bad', name: 'moveNextRow', aimStatus: 'field', charges: 1, immediate: true,
+      spell: true, attach: ['warrior'], aim: ['warrior', 'flyer', 'shooter', 'fighter'], type: 'bad', name: 'moveNextRow', aimStatus: 'field', charges: 1, immediate: true,
     }],
     img: Transformation,
     status: 'hand',

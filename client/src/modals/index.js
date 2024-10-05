@@ -14,6 +14,7 @@ import WarningResetWindow from './WarningResetWindow/WarningResetWindow.jsx';
 import ConnectProblem from './ConnectProblem/ConnectProblem.jsx';
 import EndTurnWarning from './EndTurnWarning/EndTurnWarning.jsx';
 import LoginSignUp from './Login/LoginSignUp.jsx';
+import PlayerTurn from './PlayerTurn/PlayerTurn.jsx';
 
 const modals = {
   loginWindow: LoginSignUp,
@@ -32,6 +33,7 @@ const modals = {
   openGraveyard: CheckGraveyard,
   openPointsCounter: ChangePoints,
   openHotSeatMenu: HotSeatMenu,
+  playerTurn: PlayerTurn,
 };
 
 export default (modalName) => modals[modalName];

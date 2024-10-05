@@ -32,6 +32,7 @@ const useDeckBuilderActions = () => {
       newSelectedCards[index] = newCard;
       dispatch(deckbuilderActions.selectCards({ selectedCards: newSelectedCards }));
     } else if (addHero) {
+      console.log(newCard);
       dispatch(deckbuilderActions.selectHero({ selectedHero: newCard }));
     }
 

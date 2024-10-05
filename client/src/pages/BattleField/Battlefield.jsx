@@ -49,7 +49,7 @@ const Battlefield = () => {
   const topSpellsPlayer1 = useMemo(() => fieldCells.filter((cell) => cell.player === 'player1' && cell.type === 'topSpell'), [fieldCells]);
   const topSpellsPlayer2 = useMemo(() => fieldCells.filter((cell) => cell.player === 'player2' && cell.type === 'topSpell'), [fieldCells]);
   const bigSpell = useMemo(() => fieldCells.find((cell) => cell.type === 'bigSpell'), [fieldCells]);
-  const midPells = useMemo(() => fieldCells.filter((cell) => cell.type === 'midSpell'), [fieldCells]);
+  const midSpells = useMemo(() => fieldCells.filter((cell) => cell.type === 'midSpell'), [fieldCells]);
   const activeCard = thisPlayer === 'player1' ? activeCardPlayer1 : activeCardPlayer2;
 
   const renderModal = (status, option) => {
@@ -272,7 +272,7 @@ const Battlefield = () => {
               ))}
             </div>
             <div className={styles.middleSpells}>
-              {midPells.map((spell) => (
+              {midSpells.map((spell) => (
                 <Cell
                   key={spell.id}
                   id={spell.id}

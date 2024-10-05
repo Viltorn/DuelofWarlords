@@ -71,6 +71,7 @@ const LogInForm = ({ formik, error, changeType }) => {
           {error && (<div className={styles.invalidFeedback}>{t(`errors.${error}`)}</div>)}
         </div>
         <label htmlFor="username" className="visually-hidden">{t('YourName')}</label>
+        <input type="hidden" className="visually-hidden" id="token" name="token" />
         <div className={styles.submitBlock}>
           <PrimaryButton
             showIcon={false}

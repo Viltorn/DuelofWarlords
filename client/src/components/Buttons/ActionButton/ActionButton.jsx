@@ -1,153 +1,33 @@
-import React, { useContext, useRef } from 'react';
+import React, { useRef } from 'react';
 import cn from 'classnames';
-import { useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { maxCardsDeckCopy } from '../../../gameData/gameLimits.js';
-import useDeckBuilderActions from '../../../hooks/useDeckBuilderActions.js';
-import functionContext from '../../../contexts/functionsContext.js';
 import styles from './ActionButton.module.css';
+import useClickActions from '../../../hooks/useClickActions.js';
 
 const ActionButton = ({
-  type, card, ability, ressurect,
+  type, card, ability, ressurect, name,
 }) => {
   const { t } = useTranslation();
   const element = useRef();
 
-  const {
-    sendCardToGraveAction,
-    actionPerforming,
-    makeGameAction,
-  } = useContext(functionContext);
-  const {
-    cellId,
-  } = card;
-
-  const cost = ressurect?.resCost ?? card.cost;
-
-  const {
-    thisPlayer,
-    fieldCells,
-    playerPoints,
-  } = useSelector((state) => state.battleReducer);
-  const { changeCardsInDeckBuilder } = useDeckBuilderActions();
-  const { curRoom, gameMode } = useSelector((state) => state.gameReducer);
-  const currentPoints = playerPoints.find((item) => item.player === thisPlayer).points;
-  const currentCell = fieldCells.find((item) => item.id === cellId);
+  const { handleButtonClick } = useClickActions();
 
   const classes = cn({
     [styles.btn]: true,
     [styles.redBack]: card.qty === maxCardsDeckCopy && type === 'addToDeck',
   });
 
-  const performClick = (btnType) => {
-    if (gameMode === 'online' && actionPerforming) {
-      return;
-    }
-    const returnData = {
-      move: 'returnCardToHand',
-      room: curRoom,
-      card,
-      player: thisPlayer,
-      cost,
-      spellId: ressurect?.id,
-      cellsOnField: fieldCells,
-    };
-    const abilityData = {
-      move: 'makeAbilityCast',
-      room: curRoom,
-      card,
-      player: thisPlayer,
-      points: currentPoints,
-      cell: currentCell,
-      ability,
-    };
-    const deckRetData = {
-      move: 'returnCardToDeck',
-      room: curRoom,
-      card,
-      player: thisPlayer,
-    };
-
-    const switchCardData = {
-      move: 'switchCard',
-      room: curRoom,
-      card,
-      player: thisPlayer,
-    };
-
-    switch (btnType) {
-      case 'addToDeck':
-        changeCardsInDeckBuilder(card, 1);
-        break;
-      case 'deleteFromDeck':
-        changeCardsInDeckBuilder(card, -1);
-        break;
-      case 'graveyard':
-        sendCardToGraveAction(card, thisPlayer, fieldCells);
-        break;
-      case 'return':
-        makeGameAction(returnData, gameMode);
-        break;
-      case 'switchcard':
-        makeGameAction(switchCardData, gameMode);
-        break;
-      case 'ability':
-        makeGameAction(abilityData, gameMode);
-        break;
-      case 'deckreturn':
-        makeGameAction(deckRetData, gameMode);
-        break;
-      default:
-        break;
-    }
-  };
-
-  const handleButtonClick = () => {
-    performClick(type);
-  };
-
-  // function handleKeyDown(e) {
-  //   e.preventDefault();
-  //   const { key } = e;
-  //   switch (key) {
-  //     case '1':
-  //       performClick('turnLeft');
-  //       break;
-  //     case '2':
-  //       performClick('turnRight');
-  //       break;
-  //     case 'q':
-  //       performClick('healthBar');
-  //       break;
-  //     case 'r':
-  //       performClick('return');
-  //       break;
-  //     case 'z':
-  //       performClick('graveyard');
-  //       break;
-  //     case 'd':
-  //       performClick('deckreturn');
-  //       break;
-  //     default:
-  //       break;
-  //   }
-  // }
-
-  // useEffect(() => {
-  //   window.addEventListener('keydown', handleKeyDown);
-  //   return () => {
-  //     window.removeEventListener('keydown', handleKeyDown);
-  //   };
-  // });
-
   return (
     <button
       className={classes}
       type="button"
       ref={element}
-      onClick={handleButtonClick}
+      onClick={() => handleButtonClick({
+        btnType: type, card, ability, ressurect,
+      })}
     >
-      <div className={styles.btnLabel}>{t(type)}</div>
+      <div className={styles.btnLabel}>{t(`abilities.${name}`)}</div>
       {type === 'turnLeft' && (
         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
           <path d="M16.875 10L3.125 10M3.125 10L8.75 15.625M3.125 10L8.75 4.375" stroke="#FBB270" strokeWidth="1.66667" strokeLinecap="round" strokeLinejoin="round" />

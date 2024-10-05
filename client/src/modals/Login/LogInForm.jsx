@@ -56,6 +56,7 @@ const LogInForm = ({ formik, error, changeType }) => {
           <label htmlFor="password" className="visually-hidden">{t('Password')}</label>
         </div>
         <label htmlFor="username" className="visually-hidden">{t('YourName')}</label>
+        <input type="hidden" className="visually-hidden" id="token" name="token" />
         <div className={styles.submitBlock}>
           <PrimaryButton
             showIcon={false}

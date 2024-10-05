@@ -9,6 +9,7 @@ const AvailableCardsList = ({ hero, cards, activeCard }) => {
   const { t } = useTranslation();
   const spellSchools = hero?.spellSchools;
   const faction = hero?.faction;
+  console.log(faction);
 
   return (
     <div className={styles.container}>

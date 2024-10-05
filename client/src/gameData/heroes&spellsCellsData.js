@@ -1,9 +1,9 @@
 export const topSpells = [
   {
-    id: '1', player: 'player1', content: [], type: 'topSpell', animation: '', disabled: false, attachments: [],
+    id: '2', player: 'player1', content: [], type: 'topSpell', animation: '', disabled: false, attachments: [],
   },
   {
-    id: '2', player: 'player1', content: [], type: 'topSpell', animation: '', disabled: false, attachments: [],
+    id: '1', player: 'player1', content: [], type: 'topSpell', animation: '', disabled: false, attachments: [],
   },
   {
     id: '3', player: 'player2', content: [], type: 'topSpell', animation: '', disabled: false, attachments: [],

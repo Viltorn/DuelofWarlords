@@ -1,6 +1,6 @@
 import _ from 'lodash';
 import Blizzard from '../../assets/academiaCards/Blizzard.png';
-import Frostbite from '../../assets/academiaCards/Frostbite.png';
+import Frostbite from '../../assets/academiaCards/Frostbite.webp';
 import FrostTrap from '../../assets/academiaCards/FrostTrap.png';
 import IceBlock from '../../assets/academiaCards/IceBlock.png';
 import IceSpikes from '../../assets/academiaCards/IceSpikes.png';
@@ -18,18 +18,18 @@ export default {
     id: _.uniqueId(),
     type: 'spell',
     subtype: 'temporary',
-    cost: 2,
-    currentC: 2,
+    cost: 3,
+    currentC: 3,
     featInfo: ['LASTCAST'],
     description: 'Blizzard',
     school: 'Water',
     place: 'midSpell',
     features: [
       {
-        attach: false, type: 'all', aim: ['row', 'warrior', 'fighter', 'shooter', 'flyer'], value: 2, name: 'attack', aimStatus: 'field',
+        spell: true, attach: false, type: 'all', aim: ['row', 'warrior', 'fighter', 'shooter', 'flyer'], value: 3, name: 'attack', aimStatus: 'field',
       },
       {
-        attach: false, type: 'all', aim: ['row', 'spell', 'warrior', 'fighter', 'shooter', 'flyer'], value: 2, name: 'attack', condition: 'lastcall', aimStatus: 'field',
+        spell: true, attach: false, type: 'all', aim: ['row', 'spell', 'warrior', 'fighter', 'shooter', 'flyer'], value: 3, name: 'attack', condition: 'lastcall', aimStatus: 'field',
       },
     ],
     img: Blizzard,
@@ -48,7 +48,8 @@ export default {
     place: 'warrior',
     features: [
       {
-        attach: ['warrior'],
+        spell: true,
+        attach: ['warrior', 'flyer', 'shooter', 'fighter'],
         aim: ['warrior', 'fighter', 'shooter', 'flyer', 'hero'],
         type: 'bad',
         name: 'power',
@@ -63,18 +64,24 @@ export default {
     name: 'Frost trap',
     id: _.uniqueId(),
     type: 'spell',
-    subtype: 'instant',
+    subtype: 'reaction',
     cost: 2,
     currentC: 2,
     featInfo: ['REACTION'],
     description: 'FrostTrap',
     school: 'Water',
-    place: 'postponed',
+    place: 'bigSpell',
     features: [{
-      attach: ['field', 'warrior'], aim: ['warrior', 'fighter', 'shooter', 'flyer'], name: 'return', condition: 'onplay', type: 'bad', charges: 1, aimStatus: 'field',
+      spell: true, attach: ['field', 'warrior'], aim: ['warrior', 'fighter', 'shooter', 'flyer'], name: 'stun', condition: 'onplay', type: 'bad', charges: 1, aimStatus: 'field', cost: 2,
     },
     {
-      attach: ['field', 'warrior'], aim: ['warrior', 'fighter', 'shooter', 'flyer'], name: 'return', condition: 'onmove', type: 'bad', charges: 1, aimStatus: 'field',
+      spell: true, attach: ['field', 'warrior'], type: 'bad', aim: ['warrior', 'fighter', 'shooter', 'flyer'], name: 'attack', value: 3, charges: 1, condition: 'onplay', aimStatus: 'field', cost: 0,
+    },
+    {
+      spell: true, attach: ['field', 'warrior'], type: 'bad', aim: ['warrior', 'fighter', 'shooter', 'flyer'], name: 'attack', value: 3, charges: 1, condition: 'onmove', aimStatus: 'field', cost: 0,
+    },
+    {
+      spell: true, attach: ['field', 'warrior'], aim: ['warrior', 'fighter', 'shooter', 'flyer'], name: 'stun', condition: 'onmove', type: 'bad', charges: 1, aimStatus: 'field', cost: 2,
     }],
     img: FrostTrap,
     status: 'hand',
@@ -92,6 +99,7 @@ export default {
     place: 'warrior',
     features: [
       {
+        spell: true,
         attach: ['hero'],
         aim: ['hero', 'fighter', 'shooter', 'flyer', 'warrior', 'spell'],
         type: 'good',
@@ -115,7 +123,7 @@ export default {
     school: 'Water',
     place: '',
     features: [{
-      attach: false, type: 'bad', name: 'attack', value: 2, aim: ['line', 'warrior', 'fighter', 'shooter', 'flyer'], aimStatus: 'field',
+      spell: true, attach: false, type: 'bad', name: 'attack', value: 2, aim: ['line', 'warrior', 'fighter', 'shooter', 'flyer'], aimStatus: 'field',
     }],
     img: IceSpikes,
     status: 'hand',
@@ -133,7 +141,8 @@ export default {
     place: 'midSpell',
     features: [
       {
-        attach: ['row', 'warrior'],
+        spell: true,
+        attach: ['row', 'warrior', 'flyer', 'shooter', 'fighter'],
         type: 'all',
         aim: ['warrior', 'fighter', 'shooter'],
         name: 'unarmed',
@@ -154,7 +163,8 @@ export default {
     school: 'Water',
     place: 'warrior',
     features: [{
-      attach: ['warrior'],
+      spell: true,
+      attach: ['warrior', 'flyer', 'shooter', 'fighter'],
       aim: ['warrior', 'fighter', 'shooter', 'flyer', 'hero'],
       type: 'good',
       name: 'power',
@@ -177,6 +187,7 @@ export default {
     place: 'midSpell',
     features: [
       {
+        spell: true,
         attach: ['row', 'warrior'],
         aim: ['fighter', 'shooter', 'flyer'],
         type: 'all',
@@ -184,6 +195,7 @@ export default {
         aimStatus: 'field',
       },
       {
+        spell: true,
         attach: ['row', 'warrior'],
         aim: ['fighter', 'shooter', 'flyer'],
         type: 'all',
@@ -205,7 +217,7 @@ export default {
     school: 'Water',
     place: '',
     features: [{
-      attach: false, type: 'all', aim: ['field', 'warrior', 'fighter', 'shooter'], name: 'attack', value: 7, depend: 'postponed', dependValue: 8, aimStatus: 'field',
+      spell: true, attach: false, type: 'all', aim: ['field', 'warrior', 'fighter', 'shooter'], name: 'attack', value: 7, depend: 'postponed', dependValue: 8, aimStatus: 'field',
     }],
     img: Tsunami,
     status: 'hand',
@@ -222,7 +234,7 @@ export default {
     school: 'Water',
     place: 'bigSpell',
     features: [{
-      attach: ['field', 'warrior'], aim: ['warrior', 'fighter', 'shooter', 'flyer'], type: 'all', name: 'unarmed', condition: 'maxPower', conditionValue: 2, aimStatus: 'field',
+      spell: true, attach: ['field', 'warrior'], aim: ['warrior', 'fighter', 'shooter', 'flyer'], type: 'all', name: 'unarmed', condition: 'maxPower', conditionValue: 2, aimStatus: 'field',
     }],
     img: Waterfall,
     status: 'hand',
@@ -239,9 +251,9 @@ export default {
     school: 'Water',
     place: '',
     features: [{
-      attach: false, type: 'bad', aim: ['warrior', 'fighter', 'shooter', 'flyer'], name: 'attack', value: 2, aimStatus: 'field',
+      spell: true, attach: false, type: 'bad', aim: ['warrior', 'fighter', 'shooter', 'flyer'], name: 'attack', value: 2, aimStatus: 'field',
     }, {
-      attach: false, type: 'bad', aim: ['warrior', 'fighter', 'shooter', 'flyer'], name: 'stun', aimStatus: 'field',
+      spell: true, attach: false, type: 'bad', aim: ['warrior', 'fighter', 'shooter', 'flyer'], name: 'stun', aimStatus: 'field',
     }],
     img: IceArrow,
     status: 'hand',
@@ -258,7 +270,8 @@ export default {
     school: 'Water',
     place: 'warrior',
     features: [{
-      attach: ['warrior', 'hero'],
+      spell: true,
+      attach: ['warrior', 'hero', 'flyer', 'shooter', 'fighter'],
       aim: ['warrior', 'hero', 'spell', 'fighter', 'shooter', 'flyer'],
       type: 'good',
       name: 'protection',
@@ -266,6 +279,7 @@ export default {
       aimStatus: 'field',
     },
     {
+      spell: true,
       attach: ['warrior', 'hero'],
       aim: ['warrior', 'hero', 'spell', 'fighter', 'shooter', 'flyer'],
       type: 'good',

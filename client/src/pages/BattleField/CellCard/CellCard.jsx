@@ -1,157 +1,73 @@
-import React, { useRef, useContext } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { useTranslation } from 'react-i18next';
+import React, { useRef } from 'react';
+import { useSelector } from 'react-redux';
 import cn from 'classnames';
-import AttackIcon from '@assets/battlefield/Sword.png';
-import Healed from '@assets/battlefield/Healing.svg';
-import { actions as battleActions } from '../../../slices/battleSlice.js';
-import functionContext from '../../../contexts/functionsContext.js';
 import styles from './CellCard.module.css';
+import CellCardImage from './CellCardImage.jsx';
+import CellCardCover from './CellCardCover.jsx';
+import useClickActions from '../../../hooks/useClickActions.js';
+import useAnimaActions from '../../../hooks/useAnimaActions.js';
 
-const getTopMargin = (cardtype) => {
-  if (cardtype === 'field') {
+const getTopMargin = (cellType) => {
+  if (cellType === 'field') {
     return 5;
   }
-  if (cardtype === 'hero') {
+  if (cellType === 'hero') {
     return 6.5;
   }
   return 0;
 };
 
 const CellCard = ({
-  item, type,
+  item, cellType,
 }) => {
-  const {
-    getActiveCard,
-    addActiveCard,
-    handleAnimation,
-    getWarriorPower,
-    canBeCast,
-    canBeAttacked,
-    toogleInfoWindow,
-    actionPerforming,
-    makeGameAction,
-    invoking,
-  } = useContext(functionContext);
   const cardElement = useRef();
-  const dispatch = useDispatch();
-  const { t } = useTranslation();
   const {
-    cellId, turn, faction, description, school, currentHP, currentC,
+    turn,
+    faction,
+    description,
+    school,
+    currentHP,
+    currentC,
+    subtype,
+    type,
+    img,
+    name,
   } = item;
   const cardsFeature = faction ?? school;
-  const { thisPlayer, fieldCells, playerPoints } = useSelector((state) => state.battleReducer);
-  const { curRoom, gameMode } = useSelector((state) => state.gameReducer);
-  const currentCell = fieldCells.find((cell) => cell.id === cellId);
-  const currentPoints = playerPoints.find((data) => data.player === thisPlayer).points;
+
+  const { handleCellCardClick } = useClickActions();
+  const { getWarriorPower } = useAnimaActions();
+  const { fieldCells } = useSelector((state) => state.battleReducer);
+  const currentCell = fieldCells.find((cell) => cell.id === item.cellId);
   const power = item.type === 'warrior' ? getWarriorPower(item) : null;
-  const marginTop = getTopMargin(type);
-  const marginRight = type === 'bigSpell' ? 0.5 : 0;
+  const marginTop = getTopMargin(cellType);
+  const marginRight = cellType === 'bigSpell' ? 5 : 0;
+  const cardInfo = {
+    cardsFeature, power, description, currentHP, currentC, cellType, type, img, name,
+  };
 
   const cardStyles = cn({
-    [styles.contentItem]: type !== 'hero',
-    [styles.heroCellItem]: type === 'hero',
+    [styles.contentItem]: cellType !== 'hero',
+    [styles.heroCellItem]: cellType === 'hero',
     [styles.makeAttackAnimation]: currentCell.animation === 'makeattack',
     [styles.turn1]: turn === 1,
     [styles.turn2]: turn === 2,
   });
 
-  const titleClasses = cn({
-    [styles.cardName]: type !== 'hero',
-    [styles.heroName]: type === 'hero',
-  });
-
-  const makeCardAction = (card, player, points, cell, appliedCard) => {
-    if (canBeCast(cell.id)) {
-      handleAnimation(card, 'delete');
-      const data = {
-        move: 'castSpell',
-        room: curRoom,
-        card,
-        player,
-        points,
-        cell,
-      };
-      makeGameAction(data, gameMode);
-    } else if (canBeAttacked(appliedCard)) {
-      const data = {
-        move: 'makeFight',
-        room: curRoom,
-        card1: card,
-        card2: appliedCard,
-      };
-      makeGameAction(data, gameMode);
-    } else {
-      handleAnimation(card, 'delete');
-      toogleInfoWindow(false);
-      addActiveCard(appliedCard, player);
-      handleAnimation(appliedCard, 'add');
-    }
-  };
-
-  const handleCardClick = () => {
-    if (invoking) {
-      return;
-    }
-    if (gameMode === 'online' && actionPerforming) {
-      return;
-    }
-    const activeCard = getActiveCard();
-    const cardId = cardElement.current.id;
-    const activeId = activeCard?.id ?? null;
-    if (activeId === cardId) {
-      dispatch(battleActions.deleteActiveCard({ player: thisPlayer }));
-      handleAnimation(activeCard, 'delete');
-      toogleInfoWindow(false);
-    } else {
-      makeCardAction(activeCard, thisPlayer, currentPoints, currentCell, item);
-    }
-  };
-
   return (
     <button
       ref={cardElement}
       id={item.id}
-      onClick={handleCardClick}
+      onClick={() => handleCellCardClick({ item, cardElement })}
       key={item.id}
       type="button"
       data={item.player}
       className={cardStyles}
       style={{ marginTop: `-${marginTop}rem`, marginRight: `-${marginRight}rem` }}
     >
-      <h2 className={titleClasses}>{t(`titles.${cardsFeature}.${description}`)}</h2>
-      {item.type === 'warrior' && (
-        <>
-          <h3 className={styles.warriorPower}>{power}</h3>
-          <h3 className={styles.warriorHealth}>{currentHP}</h3>
-        </>
-      )}
-      {item.type !== 'hero' && (
-        <h3 className={styles.cost}>{currentC}</h3>
-      )}
-      {item.type === 'hero' && (
-        <h3 className={styles.heroHealth}>{currentHP}</h3>
-      )}
-      <img
-        className={styles.image}
-        src={item.img}
-        alt={item.name}
-      />
-      {currentCell.animation === 'attacked' && (
-        <img
-          className={styles.attackIcon}
-          src={AttackIcon}
-          alt="attack icon"
-        />
-      )}
-      {currentCell.animation === 'healed' && (
-        <img
-          className={styles.healIcon}
-          src={Healed}
-          alt="heal icon"
-        />
-      )}
-
+      {subtype !== 'reaction' ? (
+        <CellCardImage cardInfo={cardInfo} currentCell={currentCell} />
+      ) : (<CellCardCover />)}
     </button>
   );
 };

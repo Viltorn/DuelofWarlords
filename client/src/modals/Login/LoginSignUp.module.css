@@ -127,7 +127,7 @@ form {
   visibility: hidden;
 }
 
-@media (max-width: 767px) {
+@media (max-width: 940px) {
  .content {
    height: 350px;
    width: 300px;
@@ -179,6 +179,34 @@ form {
   font-size: 14px;
  }
   
+}
+
+@media (max-height: 450px) {
+  .content {
+    height: 380px;
+    width: 300px;
+    padding: 15px;
+    gap: 15px;
+  }
+
+  .input {
+    height: 25px;
+    font-size: 14px;
+    padding: 3px;
+    border-radius: 5px;
+  }
+
+  .inputContainer {
+    height: 150px;
+   }
+
+  .invalidFeedback {
+    font-size: 11px;
+   }
+
+   .fieldset {
+    gap: 18px;
+  }
 }
 
 

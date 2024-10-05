@@ -1,7 +1,7 @@
 .container {
   background-size: cover;
   background-repeat: no-repeat;
-  background-image: url("../../assets/battlefield/BattlefieldOption.png");
+  background-image: url("../../assets/battlefield/BattlefieldOption.webp");
   background-position: center;
   height: 100svh;
   padding: 0;
@@ -104,7 +104,8 @@
 }
 
 .deckInfoBlock {
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(3, auto);
   flex-wrap: nowrap;
   justify-content: space-between;
   align-items: flex-start;

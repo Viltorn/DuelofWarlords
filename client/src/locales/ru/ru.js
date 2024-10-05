@@ -12,6 +12,10 @@ import shadowSpellsInfoRU from './Spells/shadowSpellsInfoRU';
 import shadowSpellsNamesRU from './Spells/shadowSpellsNamesRU';
 import waterSpellsInfoRU from './Spells/waterSpellsInfoRU';
 import waterSpellsNamesRU from './Spells/waterSpellsNamesRU';
+import fireSpellsInfoRU from './Spells/fireSpellsInfoRU';
+import fireSpellsNamesRU from './Spells/fireSpellsNamesRU';
+import skillsInfoRU from './Spells/skillsInfoRU';
+import skillsNamesRU from './Spells/skillsNamesRU';
 
 export default {
   translation: {
@@ -58,16 +62,6 @@ export default {
     ActiveCard: 'Aктивная карта',
     Player1: 'Игрок 1',
     Player2: 'Игрок 2',
-    healthBar: 'ИЗМЕНИТЬ',
-    turnLeft: 'ПОВЕРНУТЬ',
-    turnRight: 'ПОВЕРНУТЬ',
-    return: 'В РУКУ',
-    deckreturn: 'В КОЛОДУ',
-    ability: 'СПОСОБНОСТЬ',
-    graveyard: 'В СТОК',
-    switchcard: 'ЗАМЕНИТЬ',
-    addToDeck: 'ДОБАВИТЬ',
-    deleteFromDeck: 'УДАЛИТЬ',
     CLOSE: 'ЗАКРЫТЬ',
     Change: 'ИЗМЕНИТЬ',
     ChangeHP: 'ПОМЕНЯТЬ ЗДОРОВЬЕ',
@@ -127,6 +121,7 @@ export default {
     PlayerDisconnected: 'Игрок отключился от сервера: ',
     YouDisconnected: 'Вы отключились от сервера',
     GameEnd: 'Игра окончена! Победил игрок: ',
+    YourTurn: 'Ваш ход!',
     ResetWarning: 'Если вы продолжите, текущий прогресс будет сброшен. Продолжить?',
     EndTurnWarning: 'У вас остались активные воины на поле, уверены, что хотите закончить ход?',
     CurrentOnline: 'Игроки онлайн',
@@ -174,20 +169,43 @@ export default {
       false: '',
     },
     description: {
+      Skills: skillsInfoRU,
       Castle: CastleInfo,
       Academia: AcademiaInfo,
       Air: airSpellsInfo,
       Light: lightSpellsInfoRU,
       Shadow: shadowSpellsInfoRU,
       Water: waterSpellsInfoRU,
+      Fire: fireSpellsInfoRU,
     },
     titles: {
+      Skills: skillsNamesRU,
       Castle: castleCardsNamesRU,
       Academia: academiaCardsNamesRU,
       Air: airSpellsNames,
       Light: lightSpellsNamesRU,
       Shadow: shadowSpellsNamesRU,
       Water: waterSpellsNamesRU,
+      Fire: fireSpellsNamesRU,
+    },
+    abilities: {
+      heal: 'ВЫЛЕЧИТЬ',
+      sucrifice: 'ЖЕРТВОВАТЬ',
+      increasePoints: 'ПРИБАВИТЬ ОЧКИ',
+      stealPoints: 'УКРАСТЬ ОЧКИ',
+      attack: 'АТАКОВАТЬ',
+      ressurect: 'ВЕРНУТЬ КАРТУ',
+      drawCard: 'ВЫТЯНУТЬ КАРТУ',
+      ability: 'СПОСОБНОСТЬ',
+      return: 'В РУКУ',
+      deckreturn: 'В КОЛОДУ',
+      graveyard: 'В СТОК',
+      switchcard: 'ЗАМЕНИТЬ',
+      healthBar: 'ИЗМЕНИТЬ',
+      turnLeft: 'ПОВЕРНУТЬ',
+      turnRight: 'ПОВЕРНУТЬ',
+      addToDeck: 'ДОБАВИТЬ',
+      deleteFromDeck: 'УДАЛИТЬ',
     },
     tutorialSteps: tutorialTextRU,
     menuTipsHeader: menuTipsHeaders,

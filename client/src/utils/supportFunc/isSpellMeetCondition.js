@@ -1,10 +1,19 @@
 import warSubtypes from '../../gameData/warriorsSubtypes.js';
+import isCellEmpty from './isCellEmpty.js';
 
 const isSpellMeetCondition = (data) => {
   const {
-    attackingCard, defendingCard, spell, type, allFieldCells, attackingPower,
+    attackingCard,
+    defendingCard,
+    spell,
+    type,
+    allFieldCells,
+    attackingPower,
+    allFieldCards,
+    spellOwnerPoints,
   } = data;
-  const { condition, conditionValue } = spell;
+  const { condition, conditionValue, cost } = spell;
+  if (cost && spellOwnerPoints && spellOwnerPoints - cost < 0) return false;
   if (type === 'warrior' || warSubtypes.includes(type)) {
     if (condition && condition === 'minPower') {
       const attackingPowerFeature = attackingCard.features.find((feat) => feat.name === 'power' && (defendingCard ? feat.aim.includes(defendingCard.subtype) : true));
@@ -30,9 +39,9 @@ const isSpellMeetCondition = (data) => {
       const topRowNumber = (curRowNumber - 1).toString();
       const bottomRowNumber = (curRowNumber + 1).toString();
       const topRowCell = allFieldCells.find((cell) => cell.row === topRowNumber
-          && cell.line === currentline && cell.content.length === 0);
+          && cell.line === currentline && isCellEmpty(allFieldCards, cell.id));
       const bottomRowCell = allFieldCells.find((cell) => cell.row === bottomRowNumber
-          && cell.line === currentline && cell.content.length === 0);
+          && cell.line === currentline && isCellEmpty(allFieldCards, cell.id));
       return (topRowCell || bottomRowCell) && defendingCard.turn !== 2;
     }
   }

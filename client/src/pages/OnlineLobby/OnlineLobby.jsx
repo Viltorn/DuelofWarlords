@@ -41,9 +41,14 @@ const OnlineLobby = () => {
   };
 
   useEffect(() => {
-    // if (name === '') {
-    //   dispatch(modalsActions.openModal({ type: 'enterUsername' }));
-    // }
+    const setMessages = (data) => {
+      dispatch(gameActions.setMessages({ data }));
+    };
+
+    const addMessage = (data) => {
+      dispatch(gameActions.addMessage({ data }));
+    };
+
     const updateLobbyRooms = (data) => {
       dispatch(gameActions.updateRooms({ rooms: data }));
     };
@@ -61,11 +66,15 @@ const OnlineLobby = () => {
       }
     };
 
+    socket.on('getMessages', setMessages);
+    socket.on('message', addMessage);
     socket.on('getSocketId', updateSocketId);
     socket.on('rooms', updateLobbyRooms);
     socket.on('clientsCount', updatePlayersOnline);
 
     return () => {
+      socket.off('message', addMessage);
+      socket.off('getMessages', setMessages);
       socket.off('getSocketId', updateSocketId);
       socket.off('rooms', updateLobbyRooms);
       socket.off('clientsCount', updatePlayersOnline);

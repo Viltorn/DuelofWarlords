@@ -73,7 +73,7 @@ const HotSeatMenu = () => {
         const player2FinalDeck = player2FullDeck.slice(startCardsNumber2);
         dispatch(battleActions.setHero({ hero: values.player1Hero, player: 'player1' }));
         dispatch(battleActions.setHero({ hero: values.player2Hero, player: 'player2' }));
-        dispatch(battleActions.setPlayerName({ name: 'Тест 1', player: 'player1' }));
+        dispatch(battleActions.setPlayerName({ name: 'Человек', player: 'player1' }));
         dispatch(battleActions.setPlayerName({ name: 'Тест 2', player: 'player2' }));
         dispatch(battleActions.setPlayersDeck({ deck: player1FinalDeck, player: 'player1' }));
         dispatch(battleActions.setPlayersDeck({ deck: player2FinalDeck, player: 'player2' }));

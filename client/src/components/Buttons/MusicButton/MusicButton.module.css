@@ -1,0 +1,15 @@
+.button {
+  border: none;
+  border-radius: 50%;
+  font-size: 1rem;
+  background: transparent;
+  width: 3rem;
+  height: 3rem;
+  cursor: pointer;
+  transition: all 0.3s linear;
+}
+
+.button > img {
+  width: 100%;
+  height: 100%;
+}

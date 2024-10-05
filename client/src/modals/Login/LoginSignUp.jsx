@@ -4,9 +4,9 @@ import React, {
 import { useDispatch } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { useFormik } from 'formik';
-// import cn from 'classnames';
-// import axios from 'axios';
 import LoadSpinner from '@components/LoadSpinner/LoadSpinner.jsx';
+import socket from '../../socket.js';
+import makeAuth from '../../utils/makeAuth.js';
 import { actions as modalActions } from '../../slices/modalsSlice.js';
 import { actions as gameActions } from '../../slices/gameSlice';
 import { SignUpSchema, LogInSchema } from '../../utils/validation.js';
@@ -15,7 +15,6 @@ import LogInForm from './LogInForm.jsx';
 import SignUpForm from './SignUpFrom.jsx';
 import setAuthToken from '../../utils/setAuthToken.js';
 import getAuthToken from '../../utils/getAuthToken.js';
-import socket from '../../socket';
 import styles from './LoginSignUp.module.css';
 
 const LoginSignUp = () => {
@@ -42,33 +41,36 @@ const LoginSignUp = () => {
     dispatch(modalActions.closeModal());
   };
 
-  const submitForm = (values, type, formik) => {
+  const submitForm = async (values, type, formik) => {
     try {
       setError(false);
       const { username, password } = values;
-      socket.emit(type, { username, password, decks: standartDecks }, (res) => {
-        if (res.error) {
-          handleError(res);
-          formik.setSubmitting(false);
-          // inputEl.current.focus();
-          return;
-        }
-        const { id, rooms, decks } = res;
+      const res = await makeAuth(username, password, type);
+      console.log(res);
+      if (res.status === 200 || res.status === 201) {
+        console.log(res);
+        const { decks } = res.data;
         dispatch(gameActions.setPlayerName({ name: username }));
-        dispatch(gameActions.updateRooms({ rooms }));
-        dispatch(gameActions.setSocketId({ socketId: id }));
         dispatch(gameActions.setLogged({ logged: true }));
         dispatch(gameActions.setUserType({ userType: 'logged' }));
         dispatch(gameActions.setDecks({ decks }));
-        if (type === 'signUp') {
-          setAuthToken({ login: username, pass: password });
-        }
-        handleClose();
-      });
+        setAuthToken({ login: username, pass: password });
+        socket.emit('updateOnlineData', (callback) => {
+          if (res.error) {
+            handleError(res);
+            formik.setSubmitting(false);
+            return;
+          }
+          const { id, rooms } = callback;
+          dispatch(gameActions.setSocketId({ socketId: id }));
+          dispatch(gameActions.updateRooms({ rooms }));
+          handleClose();
+        });
+      }
     } catch (err) {
-      setError(err.message);
-      console.log(err);
       formik.setSubmitting(false);
+      handleError(err.response.data);
+      console.log(err);
     }
   };
 
@@ -98,7 +100,6 @@ const LoginSignUp = () => {
     validateOnChange: true,
   });
 
-  console.log(loginFormik.isSubmitting);
   return (
     <dialog className={styles.window}>
       {loginFormik.isSubmitting || signUpFormik.isSubmitting ? (

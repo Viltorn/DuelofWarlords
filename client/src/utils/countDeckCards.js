@@ -15,5 +15,14 @@ export default (cards) => {
       acc += card.qty;
       return acc;
     }, 0);
-  return { cardsNmb, spellsNmb, warriorsNmb };
+
+  const cardCost = cards
+    .reduce((acc, card) => {
+      acc += card.cost;
+      return acc;
+    }, 0);
+  const avarageCardCost = (cardCost / cards.length).toFixed(1);
+  return {
+    cardsNmb, spellsNmb, warriorsNmb, avarageCardCost,
+  };
 };

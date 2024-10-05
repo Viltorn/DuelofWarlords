@@ -6,7 +6,8 @@ const findCellsForWarMove = (data) => {
   } = data;
   if (activeCard.subtype === 'fighter') {
     return fieldCells.filter((cell) => isCellEmpty(fieldCards, cell.id) && cell.player === player
-      && (cell.line === '1' || cell.line === '3') && !cell.disabled && cell.type === 'field');
+      && !cell.disabled && cell.type === 'field');
+    // (cell.line === '1' || cell.line === '3')
   }
   if (activeCard.subtype === 'shooter') {
     return fieldCells.filter((cell) => isCellEmpty(fieldCards, cell.id) && cell.player === player

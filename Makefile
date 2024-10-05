@@ -1,8 +1,8 @@
-frontend:
+front:
 	cd client && npm start
 
-backend:
+back:
 	cd server && PORT=8080 nodemon server.js
 
 start:
-	make frontend & make backend
+	make front & make back

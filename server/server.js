@@ -1,12 +1,13 @@
 import express from 'express';
-import { createClient } from 'redis';
 import path from 'path';
+import redis from './redisInit.js'
 import { fileURLToPath } from 'url';
 import { Server } from "socket.io";
 import { v4 as uuidV4 } from 'uuid';
 import { createServer } from 'http';
-import isDeckExist from './utils/isDeckExist.js';
-import renewPlayerDecks from './utils/renewPlayerDecks.js';
+import cors from 'cors';
+import authRouter from './routes/auth.js'
+import accountsRouter from './routes/accounts.js'
 import isRoomEmpty from './utils/isRoomEmpty.js';
 import isRoomFull from './utils/isRoomFull.js';
 import getRooms from './utils/getRooms.js';
@@ -20,27 +21,14 @@ const server = createServer(app);
 const port = process.env.PORT || 80
 
 app.use(express.static(path.join(__dirname, "../client/build")));
+app.use(cors()); // allow connection from any origin
+app.use(express.json());
+app.use('/auth', authRouter);
+app.use('/accounts', accountsRouter);
 
 app.get("/", function(req, res) {
   res.sendFile(path.join(__dirname, "../client/build", "index.html"));
 });
-
-// redis client
-const redisClient = async () => {
-  const client = createClient({
-      url: process.env.REDIS_URL
-  });
-
-  client.on('error', (err) => console.log('Redis Client Error', err));
-
-  await client.connect();
-
-  // Send and retrieve some values
-  console.log('redis connected');
-  return client;
-};
-
-const redis = await redisClient();
 
 // upgrade http server to websocket server
 const io = new Server(server, {
@@ -75,47 +63,48 @@ io.on('connection', async (socket) => {
 
   const userCount = io.engine.clientsCount;
   io.emit('clientsCount', userCount);
+  io.to(socket.id).emit('rooms', getRooms(rooms));
   io.to(socket.id).emit('getSocketId', socket.id);
 
-  socket.on('saveDeck', async (data, callback) => {
-    try {
-      const { deck, username } = data;
-      const rawRes = await redis.get(username, function(err, result) {
-        if (err) {
-          console.log('DatabaseError');
-        } else if (result === null) {
-          console.log('UserDoesNotExist');
-        } else {
-          console.log(result);
-        }
-      });
+  // socket.on('saveDeck', async (data, callback) => {
+  //   try {
+  //     const { deck, username } = data;
+  //     const rawRes = await redis.get(username, function(err, result) {
+  //       if (err) {
+  //         console.log('DatabaseError');
+  //       } else if (result === null) {
+  //         console.log('UserDoesNotExist');
+  //       } else {
+  //         console.log(result);
+  //       }
+  //     });
     
-      const res = JSON.parse(rawRes);
-      const { decks } = res;
-      console.log(decks);
-      if (isDeckExist(deck, decks)) {
-        const newDecks = renewPlayerDecks(deck, decks);
-        const jsonData = JSON.stringify({ ...res, decks: newDecks });
-        await redis.set(username, jsonData);
-        callback({ decks: newDecks });
-        return;
-      }
-      if (!isDeckExist(deck, decks) && decks.length < 10) {
-        const newDecks = [deck, ...decks ];
-        const jsonData = JSON.stringify({ ...res, decks: newDecks });
-        await redis.set(username, jsonData);
-        callback({ decks: newDecks });
-        return;
-      }
-      callback({ error: true, message: 'MaximumDecks' });
-    } catch (e) {
-      return;
-    }
-  });
+  //     const res = JSON.parse(rawRes);
+  //     const { decks } = res;
+  //     console.log(decks);
+  //     if (isDeckExist(deck, decks)) {
+  //       const newDecks = renewPlayerDecks(deck, decks);
+  //       const jsonData = JSON.stringify({ ...res, decks: newDecks });
+  //       await redis.set(username, jsonData);
+  //       callback({ decks: newDecks });
+  //       return;
+  //     }
+  //     if (!isDeckExist(deck, decks) && decks.length < 10) {
+  //       const newDecks = [deck, ...decks ];
+  //       const jsonData = JSON.stringify({ ...res, decks: newDecks });
+  //       await redis.set(username, jsonData);
+  //       callback({ decks: newDecks });
+  //       return;
+  //     }
+  //     callback({ error: true, message: 'MaximumDecks' });
+  //   } catch (e) {
+  //     return;
+  //   }
+  // });
 
   socket.on('deleteDeck', async (data, callback) => {
     const { deckName, username } = data;
-    const rawRes = await redis.get(username, function(err, result) {
+    const rawRes = await redis.get(`DofWAccounts:${username}`, function(err, result) {
       if (err) {
         console.log('DatabaseError');
       } else if (result === null) {
@@ -134,9 +123,9 @@ io.on('connection', async (socket) => {
 
     const newDecks = decks.filter((item) => item.deckName !== deckName);
     const jsonData = JSON.stringify({ ...res, decks: newDecks });
-    await redis.set(username, jsonData);
+    await redis.set(`DofWAccounts:${username}`, jsonData);
     callback({ decks: newDecks });
-});
+  });
 
   socket.on('logIn', async (data, callback) => {
     try {
@@ -200,6 +189,13 @@ io.on('connection', async (socket) => {
     io.emit('clientsCount', userCount); 
     io.to(socket.id).emit('getMessages', messages);
     callback({ id: socket.id, rooms: getRooms(rooms), decks });
+  });
+
+  socket.on('updateOnlineData', async (callback) => {
+    const userCount = io.engine.clientsCount;
+    io.emit('clientsCount', userCount); 
+    io.to(socket.id).emit('getMessages', messages);
+    callback({ id: socket.id, rooms: getRooms(rooms) });
   });
 
   socket.on('createRoom', async (args, callback) => { // callback here refers to the callback function from the client passed as data

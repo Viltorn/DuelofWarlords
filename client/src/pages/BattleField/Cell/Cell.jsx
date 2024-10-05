@@ -1,12 +1,14 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import cn from 'classnames';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
-// import { actions as battleActions } from '../slices/battleSlice.js';
+import AttackIcon from '@assets/battlefield/BladeAttack.webp';
 import CellCard from '../CellCard/CellCard.jsx';
 import styles from './Cell.module.css';
-import functionContext from '../../../contexts/functionsContext.js';
 import findTriggerSpells from '../../../utils/supportFunc/findTriggerSpells.js';
+import useBattleActions from '../../../hooks/useBattleActions.js';
+import useClickActions from '../../../hooks/useClickActions.js';
+import isWarriorReady from '../../../utils/supportFunc/isWarriorReady.js';
 
 const Cell = ({ props, id }) => {
   const { type, animation } = props;
@@ -15,26 +17,21 @@ const Cell = ({ props, id }) => {
   const {
     fieldCells,
     fieldCards,
-    thisPlayer,
-    playerPoints,
     lastCellWithAction,
+    gameTurn,
   } = useSelector((state) => state.battleReducer);
   const cellContent = fieldCards.filter((card) => card.cellId === id);
   const [contLength, setContLength] = useState(cellContent.length);
+  const currentCell = fieldCells.find((cell) => cell.id === id);
+  const readyWarrior = isWarriorReady(cellContent, currentCell.player, gameTurn);
 
   const {
-    isAllowedCost,
-    getActiveCard,
-    canBeMoved,
-    canBeCast,
     makeFeatureCast,
-    actionPerforming,
-    makeGameAction,
-  } = useContext(functionContext);
+  } = useBattleActions();
 
-  const { curRoom, gameMode } = useSelector((state) => state.gameReducer);
-  const currentCell = fieldCells.find((cell) => cell.id === id);
-  const currentPoints = playerPoints.find((item) => item.player === thisPlayer).points;
+  const {
+    handleCellClick,
+  } = useClickActions();
 
   const classes = cn({
     [styles.defaultSize]: true,
@@ -43,15 +40,18 @@ const Cell = ({ props, id }) => {
     [styles.field]: type === 'field',
     [styles.animationGreen]: animation === 'green',
     [styles.animationRed]: animation === 'red',
+    [styles.animationAttacked]: animation === 'attacked',
+    [styles.animationCanMakeTurn]: animation === '' && readyWarrior,
   });
 
   const playTriggers = (card, thisCell, spellType, cardclass) => {
     const onTriggerSpells = findTriggerSpells(card, thisCell, spellType, cardclass);
     const returnSpell = onTriggerSpells.find((spell) => spell.name === 'return');
     if (returnSpell) {
-      makeFeatureCast(returnSpell, thisCell, card, card.player);
+      makeFeatureCast(returnSpell, thisCell, card, returnSpell.player);
     } else {
-      onTriggerSpells.forEach((spell) => makeFeatureCast(spell, thisCell, card, card.player));
+      onTriggerSpells
+        .forEach((spell) => makeFeatureCast(spell, thisCell, card, spell.player));
     }
   };
 
@@ -91,37 +91,15 @@ const Cell = ({ props, id }) => {
     }
   }, [lastCellWithAction, id]);
 
-  const handleCellClick = () => {
-    const activeCard = getActiveCard();
-
-    if (gameMode === 'online' && actionPerforming) {
-      return;
-    }
-
-    if (activeCard && !isAllowedCost(activeCard, currentPoints)) {
-      return;
-    }
-
-    const isWarOnFieldCard = activeCard && activeCard.type === 'warrior' && type === 'field' && cellContent.length === 0;
-    const isSpell = activeCard && activeCard.type === 'spell';
-
-    if ((isWarOnFieldCard && canBeMoved(id)) || (isSpell && canBeCast(id))) {
-      const data = {
-        move: 'addCardToField',
-        room: curRoom,
-        card: activeCard,
-        player: thisPlayer,
-        points: currentPoints,
-        curCell: currentCell,
-        fieldCards,
-        cellsOnField: fieldCells,
-      };
-      makeGameAction(data, gameMode);
-    }
-  };
-
   return (
     <div className={classes}>
+      {animation === 'attacked' && (
+      <img
+        className={styles.attackIcon}
+        src={AttackIcon}
+        alt="attack icon"
+      />
+      )}
       <TransitionGroup component={null} exit>
         {cellContent.length !== 0 && (
           cellContent.map((item) => (
@@ -138,7 +116,7 @@ const Cell = ({ props, id }) => {
               <CellCard
                 key={item.id}
                 item={item}
-                type={type}
+                cellType={type}
                 content={cellContent}
                 setContLength={setContLength}
                 setCardType={setCardType}
@@ -166,7 +144,7 @@ const Cell = ({ props, id }) => {
               className={styles.defaultBtn}
               aria-label="field cell"
               style={{ cursor: `${animation !== '' ? 'pointer' : ''}` }}
-              onClick={handleCellClick}
+              onClick={() => handleCellClick({ type, currentCell, cellContent })}
             />
           </CSSTransition>
         )}

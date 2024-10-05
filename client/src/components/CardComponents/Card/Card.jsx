@@ -1,17 +1,13 @@
-import React, { useRef, useContext } from 'react';
+import React, { useRef } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useDispatch, useSelector } from 'react-redux';
 import cn from 'classnames';
-import { actions as battleActions } from '../../../slices/battleSlice.js';
-import functionContext from '../../../contexts/functionsContext.js';
 import styles from './Card.module.css';
+import useClickActions from '../../../hooks/useClickActions.js';
 
 const Card = ({
   card, active, contentLength, builder,
 }) => {
-  const dispatch = useDispatch();
   const { t } = useTranslation();
-  const { thisPlayer } = useSelector((state) => state.battleReducer);
   const cardElement = useRef();
   const {
     type,
@@ -20,13 +16,11 @@ const Card = ({
     description,
     img,
     name,
-    id,
-    player,
     currentC,
     faction,
     school,
   } = card;
-  const { getActiveCard, handleAnimation, toogleInfoWindow } = useContext(functionContext);
+  const { handleCardClick, handleCardInfoClick } = useClickActions();
   const cardsFeature = faction ?? school;
 
   const marginRight = active || builder ? 0 : Math.min(contentLength * 0.5, 5.6);
@@ -49,20 +43,6 @@ const Card = ({
     [styles.heroNameActive]: type === 'hero' && active,
   });
 
-  const handleClick = () => {
-    const activeCard = getActiveCard();
-    const activeId = activeCard ? activeCard.id : null;
-    if (activeId !== id) {
-      handleAnimation(activeCard, 'delete');
-      dispatch(battleActions.addActiveCard({ card, player }));
-      handleAnimation(card, 'add');
-    } else if (activeId) {
-      dispatch(battleActions.deleteActiveCard({ player: thisPlayer }));
-      handleAnimation(activeCard, 'delete');
-    }
-    toogleInfoWindow(false);
-  };
-
   const handleMouseEnter = () => {
     let nextSib = cardElement.current.nextSibling;
     while (nextSib) {
@@ -79,17 +59,9 @@ const Card = ({
     }
   };
 
-  const handleInfoClick = () => {
-    if (active) {
-      toogleInfoWindow((prev) => !prev);
-    } else {
-      handleClick();
-    }
-  };
-
   return (
     <div className={classes} ref={cardElement} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave} style={{ marginRight: `-${marginRight}rem` }}>
-      <button className={cn([styles.imageContainer], { [styles.active]: active })} type="button" onClick={handleClick}>
+      <button className={cn([styles.imageContainer], { [styles.active]: active })} type="button" onClick={() => handleCardClick(card)}>
         <h2 className={titleClasses}>{t(`titles.${cardsFeature}.${description}`)}</h2>
         {type === 'warrior' && (
         <>
@@ -105,7 +77,7 @@ const Card = ({
         )}
         <img className={styles.mainImage} src={img} alt={name} />
       </button>
-      <button className={styles.description} onClick={handleInfoClick} type="button" aria-label="cardinfo">
+      <button className={styles.description} onClick={() => handleCardInfoClick(card, active)} type="button" aria-label="cardinfo">
         <p className={descriptClasses}>{t(`description.${cardsFeature}.${description}`)}</p>
       </button>
     </div>

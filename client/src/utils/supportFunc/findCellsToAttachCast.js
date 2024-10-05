@@ -6,6 +6,7 @@ const findCellsToAttachCast = (data) => {
     currentFieldCells, feature, castingPlayer, enemyPlayer, aimCell,
   } = data;
   const { type, attach } = feature;
+  if (attach.includes('cards')) return null;
   if (attach.includes('spells')) {
     return currentFieldCells.filter((cell) => spellsCells.includes(cell.type));
   }
@@ -39,8 +40,12 @@ const findCellsToAttachCast = (data) => {
     const adjacentCells = findAdjasentCells(currentFieldCells, aimCell);
     return adjacentCells.filter((cell) => cell.line === aimCell.line);
   } else if (attach.includes('grave')) {
+    if (type === 'good') return currentFieldCells.filter((cell) => cell.type === 'graveyard' && cell.player === castingPlayer);
+    if (type === 'bad') return currentFieldCells.filter((cell) => cell.type === 'graveyard' && cell.player === enemyPlayer);
+  } else if (attach.includes('line')) {
     if (type === 'good') {
-      return currentFieldCells.filter((cell) => cell.type === 'graveyard' && cell.player === castingPlayer);
+      return currentFieldCells
+        .filter((cell) => cell.line === aimCell.id && cell.player === castingPlayer);
     }
   }
   return null;

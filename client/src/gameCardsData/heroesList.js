@@ -5,4 +5,10 @@ export default [
   {
     name: 'ZigfridHero', type: 'hero', faction: 'Castle', qty: 1,
   },
+  {
+    name: 'AstralHero', type: 'hero', faction: 'Academia', qty: 1,
+  },
+  {
+    name: 'RionHero', type: 'hero', faction: 'Castle', qty: 1,
+  },
 ];
