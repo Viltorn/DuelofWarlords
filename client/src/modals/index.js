@@ -1,7 +1,6 @@
 import CheckCardsWindow from './CheckCardsWindow/CheckCardsWindow.jsx';
 import ChangePoints from './ChangePlayerPoints/ChangePoints.jsx';
 import HotSeatMenu from './HotSeatStartMenu/HotSeatStartMenu.jsx';
-import ChangeStartCards from './ChangeStartCards/ChangeStartCards.jsx';
 import GreetingWindow from './TutorialModals/GreetingWindow.jsx';
 import TutorialStepsWindow from './TutorialModals/TutorialStepsWindow.jsx';
 import TutorialFinish from './TutorialModals/LastStepWindow.jsx';
@@ -27,7 +26,6 @@ const modals = {
   tutorialSteps: TutorialStepsWindow,
   tutorial: GreetingWindow,
   tutorialFinish: TutorialFinish,
-  drawCards: ChangeStartCards,
   openCheckCard: CheckCardsWindow,
   openPointsCounter: ChangePoints,
   openHotSeatMenu: HotSeatMenu,
