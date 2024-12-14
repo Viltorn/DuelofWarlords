@@ -50,7 +50,7 @@ const ChangePoints = () => {
   return (
     <dialog className="modal-window">
       <div className="modal-window__content">
-        <h2 className="modal-window__header">{t('ChangeHP')}</h2>
+        <h2 className="modal-window__header">{t('ChangePoints')}</h2>
         <form className="modal-window__form" onSubmit={formik.handleSubmit}>
           <fieldset className="modal-window__fieldset" disabled={formik.isSubmitting}>
             <input
@@ -73,14 +73,14 @@ const ChangePoints = () => {
               <PrimaryButton
                 showIcon={false}
                 state="default"
-                text={t('Change')}
+                text={t('buttons.CHANGE')}
                 variant="primary"
                 type="submit"
               />
               <PrimaryButton
                 showIcon={false}
                 state="default"
-                text={t('Close')}
+                text={t('buttons.CLOSE')}
                 variant="secondary"
                 onClick={handleClose}
               />

@@ -1,39 +1,39 @@
-import CheckGraveyard from './CheckGraveyard/CheckGraveyard.jsx';
+import CheckCardsWindow from './CheckCardsWindow/CheckCardsWindow.jsx';
 import ChangePoints from './ChangePlayerPoints/ChangePoints.jsx';
 import HotSeatMenu from './HotSeatStartMenu/HotSeatStartMenu.jsx';
 import ChangeStartCards from './ChangeStartCards/ChangeStartCards.jsx';
 import GreetingWindow from './TutorialModals/GreetingWindow.jsx';
 import TutorialStepsWindow from './TutorialModals/TutorialStepsWindow.jsx';
 import TutorialFinish from './TutorialModals/LastStepWindow.jsx';
-import EnterUsername from './EnterUsername/EnterUsername.jsx';
 import OnlineGameStart from './OnlineGameStart/OnlineGameStart.jsx';
 import WaitForPlayer from './WaitForPlayer/WaitForPLayer.jsx';
 import PlayerDisconnected from './PlayerDisconnected/PlayerDisconnected.jsx';
 import PlayerVictory from './PlayerVictory/PlayerVictory.jsx';
 import WarningResetWindow from './WarningResetWindow/WarningResetWindow.jsx';
 import ConnectProblem from './ConnectProblem/ConnectProblem.jsx';
-import EndTurnWarning from './EndTurnWarning/EndTurnWarning.jsx';
+import StartFirstRound from './StartFirstRound/StartFirstRound.jsx';
 import LoginSignUp from './Login/LoginSignUp.jsx';
 import PlayerTurn from './PlayerTurn/PlayerTurn.jsx';
+import ActiveCardWindow from './ActiveCardWindow/ActiveCardWindow.jsx';
 
 const modals = {
   loginWindow: LoginSignUp,
-  endTurnWarning: EndTurnWarning,
   connectProblem: ConnectProblem,
   warningWindow: WarningResetWindow,
   victory: PlayerVictory,
   playerDisconnected: PlayerDisconnected,
   waitForPlayer: WaitForPlayer,
   onlineGameStart: OnlineGameStart,
-  enterUsername: EnterUsername,
   tutorialSteps: TutorialStepsWindow,
   tutorial: GreetingWindow,
   tutorialFinish: TutorialFinish,
   drawCards: ChangeStartCards,
-  openGraveyard: CheckGraveyard,
+  openCheckCard: CheckCardsWindow,
   openPointsCounter: ChangePoints,
   openHotSeatMenu: HotSeatMenu,
+  startFirstRound: StartFirstRound,
   playerTurn: PlayerTurn,
+  activeCardWindow: ActiveCardWindow,
 };
 
 export default (modalName) => modals[modalName];

@@ -6,7 +6,6 @@ import { actions as gameActions } from '@slices/gameSlice.js';
 import { maxActionPoints } from '../gameData/gameLimits.js';
 import useFunctionsContext from './useFunctionsContext.js';
 import useAITurn from './useAITurn.js';
-// import findActiveWarCard from '../utils/supportFunc/findActiveWarCard.js';
 import findTempSpellsOnField from '../utils/supportFunc/findTempSpellsOnField.js';
 import findTurnSpellsOnField from '../utils/supportFunc/findTurnSpellsOnField.js';
 import findReactSpellsOnField from '../utils/supportFunc/findReactSpellsOnField.js';
@@ -29,6 +28,7 @@ const useClickActions = () => {
     players,
   } = useSelector((state) => state.battleReducer);
 
+  // const windowType = useSelector((state) => state.modalsReducer).type;
   const { makeAITurn } = useAITurn();
   const { gameMode, curRoom, name } = useSelector((state) => state.gameReducer);
   const {
@@ -53,7 +53,7 @@ const useClickActions = () => {
     changeTutorStep((prev) => prev + 1);
   };
 
-  const hadleEndTurnClick = async () => {
+  const hadleEndTurnClick = () => {
     if (gameMode === 'online' && actionPerforming) {
       return;
     }
@@ -72,7 +72,6 @@ const useClickActions = () => {
     const temporarySpells = findTempSpellsOnField(fieldCards, newPlayer);
     const reactionSpells = findReactSpellsOnField(fieldCards, newPlayer);
     const turnSpells = findTurnSpellsOnField(fieldCards, thisPlayer);
-    // const activeWarCard = findActiveWarCard(fieldCards, thisPlayer);
 
     const data = {
       move: 'endTurn',
@@ -89,15 +88,10 @@ const useClickActions = () => {
       cardsOnField: fieldCards,
     };
 
-    // if (activeWarCard && gameMode === 'online') {
-    //   dispatch(modalsActions.openModal({ type: 'endTurnWarning', data }));
-    //   return;
-    // }
-
     makeGameAction(data, gameMode);
 
     if (newPlayer === 'player2' && players.player2.type === 'computer') {
-      await makeAITurn();
+      makeAITurn();
     }
   };
 
@@ -128,16 +122,20 @@ const useClickActions = () => {
       cost,
       spellId: ressurect?.id,
       cellsOnField: fieldCells,
+      gameTurn,
     };
 
     const abilityData = {
       move: 'makeAbilityCast',
       room: curRoom,
       card,
+      player2Type: 'human',
+      performAIAction: null,
       player: thisPlayer,
       points: currentPoints,
       cell: currentCell,
       ability,
+      gameTurn,
     };
 
     const deckRetData = {
@@ -209,6 +207,7 @@ const useClickActions = () => {
         curCell: currentCell,
         fieldCards,
         cellsOnField: fieldCells,
+        gameTurn,
       };
       makeGameAction(data, gameMode);
     }
@@ -221,6 +220,7 @@ const useClickActions = () => {
       points,
       cell,
       appliedCard,
+      spellsInCell,
     } = data;
     if (canBeCast(cell.id)) {
       handleAnimation(card, 'delete');
@@ -228,9 +228,12 @@ const useClickActions = () => {
         move: 'castSpell',
         room: curRoom,
         card,
+        player2Type: 'human',
+        performAIAction: null,
         player,
         points,
         cell,
+        gameTurn,
       };
       makeGameAction(actionData, gameMode);
       return;
@@ -241,11 +244,16 @@ const useClickActions = () => {
         room: curRoom,
         card1: card,
         card2: appliedCard,
+        gameTurn,
       };
       makeGameAction(actionData, gameMode);
       return;
     }
     if (appliedCard.subtype === 'reaction' && player !== appliedCard.player) {
+      return;
+    }
+    if (cell.type === 'field' && appliedCard.type === 'spell') {
+      dispatch(modalsActions.openModal({ type: 'openCheckCard', data: spellsInCell, id: 'attached' }));
       return;
     }
     handleAnimation(card, 'delete');
@@ -259,6 +267,7 @@ const useClickActions = () => {
     if (gameMode === 'online' && actionPerforming) return;
 
     const currentCell = fieldCells.find((cell) => cell.id === item.cellId);
+    const spellsInCell = fieldCards.filter((card) => card.cellId === item.cellId && card.type === 'spell');
     const { points } = playerPoints.find((el) => el.player === thisPlayer);
     const activeCard = getActiveCard();
     const cardId = cardElement?.current.id;
@@ -274,25 +283,21 @@ const useClickActions = () => {
         points,
         cell: currentCell,
         appliedCard: item,
+        spellsInCell,
       });
     }
   };
 
-  const handleDeckClick = ({ deck, player }) => {
+  const handleDeckClick = ({ player }) => {
     if (gameMode === 'online' && actionPerforming) {
       return;
     }
     if (gameTurn !== thisPlayer) {
       return;
     }
-    const deckOwner = deck.current.dataset.player;
     const firstRound = roundNumber === 1;
-    const drawStatus = players[thisPlayer].cardsdrawn;
-    if (deckOwner === thisPlayer && firstRound && !drawStatus && gameMode !== 'tutorial') {
-      dispatch(modalsActions.openModal({ type: 'drawCards', player: thisPlayer, roomId: curRoom }));
-    }
-    if (gameMode === 'hotseat' && !firstRound) {
-      dispatch(modalsActions.openModal({ type: 'openGraveyard', player, data: 'deck' }));
+    if (gameMode === 'test' && !firstRound) {
+      dispatch(modalsActions.openModal({ type: 'openCheckCard', player, id: 'deck' }));
     }
   };
 
@@ -300,11 +305,31 @@ const useClickActions = () => {
     dispatch(modalsActions.openModal({ type: 'openPointsCounter', player: pointsOwner }));
   };
 
-  const handleGraveyardClick = (player) => {
+  const handleGraveyardClick = (player, graveCell) => {
     if (gameMode === 'online' && actionPerforming) {
       return;
     }
-    dispatch(modalsActions.openModal({ type: 'openGraveyard', player, data: 'grave' }));
+    const activeCard = getActiveCard();
+    const isSpell = activeCard && activeCard.type === 'spell';
+
+    if ((isSpell && canBeCast(graveCell.id))) {
+      handleAnimation(activeCard, 'delete');
+      const currentPoints = playerPoints.find((item) => item.player === thisPlayer).points;
+      const actionData = {
+        move: 'castSpell',
+        room: curRoom,
+        card: activeCard,
+        player2Type: players.player2.type,
+        performAIAction: null,
+        player,
+        points: currentPoints,
+        cell: graveCell,
+        gameTurn,
+      };
+      makeGameAction(actionData, gameMode);
+      return;
+    }
+    dispatch(modalsActions.openModal({ type: 'openCheckCard', player, id: 'grave' }));
   };
 
   const handleCardClick = (card) => {
@@ -322,17 +347,23 @@ const useClickActions = () => {
   };
 
   const handleCardInfoClick = (card, active) => {
-    if (active) {
+    console.log(window.innerWidth);
+    if (active && gameMode !== 'builder') {
       toogleInfoWindow((prev) => !prev);
-    } else {
-      handleCardClick(card);
+      return;
     }
+    handleCardClick(card);
+  };
+
+  const handleBuilderCardClick = (e, card) => {
+    e.stopPropagation();
+    dispatch(modalsActions.openModal({ type: 'activeCardWindow', data: card }));
   };
 
   const handleResetGameClick = (dest) => {
     dispatch(battleActions.resetState());
     changeTutorStep(0);
-    if (dest === 'reset' && gameMode === 'hotseat') {
+    if (dest === 'reset' && (gameMode === 'hotseat' || gameMode === 'test')) {
       dispatch(modalsActions.openModal({ type: 'openHotSeatMenu' }));
       return;
     }
@@ -365,6 +396,7 @@ const useClickActions = () => {
     handleCardClick,
     handleCardInfoClick,
     handleResetGameClick,
+    handleBuilderCardClick,
   };
 };
 

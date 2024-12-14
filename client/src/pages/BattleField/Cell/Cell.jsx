@@ -3,12 +3,15 @@ import { useSelector } from 'react-redux';
 import cn from 'classnames';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import AttackIcon from '@assets/battlefield/BladeAttack.webp';
+// import { spellsCells } from '../../../gameData/heroes&spellsCellsData.js';
 import CellCard from '../CellCard/CellCard.jsx';
+// import AttachedSpellCards from '../AttachedCellCards/AttachedSpellCards.jsx';
 import styles from './Cell.module.css';
-import findTriggerSpells from '../../../utils/supportFunc/findTriggerSpells.js';
-import useBattleActions from '../../../hooks/useBattleActions.js';
 import useClickActions from '../../../hooks/useClickActions.js';
 import isWarriorReady from '../../../utils/supportFunc/isWarriorReady.js';
+import useCellTriggers from '../../../hooks/useCellTriggers.js';
+
+const cardsToShow = 5;
 
 const Cell = ({ props, id }) => {
   const { type, animation } = props;
@@ -20,18 +23,22 @@ const Cell = ({ props, id }) => {
     lastCellWithAction,
     gameTurn,
   } = useSelector((state) => state.battleReducer);
-  const cellContent = fieldCards.filter((card) => card.cellId === id);
+  const cardsInCell = fieldCards.filter((card) => card.cellId === id);
+  const lastCardToShowIdx = cardsInCell.length + 1 - cardsToShow;
+  const cellContent = cardsInCell
+    .slice(lastCardToShowIdx > 0 ? lastCardToShowIdx : 0);
   const [contLength, setContLength] = useState(cellContent.length);
   const currentCell = fieldCells.find((cell) => cell.id === id);
-  const readyWarrior = isWarriorReady(cellContent, currentCell.player, gameTurn);
-
-  const {
-    makeFeatureCast,
-  } = useBattleActions();
+  const warCard = cellContent.find((card) => (card.type === 'warrior' || card.type === 'hero'));
+  const readyWarrior = isWarriorReady(warCard, currentCell.player, gameTurn);
 
   const {
     handleCellClick,
   } = useClickActions();
+
+  const {
+    checkTriggers,
+  } = useCellTriggers();
 
   const classes = cn({
     [styles.defaultSize]: true,
@@ -44,42 +51,10 @@ const Cell = ({ props, id }) => {
     [styles.animationCanMakeTurn]: animation === '' && readyWarrior,
   });
 
-  const playTriggers = (card, thisCell, spellType, cardclass) => {
-    const onTriggerSpells = findTriggerSpells(card, thisCell, spellType, cardclass);
-    const returnSpell = onTriggerSpells.find((spell) => spell.name === 'return');
-    if (returnSpell) {
-      makeFeatureCast(returnSpell, thisCell, card, returnSpell.player);
-    } else {
-      onTriggerSpells
-        .forEach((spell) => makeFeatureCast(spell, thisCell, card, spell.player));
-    }
-  };
-
   useEffect(() => {
-    if (cardType === 'warrior') {
-      const warrior = cellContent.find((item) => item.type === 'warrior');
-      if (type === 'field' && warrior && cardSource === 'field') {
-        playTriggers(warrior, currentCell, 'onmove', 'warrior');
-      }
-      if (type === 'field' && warrior && (cardSource === 'hand' || cardSource === 'postponed')) {
-        playTriggers(warrior, currentCell, 'onplay', 'warrior');
-      }
-    }
-    if (cardType === 'spell') {
-      const spellCard = cellContent.find((item, i) => item.type === 'spell' && i === 0);
-      if (spellCard && cardSource === 'field') {
-        const onMoveSpells = findTriggerSpells(spellCard, currentCell, 'onmove', 'spell');
-        onMoveSpells.forEach((spell) => {
-          makeFeatureCast(spell, currentCell, spellCard, spellCard.player);
-        });
-      }
-      if (spellCard && (cardSource === 'hand' || cardSource === 'postponed')) {
-        const onPlaySpells = findTriggerSpells(spellCard, currentCell, 'onplay', 'spell');
-        onPlaySpells.forEach((spell) => {
-          makeFeatureCast(spell, currentCell, spellCard, spellCard.player);
-        });
-      }
-    }
+    checkTriggers({
+      cardType, cardSource, currentCell, cellContent, cellType: type,
+    });
   // eslint-disable-next-line
   }, [cardType, contLength, cardSource]);
 
@@ -101,7 +76,7 @@ const Cell = ({ props, id }) => {
       />
       )}
       <TransitionGroup component={null} exit>
-        {cellContent.length !== 0 && (
+        {cellContent.length > 0 && (
           cellContent.map((item) => (
             <CSSTransition
               key={item.id}

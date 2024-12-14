@@ -35,13 +35,15 @@ const MenuBtn = ({
   const handleOptionClick = () => {
     const gameMode = option.current.dataset.type;
     dispatch(modalsActions.closeModal());
-    dispatch(gameActions.setGameMode({ gameMode }));
     if (gameMode === 'online') {
+      dispatch(gameActions.setGameMode({ gameMode }));
       navigate('/lobby');
     } else if (gameMode === 'build') {
+      dispatch(gameActions.setGameMode({ gameMode }));
       navigate('/choosedeck');
-    } else {
+    } else if (gameMode === 'hotseat') {
       navigate('/battle');
+      dispatch(modalsActions.openModal({ type: 'openHotSeatMenu' }));
     }
   };
 

@@ -21,7 +21,7 @@ export default (cards) => {
       acc += card.cost;
       return acc;
     }, 0);
-  const avarageCardCost = (cardCost / cards.length).toFixed(1);
+  const avarageCardCost = cards.length > 0 ? (cardCost / cards.length).toFixed(1) : 0;
   return {
     cardsNmb, spellsNmb, warriorsNmb, avarageCardCost,
   };

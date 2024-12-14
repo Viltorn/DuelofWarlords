@@ -6,4 +6,5 @@ export default {
   Teleport: 'Телепорт',
   TownPortal: 'Портал в город',
   Transformation: 'Превращение в животное',
+  MagicMist: 'Магический туман',
 };

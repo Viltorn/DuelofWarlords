@@ -1,4 +1,5 @@
 import { useDispatch, useSelector } from 'react-redux';
+import { actions as modalsActions } from '@slices/modalsSlice.js';
 import { actions as deckbuilderActions } from '../slices/deckbuilderSlice.js';
 import { actions as battleActions } from '../slices/battleSlice.js';
 import { maxCardsDeckCopy } from '../gameData/gameLimits';
@@ -43,6 +44,7 @@ const useDeckBuilderActions = () => {
     if (addNewCard || changeCardQty) {
       dispatch(battleActions.addActiveCard({ card: newCard, player: 'player1' }));
     }
+    dispatch(modalsActions.openModal({ type: 'activeCardWindow', data: newCard }));
   };
 
   const changeCardsInDeckBuilder = (card, value) => {

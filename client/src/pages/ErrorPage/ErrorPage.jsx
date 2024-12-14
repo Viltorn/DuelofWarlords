@@ -1,5 +1,5 @@
 import { useTranslation } from 'react-i18next';
-import logoMini from '../../assets/Logo_Mini.png';
+import logoMini from '@assets/LogoMini.png';
 import styles from './ErrorPage.module.css';
 
 const ErrorPage = () => {

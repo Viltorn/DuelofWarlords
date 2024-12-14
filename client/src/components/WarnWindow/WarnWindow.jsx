@@ -63,7 +63,7 @@ const WarnWindow = ({
           showIcon={false}
           state={isPending ? 'disabled' : 'default'}
           disabled={isPending}
-          text={t('CLOSE')}
+          text={t('buttons.CLOSE')}
           variant="secondary"
           type="submit"
         />
@@ -73,7 +73,7 @@ const WarnWindow = ({
             showIcon={false}
             disabled={isPending}
             state={isPending ? 'disabled' : 'default'}
-            text={type === 'deleteDeck' ? t('DELETE') : t('EXIT')}
+            text={type === 'deleteDeck' ? t('buttons.DELETE') : t('buttons.EXIT')}
             variant="primary"
             type="submit"
           />

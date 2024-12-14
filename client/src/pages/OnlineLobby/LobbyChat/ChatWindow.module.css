@@ -45,10 +45,10 @@
   border-radius: 10px;
   padding: 20px;
   font-size: 20px;
-  background-color: var(--dark-blue);
+  background-color: transparent;
   color: var(--light-gray);
   text-align: start;
-  border: 1px solid var(--light-gray);
+  border: 1px solid var(--golden);
   outline-color: var(--golden);
 }
 

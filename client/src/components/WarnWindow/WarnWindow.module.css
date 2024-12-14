@@ -3,7 +3,7 @@
   display: flex;
   justify-content: center;
   align-items: top;
-  z-index: 2;
+  z-index: 5;
   left: 0;
   top: 0;
   width: 100%; /* Full width */
@@ -17,10 +17,11 @@
   justify-content: center;
   align-items: center;
   gap: 30px;
+  background-image: url('@assets/BlackStone.png');
   background-color: var(--dark-blue);
   margin: auto auto;
   padding: 20px;
-  border: 1px solid #888;
+  border: 2px solid var(--golden);
   width: 400px; 
   height: 300px;
   border-radius: 0.5rem;

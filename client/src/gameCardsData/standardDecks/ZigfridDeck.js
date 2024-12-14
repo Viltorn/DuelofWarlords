@@ -50,7 +50,7 @@ export default {
       name: 'Resurrection', type: 'spell', school: 'Light', qty: 1,
     },
     {
-      name: 'Retribution', type: 'spell', school: 'Light', qty: 1,
+      name: 'RetributionSword', type: 'spell', faction: 'Castle', qty: 1,
     },
     {
       name: 'AttackAura', type: 'spell', school: 'Light', qty: 1,
@@ -80,7 +80,7 @@ export default {
       name: 'SaintWord', type: 'spell', school: 'Light', qty: 1,
     },
     {
-      name: 'RighteousHammer', type: 'spell', faction: 'Castle', qty: 1,
+      name: 'RighteousHammer', type: 'spell', school: 'Skills', qty: 1,
     },
     {
       name: 'RetaliationHammer', type: 'spell', faction: 'Castle', qty: 1,

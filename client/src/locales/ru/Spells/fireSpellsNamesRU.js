@@ -8,4 +8,6 @@ export default {
   FireSplash: 'Огненный всплеск',
   FireShield: 'Огненный щит',
   FireBlast: 'Огненный взрыв',
+  Ignition: 'Воспламенение',
+  Blindness: 'Слепота',
 };

@@ -20,7 +20,6 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-bottom: 4rem;
 }
 
 .logoSet {
@@ -38,7 +37,7 @@
   flex-direction: row;
   flex-wrap: wrap;
   justify-content: space-around;
-  margin-top: 50px;
+  margin-top: 25px;
 }
 
 .main {
@@ -46,11 +45,25 @@
   flex-direction: column;
   align-items: center;
   color: var(--light-gray);
-  gap: 4rem;
+  gap: 0;
   justify-content: center;
   width: 100%;
+}
+
+.articleContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-image: url("@assets/BackgroundMain.jpeg");
+  background-position: cover;
+  padding: 5rem 3rem 3rem 3rem;
+  width: 100%;
+}
+
+.mainDescription {
   max-width: 1500px;
-  padding: 3rem;
+  width: 100%;
+  margin-bottom: 2rem;
 }
 
 .descriptionBig {
@@ -101,6 +114,7 @@
 
 .link {
   text-decoration: none;
+  margin-top: 3rem;
 }
 
 .gameDescription {
@@ -108,8 +122,9 @@
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
-  border: 2rem double var(--golden);
+  border: 0.5rem ridge var(--golden);
   color: var(--light-gray);
+  max-width: 1500px;
   width: 100%;
 }
 
@@ -117,9 +132,17 @@
   border: 0.1rem solid var(--golden);
 }
 
+.deviderBig {
+  height: 0.2rem;
+  background-color: var(--golden);
+  border: 1rem;
+  width: 100%;
+}
+
 .footer {
   width: 100%;
-  margin: 50px 0 0 0;
+  margin: 0;
+  background-image: url("@assets/BackgroundMain.jpeg");
   border-top: 1rem solid var(--golden);
   height: 100%;
   display: flex;
@@ -176,9 +199,6 @@
 }
 
 @media screen and (max-width: 767px) {
-  .main {
-    gap: 40px;
-  }
 
   .textMute {
     font-size: 14px;
@@ -212,10 +232,6 @@
     gap: 50px 30px;
   }
 
-  .cover {
-    margin-bottom: 50px;
-  }
-
   .footerBlock {
     gap: 15px;
     padding-top: 40px;
@@ -236,9 +252,6 @@
 }
 
 @media screen and (min-width: 1600px) {
-  .main {
-    gap: 60px;
-  }
   .textMute {
     font-size: 23px;
   }

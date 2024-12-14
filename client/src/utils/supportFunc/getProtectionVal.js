@@ -1,4 +1,4 @@
-export default (attackingPower, protection, health) => {
+const getProtectSpellVal = (attackingPower, protection, health) => {
   const { type, val } = protection.value;
   if (type === 'number') {
     return val;
@@ -12,3 +12,8 @@ export default (attackingPower, protection, health) => {
   }
   return 0;
 };
+
+export default (protSpells, attackingPower, targetHealth) => protSpells.reduce((value, spell) => {
+  value += getProtectSpellVal(attackingPower, spell, targetHealth);
+  return value;
+}, 0);

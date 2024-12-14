@@ -14,25 +14,28 @@ const isSpellMeetCondition = (data) => {
   } = data;
   const { condition, conditionValue, cost } = spell;
   if (cost && spellOwnerPoints && spellOwnerPoints - cost < 0) return false;
+  if (!condition) {
+    return true;
+  }
   if (type === 'warrior' || warSubtypes.includes(type)) {
-    if (condition && condition === 'minPower') {
+    if (condition === 'minPower') {
       const attackingPowerFeature = attackingCard.features.find((feat) => feat.name === 'power' && (defendingCard ? feat.aim.includes(defendingCard.subtype) : true));
       const attackingAddPower = attackingPowerFeature?.value || 0;
       return (attackingPower + attackingAddPower) >= conditionValue;
     }
-    if (condition && condition === 'maxPower') {
+    if (condition === 'maxPower') {
       const attackingPowerFeature = attackingCard.features.find((feat) => feat.name === 'power' && (defendingCard ? feat.aim.includes(defendingCard.subtype) : true));
       const attackingAddPower = attackingPowerFeature?.value || 0;
       return (attackingPower + attackingAddPower) <= conditionValue;
     }
-    if (condition && condition === 'canDie') {
+    if (condition === 'canDie') {
       const power = attackingCard.type === 'warrior' ? attackingPower : attackingCard.value;
       const attackingPowerFeature = attackingCard.features.find((feat) => feat.name === 'power' && (defendingCard ? feat.aim.includes(defendingCard.subtype) : true));
       const attackingAddPower = attackingPowerFeature?.value || 0;
       const { currentHP } = defendingCard;
       return currentHP - (power + attackingAddPower) <= 0;
     }
-    if (condition && condition === 'nextRowCell') {
+    if (condition === 'nextRowCell') {
       const protectCell = allFieldCells.find((cell) => cell.id === defendingCard.cellId);
       const curRowNumber = parseInt(protectCell.row, 10);
       const currentline = protectCell.line;

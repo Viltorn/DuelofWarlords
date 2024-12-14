@@ -1,6 +1,6 @@
 export default {
   BattleCry: 'Боевой клич',
-  MeleeCombat: 'Ближний бой',
+  MeleeCombat: 'Двойные кинжалы',
   RangeCombat: 'Дальний бой',
   Protection: 'Доспехи',
   Resistance: 'Сопротивление магии',
@@ -8,4 +8,7 @@ export default {
   FirstAid: 'Первая помощь',
   Leadership: 'Лидерство',
   BattleTactics: 'Тактика',
+  RighteousHammerCast: 'Молот правосудия',
+  RighteousHammer: 'Молот правосудия',
+  AddAttackCast: 'Заклинание',
 };

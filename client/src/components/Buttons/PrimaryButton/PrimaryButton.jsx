@@ -1,5 +1,5 @@
 /* eslint-disable no-nested-ternary */
-import PropTypes from 'prop-types';
+// import PropTypes from 'prop-types';
 import React, { useReducer } from 'react';
 import './PrimaryButton.css';
 
@@ -48,16 +48,16 @@ const PrimaryButton = ({
   );
 };
 
-PrimaryButton.propTypes = {
-  text: PropTypes.string,
-  stateProp: PropTypes.oneOf(['disabled', 'hover', 'default', 'absolute']),
-  variant: PropTypes.oneOf(['primary', 'secondary']),
-};
+// PrimaryButton.propTypes = {
+//   text: PropTypes.string,
+//   stateProp: PropTypes.oneOf(['disabled', 'hover', 'default', 'absolute']),
+//   variant: PropTypes.oneOf(['primary', 'secondary']),
+// };
 
-PrimaryButton.defaultProps = {
-  text: 'let"s start',
-  stateProp: 'default',
-  variant: 'primary',
-};
+// PrimaryButton.defaultProps = {
+//   text: 'let"s start',
+//   stateProp: 'default',
+//   variant: 'primary',
+// };
 
 export default PrimaryButton;

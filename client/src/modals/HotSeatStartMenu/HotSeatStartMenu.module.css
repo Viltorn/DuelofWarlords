@@ -18,9 +18,10 @@
   align-items: center;
   gap: 50px;
   background-color: var(--dark-blue);
+  background-image: url('@assets/BlackStone.png');
   margin: auto; /* 15% from the top and centered */
   padding: 2rem 2rem;
-  border: 1px solid #888;
+  border: 2px solid var(--golden);
   width: fit-content; /* Could be more or less, depending on screen size */
   min-width: 400px;
   height: fit-content;
@@ -29,7 +30,7 @@
 }
 
 .headerLight {
-  color: var(--light-gray);
+  color: var(--golden);
   font-size: 2rem;
   text-align: center;
 }
@@ -43,14 +44,15 @@
   border: none;
   display: flex;
   flex-direction: column;
-  gap: 30px;
+  gap: 2rem;
   justify-content: center;
 }
 
 .slidesContainer {
  display: flex;
  justify-content: space-around;
- gap: 50px;
+ align-items: flex-start;
+ gap: 3rem;
 }
 
 .playerSlides {
@@ -58,7 +60,7 @@
   flex-direction: column;
   width: 12rem;
   justify-content: center;
-  gap: 2rem;
+  gap: 1rem;
   align-items: center;
 }
 
@@ -74,8 +76,7 @@
 }
 
 .label {
-  height: 2rem;
-  min-height: 50px;
+  height: 1.5rem;
   width: 4rem;
   font-weight: 600;
   padding: 0.5rem;
@@ -87,7 +88,7 @@
   grid-column: 1 / span 3;
   width: 100%;
   padding: 0;
-  line-height: 1.5rem;
+  line-height: 1rem;
 }
 
 .player {
@@ -112,6 +113,51 @@
   flex-wrap: nowrap;
   justify-content: center;
   gap: 20px;
+}
+
+.playerTypeBlock {
+  display: flex;
+  justify-content: row;
+  gap: 0.3rem;
+  justify-content: center;
+  align-items: center;
+}
+
+.playerTypeHeader {
+  font-size: 1rem;
+  color: var(--golden);
+}
+
+.playerTypeHuman {
+  color: var(--light-gray);
+  border: none;
+  padding: 0.3rem;
+  font-size: 1rem;
+}
+
+.selectBlock {
+  border: 0.1rem solid var(--light-gray);
+  padding: 0.3rem;
+}
+
+.playerTypeSelect {
+  color: var(--light-gray);
+  border: none;
+  font-size: 1rem;
+  background-color: transparent;
+}
+
+.difficultyHeader {
+  font-size: 1rem;
+  color: var(--golden);
+}
+
+.difficultyBlock {
+  display: flex;
+  justify-content: row;
+  gap: 0.3rem;
+  justify-content: center;
+  align-items: center;
 }
 
 @media (max-width: 900px) {

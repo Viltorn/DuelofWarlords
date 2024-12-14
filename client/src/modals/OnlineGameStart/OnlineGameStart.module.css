@@ -17,10 +17,12 @@
   justify-content: center;
   align-items: center;
   gap: 30px;
-  background-color: var(--dark-blue);
+  background-color: var(--dark-color);
+  background-position: cover;
+  background-image: url('@assets/BlackStone.png');
   margin: auto; /* 15% from the top and centered */
   padding: 30px 30px;
-  border: 1px solid #888;
+  border: 2px solid var(--golden);
   width: fit-content; /* Could be more or less, depending on screen size */
   height: fit-content;
   border-radius: 0.5rem;
@@ -139,10 +141,10 @@
   border-radius: 10px;
   padding: 20px;
   font-size: 20px;
-  background-color: var(--dark-blue);
+  background-color: transparent;
   color: var(--light-gray);
   text-align: start;
-  border: 1px solid var(--light-gray);
+  border: 1px solid var(--golden);
   outline-color: var(--golden);
 }
 

@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
@@ -10,42 +10,49 @@ import { actions as deckbuilderActions } from '@slices/deckbuilderSlice.js';
 import axios from 'axios';
 import RotateScreen from '@components/RotateScreen/RotateScreen.jsx';
 import WarnWindow from '@components/WarnWindow/WarnWindow.jsx';
-import ActiveCard from '@components/CardComponents/ActiveCard/ActiveCard.jsx';
 import PrimaryButton from '@components/Buttons/PrimaryButton/PrimaryButton.jsx';
-import Cards from '@assets/deckBuilderIcons/CardsIcon.svg';
-import Lightning from '@assets/deckBuilderIcons/LightningIcon.svg';
-import Sword from '@assets/deckBuilderIcons/SwordIcon.svg';
+import Cards from '@assets/deckBuilderIcons/CardsIcon.png';
+import Lightning from '@assets/deckBuilderIcons/LightningIcon.png';
+import Sword from '@assets/deckBuilderIcons/SwordIcon.png';
 import DollarSign from '@assets/deckBuilderIcons/DollarSign.png';
-import ActiveCardInfo from '@components/CardComponents/ActiveCard/ActiveCardInfo.jsx';
 import DeckCards from './DeckCards/DeckCards.jsx';
 import AvailableCardsList from './AvailableCards/AvailableCardsList.jsx';
 import LoadSpinner from '../../components/LoadSpinner/LoadSpinner.jsx';
 import { deckNameValidation } from '../../utils/validation.js';
+import getModal from '../../modals/index.js';
 import countDeckCards from '../../utils/countDeckCards.js';
 import makeDeckForDB from '../../utils/makeDeckForDB.js';
 import gameCardsData from '../../gameCardsData/index';
-import functionContext from '../../contexts/functionsContext.js';
 import styles from './DeckBuilder.module.css';
 import routes from '../../api/routes.js';
 import isDeckExist from '../../utils/isDeckExist.js';
+import sortCards from '../../utils/sortCards.js';
 
 const DeckBuilder = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const orientation = useOrientation();
-  const { isOpenInfo } = useContext(functionContext);
   const [error, setError] = useState(false);
   const { playersDecks, name } = useSelector((state) => state.gameReducer);
   const { activeCardPlayer1 } = useSelector((state) => state.battleReducer);
   const {
     chosenDeckName, selectedCards, selectedHero, warnWindow, isChangesMade,
   } = useSelector((state) => state.deckbuilderReducer);
-  console.log(selectedHero);
+  const { isOpened, type } = useSelector((state) => state.modalsReducer);
+  const sortedCards = sortCards(selectedCards);
   const chosenDeck = playersDecks.find((deck) => deck.deckName === chosenDeckName);
   const {
     cardsNmb, spellsNmb, warriorsNmb, avarageCardCost,
   } = countDeckCards(selectedCards);
+
+  const renderModal = (status, option) => {
+    if (!status) {
+      return null;
+    }
+    const Modal = getModal(option);
+    return <Modal />;
+  };
 
   const handleBackClick = () => {
     if (isChangesMade) {
@@ -146,6 +153,7 @@ const DeckBuilder = () => {
                         className={styles.input}
                         id="deckName"
                         type="text"
+                        required
                         onChange={(e) => makeInputChange(e)}
                         onBlur={formik.handleBlur}
                         value={formik.values.deckName}
@@ -182,7 +190,7 @@ const DeckBuilder = () => {
                     <PrimaryButton
                       showIcon={false}
                       state="default"
-                      text={t('SAVEDECK')}
+                      text={t('buttons.SAVEDECK')}
                       variant="primary"
                       type="submit"
                     />
@@ -190,7 +198,7 @@ const DeckBuilder = () => {
                       onClick={handleBackClick}
                       showIcon={false}
                       state="default"
-                      text={t('BACK')}
+                      text={t('buttons.BACK')}
                       variant="secondary"
                     />
                   </div>
@@ -204,23 +212,12 @@ const DeckBuilder = () => {
             />
           </div>
           <div className={styles.rightBlock}>
-            <div className={styles.activeBlock}>
-              {activeCardPlayer1 && (
-              <ActiveCard
-                activeCard={activeCardPlayer1}
-                selectedHero={selectedHero}
-                playerType="player1"
-              />
-              )}
-              {isOpenInfo && activeCardPlayer1 && (
-              <ActiveCardInfo info={activeCardPlayer1.featInfo} type="build" />
-              )}
-            </div>
             <div className={styles.deckContainer}>
-              {selectedHero && (<DeckCards hero={selectedHero} cards={selectedCards} />)}
+              {selectedHero && (<DeckCards hero={selectedHero} cards={sortedCards} />)}
             </div>
           </div>
           {warnWindow && (<WarnWindow type={warnWindow} />)}
+          {renderModal(isOpened, type)}
         </main>
       )}
     </div>

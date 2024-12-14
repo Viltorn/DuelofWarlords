@@ -10,7 +10,10 @@ const findCellsForWarAttack = (card, fieldCards, fieldCells) => {
   const attackingRowCells = findCellsInRowForAttack({
     fieldCards, fieldCells, attackingLines, row, card,
   });
-  const hasMassAttack = card.features.find((feat) => feat.name === 'massAttack');
+  console.log(attackingRowCells);
+  const warCell = fieldCells.find((cell) => cell.id === cellId);
+  const hasMassAttack = card.features.find((feat) => feat.name === 'massAttack') || card.attachments.find((feat) => feat.name === 'massAttack')
+  || warCell.attachments.find((feat) => feat.name === 'massAttack');
   const attackingCells = !hasMassAttack
     ? attackingRowCells : findCellsForMassAttack({
       fieldCards, fieldCells, attackingLines, card,

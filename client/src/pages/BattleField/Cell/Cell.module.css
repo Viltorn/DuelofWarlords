@@ -45,14 +45,14 @@
 }
 
 .field {
-  background-image: url('@assets/battlefield/WarriorCell_square_withback.png');
+  background-image: url('@assets/battlefield/FieldCell.png');
   background-color: transparent;
   position: relative;
   background-size: cover;
   background-repeat: no-repeat;
   border: none;
-  width: calc(var(--cell-width));
-  height: calc(var(--cell-width) * 1.16);
+  width: calc(var(--cell-width) - 0.4rem);
+  height: calc((var(--cell-width) * 1.16) - 0.4rem);
   padding-bottom: 0.4rem;
   display: flex;
   flex-direction: column;

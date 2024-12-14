@@ -12,7 +12,7 @@ export default (deck) => deck.flatMap(({
       const newFeat = { ...feat, id: uniqCard.id };
       if (feat.name === 'invoke') {
         const newValueFeatures = feat.value.features
-          .map((spell) => ({ ...spell, id: _.uniqueId() }));
+          .map((spell) => ({ ...spell, id: _.uniqueId().id }));
         const newValue = { ...feat.value, features: newValueFeatures };
         return { ...newFeat, value: newValue };
       }

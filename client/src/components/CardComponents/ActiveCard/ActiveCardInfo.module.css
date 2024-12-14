@@ -1,31 +1,37 @@
 .infoWindow {
   position: absolute;
-  top: 6rem;
-  height: calc((var(--hand-card-width)) * 1.6 * 1.6);
+  top: 4.15rem;
+  height: calc((var(--hand-card-width)) * 1.7 * 1.6);
   width: calc((var(--hand-card-width)) * 2);
   border-radius: 0.3rem;
-  border: 0.2rem solid var(--black-color);
+  border: 0.2rem solid var(--golden);
   background: var(--dark-blue);
+  background-image: url('@assets/BlackStone.png');
   padding: 1rem;
   display: flex;
   flex-direction: column;
   gap: 1rem;
-  z-index: 3;
- 
+  z-index: 5;
+  overflow: visible;
 }
 
 .marginRight {
-  left: calc((var(--hand-card-width)) * 1.6 + 8.5rem);
+  left: calc((var(--hand-card-width)) * 1.6 + 9rem);
 }
 
 .marginLeft {
-  right: calc((var(--hand-card-width)) * 1.6 + 8.5rem);
+  right: calc((var(--hand-card-width)) * 1.6 + 9rem);
 }
 
-.buildType {
+.activeWindow {
   position: static;
-  top: 1rem;
-  right: calc((var(--hand-card-width)) * 1.6 - 8.5rem);
+}
+
+.itemBlock {
+  display: flex;
+  gap: 0.5rem;
+  flex-direction: column;
+  align-items: flex-start;
 }
 
 .tipTitle {
@@ -35,11 +41,43 @@
 
 .tipBody {
   color: var(--light-gray);
-  font-size: 0.8rem;
+  text-align: start;
+  font-size: 0.9rem;
 }
 
-@media (min-width: 0) and (max-width: 767px) {
+@media (min-width: 0) and (max-width: 935px) {
+
   .infoWindow {
-    height: calc((var(--hand-card-width)) * 1.6 * 1.7);
+    top: 3.6rem;
+    height: calc((var(--hand-card-width)) * 1.6 * 2.2);
+    width: calc((var(--hand-card-width)) * 2.5);
+    z-index: 6;
   }
+
+  .tipTitle {
+    margin-bottom: 0.7rem;
+  }
+
+  .tipBody {
+    color: var(--light-gray);
+    font-size: 1.2rem;
+  }
+
+  .marginRight {
+    left: calc((var(--hand-card-width)) * 1.6 + 12.6rem);
+  }
+
+  .marginLeft {
+    right: calc((var(--hand-card-width)) * 1.6 + 12.6rem);
+  }  
+
+  .activeWindow {
+    position: static;
+    height: calc((var(--hand-card-width)) * 1.6 * 2.6);
+    width: calc((var(--hand-card-width)) * 2.5);
+    top: 1rem;
+    right: 0;
+    z-index: 2;
+  }
+
 }

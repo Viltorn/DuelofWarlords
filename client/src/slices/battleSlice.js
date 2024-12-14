@@ -32,6 +32,8 @@ const initialState = {
   ],
   activeCells: { cellsForAttack: [], cellsForSpellCast: [], cellsForWarMove: [] },
   lastCellWithAction: {},
+  lastPlayedCard: {},
+  turnTimer: null,
   activeCardPlayer1: null,
   activeCardPlayer2: null,
 };
@@ -59,11 +61,6 @@ const battleSlice = createSlice({
     addActiveCells(state, { payload }) {
       const { cellsIds, type } = payload;
       state.activeCells[type] = [...state.activeCells[type], ...cellsIds];
-    },
-
-    setThisPlayer(state, { payload }) {
-      const { player } = payload;
-      state.thisPlayer = player;
     },
 
     changeTurn(state, { payload }) {
@@ -167,6 +164,11 @@ const battleSlice = createSlice({
       state.fieldCards.push(heroCard);
     },
 
+    setThisPlayer(state, { payload }) {
+      const { player } = payload;
+      state.thisPlayer = player;
+    },
+
     setPlayersDeck(state, { payload }) {
       const { deck, player } = payload;
       state.playersDecks[player] = deck;
@@ -252,13 +254,16 @@ const battleSlice = createSlice({
 
     returnCard(state, { payload }) {
       const { card, cost } = payload;
-      const { health, player, type } = card;
+      const {
+        health, player, type, curCharges, charges,
+      } = card;
       const changedBasic = {
         ...card, status: 'hand', cellId: '', currentC: cost,
       };
+      const chargedCard = curCharges ? { ...changedBasic, curCharges: charges } : changedBasic;
       const changedCard = type === 'warrior' ? {
-        ...changedBasic, currentHP: health, turn: 1, attachments: [],
-      } : { ...changedBasic };
+        ...chargedCard, currentHP: health, turn: 1, attachments: [],
+      } : { ...chargedCard };
       state.playersHands[player].push(changedCard);
     },
 
@@ -299,6 +304,22 @@ const battleSlice = createSlice({
       const { health, cardId } = payload;
       const index = state.fieldCards.findIndex((card) => card.id === cardId);
       state.fieldCards[index].currentHP = health;
+    },
+
+    changeSpellCharges(state, { payload }) {
+      const { newCharges, cardId } = payload;
+      const index = state.fieldCards.findIndex((card) => card.id === cardId);
+      state.fieldCards[index].curCharges = newCharges;
+    },
+
+    setLastPlayedCard(state, { payload }) {
+      const card = payload;
+      state.lastPlayedCard = card;
+    },
+
+    setTimer(state, { payload }) {
+      const timer = payload;
+      state.turnTimer = timer;
     },
   },
 });

@@ -12,11 +12,11 @@ import WarriorOfLight from '../../assets/castleCards/WarriorOfLight.png';
 import YoungPriestess from '../../assets/castleCards/YoungPriestess.png';
 import RighteousFighter from '../../assets/castleCards/RighteousFighter.png';
 import ZigfridHero from '../../assets/castleCards/ZigfridHero.png';
+import RetributionSword from '../../assets/castleCards/RetributionSword.png';
 import RionHero from '../../assets/castleCards/RionHero.png';
 
 // SPELLS
 import RetaliationHammer from '../../assets/castleCards/RetaliationHammer.png';
-import RighteousHammer from '../../assets/castleCards/RighteousHammer.png';
 import YouthFountain from '../../assets/castleCards/YouthFountain.png';
 
 const castleDeck = {
@@ -42,7 +42,7 @@ const castleDeck = {
       attach: ['warrior'], type: 'bad', aim: ['warrior', 'flyer', 'shooter', 'fighter'], name: 'moveNextRow', charges: 1, immediate: true, aimStatus: 'field',
     },
     {
-      attach: false, type: 'all', aim: ['warrior'], name: 'drawCard', condition: 'insteadatk', cost: 1,
+      attach: false, type: 'all', aim: ['warrior'], name: 'drawCard', condition: 'insteadatk', cost: 1, description: 'drawCard',
     },
     ],
     img: ZigfridHero,
@@ -69,7 +69,7 @@ const castleDeck = {
       attach: false, type: 'good', aim: ['warrior', 'flyer', 'shooter', 'fighter'], name: 'heal', value: 2, aimStatus: 'field',
     },
     {
-      attach: false, type: 'all', aim: ['warrior'], name: 'drawCard', condition: 'insteadatk', cost: 1,
+      attach: false, type: 'all', aim: ['warrior'], name: 'drawCard', condition: 'insteadatk', cost: 1, description: 'drawCard',
     },
     ],
     img: RionHero,
@@ -182,13 +182,16 @@ const castleDeck = {
     currentHP: 5,
     cost: 3,
     currentC: 3,
-    featInfo: ['FIGHTER', 'PROTECTOR'],
+    featInfo: ['FIGHTER'],
     description: 'Defender',
     faction: 'Castle',
     id: _.uniqueId(),
-    features: [{ name: 'protection', value: { type: 'percent', val: 0.5 }, aim: ['spell'] },
+    features: [
       {
-        attach: ['row'], type: 'good', name: 'redirectWarAttack', aim: ['warrior', 'fighter', 'shooter', 'flyer'], aimStatus: 'field',
+        attach: ['field', 'hero'], type: 'good', name: 'protection', value: { type: 'number', val: 1 }, aim: ['warrior', 'fighter', 'shooter', 'flyer', 'spells'], aimStatus: 'field',
+      },
+      {
+        attach: ['field', 'hero'], type: 'good', name: 'attack', value: 1, aim: ['warrior', 'fighter', 'shooter', 'flyer', 'spells', 'redirectToCaster'], aimStatus: 'field', condition: 'gotAttacked', apply: 'attacked',
       }],
     attachments: [],
     img: Defender,
@@ -228,8 +231,8 @@ const castleDeck = {
     subtype: 'flyer',
     power: 2,
     currentP: 2,
-    health: 7,
-    currentHP: 7,
+    health: 6,
+    currentHP: 6,
     cost: 4,
     currentC: 4,
     featInfo: ['FLYER'],
@@ -304,7 +307,7 @@ const castleDeck = {
     faction: 'Castle',
     id: _.uniqueId(),
     features: [{
-      attach: false, type: 'bad', aim: ['row', 'warrior', 'flyer', 'shooter', 'fighter'], value: 2, name: 'attack', condition: 'insteadatk', cost: 0, aimStatus: 'field',
+      attach: false, type: 'bad', aim: ['row', 'warrior', 'flyer', 'shooter', 'fighter'], value: 2, name: 'attack', condition: 'insteadatk', cost: 0, aimStatus: 'field', description: 'lightAttack',
     }],
     attachments: [],
     img: MasterOfLight,
@@ -333,37 +336,18 @@ const castleDeck = {
     status: 'hand',
     disabled: false,
   },
-  RighteousHammer: {
-    name: 'Righteous Hammer',
-    type: 'spell',
-    subtype: 'instant',
-    cost: 1,
-    currentC: 1,
-    featInfo: ['HEROABILITY'],
-    description: 'RighteousHammer',
-    faction: 'Castle',
-    id: _.uniqueId(),
-    place: '',
-    heroSpell: true,
-    features: [{
-      spell: true, attach: false, aim: ['warrior', 'flyer', 'shooter', 'fighter'], type: 'bad', name: 'attack', value: 3, depend: 'warriorsDiff', dependValue: 1, aimStatus: 'field',
-    }],
-    img: RighteousHammer,
-    status: 'hand',
-    disabled: false,
-  },
   RetaliationHammer: {
     name: 'Retaliation Hammer',
     type: 'spell',
     subtype: 'instant',
-    cost: 1,
-    currentC: 1,
-    featInfo: ['HEROABILITY'],
+    cost: 2,
+    currentC: 2,
+    featInfo: [],
     description: 'RetaliationHammer',
     faction: 'Castle',
     id: _.uniqueId(),
     place: '',
-    heroSpell: true,
+    heroSpell: false,
     features: [
       {
         spell: true, attach: false, type: 'bad', aim: ['warrior', 'flyer', 'shooter', 'fighter'], name: 'attack', value: 2, aimStatus: 'field',
@@ -373,6 +357,60 @@ const castleDeck = {
       },
     ],
     img: RetaliationHammer,
+    status: 'hand',
+    disabled: false,
+  },
+  RetributionSword: {
+    name: 'Retribution Sword',
+    type: 'spell',
+    subtype: 'permanent',
+    cost: 3,
+    currentC: 3,
+    description: 'RetributionSword',
+    faction: 'Castle',
+    id: _.uniqueId(),
+    place: 'warrior',
+    showCharges: true,
+    featInfo: ['ARTEFACT'],
+    charges: 2,
+    curCharges: 2,
+    features: [
+      {
+        spell: true,
+        attach: ['hero'],
+        aim: ['hero'],
+        type: 'good',
+        name: 'invoke',
+        description: 'retributionSword',
+        aimStatus: 'field',
+        condition: 'insteadatk',
+        charges: 2,
+        cost: 0,
+        value: {
+          img: RetributionSword,
+          name: 'fake',
+          type: 'spell',
+          subtype: 'instant',
+          currentC: 0,
+          description: 'AddAttackCast',
+          school: 'Skills',
+          place: '',
+          features: [{
+            spell: true,
+            attach: ['warrior', 'flyer', 'shooter', 'fighter'],
+            aim: ['warrior', 'fighter', 'shooter', 'flyer'],
+            type: 'good',
+            name: 'power',
+            value: 1,
+            depend: 'goodAttachments',
+            dependValue: 1,
+            charges: 1,
+            aimStatus: 'field',
+          }],
+          status: 'hand',
+        },
+      }],
+    img: RetributionSword,
     status: 'hand',
     disabled: false,
   },

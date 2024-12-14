@@ -1,11 +1,12 @@
 import _ from 'lodash';
-import ArcaneArmor from '../../assets/academiaCards/ArcaneArmor.png';
-import CursedShackle from '../../assets/academiaCards/CursedShackle.png';
-import InvisibilityCloak from '../../assets/academiaCards/InvisibilityCloak.png';
-import SoulDrain from '../../assets/academiaCards/SoulDrain.png';
-import Teleport from '../../assets/academiaCards/Teleport.png';
-import TownPortal from '../../assets/academiaCards/TownPortal.png';
-import Transformation from '../../assets/academiaCards/Transformation.png';
+import ArcaneArmor from '../../assets/shadowSpells/ArcaneArmor.png';
+import CursedShackle from '../../assets/shadowSpells/CursedShackle.png';
+import InvisibilityCloak from '../../assets/shadowSpells/InvisibilityCloak.png';
+import SoulDrain from '../../assets/shadowSpells/SoulDrain.png';
+import Teleport from '../../assets/shadowSpells/Teleport.png';
+import TownPortal from '../../assets/shadowSpells/TownPortal.png';
+import Transformation from '../../assets/shadowSpells/Transformation.png';
+import MagicMist from '../../assets/shadowSpells/MagicMist.png';
 
 export default {
   ArcaneArmor: {
@@ -19,8 +20,11 @@ export default {
     description: 'ArcaneArmor',
     school: 'Shadow',
     place: 'bigSpell',
+    charges: 1,
+    curCharges: 1,
+    showCharges: false,
     features: [{
-      spell: true, attach: ['field', 'warrior', 'hero'], aim: ['warrior', 'fighter', 'shooter', 'flyer'], type: 'good', name: 'protection', value: { type: 'number', val: 100 }, charges: 1, condition: 'minPower', conditionValue: 3, aimStatus: 'field', cost: 1,
+      spell: true, attach: ['field', 'warrior', 'hero'], aim: ['warrior', 'fighter', 'shooter', 'flyer'], type: 'good', name: 'protection', value: { type: 'number', val: 100 }, charges: 1, condition: 'minPower', conditionValue: 3, aimStatus: 'field', cost: 1, subtype: 'reaction',
     }],
     img: ArcaneArmor,
     status: 'hand',
@@ -30,8 +34,8 @@ export default {
     id: _.uniqueId(),
     type: 'spell',
     subtype: 'permanent',
-    cost: 3,
-    currentC: 3,
+    cost: 2,
+    currentC: 2,
     featInfo: [],
     description: 'CursedChackle',
     school: 'Shadow',
@@ -56,10 +60,10 @@ export default {
     name: 'Invisibility cloak',
     id: _.uniqueId(),
     type: 'spell',
-    subtype: 'temporary',
+    subtype: 'permanent',
     cost: 1,
     currentC: 1,
-    featInfo: ['INVISIBILITY', 'MAGICSHIELD'],
+    featInfo: ['INVISIBILITY'],
     description: 'InvisibilityCloak',
     school: 'Shadow',
     place: 'warrior',
@@ -71,9 +75,6 @@ export default {
         type: 'good',
         name: 'invisible',
         aimStatus: 'field',
-      },
-      {
-        spell: true, attach: ['warrior'], type: 'good', name: 'protection', value: { type: 'percent', val: 0.5 }, aim: ['spell'], aimStatus: 'field',
       },
     ],
     img: InvisibilityCloak,
@@ -105,6 +106,9 @@ export default {
     currentC: 1,
     featInfo: [],
     description: 'Teleport',
+    charges: 1,
+    curCharges: 1,
+    showCharges: false,
     school: 'Shadow',
     place: '',
     features: [{
@@ -147,6 +151,30 @@ export default {
       spell: true, attach: ['warrior'], aim: ['warrior', 'flyer', 'shooter', 'fighter'], type: 'bad', name: 'moveNextRow', aimStatus: 'field', charges: 1, immediate: true,
     }],
     img: Transformation,
+    status: 'hand',
+  },
+  MagicMist: {
+    name: 'Magic Mist',
+    id: _.uniqueId(),
+    type: 'spell',
+    subtype: 'temporary',
+    cost: 2,
+    currentC: 2,
+    featInfo: ['INVISIBILITY'],
+    description: 'MagicMist',
+    school: 'Shadow',
+    place: 'warrior',
+    features: [
+      {
+        spell: true,
+        attach: ['warrior', 'flyer', 'shooter', 'fighter'],
+        aim: ['warrior', 'flyer', 'shooter', 'fighter'],
+        type: 'bad',
+        name: 'invisible',
+        aimStatus: 'field',
+      },
+    ],
+    img: MagicMist,
     status: 'hand',
   },
 };

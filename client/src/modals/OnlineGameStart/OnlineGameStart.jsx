@@ -15,7 +15,7 @@ import makeInitialDeck from '../../utils/makeInitialDeck.js';
 import PrimaryButton from '../../components/Buttons/PrimaryButton/PrimaryButton.jsx';
 import socket from '../../socket.js';
 import styles from './OnlineGameStart.module.css';
-import MenuSlider from '../MenuSlider/MenuSlider.jsx';
+import MenuSlider from '../../components/MenuSlider/MenuSlider.jsx';
 import makeShaffledDeck from '../../utils/makeShaffledDeck.js';
 import createDeckForPLayer from '../../utils/makeDeckForPlayer.js';
 import dummyCard from '../../gameCardsData/dummyCard.js';
@@ -141,7 +141,7 @@ const OnlineGameStart = () => {
       ) : (
         <div className={styles.contentDark}>
           <form className={styles.formBlock} onSubmit={formik.handleSubmit}>
-            <h2 className={styles.headerLight}>{t('ChooseFactions')}</h2>
+            <h2 className={styles.headerLight}>{t('modals.ChooseDeck')}</h2>
             <fieldset className={styles.fieldset} disabled={formik.isSubmitting}>
               <div className={styles.playerSlides}>
                 <div className={styles.slideBlock}>
@@ -194,7 +194,7 @@ const OnlineGameStart = () => {
                       <PrimaryButton
                         showIcon={false}
                         state="default"
-                        text={t('CREATE')}
+                        text={t('buttons.CREATE')}
                         variant="primary"
                         type="submit"
                       />
@@ -202,7 +202,7 @@ const OnlineGameStart = () => {
                       <PrimaryButton
                         showIcon={false}
                         state="default"
-                        text={t('JOIN')}
+                        text={t('buttons.JOIN')}
                         variant="primary"
                         type="submit"
                       />
@@ -211,7 +211,7 @@ const OnlineGameStart = () => {
                       onClick={handleClose}
                       showIcon={false}
                       state="default"
-                      text={t('CLOSE')}
+                      text={t('buttons.CLOSE')}
                       variant="secondary"
                     />
                   </div>

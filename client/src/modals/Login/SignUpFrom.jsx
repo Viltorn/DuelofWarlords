@@ -25,7 +25,7 @@ const LogInForm = ({ formik, error, changeType }) => {
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
               value={formik.values.username}
-              placeholder={t('LoginName')}
+              placeholder={t('modals.LoginName')}
               data-testid="input-body"
               name="username"
             />
@@ -76,13 +76,13 @@ const LogInForm = ({ formik, error, changeType }) => {
           <PrimaryButton
             showIcon={false}
             state="default"
-            text={t('SIGNUP')}
+            text={t('buttons.SIGNUP')}
             variant="primary"
             type="submit"
           />
           <div className={styles.formTypeBlock}>
-            <p className={styles.questionText}>{t('HaveAcc')}</p>
-            <button className={styles.changeFormBtn} type="button" onClick={() => changeType((prev) => !prev)}>{t('LogInLink')}</button>
+            <p className={styles.questionText}>{t('modals.HaveAcc')}</p>
+            <button className={styles.changeFormBtn} type="button" onClick={() => changeType((prev) => !prev)}>{t('modals.LogInLink')}</button>
           </div>
         </div>
       </fieldset>

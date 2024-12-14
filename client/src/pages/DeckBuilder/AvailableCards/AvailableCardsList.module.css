@@ -7,18 +7,24 @@
   width: 100%;
   height: 100%;
   overflow-y: scroll;
-  border-radius: 10px;
-  border: 0.3rem solid var(--golden);
+  border-radius: 5px;
+  border: 5px ridge var(--golden);
 }
 
 .cardsBlock {
   display: flex;
   flex-wrap: wrap;
   height: 100%;
-  gap: 1rem;
+  gap: 0.8rem;
+}
+
+.cardContainer {
+  border: 2px solid var(--dark-color);
+  border-radius: 0.4rem;
+  background-color: transparent;
 }
 
 .title {
   font-size: 1.5rem;
-  color: var(--dark-color);
+  color: var(--dark-golden);
 }

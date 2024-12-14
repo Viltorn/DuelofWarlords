@@ -13,10 +13,10 @@ const goodMorale = {
   id: _.uniqueId(),
   attachments: [],
   features: [{
-    attach: false, type: 'good', aim: ['warrior'], name: 'increasePoints', value: 1, condition: 'insteadatk', cost: 0,
+    attach: false, type: 'good', aim: ['warrior'], name: 'increasePoints', value: 1, condition: 'insteadatk', cost: 0, description: 'increasePoints',
   },
   {
-    attach: false, type: 'all', aim: ['warrior'], name: 'drawCard', condition: 'insteadatk', cost: 0,
+    attach: false, type: 'all', aim: ['warrior'], name: 'drawCard', condition: 'insteadatk', cost: 0, description: 'drawCard',
   }],
   img: GoodMorale,
   status: 'hand',

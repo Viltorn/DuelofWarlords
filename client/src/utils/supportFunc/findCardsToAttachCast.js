@@ -1,31 +1,25 @@
 import findAdjasentCells from './findAdjasentCells';
+import isRightPlayerCellForSpell from './isRightPlayerCellForSpell';
 
 const findCardsToAttachCast = (data) => {
   const {
-    currentFieldCards, feature, castingPlayer, enemyPlayer, aimCell, currentFieldCells,
+    currentFieldCards, feature, castingPlayer, aimCell, currentFieldCells,
   } = data;
   const { type, attach } = feature;
   if (!attach.includes('cards')) return null;
   if (attach.includes('field') && type === 'all') {
-    return currentFieldCards.filter((card) => card.type === 'warrior' && card.attachments.length < 2);
+    return currentFieldCards.filter((card) => card.type === 'warrior');
   }
-  if (attach.includes('field') && type === 'good') {
-    return currentFieldCards.filter((card) => card.type === 'warrior' && card.attachments.length < 2 && card.player === castingPlayer);
-  } if (attach.includes('field') && type === 'bad') {
-    return currentFieldCards.filter((card) => card.type === 'warrior' && card.attachments.length < 2 && card.player === enemyPlayer);
-  } if (attach.includes('row')) {
-    if (type === 'all') {
-      return currentFieldCards.filter((card) => card.cellId.split('.')[0] === aimCell.row);
-    }
-    if (type === 'bad') {
-      return currentFieldCards
-        .filter((card) => card.cellId.split('.')[0] === aimCell.row && card.player === enemyPlayer);
-    }
-    if (type === 'good') {
-      return currentFieldCards
-        .filter((card) => card.cellId.split('.')[0] === aimCell.row && card.player === castingPlayer);
-    }
-  } else if (attach.includes('adjacent')) {
+  if (attach.includes('field') && type !== 'all') {
+    return currentFieldCards.filter((card) => card.type === 'warrior' && isRightPlayerCellForSpell(card, castingPlayer, type));
+  } if (attach.includes('row') && type === 'all') {
+    return currentFieldCards.filter((card) => card.cellId.split('.')[0] === aimCell.row && card.type === 'warrior');
+  } if (attach.includes('row') && type !== 'all') {
+    const cards = currentFieldCards
+      .filter((card) => card.cellId.split('.')[0] === aimCell.row && card.type === 'warrior' && isRightPlayerCellForSpell(card, castingPlayer, type));
+    console.log(cards);
+    return cards;
+  } if (attach.includes('adjacent')) {
     if (type === 'good') {
       const adjacentCellsIds = findAdjasentCells(currentFieldCells, aimCell).map((cell) => cell.id);
       return currentFieldCards

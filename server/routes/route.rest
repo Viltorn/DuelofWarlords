@@ -6,6 +6,20 @@ password: heroes3
 
 ###
 
+GET http://localhost:8080/accounts/names
+Content-Type: application/json
+username: admin
+password: heroes3
+
+###
+
+DELETE http://localhost:8080/accounts/test
+Content-Type: application/json
+username: admin
+password: heroes3
+
+###
+
 POST http://localhost:8080/accounts
 Content-Type: application/json
 
@@ -33,3 +47,6 @@ Content-Type: application/json
 }
 
 ###
+
+// PRODUCTION
+

@@ -1,0 +1,60 @@
+.window {
+  position: fixed;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  z-index: 4;
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+.player1 {
+  justify-content: end;
+  padding-right: 10rem;
+}
+
+.player2 {
+  justify-content: start;
+  padding-left: 10rem;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: start;
+  z-index: 6;
+  gap: 15px;
+  background-color: var(--dark-color);
+  background-image:url("@assets/BlackStone.png");
+  padding: 2rem;
+  border: 2px solid var(--golden);
+  width: 25rem; /* Could be more or less, depending on screen size */
+  height: 20rem;
+  border-radius: 0.5rem;
+}
+
+.title {
+  color: var(--light-gray);
+  font-size: 1.5rem;
+  line-height: 2rem;
+  text-align: start;
+}
+
+
+@media (max-width: 900px) {
+  .content {
+    width: 250px; /* Could be more or less, depending on screen size */
+    height: 200px;
+  }
+  
+  .title {
+    color: var(--light-gray);
+    font-size: 16px;
+    line-height: 20px;
+  }
+  
+}

@@ -1,9 +1,11 @@
+/* eslint-disable max-len */
 /* eslint-disable object-curly-newline */
-import React, { useContext, useEffect, useMemo, useRef } from 'react';
+import React, { useEffect, useMemo, useRef, createRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import { useOrientation } from '@uidotdev/usehooks';
 import { useNavigate } from 'react-router-dom';
+import cn from 'classnames';
 import socket from '../../socket.js';
 import Cell from './Cell/Cell.jsx';
 import HeroPad from './HeroPad/HeroPad.jsx';
@@ -19,7 +21,7 @@ import getModal from '../../modals/index.js';
 import { actions as modalsActions } from '../../slices/modalsSlice.js';
 import { actions as battleActions } from '../../slices/battleSlice.js';
 import { actions as gameActions } from '../../slices/gameSlice.js';
-import FunctionContext from '../../contexts/functionsContext.js';
+import useFunctionsContext from '../../hooks/useFunctionsContext.js';
 
 const Battlefield = () => {
   const dispatch = useDispatch();
@@ -27,12 +29,11 @@ const Battlefield = () => {
   const container = useRef(null);
   const main = useRef(null);
   const orientation = useOrientation();
+
   const {
-    addCardToField,
-    endTurn,
-    makeMove,
-    isOpenInfo,
-  } = useContext(FunctionContext);
+    addCardToField, endTurn, makeMove, isOpenInfo,
+  } = useFunctionsContext();
+
   const {
     activeCardPlayer1,
     activeCardPlayer2,
@@ -51,6 +52,13 @@ const Battlefield = () => {
   const bigSpell = useMemo(() => fieldCells.find((cell) => cell.type === 'bigSpell'), [fieldCells]);
   const midSpells = useMemo(() => fieldCells.filter((cell) => cell.type === 'midSpell'), [fieldCells]);
   const activeCard = thisPlayer === 'player1' ? activeCardPlayer1 : activeCardPlayer2;
+  const playerHandCards = playersHands[thisPlayer].map((card) => ({ ...card, nodeRef: createRef(null) }));
+  const contentLength = playersHands[thisPlayer].length;
+
+  const handClasses = cn({
+    [styles.playerHand]: true,
+    [styles.fistRound]: type === 'startFirstRound',
+  });
 
   const renderModal = (status, option) => {
     if (!status) {
@@ -61,20 +69,11 @@ const Battlefield = () => {
   };
 
   useEffect(() => {
-    if (gameMode === 'hotseat') {
-      dispatch(modalsActions.openModal({ type: 'openHotSeatMenu' }));
-    }
-  }, [gameMode, dispatch]);
-
-  useEffect(() => {
-    if (gameMode === 'online' && curRoom !== '') {
-      const player1Name = players.player1.name;
-      const player2Name = players.player2.name;
-      if (player1Name === '' || player2Name === '') {
-        dispatch(modalsActions.openModal({ type: 'waitForPlayer' }));
-      } else {
-        dispatch(modalsActions.closeModal());
-      }
+    const player1Name = players.player1.name;
+    const player2Name = players.player2.name;
+    if (gameMode === 'online' && curRoom !== ''
+      && (player1Name === '' || player2Name === '')) {
+      dispatch(modalsActions.openModal({ type: 'waitForPlayer' }));
     }
   }, [players.player2.name, dispatch, gameMode, curRoom, players.player1.name]);
 
@@ -93,6 +92,7 @@ const Battlefield = () => {
       dispatch(battleActions.setPlayerName({ name: player1.username, player: 'player1' }));
       dispatch(battleActions.setPlayerName({ name: player2.username, player: 'player2' }));
       dispatch(gameActions.setCurrentRoom({ room: roomId }));
+      dispatch(modalsActions.openModal({ type: 'startFirstRound', player: 'player1' }));
     });
     socket.on('playerDisconnected', (player) => {
       dispatch(battleActions.setPlayerName({ name: '', player: player.type }));
@@ -188,13 +188,13 @@ const Battlefield = () => {
             <InGameMenu />
             <div className={styles.heropad1}>
               {activeCardPlayer1 && (
-              <ActiveCard activeCard={activeCardPlayer1} playerType="player1" />
+              <ActiveCard activeCard={activeCardPlayer1} playerType="player1" info={isOpenInfo} />
               )}
               <HeroPad type="first" player={thisPlayer} />
             </div>
-            <div className={styles.playerHand}>
+            <div className={handClasses}>
               <TransitionGroup component={null} exit>
-                {playersHands[thisPlayer].map((card) => (
+                {playerHandCards.map((card) => (
                   <CSSTransition
                     key={card.id}
                     timeout={500}
@@ -207,9 +207,8 @@ const Battlefield = () => {
                   >
                     <Card
                       key={card.id}
-                      contentLength={playersHands[thisPlayer].length}
+                      contentLength={contentLength}
                       card={card}
-                      activeCard={activeCardPlayer1}
                     />
                   </CSSTransition>
                 ))}
@@ -310,10 +309,10 @@ const Battlefield = () => {
             <div className={styles.heropad2}>
               <HeroPad type="first" player={thisPlayer} />
               {activeCardPlayer2 && (
-              <ActiveCard activeCard={activeCardPlayer2} playerType="player2" />
+              <ActiveCard activeCard={activeCardPlayer2} playerType="player2" info={isOpenInfo} />
               )}
             </div>
-            <div className={styles.playerHand}>
+            <div className={handClasses}>
               <TransitionGroup component={null} exit>
                 {playersHands[thisPlayer].map((card) => (
                   <CSSTransition
@@ -328,9 +327,9 @@ const Battlefield = () => {
                   >
                     <Card
                       key={card.id}
-                      contentLength={playersHands[thisPlayer].length}
+                      contentLength={contentLength}
                       card={card}
-                      activeCard={activeCardPlayer2}
+                      isOpenInfo={isOpenInfo}
                     />
                   </CSSTransition>
                 ))}

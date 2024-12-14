@@ -45,29 +45,22 @@ const ChooseGame = () => {
     if (!logged && userType !== 'guest') {
       dispatch(modalsActions.openModal({ type: 'loginWindow' }));
     }
-    const updateOnlineRooms = (data) => {
-      dispatch(gameActions.updateRooms({ rooms: data }));
-    };
-
-    const updateCurOnline = (players) => {
-      dispatch(gameActions.setOnlineCount({ count: players }));
-      console.log(players);
-    };
 
     const updateSockId = (id) => {
       if (socketId !== id && socketId !== '') {
         dispatch(gameActions.setSocketId({ socketId: id }));
         dispatch(gameActions.setLogged({ logged: false }));
       }
+      if (socketId === '') {
+        dispatch(gameActions.setSocketId({ socketId: id }));
+      }
     };
 
     socket.on('getSocketId', updateSockId);
-    socket.on('rooms', updateOnlineRooms);
-    socket.on('clientsCount', updateCurOnline);
     return () => {
       socket.off('getSocketId', updateSockId);
-      socket.off('rooms', updateOnlineRooms);
-      socket.off('clientsCount', updateCurOnline);
+      // socket.off('rooms', updateOnlineRooms);
+      // socket.off('clientsCount', updateCurOnline);
     };
   }, [dispatch, socketId, logged, userType]);
 
@@ -79,19 +72,19 @@ const ChooseGame = () => {
         aria-label="login button"
         onClick={handleLogBtnClick}
       >
-        {logged ? t('EXIT') : t('ENTER')}
+        {logged ? t('buttons.EXIT') : t('buttons.ENTER')}
       </button>
       <p className={styles.version}>{gameVersion}</p>
       <div className={styles.options}>
         {logged && (
-          <MenuBtn text={t('DeckBuilder')} data="build" type="secondary" />
+          <MenuBtn text={t('buttons.DECKBUILDER')} data="build" type="secondary" />
         )}
         <hr className={styles.divider} />
         <h2 className={styles.header}>{t('ChooseGame')}</h2>
-        <MenuBtn text={t('Tutorial')} data="tutorial" type="primary" />
-        <MenuBtn text={t('HotSeat')} data="hotseat" type="primary" />
+        <MenuBtn text={t('buttons.TUTORIAL')} data="tutorial" type="primary" />
+        <MenuBtn text={t('buttons.HOTSEAT')} data="hotseat" type="primary" />
         {logged && (
-          <MenuBtn text={t('OnlineGame')} data="online" type="primary" />
+          <MenuBtn text={t('buttons.ONLINEGAME')} data="online" type="primary" />
         )}
       </div>
       {renderModal(isOpened, type)}

@@ -10,7 +10,8 @@
   height: 20rem;
   z-index: 4;
   padding: 7rem 3rem 2rem  3rem;
-  background-color: var(--white-color);
+  background-color: var(--dark-color);
+  background-image: url('@assets/BlackStone.png');
   box-sizing: border-box;
   transition: all 0.3s linear;
   border-radius: 0 0 0.3rem 0.3rem;
@@ -26,7 +27,7 @@
 
 .menubar::after {
   content: " ";
-  background: #333333;
+  background: var(--dark-golden);
   width: 0.1rem;
   height: 100%;
   right: -2rem;
@@ -73,9 +74,14 @@
 
 .contactBlock {
   display: flex;
+  color: var(--white-color);
   flex-direction: column;
   gap: 1rem;
   align-items: flex-start;
+}
+
+.footFeedback {
+  color: var(--white-color);
 }
 
 .discord {

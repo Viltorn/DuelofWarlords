@@ -7,10 +7,12 @@
   flex-direction: wrap;
   align-items: center;
   flex-wrap: nowrap;
-  background-color: var(--dark-blue);
+  background-color: var(--dark-color);
+  background-image: url('@assets/BrownBack.png');
+  padding: 2rem;
+  border: 2px ridge var(--golden);
   margin: auto auto; /* 15% from the top and centered */
   padding: 1rem;
-  border: 1px solid #888;
   border-radius: 10px;
   transition: all 0.3s linear;
 }

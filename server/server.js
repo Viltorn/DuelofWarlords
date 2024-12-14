@@ -61,9 +61,9 @@ io.on('connection', async (socket) => {
     }
   });
 
-  const userCount = io.engine.clientsCount;
-  io.emit('clientsCount', userCount);
-  io.to(socket.id).emit('rooms', getRooms(rooms));
+  // const userCount = io.engine.clientsCount;
+  // io.emit('clientsCount', userCount);
+  // io.to(socket.id).emit('rooms', getRooms(rooms));
   io.to(socket.id).emit('getSocketId', socket.id);
 
   // socket.on('saveDeck', async (data, callback) => {
@@ -127,75 +127,77 @@ io.on('connection', async (socket) => {
     callback({ decks: newDecks });
   });
 
-  socket.on('logIn', async (data, callback) => {
-    try {
-      const { username, password } = data;
-      console.log('log1');
-      const rawRes = await redis.get(username, function(err, result) {
-          if (err) {
-            console.log('DatabaseError');
-          } else if (result === null) {
-            console.log('UserDoesNotExist');
-          } else {
-            console.log(result);
-          }
-        });
+  // socket.on('logIn', async (data, callback) => {
+  //   try {
+  //     const { username, password } = data;
+  //     console.log('log1');
+  //     const rawRes = await redis.get(username, function(err, result) {
+  //         if (err) {
+  //           console.log('DatabaseError');
+  //         } else if (result === null) {
+  //           console.log('UserDoesNotExist');
+  //         } else {
+  //           console.log(result);
+  //         }
+  //       });
       
-      if (rawRes === null) {
-        callback({ error: true, message: 'UserDoesNotExist' });
-        return;
-      }
+  //     if (rawRes === null) {
+  //       callback({ error: true, message: 'UserDoesNotExist' });
+  //       return;
+  //     }
 
-      const res = JSON.parse(rawRes);
-      const { pass, decks } = res;
+  //     const res = JSON.parse(rawRes);
+  //     const { pass, decks } = res;
         
-      if (pass !== password) {
-        const error = true;
-        const message = 'WrongPass';
-        callback({ error, message });
-        return;
-      }
+  //     if (pass !== password) {
+  //       const error = true;
+  //       const message = 'WrongPass';
+  //       callback({ error, message });
+  //       return;
+  //     }
 
-      socket.data.username = username;
-      const userCount = io.engine.clientsCount;
-      io.emit('clientsCount', userCount); 
-      io.to(socket.id).emit('getMessages', messages);
-      callback({ id: socket.id, rooms: getRooms(rooms), decks });
-    } catch (e) {
-      return;
-    }
-  });
+  //     socket.data.username = username;
+  //     const userCount = io.engine.clientsCount;
+  //     io.emit('clientsCount', userCount); 
+  //     io.to(socket.id).emit('getMessages', messages);
+  //     callback({ id: socket.id, rooms: getRooms(rooms), decks });
+  //   } catch (e) {
+  //     return;
+  //   }
+  // });
 
-  socket.on('signUp', async (args, callback) => {
-    const { username, password, decks } = args;
-    const rawRes = await redis.get(username, function(err, result) {
-      if (err) {
-        console.log('DatabaseError');
-      } else if (result !== null) {
-        console.log('UserAlreadyExist');
-      }
-    });
+  // socket.on('signUp', async (args, callback) => {
+  //   const { username, password, decks } = args;
+  //   const rawRes = await redis.get(username, function(err, result) {
+  //     if (err) {
+  //       console.log('DatabaseError');
+  //     } else if (result !== null) {
+  //       console.log('UserAlreadyExist');
+  //     }
+  //   });
 
-    if (rawRes !== null) {
-      callback({error: true, message:  'UserAlreadyExist' });
-      return;
-    }
+  //   if (rawRes !== null) {
+  //     callback({error: true, message:  'UserAlreadyExist' });
+  //     return;
+  //   }
     
-    const jsonData = JSON.stringify({ pass: password, decks });
-    await redis.set(username, jsonData);
+  //   const jsonData = JSON.stringify({ pass: password, decks });
+  //   await redis.set(username, jsonData);
   
+  //   socket.data.username = username;
+  //   const userCount = io.engine.clientsCount;
+  //   io.emit('clientsCount', userCount); 
+  //   io.to(socket.id).emit('getMessages', messages);
+  //   callback({ id: socket.id, rooms: getRooms(rooms), decks });
+  // });
+
+  socket.on('updateOnlineData', async (data, callback) => {
+    const { username } = data;
     socket.data.username = username;
     const userCount = io.engine.clientsCount;
-    io.emit('clientsCount', userCount); 
-    io.to(socket.id).emit('getMessages', messages);
-    callback({ id: socket.id, rooms: getRooms(rooms), decks });
-  });
-
-  socket.on('updateOnlineData', async (callback) => {
-    const userCount = io.engine.clientsCount;
-    io.emit('clientsCount', userCount); 
-    io.to(socket.id).emit('getMessages', messages);
-    callback({ id: socket.id, rooms: getRooms(rooms) });
+    socket.emit('clientsCount', userCount); 
+    // io.to(socket.id).emit('getMessages', messages);
+    callback({ id: socket.id, newRooms: getRooms(rooms), messages, players: userCount });
   });
 
   socket.on('createRoom', async (args, callback) => { // callback here refers to the callback function from the client passed as data

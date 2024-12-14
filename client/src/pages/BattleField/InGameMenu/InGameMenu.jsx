@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
-import DiscordLogo from '@assets/battlefield/discordBlack.svg';
+import DiscordLogo from '@assets/discord.svg';
 import InGameLinks from './InGameLinks.jsx';
 import functionContext from '../../../contexts/functionsContext.js';
 import styles from './InGameMenu.module.css';
@@ -15,18 +15,18 @@ const InGameMenu = () => {
       <ul className={styles.menubar}>
         <div className={styles.menuItems}>
           <li className={styles.menuItem}>
-            <InGameLinks text={t('MAIN')} dest="/" />
+            <InGameLinks text={t('buttons.MAIN')} dest="/" />
           </li>
           <li className={styles.menuItem}>
-            <InGameLinks text={t('GAMECHOOSE')} dest="/choose" />
+            <InGameLinks text={t('buttons.GAMECHOOSE')} dest="/choose" />
           </li>
           {gameMode !== 'online' ? (
             <li className={styles.menuItem}>
-              <InGameLinks text={t('RESETGAME')} dest="reset" />
+              <InGameLinks text={t('buttons.RESETGAME')} dest="reset" />
             </li>
           ) : (
             <li className={styles.menuItem}>
-              <InGameLinks text={t('GOLOBBY')} dest="/lobby" />
+              <InGameLinks text={t('buttons.GOLOBBY')} dest="/lobby" />
             </li>
           )}
         </div>

@@ -1,6 +1,5 @@
 export default {
   Resurrection: 'Воскрешение',
-  Retribution: 'Воздаяние',
   AttackAura: 'Аура атаки',
   HealingLight: 'Исцеление светом',
   Enlightenment: 'Просветление',

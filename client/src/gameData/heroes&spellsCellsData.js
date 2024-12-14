@@ -1,15 +1,15 @@
 export const topSpells = [
   {
-    id: '2', player: 'player1', content: [], type: 'topSpell', animation: '', disabled: false, attachments: [],
+    id: '2', player: 'player1', content: [], type: 'topSpell', animation: '', disabled: false, attachments: [], line: '2',
   },
   {
-    id: '1', player: 'player1', content: [], type: 'topSpell', animation: '', disabled: false, attachments: [],
+    id: '1', player: 'player1', content: [], type: 'topSpell', animation: '', disabled: false, attachments: [], line: '1',
   },
   {
-    id: '3', player: 'player2', content: [], type: 'topSpell', animation: '', disabled: false, attachments: [],
+    id: '3', player: 'player2', content: [], type: 'topSpell', animation: '', disabled: false, attachments: [], line: '3',
   },
   {
-    id: '4', player: 'player2', content: [], type: 'topSpell', animation: '', disabled: false, attachments: [],
+    id: '4', player: 'player2', content: [], type: 'topSpell', animation: '', disabled: false, attachments: [], line: '4',
   },
 ];
 

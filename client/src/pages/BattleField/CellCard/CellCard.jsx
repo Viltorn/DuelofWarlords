@@ -7,9 +7,9 @@ import CellCardCover from './CellCardCover.jsx';
 import useClickActions from '../../../hooks/useClickActions.js';
 import useAnimaActions from '../../../hooks/useAnimaActions.js';
 
-const getTopMargin = (cellType) => {
+const getTopMargin = (cellType, contentLength) => {
   if (cellType === 'field') {
-    return 5;
+    return Math.min(2.3 * contentLength, 5.3);
   }
   if (cellType === 'hero') {
     return 6.5;
@@ -18,7 +18,7 @@ const getTopMargin = (cellType) => {
 };
 
 const CellCard = ({
-  item, cellType,
+  item, cellType, content,
 }) => {
   const cardElement = useRef();
   const {
@@ -40,7 +40,7 @@ const CellCard = ({
   const { fieldCells } = useSelector((state) => state.battleReducer);
   const currentCell = fieldCells.find((cell) => cell.id === item.cellId);
   const power = item.type === 'warrior' ? getWarriorPower(item) : null;
-  const marginTop = getTopMargin(cellType);
+  const marginTop = getTopMargin(cellType, content.length);
   const marginRight = cellType === 'bigSpell' ? 5 : 0;
   const cardInfo = {
     cardsFeature, power, description, currentHP, currentC, cellType, type, img, name,

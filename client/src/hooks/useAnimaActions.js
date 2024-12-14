@@ -17,12 +17,13 @@ const useAnimaActions = () => {
   const store = useStore();
   const {
     thisPlayer,
-    playerPoints,
     gameTurn,
   } = useSelector((state) => state.battleReducer);
-  const currentPoints = playerPoints.find((item) => item.player === thisPlayer).points;
 
   const getWarriorPower = (card) => {
+    if (!card) {
+      return 0;
+    }
     const { attachments, currentP } = card;
     const newFieldCells = store.getState().battleReducer.fieldCells;
     const newFieldCards = store.getState().battleReducer.fieldCards;
@@ -78,28 +79,10 @@ const useAnimaActions = () => {
     });
   };
 
-  const handleAnimation = (activeCard, option) => {
-    if (option === 'delete') {
-      dispatch(battleActions.deleteAnimation());
-      dispatch(battleActions.setActiveCells({ cellsIds: [], type: 'cellsForWarMove' }));
-      dispatch(battleActions.setActiveCells({ cellsIds: [], type: 'cellsForSpellCast' }));
-      dispatch(battleActions.setActiveCells({ cellsIds: [], type: 'cellsForAttack' }));
-      return;
-    }
-    const { fieldCells } = store.getState().battleReducer;
-    const { fieldCards } = store.getState().battleReducer;
-    const playerHeroCard = fieldCards.find((card) => card.type === 'hero' && card.player === thisPlayer);
-
-    if (!isAllowedCost(activeCard, currentPoints)
-        || activeCard.disabled || gameTurn !== thisPlayer
-        || !isHeroSpellAlLowed(activeCard, playerHeroCard)) {
-      return;
-    }
-
+  const addAnimatedCells = (activeCard, fieldCells, fieldCards, playerTurn) => {
     const {
       type, status, attachments, turn,
     } = activeCard;
-    const isCardPostponed = activeCard.cellId === 'postponed1' || activeCard.cellId === 'postponed2';
 
     if (type === 'warrior') {
       const currentCell = fieldCells.find((cell) => cell.id === activeCard.cellId);
@@ -116,61 +99,83 @@ const useAnimaActions = () => {
       const cardUnarmedAttachment = attachments.find((feature) => feature.name === 'unarmed' && checkMeetCondition({ ...defaultConditionData, spell: feature }));
       const canAttack = !activeCard.features.find((feature) => feature.name === 'unarmed') && turn === 0
         && !cardUnarmedAttachment && !cellUnarmedAttachment && status === 'field';
-      if ((status === 'hand' || isCardPostponed) && activeCard.player === thisPlayer) {
+      if ((status === 'hand') && activeCard.player === playerTurn) {
         addCellsAnimaForWarMove({
-          activeCard, player: thisPlayer, fieldCards, fieldCells,
+          activeCard, player: playerTurn, fieldCards, fieldCells,
         });
       }
-      if ((findAttachmentType(moverowAttachment, 'bad') && activeCard.player !== thisPlayer)
-        || (findAttachmentType(moverowAttachment, 'good') && activeCard.player === thisPlayer)) {
+      if ((findAttachmentType(moverowAttachment, 'bad') && activeCard.player !== playerTurn)
+        || (findAttachmentType(moverowAttachment, 'good') && activeCard.player === playerTurn)) {
         addNextLinesCellsAnima({
           currentCell, fieldCards, fieldCells,
         });
       }
-      if (findAttachmentType(movingAttachment, 'bad') && activeCard.player !== thisPlayer) {
+      if (findAttachmentType(movingAttachment, 'bad') && activeCard.player !== playerTurn) {
         addCellsAnimaForWarMove({
-          activeCard, player: getEnemyPlayer(thisPlayer), fieldCards, fieldCells,
+          activeCard, player: getEnemyPlayer(playerTurn), fieldCards, fieldCells,
         });
       }
-      if (findAttachmentType(movingAttachment, 'good') && activeCard.player === thisPlayer) {
+      if (findAttachmentType(movingAttachment, 'good') && activeCard.player === playerTurn) {
         addCellsAnimaForWarMove({
-          activeCard, player: thisPlayer, fieldCards, fieldCells,
+          activeCard, player: playerTurn, fieldCards, fieldCells,
         });
       }
-      if (status === 'field' && canMove && activeCard.player === thisPlayer) {
+      if (status === 'field' && canMove && activeCard.player === playerTurn) {
         addCellsAnimaForWarMove({
-          activeCard, player: thisPlayer, fieldCards, fieldCells,
+          activeCard, player: playerTurn, fieldCards, fieldCells,
         });
       }
 
-      if (canAttack && activeCard.player === thisPlayer) {
+      if (canAttack && activeCard.player === playerTurn) {
         addCellsAnimaForAttack(activeCard, fieldCards, fieldCells);
       }
     }
 
-    if (type === 'hero' && turn === 0 && activeCard.player === thisPlayer) {
+    if (type === 'hero' && turn === 0 && activeCard.player === playerTurn) {
       addCellsAnimaForSpellCast({
-        spellCard: activeCard, player: thisPlayer, fieldCards, fieldCells,
+        spellCard: activeCard, player: playerTurn, fieldCards, fieldCells,
       });
     }
 
-    if (type === 'spell' && (status === 'hand' || isCardPostponed) && activeCard.player === thisPlayer) {
+    if (type === 'spell' && status === 'hand' && activeCard.player === playerTurn) {
       addCellsAnimaForSpellCast({
-        spellCard: activeCard, player: thisPlayer, fieldCards, fieldCells,
+        spellCard: activeCard, player: playerTurn, fieldCards, fieldCells,
       });
     }
 
-    const postponedCell = fieldCells.find((cell) => cell.type === 'postponed' && cell.player === thisPlayer);
-    const cantPostpone = activeCard.features.find((feat) => feat.name === 'cantPostpone');
-    if (status === 'hand' && postponedCell.content.length === 0 && !postponedCell.disabled && !cantPostpone && activeCard.player === thisPlayer) {
-      dispatch(battleActions.addAnimation({ cellId: postponedCell.id, type: 'green' }));
+    // const postponedCell = fieldCells.find((cell) => cell.type === 'postponed' && cell.player === playerTurn);
+    // const cantPostpone = activeCard.features.find((feat) => feat.name === 'cantPostpone');
+    // if (status === 'hand' && postponedCell.content.length === 0 && !postponedCell.disabled && !cantPostpone && activeCard.player === playerTurn) {
+    //   dispatch(battleActions.addAnimation({ cellId: postponedCell.id, type: 'green' }));
+    // }
+  };
+
+  const handleAnimation = (activeCard, option) => {
+    if (option === 'delete') {
+      dispatch(battleActions.deleteAnimation());
+      dispatch(battleActions.setActiveCells({ cellsIds: [], type: 'cellsForWarMove' }));
+      dispatch(battleActions.setActiveCells({ cellsIds: [], type: 'cellsForSpellCast' }));
+      dispatch(battleActions.setActiveCells({ cellsIds: [], type: 'cellsForAttack' }));
+      return;
     }
+    const { fieldCells, fieldCards, playerPoints } = store.getState().battleReducer;
+    const currentPoints = playerPoints.find((item) => item.player === thisPlayer).points;
+    const playerHeroCard = fieldCards.find((card) => card.type === 'hero' && card.player === thisPlayer);
+
+    if (!isAllowedCost(activeCard, currentPoints)
+        || activeCard.disabled || gameTurn !== thisPlayer
+        || !isHeroSpellAlLowed(activeCard, playerHeroCard)) {
+      return;
+    }
+
+    addAnimatedCells(activeCard, fieldCells, fieldCards, gameTurn);
   };
 
   return {
     handleAnimation,
     checkMeetCondition,
     getWarriorPower,
+    addAnimatedCells,
   };
 };
 

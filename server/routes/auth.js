@@ -36,7 +36,7 @@ router.post('/', async (req, res) => {
     const users = JSON.parse(await redis.get(`DofWAccounts:accounts`)) ?? [];
     users.push(username);
     const setAccNames = await redis.set(`DofWAccounts:accounts`,  JSON.stringify(users));
-    if (setAccount === 'OK') {
+    if (setAccount === 'OK' || setAccNames === 'OK') {
       console.log(userData);
       res.status(201).json(userData);
     }

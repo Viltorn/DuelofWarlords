@@ -12,11 +12,11 @@ export default {
   TemplarChampion: 'Тамплиер Чемпион',
   MasterOfLight: 'Магистр света',
   YouthFountain: 'Фонтан молодости',
-  RighteousHammer: 'Молот правосудия',
   RetaliationHammer: 'Молот возмездия',
   TemplarChampCast: 'Заклинание',
   BannermanCast: 'Заклинание',
   ZigfridHero: 'Зигфрид - Герой',
   RionHero: 'Рион - Герой',
   Morale: 'Мораль',
+  RetributionSword: 'Меч возмездия',
 };

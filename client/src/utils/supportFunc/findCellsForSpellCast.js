@@ -4,11 +4,16 @@ import isCellEmpty from './isCellEmpty';
 
 const findCellsForSpellCast = (data) => {
   const {
-    feature, player, place, fieldCards, fieldCells,
+    feature, player, place, fieldCards, fieldCells, spellCard,
   } = data;
   const { type, attach, aim } = feature;
 
   const aimPlayer = type === 'good' ? player : getEnemyPlayer(player);
+
+  if (aim.includes('emptyRowField') && place === '') {
+    return fieldCells.filter((cell) => isCellEmpty(fieldCards, cell.id)
+    && cell.player === aimPlayer && !cell.disabled && cell.type === 'field' && cell.row === spellCard.cellId[0]);
+  }
 
   if (type !== 'all' && place === '') {
     return fieldCells.filter((cell) => !isCellEmpty(fieldCards, cell.id)
@@ -26,7 +31,7 @@ const findCellsForSpellCast = (data) => {
       const cardsInCell = fieldCards.filter((card) => card.cellId === cell.id).length;
       const warriorInCell = fieldCards
         .find((card) => card.cellId === cell.id && attach.includes(card.subtype));
-      const isPlayerOccupiedCell = cardsInCell > 0 && cardsInCell < 3;
+      const isPlayerOccupiedCell = cardsInCell > 0;
       return isPlayerOccupiedCell && !cell.disabled && cell.player === aimPlayer && cell.type === 'field' && warriorInCell;
     }) : [];
     const heroCells = attach.includes('hero') ? fieldCells.filter((cell) => !cell.disabled && cell.player === aimPlayer && cell.type === 'hero')
@@ -38,7 +43,7 @@ const findCellsForSpellCast = (data) => {
       const cardsInCell = fieldCards.filter((card) => card.cellId === cell.id).length;
       const warriorInCell = fieldCards
         .find((card) => card.cellId === cell.id && attach.includes(card.subtype));
-      const isPlayerOccupiedCell = cardsInCell > 0 && cardsInCell < 3;
+      const isPlayerOccupiedCell = cardsInCell > 0;
       return isPlayerOccupiedCell && !cell.disabled && cell.type === 'field' && warriorInCell;
     });
   }
@@ -65,6 +70,13 @@ const findCellsForSpellCast = (data) => {
   if (place === 'topSpell') {
     return fieldCells.filter((cell) => place === cell.type && cell.player === aimPlayer
       && isCellEmpty(fieldCards, cell.id) && !cell.disabled);
+  }
+  if (place === 'graveyard' && type === 'all') {
+    return fieldCells.filter((cell) => place === cell.type && !cell.disabled);
+  }
+  if (place === 'graveyard' && type !== 'all') {
+    return fieldCells.filter((cell) => place === cell.type && cell.player === aimPlayer
+    && !cell.disabled);
   }
   return fieldCells.filter((cell) => place === cell.type
     && (isCellEmpty(fieldCards, cell.id) || place === 'bigSpell') && !cell.disabled);

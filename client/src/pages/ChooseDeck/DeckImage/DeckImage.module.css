@@ -1,10 +1,12 @@
 .container {
   width: 300px;
-  height: 300px;
+  height: 340px;
   padding: 10px;
   border: 1px solid #888;
   border-radius: 10px;
-  background: var(--dark-blue);
+  background: var(--dark-color);
+  background-size: cover;
+  background-image: url('@assets/BrownBack.png');
   box-sizing: border-box;
   box-shadow: 0px 5px 15px 5px var(--dark-blue);
 }
@@ -14,7 +16,7 @@
   width: 100%;
   display: flex;
   flex-direction: column;
-  background: var(--dark-blue);
+  background: transparent;
   justify-content: space-between;
   align-items: center;
   border: none;
@@ -42,7 +44,7 @@
 .heroImg {
   border-radius: 5px;
   width: 160px;
-  height: 160px;
+  height: 184px;
   grid-row-start: span 3;
 }
 
@@ -61,13 +63,13 @@
 .quantity {
   font-size: 18px;
   font-weight: 600;
-  color: var(--white-color);
+  color: var(--light-gray);
 }
 
 .deckName {
   font-size: 20px;
   font-weight: 600;
-  color: var(--white-color);
+  color: var(--light-gray);
 }
 
 .modifyBlock {

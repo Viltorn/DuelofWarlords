@@ -8,6 +8,8 @@ import PowerOfFire from '../../assets/fireSpells/PowerOfFire.png';
 import FireSplash from '../../assets/fireSpells/FireSplash.png';
 import FireShield from '../../assets/fireSpells/FireShield.png';
 import FireBlast from '../../assets/fireSpells/FireBlast.png';
+import Ignition from '../../assets/fireSpells/Ignition.png';
+import Blindness from '../../assets/fireSpells/Blindness.png';
 
 export default {
   FireArrow: {
@@ -76,6 +78,8 @@ export default {
       name: 'attack',
       value: 3,
       aimStatus: 'field',
+      depend: 'lastPlayedIsSpell',
+      dependValue: 1,
     },
     ],
     img: FireBall,
@@ -141,17 +145,20 @@ export default {
     description: 'ExplosiveTrap',
     school: 'Fire',
     place: 'bigSpell',
+    charges: 1,
+    curCharges: 1,
+    showCharges: false,
     features: [{
-      spell: true, attach: ['field', 'warrior'], aim: ['adjacent', 'warrior', 'fighter', 'shooter', 'flyer'], name: 'attack', value: 2, condition: 'onplay', type: 'all', charges: 1, aimStatus: 'field', cost: 2,
+      spell: true, attach: ['field', 'warrior'], aim: ['adjacent', 'warrior', 'fighter', 'shooter', 'flyer'], name: 'attack', value: 2, condition: 'onplay', type: 'all', charges: 1, aimStatus: 'field', cost: 2, subtype: 'reaction',
     },
     {
-      spell: true, attach: ['field', 'warrior'], type: 'bad', aim: ['warrior', 'fighter', 'shooter', 'flyer'], name: 'attack', value: 2, charges: 1, condition: 'onplay', aimStatus: 'field', cost: 0,
+      spell: true, attach: ['field', 'warrior'], type: 'bad', aim: ['warrior', 'fighter', 'shooter', 'flyer'], name: 'attack', value: 2, charges: 1, condition: 'onplay', aimStatus: 'field', cost: 0, subtype: 'reaction',
     },
     {
-      spell: true, attach: ['field', 'warrior'], type: 'bad', aim: ['warrior', 'fighter', 'shooter', 'flyer'], name: 'attack', value: 2, charges: 1, condition: 'onmove', aimStatus: 'field', cost: 0,
+      spell: true, attach: ['field', 'warrior'], type: 'bad', aim: ['warrior', 'fighter', 'shooter', 'flyer'], name: 'attack', value: 2, charges: 1, condition: 'onmove', aimStatus: 'field', cost: 0, subtype: 'reaction',
     },
     {
-      spell: true, attach: ['field', 'warrior'], aim: ['adjacent', 'warrior', 'fighter', 'shooter', 'flyer'], name: 'attack', value: 2, condition: 'onmove', type: 'all', charges: 1, aimStatus: 'field', cost: 2,
+      spell: true, attach: ['field', 'warrior'], aim: ['adjacent', 'warrior', 'fighter', 'shooter', 'flyer'], name: 'attack', value: 2, condition: 'onmove', type: 'all', charges: 1, aimStatus: 'field', cost: 2, subtype: 'reaction',
     }],
     img: ExplosiveTrap,
     status: 'hand',
@@ -181,8 +188,8 @@ export default {
     name: 'Fire Blast',
     type: 'spell',
     subtype: 'instant',
-    cost: 6,
-    currentC: 6,
+    cost: 7,
+    currentC: 7,
     featInfo: [],
     description: 'FireBlast',
     school: 'Fire',
@@ -221,6 +228,77 @@ export default {
     },
     ],
     img: FireShield,
+    status: 'hand',
+    disabled: false,
+  },
+  Ignition: {
+    name: 'Attack Aura',
+    type: 'spell',
+    subtype: 'temporary',
+    cost: 2,
+    currentC: 2,
+    featInfo: ['LASTCAST'],
+    description: 'Ignition',
+    school: 'Fire',
+    id: _.uniqueId(),
+    place: 'warrior',
+    features: [
+      {
+        spell: true, attach: ['warrior', 'flyer', 'shooter', 'fighter'], type: 'bad', aim: ['warrior', 'flyer', 'shooter', 'fighter'], name: '', value: 0, aimStatus: 'field',
+      },
+      {
+        spell: true, attach: false, type: 'bad', aim: ['warrior', 'flyer', 'shooter', 'fighter'], name: 'attack', value: 2, aimStatus: 'field',
+      },
+      {
+        spell: true, attach: false, type: 'bad', aim: ['warInCell', 'flyer', 'shooter', 'fighter', 'spell'], name: 'attack', condition: 'lastcall', value: 2, aimStatus: 'field',
+      },
+    ],
+    img: Ignition,
+    status: 'hand',
+    disabled: false,
+  },
+  Blindness: {
+    name: 'Blindness',
+    type: 'spell',
+    subtype: 'permanent',
+    cost: 2,
+    currentC: 2,
+    featInfo: [],
+    description: 'Blindness',
+    charges: 1,
+    curCharges: 1,
+    showCharges: false,
+    school: 'Fire',
+    id: _.uniqueId(),
+    place: 'warrior',
+    features: [{
+      spell: true,
+      attach: ['warrior', 'flyer', 'shooter', 'fighter'],
+      aim: ['warrior', 'flyer', 'shooter', 'fighter'],
+      type: 'bad',
+      name: 'unarmed',
+      aimStatus: 'field',
+    },
+    {
+      spell: true,
+      attach: ['warrior', 'flyer', 'shooter', 'fighter'],
+      aim: ['warrior', 'flyer', 'shooter', 'fighter'],
+      type: 'bad',
+      name: 'immobile',
+      aimStatus: 'field',
+    },
+    {
+      spell: true,
+      attach: ['warrior', 'flyer', 'shooter', 'fighter'],
+      aim: ['warrior', 'flyer', 'shooter', 'fighter'],
+      type: 'bad',
+      name: 'protection',
+      value: { type: 'number', val: 0 },
+      charges: 1,
+      aimStatus: 'field',
+    },
+    ],
+    img: Blindness,
     status: 'hand',
     disabled: false,
   },

@@ -17,16 +17,17 @@
 
 .primary {
   background-color: var(--dark-red-color);
-  color: var(--light-gray);
+  color: var(--golden);
 }
 
 .secondary {
   background-color: var(--golden);
   font-size: 13px;
   color: var(--dark-color);
+  border: 0.2rem solid var(--dark-color);
 }
 
-@media (max-width: 767px) {
+@media (max-width: 935px) {
   .btn {
     font-size: 12px;
     height: 35px;

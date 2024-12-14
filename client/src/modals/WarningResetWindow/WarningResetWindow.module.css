@@ -3,7 +3,7 @@
   display: flex;
   justify-content: center;
   align-items: top;
-  z-index: 2;
+  z-index: 5;
   left: 0;
   top: 0;
   width: 100%; /* Full width */
@@ -18,9 +18,10 @@
   align-items: center;
   gap: 30px;
   background-color: var(--dark-blue);
+  background-image: url('@assets/BlackStone.png');
   margin: auto auto; /* 15% from the top and centered */
   padding: 2rem 2rem;
-  border: 1px solid #888;
+  border: 2px solid var(--golden);
   width: 490px; /* Could be more or less, depending on screen size */
   min-width: 320px;
   height: 400px;
@@ -35,7 +36,7 @@
 }
 
 
-@media (max-width: 767px) {
+@media (max-width: 940px) {
   .content {
     width: 320px; /* Could be more or less, depending on screen size */
     min-width: 320px;

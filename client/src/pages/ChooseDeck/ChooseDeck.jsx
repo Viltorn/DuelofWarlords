@@ -28,7 +28,7 @@ const ChooseDeck = () => {
           onClick={handleCreateClick}
           showIcon={false}
           state="default"
-          text={t('CREATEDECK')}
+          text={t('buttons.CREATEDECK')}
           variant="primary"
           type="button"
         />
@@ -36,7 +36,7 @@ const ChooseDeck = () => {
           onClick={handleBack}
           showIcon={false}
           state="default"
-          text={t('BACK')}
+          text={t('buttons.BACK')}
           type="button"
           variant="secondary"
         />

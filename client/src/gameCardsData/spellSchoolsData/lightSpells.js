@@ -1,17 +1,17 @@
 import _ from 'lodash';
-import Сonciliation from '../../assets/castleCards/Сonciliation.png';
-import Bless from '../../assets/castleCards/Bless.png';
-import Enlightenment from '../../assets/castleCards/Enlightenment.png';
-import HealingLight from '../../assets/castleCards/HealingLight.png';
-import HeavenProtection from '../../assets/castleCards/HeavenProtection.png';
-import HeavenShock from '../../assets/castleCards/HeavenShock.png';
-import HolyLand from '../../assets/castleCards/HolyLand.png';
-import AttackAura from '../../assets/castleCards/AttackAura.png';
-import LastChance from '../../assets/castleCards/LastChance.png';
-import LightShield from '../../assets/castleCards/LightShield.png';
-import Resurrection from '../../assets/castleCards/Resurrection.png';
-import Retribution from '../../assets/castleCards/Retribution.png';
-import SaintWord from '../../assets/castleCards/SaintWord.png';
+import Сonciliation from '../../assets/lightSpells/Сonciliation.png';
+import Bless from '../../assets/lightSpells/Bless.png';
+import Enlightenment from '../../assets/lightSpells/Enlightenment.png';
+import HealingLight from '../../assets/lightSpells/HealingLight.png';
+import HeavenProtection from '../../assets/lightSpells/HeavenProtection.png';
+import HeavenShock from '../../assets/lightSpells/HeavenShock.png';
+import HolyLand from '../../assets/lightSpells/HolyLand.png';
+import AttackAura from '../../assets/lightSpells/AttackAura.png';
+import LastChance from '../../assets/lightSpells/LastChance.png';
+import LightShield from '../../assets/lightSpells/LightShield.png';
+import Resurrection from '../../assets/lightSpells/Resurrection.png';
+import SaintWord from '../../assets/lightSpells/SaintWord.png';
+// import RetributionSword from '../../assets/castleCards/RetributionSword.png';
 
 export default {
   Resurrection: {
@@ -24,9 +24,16 @@ export default {
     description: 'Resurrection',
     school: 'Light',
     id: _.uniqueId(),
-    place: 'grave',
+    place: 'graveyard',
     features: [{
-      spell: true, attach: ['grave'], type: 'good', aim: ['warrior', 'flyer', 'shooter', 'fighter'], name: 'ressurect', condition: 'insteadatk', cost: 4, resCost: 0, aimStatus: 'graveyard',
+      spell: true,
+      attach: ['grave'],
+      type: 'good',
+      aim: ['warrior', 'flyer', 'shooter', 'fighter'],
+      name: 'ressurect',
+      cost: 4,
+      resCost: 0,
+      aimStatus: 'graveyard',
     }],
     img: Resurrection,
     status: 'hand',
@@ -45,41 +52,16 @@ export default {
     place: 'warrior',
     features: [
       {
-        spell: true, attach: ['warrior', 'flyer', 'shooter', 'fighter'], type: 'good', aim: ['closestEnemyInRow', 'warrior', 'spell', 'flyer', 'shooter', 'fighter'], name: 'attack', condition: 'lastcall', value: 2, aimStatus: 'field',
+        spell: true, attach: ['warrior', 'flyer', 'shooter', 'fighter'], type: 'good', aim: ['warrior', 'flyer', 'shooter', 'fighter'], name: '', value: 0, aimStatus: 'field',
+      },
+      {
+        spell: true, attach: false, type: 'good', aim: ['closestEnemyInRow', 'warrior', 'spell', 'flyer', 'shooter', 'fighter'], name: 'attack', condition: 'lastcall', value: 2, aimStatus: 'field',
       },
       {
         spell: true, attach: false, type: 'good', aim: ['closestEnemyInRow', 'warrior', 'flyer', 'shooter', 'fighter'], name: 'attack', value: 2, aimStatus: 'field',
       },
     ],
     img: AttackAura,
-    status: 'hand',
-    disabled: false,
-  },
-  Retribution: {
-    name: 'Retribution',
-    type: 'spell',
-    subtype: 'temporary',
-    cost: 1,
-    currentC: 1,
-    featInfo: [],
-    description: 'Retribution',
-    school: 'Light',
-    id: _.uniqueId(),
-    place: 'warrior',
-    heroSpell: true,
-    features: [{
-      spell: true,
-      attach: ['warrior', 'flyer', 'shooter', 'fighter'],
-      aim: ['warrior', 'fighter', 'shooter', 'flyer'],
-      type: 'good',
-      name: 'power',
-      value: 1,
-      depend: 'goodAttachments',
-      dependValue: 1,
-      charges: 1,
-      aimStatus: 'field',
-    }],
-    img: Retribution,
     status: 'hand',
     disabled: false,
   },
@@ -135,6 +117,9 @@ export default {
     description: 'HeavenProtection',
     school: 'Light',
     id: _.uniqueId(),
+    showCharges: false,
+    charges: 1,
+    curCharges: 1,
     place: 'warrior',
     features: [{
       spell: true,
@@ -230,7 +215,7 @@ export default {
       aimStatus: 'field',
     },
     {
-      spell: true, attach: false, aim: ['hero'], type: 'good', name: 'heroHeal', value: 2,
+      spell: true, attach: false, aim: ['hero', 'warrior'], type: 'good', name: 'heroHeal', value: 2,
     },
     ],
     img: HeavenShock,
@@ -296,15 +281,28 @@ export default {
     name: 'Last Chance',
     type: 'spell',
     subtype: 'reaction',
-    cost: 2,
-    currentC: 2,
+    cost: 1,
+    currentC: 1,
     featInfo: ['REACTION'],
     description: 'LastChance',
     school: 'Light',
     id: _.uniqueId(),
     place: 'bigSpell',
+    charges: 1,
+    curCharges: 1,
+    showCharges: false,
     features: [{
-      spell: true, attach: ['field', 'warrior'], type: 'good', aim: ['warrior', 'fighter', 'shooter', 'flyer'], name: 'protection', condition: 'canDie', value: { type: 'immortal', val: 0 }, charges: 1, aimStatus: 'field', cost: 2,
+      spell: true,
+      attach: ['field', 'warrior'],
+      type: 'good',
+      aim: ['warrior', 'fighter', 'shooter', 'flyer'],
+      name: 'protection',
+      condition: 'canDie',
+      value: { type: 'immortal', val: 0 },
+      charges: 1,
+      aimStatus: 'field',
+      cost: 2,
+      subtype: 'reaction',
     }],
     img: LastChance,
     status: 'hand',
@@ -328,4 +326,58 @@ export default {
     status: 'hand',
     disabled: false,
   },
+  // Retribution: {
+  //   name: 'RetributionSword',
+  //   type: 'spell',
+  //   subtype: 'permanent',
+  //   cost: 2,
+  //   currentC: 2,
+  //   description: 'Retribution',
+  //   school: 'Light',
+  //   id: _.uniqueId(),
+  //   place: 'warrior',
+  //   showCharges: true,
+  //   featInfo: ['ARTEFACT'],
+  //   charges: 2,
+  //   curCharges: 2,
+  //   features: [
+  //     {
+  //       spell: true,
+  //       attach: ['hero'],
+  //       aim: ['hero'],
+  //       type: 'good',
+  //       name: 'invoke',
+  //       description: 'retributionSword',
+  //       aimStatus: 'field',
+  //       condition: 'insteadatk',
+  //       charges: 2,
+  //       cost: 0,
+  //       value: {
+  //         img: RetributionSword,
+  //         name: 'fake',
+  //         type: 'spell',
+  //         subtype: 'instant',
+  //         currentC: 0,
+  //         description: 'AddAttackCast',
+  //         school: 'Skills',
+  //         place: '',
+  //         features: [{
+  //           spell: true,
+  //           attach: ['warrior', 'flyer', 'shooter', 'fighter'],
+  //           aim: ['warrior', 'fighter', 'shooter', 'flyer'],
+  //           type: 'good',
+  //           name: 'power',
+  //           value: 1,
+  //           depend: 'goodAttachments',
+  //           dependValue: 1,
+  //           charges: 1,
+  //           aimStatus: 'field',
+  //         }],
+  //         status: 'hand',
+  //       },
+  //     }],
+  //   img: RetributionSword,
+  //   status: 'hand',
+  //   disabled: false,
+  // },
 };

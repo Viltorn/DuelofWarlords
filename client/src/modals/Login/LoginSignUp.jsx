@@ -5,7 +5,7 @@ import { useDispatch } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { useFormik } from 'formik';
 import LoadSpinner from '@components/LoadSpinner/LoadSpinner.jsx';
-import socket from '../../socket.js';
+// import socket from '../../socket.js';
 import makeAuth from '../../utils/makeAuth.js';
 import { actions as modalActions } from '../../slices/modalsSlice.js';
 import { actions as gameActions } from '../../slices/gameSlice';
@@ -55,21 +55,22 @@ const LoginSignUp = () => {
         dispatch(gameActions.setUserType({ userType: 'logged' }));
         dispatch(gameActions.setDecks({ decks }));
         setAuthToken({ login: username, pass: password });
-        socket.emit('updateOnlineData', (callback) => {
-          if (res.error) {
-            handleError(res);
-            formik.setSubmitting(false);
-            return;
-          }
-          const { id, rooms } = callback;
-          dispatch(gameActions.setSocketId({ socketId: id }));
-          dispatch(gameActions.updateRooms({ rooms }));
-          handleClose();
-        });
+        // socket.emit('updateOnlineData', (callback) => {
+        //   if (res.error) {
+        //     handleError(res);
+        //     formik.setSubmitting(false);
+        //     return;
+        //   }
+        //   const { id, rooms } = callback;
+        //   dispatch(gameActions.setSocketId({ socketId: id }));
+        //   dispatch(gameActions.updateRooms({ rooms }));
+        //   handleClose();
+        // });
+        handleClose();
       }
     } catch (err) {
       formik.setSubmitting(false);
-      handleError(err.response.data);
+      handleError(err);
       console.log(err);
     }
   };
@@ -106,10 +107,10 @@ const LoginSignUp = () => {
         <LoadSpinner />
       ) : (
         <div className={styles.content}>
-          <h2 className={styles.header}>{signUp ? t('SignUp') : t('LogIn')}</h2>
+          <h2 className={styles.header}>{signUp ? t('modals.SignUp') : t('modals.LogIn')}</h2>
           <div className={styles.guestBlock}>
-            <button type="button" className={styles.guestBtn} onClick={handleGuestClick}>{t('GuestSignIn')}</button>
-            <p className={styles.cantBuild}>{t('CantBuildDeck')}</p>
+            <button type="button" className={styles.guestBtn} onClick={handleGuestClick}>{t('modals.GuestSignIn')}</button>
+            <p className={styles.cantBuild}>{t('modals.CantBuildDeck')}</p>
           </div>
           {signUp ? (
             <SignUpForm error={error} changeType={setSignUp} formik={signUpFormik} />

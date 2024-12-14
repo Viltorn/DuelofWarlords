@@ -35,6 +35,20 @@
   src: url("./assets/fonts/Roboto-Bold.woff");
 }
 
+@font-face {
+  font-weight: 400; /* Соответствует значению normal */
+  font-family: SuperClare;
+  src: url("./assets/fonts/SuperclarendonRg.ttf");
+}
+
+@font-face {
+  font-weight: 600; /* Соответствует значению bold */
+  font-family: SuperClare;
+  src: url("./assets/fonts/SuperclarendonBl.ttf");
+}
+
+
+
 html {
   scroll-behavior: smooth;
   font-size: 22px;
@@ -73,18 +87,18 @@ code {
   --main-background: linear-gradient(180deg, rgba(233, 205, 191, 0.8) 0%, rgb(224, 169, 127) 100%);
   --golden: #fbb270;
   --black-font: #252525;
-  --dark-golden: #845c3a;
+  --dark-golden: #a17045;
   --dark-color: #3F3A3A;
   --light-brown-color: #EDCFB7;
-  --dark-red-color: #C65B4D;
+  --dark-red-color: #9a3528;
   --white-color: rgb(238, 238, 238);
   --black-color: rgb(21, 21, 21);
   --dark-blue: #484860;
   --red: #850409;
-  --light-gray: #e1e1e1;
+  --light-gray: #ccc8c8;
   --dark-gray: #868686;
-  --green: rgb(46, 135, 46);
-  --red-light: rgb(215, 44, 44);
+  --green: rgb(90, 143, 90);
+  --red-light: rgb(208, 62, 62);
 
   /* dimensions */
   --hand-card-width: 8rem;
@@ -100,7 +114,7 @@ code {
 
 /* Works on Chrome, Edge, and Safari */
 *::-webkit-scrollbar {
-  width: 0.3rem;
+  width: 0.5rem;
 }
 
 *::-webkit-scrollbar-track {
@@ -108,9 +122,8 @@ code {
 }
 
 *::-webkit-scrollbar-thumb {
-  background-color: var(--dark-blue);
-  border-radius: 0.3rem;
-  border: none;
+  background-color: var(--dark-red-color);
+  border: 2px ridge var(--golden);
 }
 
 

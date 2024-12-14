@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 import React, { useEffect, useContext } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useSelector, useDispatch } from 'react-redux';
@@ -19,7 +20,7 @@ const OnlineLobby = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const {
-    rooms, name, onlineCount, socketId, logged,
+    rooms, name, onlineCount, socketId,
   } = useSelector((state) => state.gameReducer);
   const { isOpened, type } = useSelector((state) => state.modalsReducer);
   const { setOpenChat, isOpenChat } = useContext(functionContext);
@@ -41,6 +42,15 @@ const OnlineLobby = () => {
   };
 
   useEffect(() => {
+    socket.emit('updateOnlineData', { username: name }, (data) => {
+      const { newRooms, messages, players } = data;
+      dispatch(gameActions.setMessages({ data: messages }));
+      dispatch(gameActions.updateRooms({ rooms: newRooms }));
+      dispatch(gameActions.setOnlineCount({ count: players }));
+    });
+  });
+
+  useEffect(() => {
     const setMessages = (data) => {
       dispatch(gameActions.setMessages({ data }));
     };
@@ -55,7 +65,6 @@ const OnlineLobby = () => {
 
     const updatePlayersOnline = (players) => {
       dispatch(gameActions.setOnlineCount({ count: players }));
-      console.log(players);
     };
 
     const updateSocketId = (id) => {
@@ -79,7 +88,7 @@ const OnlineLobby = () => {
       socket.off('rooms', updateLobbyRooms);
       socket.off('clientsCount', updatePlayersOnline);
     };
-  }, [name, dispatch, socketId, logged, navigate]);
+  }, [dispatch, socketId, navigate]);
 
   return (
     <div className={styles.container}>
@@ -88,7 +97,7 @@ const OnlineLobby = () => {
           onClick={handleCreateClick}
           showIcon={false}
           state="default"
-          text={t('CREATEROOM')}
+          text={t('buttons.CREATEROOM')}
           variant="primary"
           type="submit"
         />
@@ -96,7 +105,7 @@ const OnlineLobby = () => {
           onClick={handleBack}
           showIcon={false}
           state="default"
-          text={t('BACK')}
+          text={t('buttons.BACK')}
           variant="secondary"
         />
       </div>

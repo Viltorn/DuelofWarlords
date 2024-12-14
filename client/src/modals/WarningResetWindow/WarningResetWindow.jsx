@@ -26,7 +26,7 @@ const WarningResetWindow = () => {
           onClick={() => handleResetGameClick(dest)}
           showIcon={false}
           state="default"
-          text={t('CONTINUE')}
+          text={t('buttons.CONTINUE')}
           variant="primary"
           type="submit"
         />
@@ -34,7 +34,7 @@ const WarningResetWindow = () => {
           onClick={handleClose}
           showIcon={false}
           state="default"
-          text={t('CLOSE')}
+          text={t('buttons.CLOSE')}
           variant="secondary"
           type="submit"
         />

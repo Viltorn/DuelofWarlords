@@ -10,15 +10,16 @@ const ActiveCardInfo = ({ info, type }) => {
     [styles.infoWindow]: true,
     [styles.marginRight]: type === 'player1',
     [styles.marginLeft]: type === 'player2',
+    [styles.activeWindow]: type === 'window',
     [styles.buildType]: type === 'build',
   });
 
   return (
     <div className={infoClass}>
       {info.map((item) => (
-        <div key={item}>
+        <div key={item} className={styles.itemBlock}>
           <h3 className={styles.tipTitle}>{t(`menuTipsHeader.${item}`)}</h3>
-          <span className={styles.tipBody}>{t(`menuTipsDescription.${item}`)}</span>
+          <p className={styles.tipBody}>{t(`menuTipsDescription.${item}`)}</p>
         </div>
       ))}
     </div>

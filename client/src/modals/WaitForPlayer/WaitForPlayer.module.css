@@ -17,10 +17,12 @@
   justify-content: center;
   align-items: center;
   gap: 3rem;
-  background-color: var(--dark-blue);
+  background-color: var(--dark-color);
+  background-image:url("@assets/BlackStone.png");
+  padding: 2rem;
+  border: 2px solid var(--golden);
   margin: 15rem auto; /* 15% from the top and centered */
   padding: 2rem 4rem;
-  border: 1px solid #888;
   width: 20rem; /* Could be more or less, depending on screen size */
   min-width: 600px;
   height: 10rem;

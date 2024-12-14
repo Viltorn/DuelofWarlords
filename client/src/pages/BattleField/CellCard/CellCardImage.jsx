@@ -5,14 +5,14 @@ import styles from './CellCard.module.css';
 
 const CellCardImage = ({ cardInfo, currentCell }) => {
   const {
-    cardsFeature, power, description, currentHP, currentC, cellType, type, img, name,
+    cardsFeature, power, description, currentHP, currentC, type, img, name,
   } = cardInfo;
 
   const { t } = useTranslation();
 
   const titleClasses = cn({
-    [styles.cardName]: cellType !== 'hero',
-    [styles.heroName]: cellType === 'hero',
+    [styles.cardName]: type !== 'hero',
+    [styles.heroName]: type === 'hero',
   });
 
   return (

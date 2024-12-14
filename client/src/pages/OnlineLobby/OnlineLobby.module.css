@@ -4,9 +4,9 @@
   flex-direction: column;
   justify-content: flex-start;
   align-items: flex-start;
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-image: url("../../assets/battlefield/BattlefieldOption.webp");
+  background-size: contain;
+  background-repeat: repeat;
+  background-image: url("@assets/BackgroundMain.jpeg");
   background-position: center;
   height: 100%;
   min-height: 100vh;
@@ -63,8 +63,7 @@
 }
 
 .divider {
-  border: 5px solid var(--golden);
-  border-radius: 10px;
+  border: 5px ridge var(--golden);
   width: 100%;
 }
 
@@ -82,7 +81,7 @@
 }
 
 .nameText {
-  color: var(--dark-color);
+  color: var(--light-gray);
   font-size: 20px;
 }
 
@@ -92,7 +91,7 @@
 }
 
 .title {
-  color: var(--dark-color);
+  color: var(--dark-golden);
   font-size: 40px;
 }
 

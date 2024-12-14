@@ -3,7 +3,7 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
 import cn from 'classnames';
-import Menu from '@assets/Menu.svg';
+import Menu from '@assets/Menu.png';
 import MusicButton from '../../../components/Buttons/MusicButton/MusicButton.jsx';
 import useClickActions from '../../../hooks/useClickActions.js';
 import tutorialStepsData from '../../../gameData/tutorialStepsData.js';
@@ -59,28 +59,22 @@ const BattleHeader = () => {
                 {t('Player1')}
                 :
               </h3>
-              <h3 className={styles.title}>
+              <h3 className={styles.playerTitle}>
                 {' '}
                 {players.player1.name}
               </h3>
             </div>
-            {/* <button type="button" onClick={() => handlePointsClick('player1')} disabled={gameMode !== 'hotseat'} className={styles.counter}>
-            <h3 className={styles.counterNum}>{player1Points}</h3>
-          </button> */}
           </div>
-          <button className={styles.endturnBtn} type="button" disabled={disEndTurn && gameMode === 'tutorial'} onClick={hadleEndTurnClick}>
-            {t('EndTurn')}
+          <button className={styles.endTurnBtn} type="button" disabled={disEndTurn && gameMode === 'tutorial'} onClick={hadleEndTurnClick}>
+            {t('buttons.EndTurn')}
           </button>
           <div className={styles.playersInfo}>
-            {/* <button type="button" onClick={() => handlePointsClick('player2')} disabled={gameMode !== 'hotseat'} className={styles.counter}>
-            <h3 className={styles.counterNum}>{player2Points}</h3>
-          </button> */}
             <div className={playerTwoBlock}>
               <h3 className={styles.title}>
                 {t('Player2')}
                 :
               </h3>
-              <h3 className={styles.title}>
+              <h3 className={styles.playerTitle}>
                 {' '}
                 {players.player2.name}
               </h3>

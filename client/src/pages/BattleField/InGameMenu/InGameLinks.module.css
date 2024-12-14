@@ -1,4 +1,6 @@
 .button {
+  color: var(--white-color);
+  background-color: transparent;
   text-align: start;
   text-decoration: underline;
   border: none;

@@ -9,8 +9,8 @@
   align-items: center;
   gap: 0.5rem;
   flex-shrink: 0;
-  border: 0.2rem solid var(--golden);
-  background: var(--dark-blue);
+  border: 0.2rem solid var(--dark-color);
+  background-color: var(--golden);
   transition: transform 0.3s;
   cursor: pointer;
 }
@@ -20,13 +20,13 @@
 }
 
 .btnLabel {
-  color: var(--golden);
+  color: var(--dark-color);
   text-align: center;
   font-family: Roboto;
   font-size: 0.6rem;
   font-style: normal;
   font-weight: 600;
-  line-height: 1.5rem;
+  line-height: 0.8rem;
 }
 
 .btnIcon {

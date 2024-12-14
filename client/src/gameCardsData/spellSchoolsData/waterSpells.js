@@ -1,16 +1,16 @@
 import _ from 'lodash';
-import Blizzard from '../../assets/academiaCards/Blizzard.png';
-import Frostbite from '../../assets/academiaCards/Frostbite.webp';
-import FrostTrap from '../../assets/academiaCards/FrostTrap.png';
-import IceBlock from '../../assets/academiaCards/IceBlock.png';
-import IceSpikes from '../../assets/academiaCards/IceSpikes.png';
-import IceWall from '../../assets/academiaCards/IceWall.png';
-import IceWeapon from '../../assets/academiaCards/IceWeapon.png';
-import Icing from '../../assets/academiaCards/Icing.png';
-import Tsunami from '../../assets/academiaCards/Tsunami.png';
-import Waterfall from '../../assets/academiaCards/Waterfall.png';
-import IceArrow from '../../assets/academiaCards/IceArrow.png';
-import IceArmor from '../../assets/academiaCards/IceArmor.png';
+import Blizzard from '../../assets/waterSpells/Blizzard.png';
+import Frostbite from '../../assets/waterSpells/Frostbite.png';
+import FrostTrap from '../../assets/waterSpells/FrostTrap.png';
+import IceBlock from '../../assets/waterSpells/IceBlock.png';
+import IceSpikes from '../../assets/waterSpells/IceSpikes.png';
+import IceWall from '../../assets/waterSpells/IceWall.png';
+import IceWeapon from '../../assets/waterSpells/IceWeapon.png';
+import Icing from '../../assets/waterSpells/Icing.png';
+import Tsunami from '../../assets/waterSpells/Tsunami.png';
+import Waterfall from '../../assets/waterSpells/Waterfall.png';
+import IceArrow from '../../assets/waterSpells/IceArrow.png';
+import IceArmor from '../../assets/waterSpells/IceArmor.png';
 
 export default {
   Blizzard: {
@@ -70,18 +70,21 @@ export default {
     featInfo: ['REACTION'],
     description: 'FrostTrap',
     school: 'Water',
+    charges: 1,
+    curCharges: 1,
+    showCharges: false,
     place: 'bigSpell',
     features: [{
-      spell: true, attach: ['field', 'warrior'], aim: ['warrior', 'fighter', 'shooter', 'flyer'], name: 'stun', condition: 'onplay', type: 'bad', charges: 1, aimStatus: 'field', cost: 2,
+      spell: true, attach: ['field', 'warrior'], aim: ['warrior', 'fighter', 'shooter', 'flyer'], name: 'stun', condition: 'onplay', type: 'bad', charges: 1, aimStatus: 'field', cost: 2, subtype: 'reaction',
     },
     {
-      spell: true, attach: ['field', 'warrior'], type: 'bad', aim: ['warrior', 'fighter', 'shooter', 'flyer'], name: 'attack', value: 3, charges: 1, condition: 'onplay', aimStatus: 'field', cost: 0,
+      spell: true, attach: ['field', 'warrior'], type: 'bad', aim: ['warrior', 'fighter', 'shooter', 'flyer'], name: 'attack', value: 3, charges: 1, condition: 'onplay', aimStatus: 'field', cost: 0, subtype: 'reaction',
     },
     {
-      spell: true, attach: ['field', 'warrior'], type: 'bad', aim: ['warrior', 'fighter', 'shooter', 'flyer'], name: 'attack', value: 3, charges: 1, condition: 'onmove', aimStatus: 'field', cost: 0,
+      spell: true, attach: ['field', 'warrior'], type: 'bad', aim: ['warrior', 'fighter', 'shooter', 'flyer'], name: 'attack', value: 3, charges: 1, condition: 'onmove', aimStatus: 'field', cost: 0, subtype: 'reaction',
     },
     {
-      spell: true, attach: ['field', 'warrior'], aim: ['warrior', 'fighter', 'shooter', 'flyer'], name: 'stun', condition: 'onmove', type: 'bad', charges: 1, aimStatus: 'field', cost: 2,
+      spell: true, attach: ['field', 'warrior'], aim: ['warrior', 'fighter', 'shooter', 'flyer'], name: 'stun', condition: 'onmove', type: 'bad', charges: 1, aimStatus: 'field', cost: 2, subtype: 'reaction',
     }],
     img: FrostTrap,
     status: 'hand',
@@ -115,15 +118,35 @@ export default {
     name: 'Ice spikes',
     id: _.uniqueId(),
     type: 'spell',
-    subtype: 'instant',
-    cost: 3,
-    currentC: 3,
-    featInfo: [],
+    subtype: 'temporary',
+    cost: 4,
+    currentC: 4,
+    featInfo: ['LASTCAST'],
     description: 'IceSpikes',
     school: 'Water',
-    place: '',
+    place: 'topSpell',
     features: [{
       spell: true, attach: false, type: 'bad', name: 'attack', value: 2, aim: ['line', 'warrior', 'fighter', 'shooter', 'flyer'], aimStatus: 'field',
+    },
+    {
+      spell: true,
+      attach: ['line'],
+      type: 'bad',
+      aim: ['warrior', 'fighter', 'shooter', 'flyer'],
+      name: 'attack',
+      condition: 'onmove',
+      value: 2,
+      aimStatus: 'field',
+    },
+    {
+      spell: true,
+      attach: ['line'],
+      type: 'bad',
+      aim: ['warrior', 'fighter', 'shooter', 'flyer'],
+      name: 'attack',
+      condition: 'onplay',
+      value: 2,
+      aimStatus: 'field',
     }],
     img: IceSpikes,
     status: 'hand',
@@ -234,7 +257,7 @@ export default {
     school: 'Water',
     place: 'bigSpell',
     features: [{
-      spell: true, attach: ['field', 'warrior'], aim: ['warrior', 'fighter', 'shooter', 'flyer'], type: 'all', name: 'unarmed', condition: 'maxPower', conditionValue: 2, aimStatus: 'field',
+      spell: true, attach: ['field', 'warrior'], aim: ['warrior', 'fighter', 'shooter', 'flyer'], type: 'bad', name: 'unarmed', condition: 'maxPower', conditionValue: 2, aimStatus: 'field',
     }],
     img: Waterfall,
     status: 'hand',
