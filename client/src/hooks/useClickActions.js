@@ -1,8 +1,10 @@
 import { actions as battleActions } from '@slices/battleSlice.js';
 import { actions as modalsActions } from '@slices/modalsSlice.js';
+import { actions as gameActions } from '@slices/gameSlice.js';
+import { actions as uiActions } from '@slices/uiSlice.js';
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { actions as gameActions } from '@slices/gameSlice.js';
+
 import { maxActionPoints } from '../gameData/gameLimits.js';
 import useFunctionsContext from './useFunctionsContext.js';
 import useAITurn from './useAITurn.js';
@@ -28,7 +30,6 @@ const useClickActions = () => {
     players,
   } = useSelector((state) => state.battleReducer);
 
-  // const windowType = useSelector((state) => state.modalsReducer).type;
   const { makeAITurn } = useAITurn();
   const { gameMode, curRoom, name } = useSelector((state) => state.gameReducer);
   const {
@@ -132,7 +133,7 @@ const useClickActions = () => {
       player2Type: 'human',
       performAIAction: null,
       player: thisPlayer,
-      points: currentPoints,
+      playerPoints,
       cell: currentCell,
       ability,
       gameTurn,
@@ -203,7 +204,7 @@ const useClickActions = () => {
         room: curRoom,
         card: activeCard,
         player: thisPlayer,
-        points,
+        playerPoints,
         curCell: currentCell,
         fieldCards,
         cellsOnField: fieldCells,
@@ -217,7 +218,6 @@ const useClickActions = () => {
     const {
       card,
       player,
-      points,
       cell,
       appliedCard,
       spellsInCell,
@@ -231,7 +231,7 @@ const useClickActions = () => {
         player2Type: 'human',
         performAIAction: null,
         player,
-        points,
+        playerPoints,
         cell,
         gameTurn,
       };
@@ -245,6 +245,7 @@ const useClickActions = () => {
         card1: card,
         card2: appliedCard,
         gameTurn,
+        playerPoints,
       };
       makeGameAction(actionData, gameMode);
       return;
@@ -268,7 +269,6 @@ const useClickActions = () => {
 
     const currentCell = fieldCells.find((cell) => cell.id === item.cellId);
     const spellsInCell = fieldCards.filter((card) => card.cellId === item.cellId && card.type === 'spell');
-    const { points } = playerPoints.find((el) => el.player === thisPlayer);
     const activeCard = getActiveCard();
     const cardId = cardElement?.current.id;
     const activeId = activeCard?.id ?? null;
@@ -280,7 +280,6 @@ const useClickActions = () => {
       makeCardAction({
         card: activeCard,
         player: thisPlayer,
-        points,
         cell: currentCell,
         appliedCard: item,
         spellsInCell,
@@ -314,7 +313,6 @@ const useClickActions = () => {
 
     if ((isSpell && canBeCast(graveCell.id))) {
       handleAnimation(activeCard, 'delete');
-      const currentPoints = playerPoints.find((item) => item.player === thisPlayer).points;
       const actionData = {
         move: 'castSpell',
         room: curRoom,
@@ -322,7 +320,7 @@ const useClickActions = () => {
         player2Type: players.player2.type,
         performAIAction: null,
         player,
-        points: currentPoints,
+        playerPoints,
         cell: graveCell,
         gameTurn,
       };
@@ -362,6 +360,7 @@ const useClickActions = () => {
 
   const handleResetGameClick = (dest) => {
     dispatch(battleActions.resetState());
+    dispatch(uiActions.resetState());
     changeTutorStep(0);
     if (dest === 'reset' && (gameMode === 'hotseat' || gameMode === 'test')) {
       dispatch(modalsActions.openModal({ type: 'openHotSeatMenu' }));

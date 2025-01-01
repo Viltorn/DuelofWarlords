@@ -65,6 +65,7 @@ router.patch('/', async (req, res) => {
       res.status(401).json({ message: 'UserNotFound' })
       return;
     }
+    account.decks = decks;
     const setAcc = await redis.set(`DofWAccounts:${username}`,  JSON.stringify(account));
     if (setAcc === 'OK') {
       res.status(200).json(account);

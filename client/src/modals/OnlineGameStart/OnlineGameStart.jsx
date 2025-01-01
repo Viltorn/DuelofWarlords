@@ -9,10 +9,12 @@ import { startCardsNumber1, startCardsNumber2, minDeckCards } from '../../gameDa
 import { actions as modalsActions } from '../../slices/modalsSlice.js';
 import { actions as battleActions } from '../../slices/battleSlice.js';
 import { actions as gameActions } from '../../slices/gameSlice.js';
+import { actions as uiActions } from '../../slices/uiSlice.js';
 import countDeckCards from '../../utils/countDeckCards.js';
 import cardsData from '../../gameCardsData/index.js';
 import makeInitialDeck from '../../utils/makeInitialDeck.js';
 import PrimaryButton from '../../components/Buttons/PrimaryButton/PrimaryButton.jsx';
+import timerOptions from '../../gameData/timerOptions.js';
 import socket from '../../socket.js';
 import styles from './OnlineGameStart.module.css';
 import MenuSlider from '../../components/MenuSlider/MenuSlider.jsx';
@@ -20,6 +22,14 @@ import makeShaffledDeck from '../../utils/makeShaffledDeck.js';
 import createDeckForPLayer from '../../utils/makeDeckForPlayer.js';
 import dummyCard from '../../gameCardsData/dummyCard.js';
 import { passwordYup } from '../../utils/validation.js';
+
+const TimerOption = ({ value, min }) => (
+  <option value={value}>
+    {value}
+    {' '}
+    {min}
+  </option>
+);
 
 const OnlineGameStart = () => {
   const [deckNumber, setDeckSlide] = useState(0);
@@ -29,7 +39,9 @@ const OnlineGameStart = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const { roomId, name, password } = useSelector((state) => state.modalsReducer);
+  const {
+    roomId, name, password, data,
+  } = useSelector((state) => state.modalsReducer);
 
   const { playersDecks } = useSelector((state) => state.gameReducer);
   const playableDecks = playersDecks.filter((deck) => {
@@ -61,6 +73,7 @@ const OnlineGameStart = () => {
     initialValues: {
       playerHero: playerHeroData,
       playerDeck: playerDeck.cards,
+      timer: 3,
       password: '',
     },
     validationSchema: passwordYup,
@@ -82,6 +95,7 @@ const OnlineGameStart = () => {
             hand: playerHand,
             hero: values.playerHero,
             password: values.password,
+            timer: values.timer,
           }, (res) => {
             console.log(res);
             handleClose();
@@ -117,6 +131,9 @@ const OnlineGameStart = () => {
             dispatch(battleActions.setThisPlayer({ player: 'player2' }));
             dispatch(gameActions.setCurrentRoom({ room: roomId }));
             dispatch(battleActions.addCommonPoint());
+            dispatch(uiActions.setTimer(Number(res.timer)));
+            dispatch(uiActions.setCurTime([parseInt(res.timer, 10), parseInt(0, 10)]));
+            dispatch(uiActions.setTimerIsPaused(true));
             handleClose();
             navigate('/battle');
           });
@@ -162,6 +179,24 @@ const OnlineGameStart = () => {
                 </div>
               </div>
               <div className={styles.inputBlock}>
+                <div className={styles.timerBlock}>
+                  <p className={styles.smallTitle}>
+                    {t('Timer')}
+                    :
+                  </p>
+                  {!roomId ? (
+                    <select className={styles.timerSelect} name="timer" defaultValue={3} aria-label={t('modals.GameType')} onChange={formik.handleChange}>
+                      {timerOptions.map((option) => (
+                        <TimerOption value={option} key={option} min={t('misc.Min')} />
+                      ))}
+                    </select>
+                  ) : (
+                    <p className={styles.smallTitle}>
+                      {data}
+                      {t('misc.Min')}
+                    </p>
+                  )}
+                </div>
                 {roomId && password === '' ? (
                   null
                 ) : (
@@ -184,7 +219,7 @@ const OnlineGameStart = () => {
                 {error && (<div className={styles.invalidFeedback}>{t(`errors.${error.message}`)}</div>)}
                 <div className={styles.lowerBlock}>
                   {name && (
-                  <p className={styles.roomsOwner}>
+                  <p className={styles.smallTitle}>
                     {t('RoomsOwner')}
                     {name}
                   </p>

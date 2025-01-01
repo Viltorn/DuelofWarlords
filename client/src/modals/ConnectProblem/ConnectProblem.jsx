@@ -21,7 +21,7 @@ const ConnectProblem = () => {
           onClick={handleClick}
           showIcon={false}
           state="default"
-          text={t('CONTINUE')}
+          text={t('buttons.CONTINUE')}
           variant="primary"
           type="submit"
         />

@@ -130,6 +130,7 @@
 .inputBlock {
   display: flex;
   flex-direction: column;
+  align-items: center;
   justify-content: space-between;
   gap: 30px;
 }
@@ -155,13 +156,43 @@
   gap: 20px;
 }
 
+.mediumTitle {
+  color: var(--golden);
+  font-size: 20px;
+  text-align: center;
+}
 
-@media (max-width: 900px) {
+.smallTitle {
+  color: var(--golden);
+  font-size: 15px;
+}
+
+.timerBlock {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px
+}
+
+.timerSelect {
+  color: var(--light-gray);
+  border: 2px solid var(--golden);
+  padding: 5px;
+  font-size: 15px;
+  background-color: transparent;
+}
+
+
+@media (max-width: 935px) {
   .fieldset {
     flex-direction: row;
     justify-content: center;
     align-content: center;
     gap: 15px 30px;
+  }
+
+  .inputBlock  {
+    align-items: flex-start;
   }
 
   .label {
@@ -193,7 +224,7 @@
     align-items: start;
   }
 
-  .roomsOwner {
+  .smallTitle {
     font-size: 15px;
   }
 }
@@ -211,6 +242,11 @@
     flex-direction: column;
     gap: 30px;
   }
+
+  .inputBlock  {
+    align-items: center;
+  }
+
 
   .lowerBlock {
     align-items: center;

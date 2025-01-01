@@ -1,12 +1,14 @@
 import _ from 'lodash';
-import BattleCry from '../../assets/skillsIcons/BattleCry.png';
-import DoubleDaggers from '../../assets/skillsIcons/DoubleDaggers.png';
-import TemplarShield from '../../assets/skillsIcons/TemplarShield.png';
-import Resistance from '../../assets/skillsIcons/Resistance.png';
+import BattleCry from '@assets/skillsIcons/BattleCry.png';
+import DoubleDaggers from '@assets/skillsIcons/DoubleDaggers.png';
+import TemplarShield from '@assets/skillsIcons/TemplarShield.png';
+import Resistance from '@assets/skillsIcons/Resistance.png';
 // import FirstAid from '../../assets/skillsIcons/FirstAid.png';
-import Leadership from '../../assets/skillsIcons/Leadership.png';
-import BattleTactics from '../../assets/skillsIcons/BattleTactics.png';
-import RighteousHammer from '../../assets/skillsIcons/RighteousHammer.png';
+import LeatherArmor from '@assets/skillsIcons/LeatherArmor.png';
+import PlateArmor from '@assets/skillsIcons/PlateArmor.png';
+import Leadership from '@assets/skillsIcons/Leadership.png';
+import BattleTactics from '@assets/skillsIcons/BattleTactics.png';
+import RighteousHammer from '@assets/skillsIcons/RighteousHammer.png';
 
 export default {
   BattleCry: {
@@ -17,7 +19,7 @@ export default {
     cost: 2,
     currentC: 2,
     skillValue: 0,
-    featInfo: ['SKILL', 'HEROABILITY'],
+    featInfo: [],
     description: 'BattleCry',
     school: 'Skills',
     id: _.uniqueId(),
@@ -51,7 +53,7 @@ export default {
     cost: 3,
     currentC: 3,
     showCharges: true,
-    featInfo: ['AR'],
+    featInfo: ['ARTEFACT'],
     description: 'MeleeCombat',
     school: 'Skills',
     id: _.uniqueId(),
@@ -103,7 +105,7 @@ export default {
     returnable: false,
     cost: 2,
     currentC: 2,
-    featInfo: ['SKILL', 'HEROABILITY'],
+    featInfo: [],
     description: 'Protection',
     school: 'Skills',
     id: _.uniqueId(),
@@ -121,7 +123,7 @@ export default {
     {
       spell: true,
       attach: ['warrior', 'hero'],
-      aim: ['warrior', 'hero', 'spell', 'fighter', 'shooter', 'flyer'],
+      aim: ['warrior', 'hero', 'fighter', 'shooter', 'flyer'],
       type: 'good',
       name: 'retaliateProtect',
       value: { type: 'number', val: 2 },
@@ -138,7 +140,7 @@ export default {
     returnable: false,
     cost: 1,
     currentC: 1,
-    featInfo: ['SKILL', 'HEROABILITY'],
+    featInfo: [],
     description: 'Resistance',
     school: 'Skills',
     id: _.uniqueId(),
@@ -190,7 +192,7 @@ export default {
     returnable: false,
     cost: 1,
     currentC: 1,
-    featInfo: ['SKILL', 'HEROABILITY'],
+    featInfo: [],
     description: 'Leadership',
     school: 'Skills',
     id: _.uniqueId(),
@@ -273,6 +275,7 @@ export default {
           aim: ['warrior', 'flyer', 'shooter', 'fighter'],
           type: 'bad',
           name: 'attack',
+          charges: 1,
           value: 2,
           aimStatus: 'field',
           depend: 'warriorsDiff',
@@ -284,6 +287,66 @@ export default {
     img: RighteousHammer,
     status: 'hand',
     disabled: false,
+  },
+  LeatherArmor: {
+    name: 'Leather Armor',
+    id: _.uniqueId(),
+    type: 'spell',
+    subtype: 'permanent',
+    cost: 2,
+    currentC: 2,
+    charges: 3,
+    curCharges: 3,
+    showCharges: true,
+    featInfo: ['ARTEFACT'],
+    description: 'LeatherArmor',
+    school: 'Skills',
+    place: 'warrior',
+    features: [
+      {
+        spell: true,
+        attach: ['hero'],
+        aim: ['fighter', 'shooter', 'flyer', 'warrior'],
+        type: 'good',
+        name: 'protection',
+        charges: 3,
+        value: { type: 'number', val: 1 },
+        aimStatus: 'field',
+        cost: 0,
+      },
+    ],
+    img: LeatherArmor,
+    status: 'hand',
+  },
+  PlateArmor: {
+    name: 'Plate Armor',
+    id: _.uniqueId(),
+    type: 'spell',
+    subtype: 'permanent',
+    cost: 4,
+    currentC: 4,
+    charges: 3,
+    curCharges: 3,
+    showCharges: true,
+    featInfo: ['ARTEFACT'],
+    description: 'PlateArmor',
+    school: 'Skills',
+    place: 'warrior',
+    features: [
+      {
+        spell: true,
+        attach: ['hero'],
+        aim: ['fighter', 'shooter', 'flyer', 'warrior'],
+        type: 'good',
+        name: 'protection',
+        charges: 3,
+        value: { type: 'number', val: 2 },
+        aimStatus: 'field',
+        cost: 0,
+      },
+    ],
+    img: PlateArmor,
+    status: 'hand',
   },
 };
 

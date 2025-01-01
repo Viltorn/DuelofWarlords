@@ -33,7 +33,6 @@ const initialState = {
   activeCells: { cellsForAttack: [], cellsForSpellCast: [], cellsForWarMove: [] },
   lastCellWithAction: {},
   lastPlayedCard: {},
-  turnTimer: null,
   activeCardPlayer1: null,
   activeCardPlayer2: null,
 };
@@ -73,6 +72,7 @@ const battleSlice = createSlice({
       const cellIndex = state.fieldCells.findIndex((cell) => cell.id === cellId);
       state.fieldCells[cellIndex].attachments.push(feature);
     },
+
     addWarriorAttachment(state, { payload }) {
       const { cellId, feature } = payload;
       const cellIndex = state.fieldCards.findIndex((card) => card.cellId === cellId
@@ -315,11 +315,6 @@ const battleSlice = createSlice({
     setLastPlayedCard(state, { payload }) {
       const card = payload;
       state.lastPlayedCard = card;
-    },
-
-    setTimer(state, { payload }) {
-      const timer = payload;
-      state.turnTimer = timer;
     },
   },
 });

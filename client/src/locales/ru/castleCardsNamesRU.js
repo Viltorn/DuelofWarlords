@@ -16,7 +16,7 @@ export default {
   TemplarChampCast: 'Заклинание',
   BannermanCast: 'Заклинание',
   ZigfridHero: 'Зигфрид - Герой',
-  RionHero: 'Рион - Герой',
+  AgielHero: 'Агиель - Герой',
   Morale: 'Мораль',
   RetributionSword: 'Меч возмездия',
 };

@@ -109,6 +109,7 @@ export default {
         name: 'protection',
         value: { type: 'number', val: 100 },
         aimStatus: 'field',
+        cost: 0,
       },
     ],
     img: IceBlock,

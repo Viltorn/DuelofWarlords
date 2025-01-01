@@ -21,7 +21,9 @@ import getModal from '../../modals/index.js';
 import { actions as modalsActions } from '../../slices/modalsSlice.js';
 import { actions as battleActions } from '../../slices/battleSlice.js';
 import { actions as gameActions } from '../../slices/gameSlice.js';
+import { actions as uiActions } from '../../slices/uiSlice.js';
 import useFunctionsContext from '../../hooks/useFunctionsContext.js';
+import useUIActions from '../../hooks/useUIActions.js';
 
 const Battlefield = () => {
   const dispatch = useDispatch();
@@ -33,6 +35,7 @@ const Battlefield = () => {
   const {
     addCardToField, endTurn, makeMove, isOpenInfo,
   } = useFunctionsContext();
+  const { setTimerPaused } = useUIActions();
 
   const {
     activeCardPlayer1,
@@ -80,7 +83,7 @@ const Battlefield = () => {
   useEffect(() => {
     socket.on('opponentJoined', (roomData) => {
       console.log('roomData', roomData);
-      const { roomId } = roomData;
+      const { roomId, timer } = roomData;
       const player1 = roomData.players[0];
       const player2 = roomData.players[1];
       dispatch(battleActions.setHero({ hero: player1.hero, player: 'player1' }));
@@ -91,6 +94,8 @@ const Battlefield = () => {
       dispatch(battleActions.setPlayersHand({ hand: player2.hand, player: 'player2' }));
       dispatch(battleActions.setPlayerName({ name: player1.username, player: 'player1' }));
       dispatch(battleActions.setPlayerName({ name: player2.username, player: 'player2' }));
+      dispatch(uiActions.setCurTime([parseInt(timer, 10), parseInt(0, 10)]));
+      dispatch(uiActions.setTimer(Number(timer)));
       dispatch(gameActions.setCurrentRoom({ room: roomId }));
       dispatch(modalsActions.openModal({ type: 'startFirstRound', player: 'player1' }));
     });
@@ -157,6 +162,7 @@ const Battlefield = () => {
     socketId,
     thisPlayerName,
     gameMode,
+    setTimerPaused,
   ]);
 
   useEffect(() => {

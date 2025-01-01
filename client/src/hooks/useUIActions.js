@@ -1,32 +1,38 @@
-import { useState } from 'react';
-import { useSelector } from 'react-redux';
+// import { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { actions as uiActions } from '../slices/uiSlice.js';
 
 const useUIActions = () => {
-  const { turnTimer } = useSelector((state) => state.battleReducer);
-  const [timerIsPaused, setTimerPaused] = useState(false);
-  const [timerIsOver, setTimerOver] = useState(false);
-  const [[m, s], setTimer] = useState([turnTimer ?? 0, 0]);
-  const curTimer = [m, s];
+  const {
+    isTimerOver, isTimerPaused, timer, curTime,
+  } = useSelector((state) => state.uiReducer);
+  const dispatch = useDispatch();
+  // const [[m, s], setTimer] = useState([timer ?? 0, 0]);
+  // const curTime = [m, s];
+  const [m, s] = curTime;
 
   const resetTimer = () => {
-    setTimer([parseInt(turnTimer, 10), parseInt(0, 10)]);
+    // setTimer([parseInt(timer, 10), parseInt(0, 10)]);
+    dispatch(uiActions.setCurTime([parseInt(timer, 10), parseInt(0, 10)]));
   };
 
   const tick = () => {
-    if (timerIsOver || timerIsPaused) return;
+    if (isTimerOver || isTimerPaused) return;
 
     if (m === 0 && s === 0) {
-      setTimerOver(true);
+      dispatch(uiActions.setTimerIsOver(true));
       resetTimer();
     } else if (s === 0) {
-      setTimer([m - 1, 59]);
+      dispatch(uiActions.setCurTime([m - 1, 59]));
+      // setTimer([m - 1, 59]);
     } else {
-      setTimer([m, s - 1]);
+      dispatch(uiActions.setCurTime([m, s - 1]));
+      // setTimer([m, s - 1]);
     }
   };
 
   return {
-    tick, resetTimer, curTimer, timerIsOver, setTimerPaused, setTimerOver,
+    tick, resetTimer, curTime,
   };
 };
 

@@ -14,9 +14,11 @@ import isFeatureCostAllowed from '../utils/supportFunc/isFeatureCostAllowed.js';
 import getEnemyPlayer from '../utils/supportFunc/getEnemyPlayer.js';
 import findCellsToAttachCast from '../utils/supportFunc/findCellsToAttachCast.js';
 import findCardsToAttachCast from '../utils/supportFunc/findCardsToAttachCast.js';
+import findAdjasentCells from '../utils/supportFunc/findAdjasentCells.js';
 import findAimCard from '../utils/supportFunc/findAimCard.js';
 import getRandomFromArray from '../utils/getRandomFromArray.js';
 import calcAllSpellslValue from '../utils/supportFunc/calcAllSpellslValue.js';
+import isCellEmpty from '../utils/supportFunc/isCellEmpty.js';
 
 const useBattleActions = () => {
   const dispatch = useDispatch();
@@ -69,19 +71,16 @@ const useBattleActions = () => {
 
   // CHECK VICTORY
 
-  const showVictoryWindow = (winPlayer) => dispatch(modalsActions.openModal({ type: 'victory', player: winPlayer, roomId: curRoom }));
+  const showVictoryWindow = (winPlayer) => {
+    dispatch(modalsActions.openModal({ type: 'victory', player: winPlayer, roomId: curRoom }));
+  };
 
   const showYourTurnWindow = (winPlayer) => {
     dispatch(modalsActions.openModal({ type: 'playerTurn', player: winPlayer, roomId: curRoom }));
     setTimeout(() => dispatch(modalsActions.closeModal()), 1200);
   };
 
-  const checkIfIsVictory = (killedcard) => {
-    if (killedcard.type === 'hero') {
-      const winPlayer = killedcard.player === 'player1' ? 'player2' : 'player1';
-      showVictoryWindow(winPlayer);
-    }
-  };
+  const isHeroKilled = (killedcard) => killedcard.type === 'hero';
 
   // FIND SPELL
 
@@ -186,11 +185,11 @@ const useBattleActions = () => {
     deleteCardFromSource(card);
     if (destination === 'grave' && !card.returnable) {
       dispatch(battleActions.addToGraveyard({ card }));
+      castLastSpells(card, castFunc, cellsOnField, destination, gameTurn);
     } else {
       const cost = cardCost ?? card.cost;
       dispatch(battleActions.returnCard({ card, cost }));
     }
-    castLastSpells(card, castFunc, cellsOnField, destination, gameTurn);
   };
 
   const changeChargedSpellCard = (spell, allFieldCards, allFieldCells, castFunc, gameTurn) => {
@@ -226,10 +225,11 @@ const useBattleActions = () => {
       currentFieldCells,
       currentFieldCards,
       castFunc,
-      aimCardOwnerPoints,
+      playerPoints,
       gameTurn,
       lastPlayedCard,
     } = data;
+    const aimCardOwnerPoints = playerPoints.find((item) => item.player === aimCard?.player)?.points ?? 0;
     const receivedHealth = aimCard.currentHP;
     const spellPower = countSpellDependVal({
       spell: feature, aimCardPower: getWarriorPower(aimCard), currentFieldCards, lastPlayedCard,
@@ -258,7 +258,10 @@ const useBattleActions = () => {
       lastSpells.forEach((feat) => castFunc({
         feature: feat, aimCell: cardCell, applyingCard: null, player: aimCard.player, player2Type: '', performAIAction: null,
       }));
-      checkIfIsVictory(aimCard);
+    }
+    if (isKilled(calculatedPower, receivedHealth) && isHeroKilled(aimCard)) {
+      showVictoryWindow(getEnemyPlayer(aimCard.player));
+      changeCardHP(calculatedPower, receivedHealth, aimCard);
     }
     if (!isKilled(calculatedPower, receivedHealth)) changeCardHP(calculatedPower, receivedHealth, aimCard);
     if (protectSpells.length > 0) {
@@ -315,8 +318,8 @@ const useBattleActions = () => {
       if (value === 'power') {
         const attackingPower = getWarriorPower(aimCard);
         dispatch(battleActions.addAnimation({ cellId: heroCard.cellId, type: 'attacked' }));
-        if (!isKilled(attackingPower, receivedHealth)) changeCardHP(attackingPower, receivedHealth, heroCard);
-        if (isKilled(attackingPower, receivedHealth)) checkIfIsVictory(heroCard);
+        changeCardHP(attackingPower, receivedHealth, heroCard);
+        if (isKilled(attackingPower, receivedHealth)) showVictoryWindow(getEnemyPlayer(heroCard.player));
       }
     },
     evade: (data) => {
@@ -390,15 +393,15 @@ const useBattleActions = () => {
     },
     invoke: (data) => {
       const {
-        feature, castingPlayer, aimCard, player2Type, currentFieldCells, currentFieldCards, aimCardOwnerPoints, performAIAction,
+        feature, castingPlayer, aimCard, player2Type, currentFieldCells, currentFieldCards, playerPoints, performAIAction,
       } = data;
       const spellCard = { ...feature.value, player: castingPlayer, cellId: aimCard.cellId };
       dispatch(battleActions.addActiveCard({ card: spellCard, player: castingPlayer }));
       if (player2Type === 'computer' && castingPlayer === 'player2') {
         addAnimatedCells(spellCard, currentFieldCells, currentFieldCards, 'player2');
-        setTimeout(() => performAIAction({
-          card: spellCard, points: aimCardOwnerPoints, fieldCards: currentFieldCards, fieldCells: currentFieldCells, room: '',
-        }), 1500);
+        performAIAction({
+          card: spellCard, playerPoints, fieldCards: currentFieldCards, fieldCells: currentFieldCells, room: '',
+        });
       } else {
         handleAnimation(spellCard, 'add');
       }
@@ -409,17 +412,17 @@ const useBattleActions = () => {
       dispatch(battleActions.drawCard({ player: data.castingPlayer }));
     },
     increasePoints: (data) => {
-      const { feature, castingPlayer, curPlayersPoints } = data;
+      const { feature, castingPlayer, playerPoints } = data;
       const playerToApply = feature.type === 'good' ? castingPlayer : getEnemyPlayer(castingPlayer);
-      const curPoints = curPlayersPoints.find((item) => item.player === playerToApply).points;
+      const curPoints = playerPoints.find((item) => item.player === playerToApply).points;
       const newPoints = curPoints + feature.value;
       dispatch(battleActions.setPlayerPoints({ points: newPoints, player: playerToApply }));
     },
     stealPoints: (data) => {
-      const { feature, castingPlayer, curPlayersPoints } = data;
+      const { feature, castingPlayer, playerPoints } = data;
       const enemyPlayer = getEnemyPlayer(castingPlayer);
-      const ownerPoints = curPlayersPoints.find((item) => item.player === castingPlayer).points;
-      const enemyPoints = curPlayersPoints.find((item) => item.player === enemyPlayer).points;
+      const ownerPoints = playerPoints.find((item) => item.player === castingPlayer).points;
+      const enemyPoints = playerPoints.find((item) => item.player === enemyPlayer).points;
       const newPlayerPoints = ownerPoints + feature.value.owner;
       const newEnemyPoints = enemyPoints - feature.value.enemy;
       dispatch(battleActions.setPlayerPoints({ points: newPlayerPoints, player: castingPlayer }));
@@ -441,10 +444,10 @@ const useBattleActions = () => {
       changeTutorStep((prev) => prev + 1);
     }
     const { feature, aimCard } = data;
-    const aimCardOwnerPoints = store.getState().battleReducer.playerPoints.find((item) => item.player === aimCard?.player)?.points ?? 0;
+    const { playerPoints } = store.getState().battleReducer;
 
     if ((aimCard && feature.aimStatus === aimCard.status) || !feature.aimStatus) {
-      performSpellEffect[feature.name]({ ...data, aimCardOwnerPoints });
+      performSpellEffect[feature.name]({ ...data, playerPoints });
     }
   };
 
@@ -461,13 +464,14 @@ const useBattleActions = () => {
   const makeFeatureCast = ({
     feature, aimCell, applyingCard, player, player2Type, performAIAction,
   }) => {
-    const featOwnerPoints = store.getState().battleReducer.playerPoints.find((item) => item.player === player).points;
+    const { playerPoints } = store.getState().battleReducer;
+    const featOwnerPoints = playerPoints.find((item) => item.player === player).points;
     if (!isFeatureCostAllowed(feature, featOwnerPoints)) return;
 
     const { lastPlayedCard } = store.getState().battleReducer;
     const currentFieldCells = store.getState().battleReducer.fieldCells;
     const currentFieldCards = store.getState().battleReducer.fieldCards;
-    const curPlayersPoints = store.getState().battleReducer.playerPoints;
+
     const cardsInCell = currentFieldCards.filter((card) => card.cellId === aimCell?.id);
     const aimCard = applyingCard ?? findAimCard(feature, cardsInCell);
     const cellsToApplyCast = findCellsForSpellApply({
@@ -483,7 +487,7 @@ const useBattleActions = () => {
         castFunc: makeFeatureCast,
         performAIAction,
         player2Type,
-        curPlayersPoints,
+        playerPoints,
         lastPlayedCard,
       });
     } else {
@@ -497,12 +501,13 @@ const useBattleActions = () => {
         castFunc: makeFeatureCast,
         performAIAction,
         player2Type,
-        curPlayersPoints,
+        playerPoints,
         lastPlayedCard,
       });
     }
     if (feature.cost) {
-      const currentOwnerPoints = store.getState().battleReducer.playerPoints.find((item) => item.player === player).points;
+      const currentPlayerPoints = store.getState().battleReducer.playerPoints;
+      const currentOwnerPoints = currentPlayerPoints.find((item) => item.player === player).points;
       dispatch(battleActions.setPlayerPoints({ points: currentOwnerPoints - feature.cost, player }));
     }
     if (feature.charges) changeChargedSpellCard(feature, currentFieldCards, currentFieldCells, makeFeatureCast);
@@ -526,7 +531,7 @@ const useBattleActions = () => {
   const attachSpellEffect = {
     moving: (data) => {
       const {
-        aimCard, castingPlayer, feature, player2Type, performAIAction, currentFieldCells,
+        aimCard, castingPlayer, feature, player2Type, performAIAction, currentFieldCells, playerPoints,
       } = data;
       dispatch(battleActions.addWarriorAttachment({ cellId: aimCard.cellId, feature }));
       const newFieldCards = store.getState().battleReducer.fieldCards;
@@ -534,31 +539,51 @@ const useBattleActions = () => {
       dispatch(battleActions.addActiveCard({ card: newAimCard, player: castingPlayer }));
       if (player2Type === 'computer' && castingPlayer === 'player2') {
         addAnimatedCells(newAimCard, currentFieldCells, newFieldCards, 'player2');
-        setTimeout(() => performAIAction({
-          card: newAimCard, points: null, fieldCards: newFieldCards, fieldCells: currentFieldCells, room: '',
-        }), 1500);
+        performAIAction({
+          card: newAimCard, playerPoints, fieldCards: newFieldCards, fieldCells: currentFieldCells, room: '',
+        });
       } else {
         handleAnimation(newAimCard, 'add');
       }
     },
     moveNextRow: (data) => {
       const {
-        aimCell, aimCard, currentFieldCells, currentFieldCards, castingPlayer, feature, player2Type, performAIAction,
+        aimCell, aimCard, currentFieldCells, currentFieldCards, castingPlayer, feature, player2Type, performAIAction, playerPoints,
       } = data;
       dispatch(battleActions.addWarriorAttachment({ cellId: aimCard.cellId, feature }));
       const { topRowCell, bottomRowCell } = findNextRowCells(aimCell, currentFieldCells, currentFieldCards);
-      const newFieldCards = store.getState().battleReducer.fieldCards;
-      const newAimCard = newFieldCards.find((card) => card.id === aimCard.id);
       const topRowId = topRowCell?.id ? [topRowCell.id] : [];
       const bottomRowId = bottomRowCell?.id ? [bottomRowCell.id] : [];
+      const newFieldCards = store.getState().battleReducer.fieldCards;
+      const newAimCard = newFieldCards.find((card) => card.id === aimCard.id);
       dispatch(battleActions.addActiveCells({ cellsIds: [...topRowId, ...bottomRowId], type: 'cellsForWarMove' }));
       dispatch(battleActions.addAnimation({ cellId: topRowCell?.id, type: 'green' }));
       dispatch(battleActions.addAnimation({ cellId: bottomRowCell?.id, type: 'green' }));
       dispatch(battleActions.addActiveCard({ card: newAimCard, player: castingPlayer }));
       if (player2Type === 'computer' && castingPlayer === 'player2') {
-        setTimeout(() => performAIAction({
-          card: newAimCard, points: null, fieldCards: newFieldCards, fieldCells: currentFieldCells, room: '',
-        }, 1500));
+        performAIAction({
+          card: newAimCard, playerPoints, fieldCards: newFieldCards, fieldCells: currentFieldCells, room: '',
+        });
+      }
+    },
+    moveAdjasent: (data) => {
+      const {
+        aimCell, aimCard, currentFieldCells, currentFieldCards, castingPlayer, feature, player2Type, performAIAction, playerPoints,
+      } = data;
+      dispatch(battleActions.addWarriorAttachment({ cellId: aimCard.cellId, feature }));
+      const adjasentCells = findAdjasentCells(currentFieldCells, aimCell);
+      const cellsToMoveIds = adjasentCells
+        .filter((cell) => isCellEmpty(currentFieldCards, cell.id) && cell.player === aimCard.player)
+        .map((cell) => cell.id);
+      const newFieldCards = store.getState().battleReducer.fieldCards;
+      const newAimCard = newFieldCards.find((card) => card.id === aimCard.id);
+      dispatch(battleActions.addActiveCells({ cellsIds: [...cellsToMoveIds], type: 'cellsForWarMove' }));
+      cellsToMoveIds.forEach((cellId) => dispatch(battleActions.addAnimation({ cellId, type: 'green' })));
+      dispatch(battleActions.addActiveCard({ card: newAimCard, player: castingPlayer }));
+      if (player2Type === 'computer' && castingPlayer === 'player2') {
+        performAIAction({
+          card: newAimCard, playerPoints, fieldCards: newFieldCards, fieldCells: currentFieldCells, room: '',
+        });
       }
     },
   };
@@ -574,14 +599,14 @@ const useBattleActions = () => {
 
   const attachSpellEffectOnWar = (data) => {
     const {
-      aimCell, feature, castingPlayer, currentFieldCards, currentFieldCells, player2Type, performAIAction,
+      aimCell, feature, castingPlayer, currentFieldCards, currentFieldCells, player2Type, performAIAction, playerPoints,
     } = data;
     const aimCard = currentFieldCards.find((card) => card.cellId === aimCell.id
       && (card.type === 'warrior' || card.type === 'hero'));
     const { name } = feature;
     if (feature.immediate && aimCard && aimCard.status === feature.aimStatus) {
       attachSpellEffect[name]({
-        aimCell, castingPlayer, currentFieldCells, currentFieldCards, aimCard, feature, player2Type, performAIAction,
+        aimCell, castingPlayer, currentFieldCells, currentFieldCards, aimCard, feature, player2Type, performAIAction, playerPoints,
       });
     }
     if (!feature.immediate) {
@@ -593,6 +618,7 @@ const useBattleActions = () => {
   const makeFeatureAttach = (feature, aimCell, castingPlayer, player2Type, performAIAction) => {
     const currentFieldCells = store.getState().battleReducer.fieldCells;
     const currentFieldCards = store.getState().battleReducer.fieldCards;
+    const { playerPoints } = store.getState().battleReducer;
     const enemyPlayer = getEnemyPlayer(castingPlayer);
     const { attach } = feature;
     const cellsToAttach = findCellsToAttachCast({
@@ -610,21 +636,22 @@ const useBattleActions = () => {
     if (cellsToAttach && attach.includes('grave')) {
       const playerToApply = feature.type === 'good' ? castingPlayer : getEnemyPlayer(castingPlayer);
       dispatch(modalsActions.openModal({ type: 'openCheckCard', player: playerToApply, id: 'grave' }));
-      const currenttOwnerPoints = store.getState().battleReducer.playerPoints.find((item) => item.player === castingPlayer).points;
+      const currenttOwnerPoints = playerPoints.find((item) => item.player === castingPlayer).points;
       dispatch(battleActions.setPlayerPoints({ points: currenttOwnerPoints - feature.cost ?? 0, player: castingPlayer }));
       if (player2Type === 'computer' && castingPlayer === 'player2') {
         const cardsCanBeRessurected = currentFieldCards
           .filter((c) => c.status === 'graveyard' && c.player === playerToApply && feature.aim.includes(c.subtype));
         const cardToRes = getRandomFromArray(cardsCanBeRessurected);
-        setTimeout(() => performAIAction({
-          card: cardToRes, points: null, fieldCards: currentFieldCards, fieldCells: currentFieldCells, room: '', ressurectSpell: feature,
-        }), 1500);
+        console.log(cardToRes);
+        performAIAction({
+          card: cardToRes, playerPoints, fieldCards: currentFieldCards, fieldCells: currentFieldCells, room: '', ressurectSpell: feature,
+        });
         dispatch(modalsActions.closeModal());
       }
     }
     if (!cellsToAttach && (attach.includes('warrior') || attach.includes('hero'))) {
       attachSpellEffectOnWar({
-        aimCell, feature, castingPlayer, currentFieldCards, currentFieldCells, player2Type, performAIAction,
+        aimCell, feature, castingPlayer, currentFieldCards, currentFieldCells, player2Type, performAIAction, playerPoints,
       });
     }
   };
@@ -805,7 +832,8 @@ const useBattleActions = () => {
     canBeMoved,
     getActiveCard,
     findSpells,
-    checkIfIsVictory,
+    isHeroKilled,
+    showVictoryWindow,
     makeSpellCardAttack,
     tutorStep,
     changeTutorStep,

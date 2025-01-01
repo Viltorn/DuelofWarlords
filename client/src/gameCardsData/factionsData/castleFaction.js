@@ -1,19 +1,19 @@
 import _ from 'lodash';
-import BannerMan from '../../assets/castleCards/Bannerman.png';
-import Defender from '../../assets/castleCards/Defender.png';
-import ImperialGriffon from '../../assets/castleCards/ImperialGriffon.png';
-import ImperialShooter from '../../assets/castleCards/ImperialShooter.png';
-import KnightGuardian from '../../assets/castleCards/KnightGuardian.png';
-import MasterOfLight from '../../assets/castleCards/MasterOfLight.png';
-import MasterShooter from '../../assets/castleCards/MasterShooter.png';
-import TemplarChampion from '../../assets/castleCards/TemplarChampion.png';
-import ValorKnight from '../../assets/castleCards/ValorKnight.png';
-import WarriorOfLight from '../../assets/castleCards/WarriorOfLight.png';
-import YoungPriestess from '../../assets/castleCards/YoungPriestess.png';
-import RighteousFighter from '../../assets/castleCards/RighteousFighter.png';
-import ZigfridHero from '../../assets/castleCards/ZigfridHero.png';
-import RetributionSword from '../../assets/castleCards/RetributionSword.png';
-import RionHero from '../../assets/castleCards/RionHero.png';
+import BannerMan from '@assets/castleCards/Bannerman.png';
+import Defender from '@assets/castleCards/Defender.png';
+import ImperialGriffon from '@assets/castleCards/ImperialGriffon.png';
+import ImperialShooter from '@assets/castleCards/ImperialShooter.png';
+import KnightGuardian from '@assets/castleCards/KnightGuardian.png';
+import MasterOfLight from '@assets/castleCards/MasterOfLight.png';
+import MasterShooter from '@assets/castleCards/MasterShooter.png';
+import TemplarChampion from '@assets/castleCards/TemplarChampion.png';
+import ValorKnight from '@assets/castleCards/ValorKnight.png';
+import WarriorOfLight from '@assets/castleCards/WarriorOfLight.png';
+import YoungPriestess from '@assets/castleCards/YoungPriestess.png';
+import RighteousFighter from '@assets/castleCards/RighteousFighter.png';
+import ZigfridHero from '@assets/castleCards/ZigfridHero.png';
+import RetributionSword from '@assets/castleCards/RetributionSword.png';
+import AgielHero from '@assets/castleCards/AgielHero.png';
 
 // SPELLS
 import RetaliationHammer from '../../assets/castleCards/RetaliationHammer.png';
@@ -49,15 +49,15 @@ const castleDeck = {
     status: 'field',
     turn: 0,
   },
-  RionHero: {
-    name: 'Rion-Hero',
+  AgielHero: {
+    name: 'Agiel-Hero',
     type: 'hero',
     subtype: 'hero',
     faction: 'Castle',
     health: 20,
     currentHP: 20,
     featInfo: [],
-    description: 'RionHero',
+    description: 'AgielHero',
     id: _.uniqueId(),
     cellId: '',
     cost: 3,
@@ -72,7 +72,7 @@ const castleDeck = {
       attach: false, type: 'all', aim: ['warrior'], name: 'drawCard', condition: 'insteadatk', cost: 1, description: 'drawCard',
     },
     ],
-    img: RionHero,
+    img: AgielHero,
     status: 'field',
     turn: 0,
   },
@@ -353,7 +353,7 @@ const castleDeck = {
         spell: true, attach: false, type: 'bad', aim: ['warrior', 'flyer', 'shooter', 'fighter'], name: 'attack', value: 2, aimStatus: 'field',
       },
       {
-        spell: true, attach: ['warrior'], type: 'bad', aim: ['warrior', 'flyer', 'shooter', 'fighter'], name: 'moveNextRow', charges: 1, immediate: true, aimStatus: 'field',
+        spell: true, attach: ['warrior'], type: 'bad', aim: ['warrior', 'flyer', 'shooter', 'fighter'], name: 'moveAdjasent', charges: 1, immediate: true, aimStatus: 'field',
       },
     ],
     img: RetaliationHammer,

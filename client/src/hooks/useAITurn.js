@@ -9,32 +9,42 @@ import findTempSpellsOnField from '../utils/supportFunc/findTempSpellsOnField.js
 import findTurnSpellsOnField from '../utils/supportFunc/findTurnSpellsOnField.js';
 import findReactSpellsOnField from '../utils/supportFunc/findReactSpellsOnField.js';
 import isActiveCard from '../utils/supportFunc/isActiveCard.js';
-import isHeroSpellAlLowed from '../utils/supportFunc/isHeroSpellAlLowed.js';
-import findAICellsForWarDeploy from '../utils/aiFunctions/findAICellsForWarDeploy.js';
+import findBestCellForWarDeploy from '../utils/aiFunctions/findBestCellForWarDeploy.js';
 import getRandomFromArray from '../utils/getRandomFromArray.js';
-import findAICellsForSpellCast from '../utils/aiFunctions/findAICellsForSpellCast.js';
+import findBestCellForSpellCast from '../utils/aiFunctions/findBestCellForSpellCast.js';
+import filterCardsEffectiveToPlay from '../utils/aiFunctions/filterCardsEffectiveToPlay.js';
+import isAbilityCanBeUsed from '../utils/aiFunctions/isAbilityCanBeUsed.js';
+import isFeatureCostAllowed from '../utils/supportFunc/isFeatureCostAllowed.js';
+import isEnemyKilled from '../utils/aiFunctions/isEnemyKilled.js';
+import isWarNeedToMove from '../utils/aiFunctions/isWarNeedToMove.js';
+import findBestCellForWarAttack from '../utils/aiFunctions/findBestCellForWarAttack.js';
+import useBattleActions from './useBattleActions.js';
 
 const useAITurn = () => {
   const store = useStore();
   const dispatch = useDispatch();
-  const { addAnimatedCells, handleAnimation } = useAnimaActions();
+  const {
+    addAnimatedCells, handleAnimation, getWarriorPower, warHasSpecialFeature,
+  } = useAnimaActions();
+  const { findSpells } = useBattleActions();
   const { makeGameAction } = useFunctionsContext();
   const { gameMode, curRoom } = useSelector((state) => state.gameReducer);
   const { roundNumber } = useSelector((state) => state.battleReducer);
 
   const isCardCanBeUsed = ({
-    card, fieldCells, fieldCards, gameTurn, points, heroAICard,
+    card, fieldCells, fieldCards, gameTurn, aiPoints,
   }) => {
     addAnimatedCells(card, fieldCells, fieldCards, gameTurn);
     const { activeCells } = store.getState().battleReducer;
     const isActiveCellsForCast = activeCells.cellsForSpellCast.length > 0;
     const isActiveCellsForWar = activeCells.cellsForWarMove.length > 0;
-    const abilityButton = card.features.find((feat) => feat.condition === 'insteadatk' && (points - feat.cost) >= 0);
-    if ((isActiveCellsForCast && isAllowedCost(card, points) && isHeroSpellAlLowed(card, heroAICard)) || (isActiveCellsForWar && isAllowedCost(card, points))) {
+    const abilityButton = card.features.find((feat) => feat.condition === 'insteadatk' && (aiPoints - feat.cost) >= 0 && !feat.attach && isAbilityCanBeUsed(feat, 'player2', fieldCards, fieldCells, warHasSpecialFeature));
+    const attachedAbility = card.attachments?.find((feat) => feat.condition === 'insteadatk' && (aiPoints - feat.cost) >= 0 && isAbilityCanBeUsed(feat, 'player2', fieldCards, fieldCells, warHasSpecialFeature));
+    if ((isActiveCellsForCast && isAllowedCost(card, aiPoints)) || (isActiveCellsForWar && isAllowedCost(card, aiPoints))) {
       handleAnimation(card, 'delete');
       return true;
     }
-    if (abilityButton && isActiveCard(card) && isHeroSpellAlLowed(card, heroAICard)) {
+    if ((abilityButton || attachedAbility) && isActiveCard(card)) {
       handleAnimation(card, 'delete');
       return true;
     }
@@ -43,8 +53,12 @@ const useAITurn = () => {
   };
 
   const performAIAction = ({
-    card, points, fieldCards, fieldCells, room, gameTurn, ressurectSpell,
+    card, playerPoints, fieldCards, fieldCells, room, gameTurn, ressurectSpell,
   }) => {
+    console.log('card to use');
+    console.log(card);
+    const aiPoints = playerPoints.find((p) => p.player === 'player2').points;
+    const enemyPoints = playerPoints.find((p) => p.player === 'player1').points;
     if (ressurectSpell) {
       const cost = ressurectSpell?.resCost ?? card.cost;
       const returnData = {
@@ -58,18 +72,37 @@ const useAITurn = () => {
         gameTurn,
       };
       makeGameAction(returnData, gameMode);
-      console.log('resureccted');
-      console.log(card);
+      console.log('resurrected');
       return;
     }
     const { activeCells } = store.getState().battleReducer;
     const { cellsForWarMove, cellsForSpellCast, cellsForAttack } = activeCells;
+    if (card.description === 'Morale') {
+      const drawCards = card.features.find((feat) => feat.name === 'drawCard');
+      const abilityData = {
+        move: 'makeAbilityCast',
+        room,
+        card,
+        player: 'player2',
+        player2Type: 'computer',
+        playerPoints,
+        gameTurn,
+        performAIAction,
+        cell: null,
+        ability: drawCards,
+      };
+      makeGameAction(abilityData, gameMode);
+      return;
+    }
+    const cardAbilities = card.features
+      .filter((feat) => feat.condition === 'insteadatk' && isFeatureCostAllowed(feat, aiPoints) && !feat.attach && isAbilityCanBeUsed(feat, 'player2', fieldCards, fieldCells, warHasSpecialFeature));
+    const attachedAbilities = card.attachments ? card.attachments
+      .filter((feat) => feat.condition === 'insteadatk' && isFeatureCostAllowed(feat, aiPoints) && isAbilityCanBeUsed(feat, 'player2', fieldCards, fieldCells, warHasSpecialFeature)) : [];
+    const abilitiesToUse = attachedAbilities.length > 0 ? attachedAbilities : cardAbilities;
     if ((card.type === 'spell' || card.type === 'hero')) {
-      const cardAbility = cellsForSpellCast.length > 0 && isAllowedCost(card, points) ? [card] : [];
-      const cardAbilityButtons = card.features.filter((feat) => feat.condition === 'insteadatk' && (points - feat.cost) >= 0);
-      const spellToUse = getRandomFromArray([...cardAbilityButtons, ...cardAbility]);
+      const cardSpell = cellsForSpellCast.length > 0 && isAllowedCost(card, aiPoints) ? [card] : [];
+      const spellToUse = getRandomFromArray([...cardSpell, ...abilitiesToUse]);
       if (spellToUse.condition === 'insteadatk') {
-        console.log(spellToUse);
         const currentCell = fieldCells.find((item) => item.id === card.cellId);
         const abilityData = {
           move: 'makeAbilityCast',
@@ -77,7 +110,7 @@ const useAITurn = () => {
           card,
           player: 'player2',
           player2Type: 'computer',
-          points,
+          playerPoints,
           gameTurn,
           performAIAction,
           cell: currentCell,
@@ -88,8 +121,9 @@ const useAITurn = () => {
       }
       if (card.place && card.place !== '') {
         console.log('attach spell');
-        const preferableCells = findAICellsForSpellCast(fieldCards, cellsForSpellCast, card);
-        const cellToApply = getRandomFromArray(preferableCells);
+        const cellToApply = findBestCellForSpellCast({
+          fieldCards, fieldCells, cellsForSpellCast, card, getWarriorPower, warHasSpecialFeature, findSpells, enemyPoints,
+        });
         const curCell = fieldCells.find((c) => c.id === cellToApply);
 
         const actionData = {
@@ -97,7 +131,9 @@ const useAITurn = () => {
           room: curRoom,
           card,
           player: 'player2',
-          points,
+          playerPoints,
+          player2Type: 'computer',
+          performAIAction,
           curCell,
           gameTurn,
           fieldCards,
@@ -107,8 +143,9 @@ const useAITurn = () => {
         return;
       }
       console.log('apply spell');
-      const preferableCells = findAICellsForSpellCast(fieldCards, cellsForSpellCast, card);
-      const cellToApply = getRandomFromArray(preferableCells);
+      const cellToApply = findBestCellForSpellCast({
+        fieldCards, fieldCells, cellsForSpellCast, card, getWarriorPower, warHasSpecialFeature, findSpells, enemyPoints,
+      });
       const cell = fieldCells.find((c) => c.id === cellToApply);
 
       const actionData = {
@@ -118,7 +155,7 @@ const useAITurn = () => {
         player2Type: 'computer',
         performAIAction,
         player: 'player2',
-        points,
+        playerPoints,
         cell,
         gameTurn,
       };
@@ -127,15 +164,14 @@ const useAITurn = () => {
     }
     if (card.type === 'warrior' && card.status === 'hand') {
       console.log('warrior deploy');
-      const cellsToChooseFrom = findAICellsForWarDeploy(fieldCards, cellsForWarMove, card);
-      const cellToApply = getRandomFromArray(cellsToChooseFrom);
+      const cellToApply = findBestCellForWarDeploy(fieldCards, cellsForWarMove, card);
       const curCell = fieldCells.find((c) => c.id === cellToApply);
       const actionData = {
         move: 'addCardToField',
         room: curRoom,
         card,
         player: 'player2',
-        points,
+        playerPoints,
         curCell,
         fieldCards,
         player2Type: 'computer',
@@ -146,47 +182,23 @@ const useAITurn = () => {
       if (cellToApply) makeGameAction(actionData, gameMode);
       return;
     }
-    if (card.type === 'warrior' && card.status === 'field' && cellsForAttack.length > 0) {
-      console.log('warrior attack');
-      const cellToApply = getRandomFromArray(cellsForAttack);
-      const warInCell = fieldCards.find((c) => c.cellId === cellToApply && (c.type === 'warrior' || c.type === 'hero'));
-      const actionData = {
-        move: 'makeFight',
-        room: curRoom,
-        card1: card,
-        card2: warInCell,
-        player2Type: 'computer',
-        performAIAction,
-        gameTurn,
-      };
-      makeGameAction(actionData, gameMode);
-      return;
-    }
-    if (card.type === 'warrior' && card.status === 'field' && cellsForWarMove.length > 0) {
-      console.log('warrior move');
-      const cellToApply = getRandomFromArray(cellsForWarMove);
-      const curCell = fieldCells.find((c) => c.id === cellToApply);
-      const actionData = {
-        move: 'addCardToField',
-        room: curRoom,
-        card,
-        player: 'player2',
-        points,
-        curCell,
-        fieldCards,
-        player2Type: 'computer',
-        performAIAction,
-        cellsOnField: fieldCells,
-        gameTurn,
-      };
-      makeGameAction(actionData, gameMode);
-      return;
-    }
+
+    const isWarBetterMove = isWarNeedToMove({
+      warCard: card, fieldCards, fieldCells, findSpells, enemyPoints, getWarriorPower,
+    });
+
     if (card.type === 'warrior' && card.status === 'field') {
-      const cardAbilityButtons = card.features.filter((feat) => feat.condition === 'insteadatk' && (points - feat.cost) >= 0);
-      const spellToUse = getRandomFromArray(cardAbilityButtons);
-      if (spellToUse) {
-        console.log(spellToUse);
+      const warHasMovingFeature = warHasSpecialFeature({
+        warCard: card, fieldCards, fieldCells, featureName: 'moving',
+      }) || warHasSpecialFeature({
+        warCard: card, fieldCards, fieldCells, featureName: 'moveNextRow',
+      });
+      const canMove = cellsForWarMove.length > 0;
+      const canAttack = cellsForAttack.length > 0 && getWarriorPower(card) > 0;
+      const canUseAblities = abilitiesToUse.length > 0;
+      const chooseAbilityOverAtk = canUseAblities ? Math.round(Math.random()) > 0 : false;
+      if (!isWarBetterMove && !warHasMovingFeature && canUseAblities && chooseAbilityOverAtk) {
+        const spellToUse = getRandomFromArray([...abilitiesToUse, card]);
         const currentCell = fieldCells.find((item) => item.id === card.cellId);
         const abilityData = {
           move: 'makeAbilityCast',
@@ -194,7 +206,7 @@ const useAITurn = () => {
           card,
           player: 'player2',
           player2Type: 'computer',
-          points,
+          playerPoints,
           gameTurn,
           performAIAction,
           cell: currentCell,
@@ -203,35 +215,86 @@ const useAITurn = () => {
         makeGameAction(abilityData, gameMode);
         return;
       }
+      if ((canAttack && !isWarBetterMove && !warHasMovingFeature)) {
+        console.log('warrior attack');
+
+        const cellToAttack = findBestCellForWarAttack({
+          warCard: card, cellForAttackIds: cellsForAttack, fieldCards, fieldCells, enemyPoints, findSpells, getWarriorPower,
+        });
+
+        const warInCell = fieldCards.find((c) => c.cellId === cellToAttack && (c.type === 'warrior' || c.type === 'hero'));
+        const actionData = {
+          move: 'makeFight',
+          room: curRoom,
+          card1: card,
+          card2: warInCell,
+          player2Type: 'computer',
+          playerPoints,
+          performAIAction,
+          gameTurn,
+        };
+        makeGameAction(actionData, gameMode);
+        return;
+      }
+
+      if (canMove && (isWarBetterMove || warHasMovingFeature)) {
+        console.log('warrior move');
+        const cellToApply = findBestCellForWarDeploy(fieldCards, cellsForWarMove, card);
+        const curCell = fieldCells.find((c) => c.id === cellToApply);
+        const actionData = {
+          move: 'addCardToField',
+          room: curRoom,
+          card,
+          player: 'player2',
+          playerPoints,
+          curCell,
+          fieldCards,
+          player2Type: 'computer',
+          performAIAction,
+          cellsOnField: fieldCells,
+          gameTurn,
+        };
+        makeGameAction(actionData, gameMode);
+        return;
+      }
       dispatch(battleActions.turnCardLeft({ cardId: card.id, qty: 1 }));
     }
   };
 
   const getActionData = () => {
     const handAICards = store.getState().battleReducer.playersHands.player2;
-    const pointsAI = store.getState().battleReducer.playerPoints.find((p) => p.player === 'player2').points;
+    const { playerPoints } = store.getState().battleReducer;
+    const aiPoints = playerPoints.find((p) => p.player === 'player2').points;
+    const enemyPoints = playerPoints.find((p) => p.player === 'player1').points;
     const { fieldCards, fieldCells, gameTurn } = store.getState().battleReducer;
-    const fieldWarActiveAICards = fieldCards.filter((card) => card.player === 'player2' && card.type === 'warrior' && card.turn === 0 && card.status === 'field');
+    const fieldActiveFighters = fieldCards.filter((card) => card.player === 'player2' && card.subtype === 'fighter' && card.turn === 0 && card.status === 'field');
+    const fieldActiveFlyersAndShooter = fieldCards.filter((card) => card.player === 'player2' && card.subtype !== 'fighter' && card.type === 'warrior' && card.turn === 0 && card.status === 'field');
+    const fieldWarActiveAICards = fieldActiveFlyersAndShooter.length > 0 ? fieldActiveFlyersAndShooter : fieldActiveFighters;
     const heroAICard = fieldCards.find((card) => card.type === 'hero' && card.player === 'player2');
+    const enemyHeroCard = fieldCards.find((card) => card.type === 'hero' && card.player === 'player1');
     const handCardsToUse = heroAICard.turn === 0 ? [...handAICards, heroAICard] : handAICards;
     const cardsCanBeUsedFromHand = handCardsToUse.filter((card) => isCardCanBeUsed({
-      card, fieldCells, fieldCards, gameTurn, points: pointsAI, heroAICard,
+      card, fieldCells, fieldCards, gameTurn, aiPoints,
     }));
-    const cardsToUse = cardsCanBeUsedFromHand.length > 0 ? cardsCanBeUsedFromHand : fieldWarActiveAICards;
+    const effectiveCardsToPlay = filterCardsEffectiveToPlay({
+      cards: cardsCanBeUsedFromHand, fieldCards, fieldCells, enemyPoints, getWarriorPower, findSpells,
+    });
+    const cardsToUse = effectiveCardsToPlay.length > 0 ? effectiveCardsToPlay : fieldWarActiveAICards;
     return {
       cardsToUse,
-      pointsAI,
+      playerPoints,
       fieldCards,
       fieldCells,
       gameTurn,
+      enemyHeroCard,
     };
   };
 
-  const makeAIAction = (card, points, fieldCards, fieldCells, gameTurn) => {
+  const makeAIAction = (card, playerPoints, fieldCards, fieldCells, gameTurn) => {
     addAnimatedCells(card, fieldCells, fieldCards, gameTurn);
     dispatch(battleActions.addActiveCard({ card, player: 'player2' }));
     performAIAction({
-      card, points, fieldCards, fieldCells, room: '', gameTurn,
+      card, playerPoints, fieldCards, fieldCells, room: '', gameTurn,
     });
   };
 
@@ -260,27 +323,30 @@ const useAITurn = () => {
   };
 
   const performAIActions = async ({
-    cards, points, curFieldCards, curFieldCells, curGameTurn,
+    cards, allPoints, curFieldCards, curFieldCells, curGameTurn,
   }) => {
-    console.log(cards);
     console.log('use cards');
     const cardToUse = getRandomFromArray(cards);
     console.log(cardToUse);
-    makeAIAction(cardToUse, points, curFieldCards, curFieldCells, curGameTurn);
+    makeAIAction(cardToUse, allPoints, curFieldCards, curFieldCells, curGameTurn);
     await new Promise((resolve) => {
       setTimeout(() => resolve(), 2000);
     });
     const {
       cardsToUse,
-      pointsAI,
+      playerPoints,
       fieldCards,
       fieldCells,
       gameTurn,
+      enemyHeroCard,
     } = getActionData();
-    console.log(pointsAI);
+    if (isEnemyKilled(enemyHeroCard)) {
+      endAITurn(fieldCells, fieldCards, curRoom);
+      return;
+    }
     if (cardsToUse.length > 0) {
       performAIActions({
-        cards: cardsToUse, points: pointsAI, curFieldCards: fieldCards, curFieldCells: fieldCells, curGameTurn: gameTurn,
+        cards: cardsToUse, allPoints: playerPoints, curFieldCards: fieldCards, curFieldCells: fieldCells, curGameTurn: gameTurn,
       });
     } else {
       endAITurn(fieldCells, fieldCards, curRoom);
@@ -290,30 +356,19 @@ const useAITurn = () => {
   const makeAITurn = () => {
     const {
       cardsToUse,
-      pointsAI,
+      playerPoints,
       fieldCards,
       fieldCells,
       gameTurn,
     } = getActionData();
-    // if (fieldWarActiveAICards.length > 0) {
-    //   console.log('make warrior move');
-    //   const cardToUse = getRandomFromArray(fieldWarActiveAICards);
-    //   makeAIAction(cardToUse, pointsAI, fieldCards, fieldCells, gameTurn);
-    //   await new Promise((resolve) => {
-    //     setTimeout(() => resolve(), 2000);
-    //   });
-    //   await performAIActions();
-    // }
-    // return new Promise((resolve) => { setTimeout(() => resolve(), 0); });
+
     if (cardsToUse.length > 0) {
       performAIActions({
-        cards: cardsToUse, points: pointsAI, curFieldCards: fieldCards, curFieldCells: fieldCells, curGameTurn: gameTurn,
+        cards: cardsToUse, allPoints: playerPoints, curFieldCards: fieldCards, curFieldCells: fieldCells, curGameTurn: gameTurn,
       });
     } else {
       endAITurn(fieldCells, fieldCards, curRoom);
     }
-
-    // const { fieldCards, fieldCells } = store.getState().battleReducer;
   };
 
   return { makeAITurn, performAIAction };

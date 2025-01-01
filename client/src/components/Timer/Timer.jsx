@@ -1,24 +1,30 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect } from 'react';
 import cn from 'classnames';
+import { useSelector } from 'react-redux';
 import useUIActions from '../../hooks/useUIActions';
 import styles from './Timer.module.css';
 import useClickActions from '../../hooks/useClickActions';
 
-const CountDown = () => {
-  const { tick, curTimer, timerIsOver } = useUIActions();
+const Timer = () => {
+  const {
+    tick,
+  } = useUIActions();
   const { hadleEndTurnClick } = useClickActions();
-  const [m, s] = curTimer ?? [0, 0];
-  useEffect(() => {
-    const timerID = setInterval(() => tick(), 1000);
-    return () => clearInterval(timerID);
-  });
+  const { isTimerOver, curTime } = useSelector((state) => state.uiReducer);
+  const [m, s] = curTime ?? [0, 0];
 
   useEffect(() => {
-    if (timerIsOver) {
+    if (isTimerOver) {
       console.log('end turn');
       hadleEndTurnClick();
     }
-  }, [timerIsOver, hadleEndTurnClick]);
+  }, [isTimerOver, hadleEndTurnClick]);
+
+  useEffect(() => {
+    const timerID = setInterval(() => tick(), 1000);
+    return () => clearInterval(timerID);
+  }, [tick]);
 
   const containerClasses = cn({
     [styles.container]: true,
@@ -39,4 +45,4 @@ const CountDown = () => {
   );
 };
 
-export default CountDown;
+export default Timer;

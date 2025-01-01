@@ -310,7 +310,7 @@ const academiaDeck = {
       spell: true,
       attach: ['grave'],
       type: 'good',
-      aim: ['spell', 'permanent', 'instant', 'temporary'],
+      aim: ['spell', 'permanent', 'instant', 'temporary', 'reaction'],
       name: 'ressurect',
       cost: 3,
       resCost: 0,

@@ -2,7 +2,6 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import cn from 'classnames';
 import tutorialStepsData from '../../../gameData/tutorialStepsData.js';
-import isHeroSpellAlLowed from '../../../utils/supportFunc/isHeroSpellAlLowed.js';
 import ActionButton from '../../Buttons/ActionButton/ActionButton.jsx';
 import Card from '../Card/Card.jsx';
 import styles from './ActiveCard.module.css';
@@ -18,7 +17,7 @@ const ActiveCard = ({
 
   const { gameMode } = useSelector((state) => state.gameReducer);
   const {
-    thisPlayer, playerPoints, fieldCells, fieldCards, roundNumber, gameTurn, players,
+    thisPlayer, playerPoints, fieldCells, roundNumber, gameTurn, players,
   } = useSelector((state) => state.battleReducer);
   const modalType = useSelector((state) => state.modalsReducer).type;
   const { tutorStep } = useBattleActions();
@@ -34,8 +33,7 @@ const ActiveCard = ({
   const ressurect = fieldCells
     .find((cell) => cell.type === 'graveyard' && cell.player === thisPlayer)
     .attachments.find((feat) => feat.name === 'ressurect' && feat.aim.includes(activeCard.type));
-  const heroCard = fieldCards.find((card) => card.type === 'hero' && card.player === activeCard.player);
-  const canUseAbilities = isActiveCard(activeCard) && isHeroSpellAlLowed(activeCard, heroCard) && !disAbility && legalTurn && status !== 'graveyard';
+  const canUseAbilities = isActiveCard(activeCard) && !disAbility && legalTurn && status !== 'graveyard';
   const canSucrificeCard = !sucrificedCard && thisPlayer === activeCard.player && legalTurn && type !== 'hero' && status === 'hand';
   const canReturnCard = firstRound && thisPlayer === activeCard.player && !cardsdrawn && legalTurn;
   const canRessurectCard = status !== 'hand' && (type !== 'hero') && ressurect && activeCard.status === 'graveyard' && legalTurn;

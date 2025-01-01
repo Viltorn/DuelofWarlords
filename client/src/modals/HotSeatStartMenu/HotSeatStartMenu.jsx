@@ -10,6 +10,7 @@ import cardsData from '../../gameCardsData/index.js';
 import { startCardsNumber1, startCardsNumber2, minDeckCards } from '../../gameData/gameLimits.js';
 import { actions as modalsActions } from '../../slices/modalsSlice.js';
 import { actions as gameActions } from '../../slices/gameSlice.js';
+import getSetUpData from '../../utils/aiFunctions/getSetUpData.js';
 import countDeckCards from '../../utils/countDeckCards.js';
 import styles from './HotSeatStartMenu.module.css';
 import MenuSlider from '../../components/MenuSlider/MenuSlider.jsx';
@@ -20,7 +21,6 @@ import dummyCard from '../../gameCardsData/dummyCard.js';
 
 const HotSeatMenu = () => {
   const [deckNumber, setDeckNumber] = useState({ player1: 0, player2: 1 });
-  // const [heroNumber, setHero] = useState({ player1: 0, player2: 0 });
   const { t } = useTranslation();
   const inputEl = useRef();
   const dispatch = useDispatch();
@@ -63,6 +63,8 @@ const HotSeatMenu = () => {
     },
     onSubmit: (values) => {
       try {
+        const { startPoints, startHeroHP } = getSetUpData(Number(values.gameDifficulty));
+        console.log(startPoints, startHeroHP);
         const player1DeckData = makeInitialDeck(values.player1Deck);
         const player1FullDeck = createDeckForPLayer(makeShaffledDeck(player1DeckData), 'player1');
         const player1Hand = player1FullDeck.slice(0, startCardsNumber1);
@@ -83,8 +85,9 @@ const HotSeatMenu = () => {
         dispatch(battleActions.setPlayersHand({ hand: player2Hand, player: 'player2' }));
         dispatch(battleActions.setPlayerMaxPoints({ maxPoints: 1, player: 'player1' }));
         dispatch(battleActions.setPlayerPoints({ points: 1, player: 'player1' }));
-        dispatch(battleActions.setPlayerMaxPoints({ maxPoints: Number(values.gameDifficulty), player: 'player2' }));
-        dispatch(battleActions.setPlayerPoints({ points: Number(values.gameDifficulty), player: 'player2' }));
+        dispatch(battleActions.setPlayerMaxPoints({ maxPoints: startPoints, player: 'player2' }));
+        dispatch(battleActions.setPlayerPoints({ points: startPoints, player: 'player2' }));
+        dispatch(battleActions.changeHP({ health: startHeroHP, cardId: values.player2Hero.id }));
         dispatch(gameActions.setGameMode({ gameMode: values.gameMode }));
         dispatch(modalsActions.openModal({ type: 'startFirstRound', player: 'player1' }));
       } catch (err) {
@@ -208,8 +211,8 @@ const HotSeatMenu = () => {
                   <select name="gameDifficulty" aria-label={t('modals.GameDifficulty')} className={styles.playerTypeSelect} onChange={formik.handleChange}>
                     <option value={1}>{t('difficulty.Easy')}</option>
                     <option value={2}>{t('difficulty.Normal')}</option>
-                    <option value={4}>{t('difficulty.Hard')}</option>
-                    <option value={5}>{t('difficulty.Impossible')}</option>
+                    <option value={3}>{t('difficulty.Hard')}</option>
+                    <option value={4}>{t('difficulty.Impossible')}</option>
                   </select>
                 </div>
               </div>

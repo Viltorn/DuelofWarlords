@@ -19,9 +19,10 @@ const HeroPad = ({ type, player }) => {
   const { handleDeckClick, handlePointsClick, handleGraveyardClick } = useClickActions();
 
   const {
-    fieldCells, fieldCards, playersHands, thisPlayer, playerPoints, gameTurn, turnTimer,
+    fieldCells, fieldCards, playersHands, thisPlayer, playerPoints, gameTurn,
   } = useSelector((state) => state.battleReducer);
   const { gameMode } = useSelector((state) => state.gameReducer);
+  const { timer } = useSelector((state) => state.uiReducer);
 
   const curPoints = playerPoints.find((data) => data.player === player).points;
   const { maxPoints } = playerPoints.find((data) => data.player === player);
@@ -109,7 +110,7 @@ const HeroPad = ({ type, player }) => {
 
   return (
     <div>
-      {turnTimer && type === 'first' && (<Timer />)}
+      {timer && type === 'first' && (<Timer gameTurn={gameTurn} thisPlayer={thisPlayer} />)}
       <div className={classesContainer}>
 
         {type === 'second' && (

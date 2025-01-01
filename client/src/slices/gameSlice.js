@@ -11,6 +11,7 @@ const initialState = {
   logged: false,
   userType: '',
   playersDecks: [],
+  turnTimer: null,
 };
 
 const gameSlice = createSlice({

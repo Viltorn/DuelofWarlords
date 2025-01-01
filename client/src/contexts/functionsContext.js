@@ -6,6 +6,7 @@ import { useDispatch, useStore, useSelector } from 'react-redux';
 import useSound from 'use-sound';
 import { actions as battleActions } from '../slices/battleSlice.js';
 import { actions as modalsActions } from '../slices/modalsSlice.js';
+import { actions as uiActions } from '../slices/uiSlice.js';
 import drumAudio from '../assets/DrumBeat.mp3';
 import isKilled from '../utils/supportFunc/isKilled.js';
 import useBattleActions from '../hooks/useBattleActions.js';
@@ -16,6 +17,7 @@ import useAnimaActions from '../hooks/useAnimaActions.js';
 import isAttachFeatureAllowed from '../utils/supportFunc/isAttachFeatureAllowed.js';
 import useUIActions from '../hooks/useUIActions.js';
 import socket from '../socket.js';
+import getEnemyPlayer from '../utils/supportFunc/getEnemyPlayer.js';
 
 const FunctionContext = createContext({});
 
@@ -24,8 +26,9 @@ export const FunctionProvider = ({ children }) => {
   const store = useStore();
   const [play] = useSound(drumAudio, { volume: 0.3 });
   const {
-    playerPoints, activeCardPlayer1, activeCardPlayer2, thisPlayer, turnTimer,
+    activeCardPlayer1, activeCardPlayer2, thisPlayer,
   } = useSelector((state) => state.battleReducer);
+  const { timer } = useSelector((state) => state.uiReducer);
   const { gameMode } = useSelector((state) => state.gameReducer);
   const {
     deleteCardFromSource,
@@ -42,15 +45,17 @@ export const FunctionProvider = ({ children }) => {
     prepareForAttack,
     applySpellCard,
     findSpells,
-    checkIfIsVictory,
+    isHeroKilled,
     makeCounterStrike,
     showYourTurnWindow,
+    showVictoryWindow,
   } = useBattleActions();
   const {
     handleAnimation,
     getWarriorPower,
+    warHasSpecialFeature,
   } = useAnimaActions();
-  const { resetTimer, setTimerPaused, setTimerOver } = useUIActions();
+  const { resetTimer } = useUIActions();
 
   const fontVal = useResizeWindow();
   const [isOpenMenu, setOpenMenu] = useState(false);
@@ -74,7 +79,7 @@ export const FunctionProvider = ({ children }) => {
 
   const makeFight = (actionData) => {
     const {
-      card1, card2, player2Type, performAIAction, gameturn,
+      card1, card2, player2Type, performAIAction, gameturn, playerPoints,
     } = actionData;
     const newfieldCells = store.getState().battleReducer.fieldCells;
     const newfieldCards = store.getState().battleReducer.fieldCards;
@@ -143,7 +148,10 @@ export const FunctionProvider = ({ children }) => {
         cellsOnField: newfieldCells,
       });
       moveAttachedSpells(card2.cellId, null, 'kill');
-      checkIfIsVictory(card2);
+    }
+    if (isKilled(calculatedPower, attackedHealth) && isHeroKilled(card2)) {
+      showVictoryWindow(getEnemyPlayer(card2.player));
+      changeCardHP(calculatedPower, attackedHealth, card2);
     }
     if (isKilled(calculatedPower, attackedHealth) && retaliateStrikes.length > 0) {
       makeCounterStrike({
@@ -178,9 +186,10 @@ export const FunctionProvider = ({ children }) => {
   const addCardToField = (actionData) => {
     deleteImmediateSpells();
     const {
-      card, player, points, curCell, fieldCards, cellsOnField, player2Type, performAIAction,
+      card, player, playerPoints, curCell, fieldCards, cellsOnField, player2Type, performAIAction,
     } = actionData;
     const cellId = curCell.id;
+    const { points } = playerPoints.find((p) => p.player === player);
     if (gameMode === 'tutorial') {
       changeTutorStep((prev) => prev + 1);
     }
@@ -205,17 +214,22 @@ export const FunctionProvider = ({ children }) => {
     }
     if (card.type === 'warrior' && card.status === 'field') {
       moveAttachedSpells(card.cellId, cellId, 'move');
-      const movingAttachment = card.attachments.find((feature) => feature.name === 'moving' || feature.name === 'moveNextRow');
-      const movingAttachCells = curCell.attachments.find((feature) => feature.name === 'moving' || feature.name === 'moveNextRow');
-      const hasSwift = card.features.find((feat) => feat.name === 'swift')
-          || card.attachments.find((feature) => feature.name === 'swift');
-      if (!hasSwift && card.player === player && !movingAttachment && !movingAttachCells) {
+      const movingFeature = warHasSpecialFeature({
+        warCard: card, fieldCards, fieldCells: cellsOnField, featureName: 'moving',
+      });
+      const moveNextRowFeature = warHasSpecialFeature({
+        warCard: card, fieldCards, fieldCells: cellsOnField, featureName: 'moveNextRow',
+      });
+      const swiftFeature = warHasSpecialFeature({
+        warCard: card, fieldCards, fieldCells: cellsOnField, featureName: 'swift',
+      });
+      if (!swiftFeature && card.player === player && !movingFeature && !moveNextRowFeature) {
         dispatch(battleActions.turnCardLeft({
           cardId: card.id,
           qty: 1,
         }));
       }
-      [movingAttachment, hasSwift, movingAttachCells]
+      [movingFeature, swiftFeature, moveNextRowFeature]
         .forEach((spell) => changeChargedSpellCard(spell, fieldCards, cellsOnField, makeFeatureCast));
     }
     if (card.type === 'spell') {
@@ -293,13 +307,17 @@ export const FunctionProvider = ({ children }) => {
     if ((changeCardsAlowed && trainingMode) || (changeCardsAlowed && thisPlayer === 'player2')) {
       dispatch(modalsActions.openModal({ type: 'startFirstRound', player: 'player2' }));
     }
-    if (turnTimer && thisPlayer === newPlayer) {
+    if (timer && thisPlayer === newPlayer) {
+      console.log('reset');
       resetTimer();
-      setTimerPaused(false);
-      setTimerOver(false);
+      dispatch(uiActions.setTimerIsOver(false));
+      dispatch(uiActions.setTimerIsPaused(false));
     }
-    if (turnTimer && thisPlayer !== newPlayer) {
-      setTimerPaused(true);
+    if (timer && thisPlayer !== newPlayer) {
+      console.log('pause');
+      resetTimer();
+      dispatch(uiActions.setTimerIsOver(false));
+      dispatch(uiActions.setTimerIsPaused(true));
     }
   };
 
@@ -308,10 +326,11 @@ export const FunctionProvider = ({ children }) => {
   const castSpell = async (actionData) => {
     deleteImmediateSpells();
     const {
-      card, player, points, cell, player2Type, performAIAction,
+      card, player, playerPoints, cell, player2Type, performAIAction,
     } = actionData;
+    const cardCardOwnerPoints = playerPoints.find((item) => item.player === player).points;
     if ((card.status === 'hand' && card.subtype !== 'reaction') || card.type === 'hero') {
-      const newPoints = points - card.currentC;
+      const newPoints = cardCardOwnerPoints - card.currentC;
       dispatch(battleActions.setPlayerPoints({ points: newPoints, player }));
     }
     dispatch(battleActions.deleteActiveCard({ player }));
@@ -388,9 +407,6 @@ export const FunctionProvider = ({ children }) => {
     makeFeatureCast({
       feature: ability, aimCell: cell, applyingCard: null, player, player2Type, performAIAction,
     });
-    // if (ability.attach && ) {
-    //   makeFeatureAttach(ability, cell, player, player2Type, performAIAction);
-    // }
     if (card.type === 'spell') {
       deleteCardFromSource(card);
       dispatch(battleActions.addToGraveyard({ card }));

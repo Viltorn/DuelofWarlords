@@ -2,7 +2,7 @@ export default {
   BattleCry: 'Боевой клич',
   MeleeCombat: 'Двойные кинжалы',
   RangeCombat: 'Дальний бой',
-  Protection: 'Доспехи',
+  Protection: 'Тяжелая броня',
   Resistance: 'Сопротивление магии',
   Durability: 'Стойкость',
   FirstAid: 'Первая помощь',
@@ -11,4 +11,6 @@ export default {
   RighteousHammerCast: 'Молот правосудия',
   RighteousHammer: 'Молот правосудия',
   AddAttackCast: 'Заклинание',
+  PlateArmor: 'Латные доспехи',
+  LeatherArmor: 'Кожаные доспехи',
 };

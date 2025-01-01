@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { actions as gameActions } from '../../slices/gameSlice.js';
 import { actions as modalsActions } from '../../slices/modalsSlice.js';
 import { actions as battleActions } from '../../slices/battleSlice.js';
+import { actions as uiActions } from '../../slices/uiSlice.js';
 import PrimaryButton from '../../components/Buttons/PrimaryButton/PrimaryButton.jsx';
 import styles from './PlayerDisconnected.module.css';
 import socket from '../../socket.js';
@@ -22,6 +23,7 @@ const PlayerDisconnected = () => {
       }
     }
     dispatch(battleActions.resetState());
+    dispatch(uiActions.resetState());
     dispatch(gameActions.setCurrentRoom({ room: '' }));
     dispatch(modalsActions.closeModal());
   };
@@ -41,7 +43,7 @@ const PlayerDisconnected = () => {
           onClick={handleClick}
           showIcon={false}
           state="default"
-          text={t('CONTINUE')}
+          text={t('buttons.CONTINUE')}
           variant="primary"
           type="submit"
         />

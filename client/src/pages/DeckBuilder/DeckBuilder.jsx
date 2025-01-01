@@ -114,7 +114,7 @@ const DeckBuilder = () => {
         }
         const res = await axios.patch(routes.getURL('accounts'), { username, decks: newDecks });
         if (res.status === 200) {
-          dispatch(gameActions.setDecks({ decks: newDecks }));
+          dispatch(gameActions.setDecks({ decks: res.data.decks }));
           dispatch(deckbuilderActions.setChanges({ changesMade: false }));
           dispatch(deckbuilderActions.setChosenDeck({ chosenDeckName: deckName }));
           dispatch(deckbuilderActions.setWarnWindow({ windowType: 'deckSaved' }));

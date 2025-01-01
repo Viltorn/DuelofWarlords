@@ -110,6 +110,7 @@ export default {
     ChooseGame: 'Выбрать игру',
     YourDeck: 'Ваша колода',
     AttachedCards: 'Наложенные заклинания',
+    Timer: 'Таймер хода',
 
     difficulty: {
       Easy: 'Легко',
@@ -253,6 +254,10 @@ export default {
       turnRight: 'ПОВЕРНУТЬ',
       addToDeck: 'ДОБАВИТЬ',
       deleteFromDeck: 'УДАЛИТЬ',
+    },
+
+    misc: {
+      Min: 'мин.',
     },
 
     tutorialSteps: tutorialTextRU,

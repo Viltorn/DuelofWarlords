@@ -48,7 +48,7 @@ const OnlineLobby = () => {
       dispatch(gameActions.updateRooms({ rooms: newRooms }));
       dispatch(gameActions.setOnlineCount({ count: players }));
     });
-  });
+  }, [dispatch, name]);
 
   useEffect(() => {
     const setMessages = (data) => {

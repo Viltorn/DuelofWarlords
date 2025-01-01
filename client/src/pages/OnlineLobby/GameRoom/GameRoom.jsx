@@ -7,11 +7,13 @@ import styles from './GameRoom.module.css';
 const GameRoom = ({ room }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
-  const { players, roomId, password } = room;
+  const {
+    players, roomId, password, timer,
+  } = room;
 
   const handleJoinClick = () => {
     dispatch(modalsActions.openModal({
-      type: 'onlineGameStart', roomId, name: players[0].username, password,
+      type: 'onlineGameStart', roomId, name: players[0].username, password, data: timer,
     }));
   };
 
