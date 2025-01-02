@@ -63,12 +63,12 @@
 }
 
 .playerHand {
-  min-height: 15rem;
+  height: 14.3rem;
   width: 37rem;
   min-width: 25rem;
   border: 0.2rem solid var(--dark-color);
   border-radius: 0.3rem;
-  padding: 1rem;
+  padding: 0.8rem;
   display: flex;
   flex-direction: row;
   justify-content: flex-start;
