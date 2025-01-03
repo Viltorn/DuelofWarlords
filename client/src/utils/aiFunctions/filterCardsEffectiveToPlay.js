@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 import isCellEmpty from '../supportFunc/isCellEmpty';
 import findRowsWithWar from './findRowsWithWar';
 import getEnemyPlayer from '../supportFunc/getEnemyPlayer';
@@ -15,7 +16,7 @@ const isWarEffectivePlay = (card, aiHero, aiCards, fieldCells) => {
 };
 
 const isSpellEffectivePlay = ({
-  spellCard, fieldCards, fieldCells, enemyPoints, getWarriorPower, findSpells,
+  spellCard, fieldCards, fieldCells, enemyPoints, getWarriorPower, findSpells, warHasSpecialFeature,
 }) => {
   const {
     aim, type, attach, name,
@@ -29,7 +30,9 @@ const isSpellEffectivePlay = ({
   if (name === 'swift') {
     const warNeedsToMove = playersWarsOnField.find((warCard) => isWarNeedToMove({
       warCard, findSpells, fieldCards, fieldCells, enemyPoints, getWarriorPower,
-    }) && warCard.turn === 0);
+    }) && warCard.turn === 0 && !warHasSpecialFeature({
+      warCard, fieldCards, fieldCells, featureName: 'immobile',
+    }));
     return warNeedsToMove;
   }
   if (name === 'moving') {
@@ -39,7 +42,10 @@ const isSpellEffectivePlay = ({
     return warNeedsToMove;
   }
   if (name === 'power') {
-    const warCanAttack = playersWarsOnField.find((warCard) => warCard.turn === 0);
+    const warCanAttack = playersWarsOnField
+      .find((warCard) => warCard.turn === 0 && !warHasSpecialFeature({
+        warCard, fieldCards, fieldCells, featureName: 'unarmed',
+      }));
     return warCanAttack;
   }
   if (name === 'readiness') {
@@ -64,7 +70,7 @@ const isSpellEffectivePlay = ({
 };
 
 const filterCardsEffectiveToPlay = ({
-  cards, fieldCards, fieldCells, enemyPoints, getWarriorPower, findSpells,
+  cards, fieldCards, fieldCells, enemyPoints, getWarriorPower, findSpells, warHasSpecialFeature,
 }) => {
   const aiHero = fieldCards.find((c) => c.player === 'player2' && c.type === 'hero');
   const aiCardsOnField = fieldCards.filter((c) => c.player === 'player2' && c.status === 'field');
@@ -74,7 +80,7 @@ const filterCardsEffectiveToPlay = ({
     }
     if (c.type === 'spell') {
       return isSpellEffectivePlay({
-        spellCard: c, fieldCards, fieldCells, enemyPoints, getWarriorPower, findSpells,
+        spellCard: c, fieldCards, fieldCells, enemyPoints, getWarriorPower, findSpells, warHasSpecialFeature,
       });
     }
     return true;

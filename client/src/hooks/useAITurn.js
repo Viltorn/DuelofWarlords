@@ -277,7 +277,7 @@ const useAITurn = () => {
       card, fieldCells, fieldCards, gameTurn, aiPoints,
     }));
     const effectiveCardsToPlay = filterCardsEffectiveToPlay({
-      cards: cardsCanBeUsedFromHand, fieldCards, fieldCells, enemyPoints, getWarriorPower, findSpells,
+      cards: cardsCanBeUsedFromHand, fieldCards, fieldCells, enemyPoints, getWarriorPower, findSpells, warHasSpecialFeature,
     });
     const cardsToUse = effectiveCardsToPlay.length > 0 ? effectiveCardsToPlay : fieldWarActiveAICards;
     return {

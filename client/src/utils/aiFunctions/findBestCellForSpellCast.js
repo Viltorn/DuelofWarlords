@@ -20,6 +20,9 @@ const findBestCellForSpellCast = ({
   const {
     aim, type, attach, name,
   } = card.features[0];
+  if (card.place === 'bigSpell') {
+    return getRandomFromArray(cellsForSpellCast);
+  }
   if ((aim.includes('row') || (attach && attach.includes('row'))) && card.place === 'midSpell') {
     const rightPlayer = type === 'good' ? card.player : getEnemyPlayer(card.player);
     const rowsWithWar = findRowsWithWar(cellsForSpellCast, fieldCards, rightPlayer);
