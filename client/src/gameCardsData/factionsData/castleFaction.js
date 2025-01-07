@@ -277,8 +277,7 @@ const castleDeck = {
         place: '',
         features: [{
           attach: false, aim: ['warrior', 'flyer', 'shooter', 'fighter'], type: 'good', name: 'heal', value: 3, aimStatus: 'field',
-        },
-        { name: 'cantPostpone' }],
+        }],
         status: 'hand',
       },
       condition: 'onplay',

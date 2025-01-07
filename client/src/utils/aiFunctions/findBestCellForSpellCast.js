@@ -80,6 +80,15 @@ const findBestCellForSpellCast = ({
     return cellIdsWithMovableWars.length > 0
       ? getRandomFromArray(cellIdsWithMovableWars) : getRandomFromArray(cellsForSpellCast);
   }
+  if (name === 'heal') {
+    const warsInCells = fieldCards.filter((c) => cellsForSpellCast.includes(c.cellId) && (c.type === 'warrior' || c.type === 'hero'));
+    const cellIdsWithInjuredWars = warsInCells
+      .filter((c) => c.currentHP < c.health)
+      .map((c) => c.cellId);
+
+    return cellIdsWithInjuredWars.length > 0
+      ? getRandomFromArray(cellIdsWithInjuredWars) : getRandomFromArray(cellsForSpellCast);
+  }
   return getRandomFromArray(cellsForSpellCast);
 };
 

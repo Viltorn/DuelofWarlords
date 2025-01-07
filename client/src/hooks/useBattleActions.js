@@ -8,17 +8,15 @@ import useAnimaActions from './useAnimaActions.js';
 import countSpellDependVal from '../utils/supportFunc/countSpellDependVal.js';
 import getProtectionVal from '../utils/supportFunc/getProtectionVal.js';
 import isKilled from '../utils/supportFunc/isKilled.js';
-import findNextRowCells from '../utils/supportFunc/findNextRowCells.js';
+import findEmptyNextRowCells from '../utils/supportFunc/findEmptyNextRowCells.js';
 import findCellsForSpellApply from '../utils/supportFunc/findCellsForSpellApply.js';
 import isFeatureCostAllowed from '../utils/supportFunc/isFeatureCostAllowed.js';
 import getEnemyPlayer from '../utils/supportFunc/getEnemyPlayer.js';
 import findCellsToAttachCast from '../utils/supportFunc/findCellsToAttachCast.js';
 import findCardsToAttachCast from '../utils/supportFunc/findCardsToAttachCast.js';
-import findAdjasentCells from '../utils/supportFunc/findAdjasentCells.js';
 import findAimCard from '../utils/supportFunc/findAimCard.js';
 import getRandomFromArray from '../utils/getRandomFromArray.js';
 import calcAllSpellslValue from '../utils/supportFunc/calcAllSpellslValue.js';
-import isCellEmpty from '../utils/supportFunc/isCellEmpty.js';
 
 const useBattleActions = () => {
   const dispatch = useDispatch();
@@ -40,6 +38,8 @@ const useBattleActions = () => {
     checkMeetCondition,
     getWarriorPower,
     addAnimatedCells,
+    addAdjasentCellsForMove,
+    addNextLinesCellsForMove,
   } = useAnimaActions();
 
   const getActiveCard = () => {
@@ -292,6 +292,8 @@ const useBattleActions = () => {
     const spellPower = countSpellDependVal({
       spell: feature, aimCardPower: getWarriorPower(aimCard), currentFieldCards, lastPlayedCard,
     });
+    console.log('heal card:');
+    console.log(aimCard);
     const healthLessThanDefault = appliedCard.currentHP < appliedCard.health;
     if (healthLessThanDefault) {
       const newHealth = (appliedCard.currentHP + spellPower) >= appliedCard.health
@@ -326,8 +328,8 @@ const useBattleActions = () => {
       const {
         currentFieldCells, currentFieldCards, aimCard, applyingCell,
       } = data;
-      const { topRowCell, bottomRowCell } = findNextRowCells(applyingCell, currentFieldCells, currentFieldCards);
-      const choosenCell = topRowCell ?? bottomRowCell;
+      const emptyNextRowCells = findEmptyNextRowCells(applyingCell, currentFieldCells, currentFieldCards);
+      const choosenCell = emptyNextRowCells[0];
       const turnQty = aimCard.turn === 0 ? 2 : 1;
       deleteCardFromSource(aimCard);
       dispatch(battleActions.addFieldContent({ card: aimCard, id: choosenCell.id }));
@@ -404,9 +406,9 @@ const useBattleActions = () => {
         });
       } else {
         handleAnimation(spellCard, 'add');
+        setInvoking(true);
+        setTimeout(() => setInvoking(false), 1000);
       }
-      setInvoking(true);
-      setTimeout(() => setInvoking(false), 1000);
     },
     drawCard: (data) => {
       dispatch(battleActions.drawCard({ player: data.castingPlayer }));
@@ -548,18 +550,14 @@ const useBattleActions = () => {
     },
     moveNextRow: (data) => {
       const {
-        aimCell, aimCard, currentFieldCells, currentFieldCards, castingPlayer, feature, player2Type, performAIAction, playerPoints,
+        aimCard, currentFieldCells, currentFieldCards, castingPlayer, feature, player2Type, performAIAction, playerPoints,
       } = data;
+
       dispatch(battleActions.addWarriorAttachment({ cellId: aimCard.cellId, feature }));
-      const { topRowCell, bottomRowCell } = findNextRowCells(aimCell, currentFieldCells, currentFieldCards);
-      const topRowId = topRowCell?.id ? [topRowCell.id] : [];
-      const bottomRowId = bottomRowCell?.id ? [bottomRowCell.id] : [];
       const newFieldCards = store.getState().battleReducer.fieldCards;
       const newAimCard = newFieldCards.find((card) => card.id === aimCard.id);
-      dispatch(battleActions.addActiveCells({ cellsIds: [...topRowId, ...bottomRowId], type: 'cellsForWarMove' }));
-      dispatch(battleActions.addAnimation({ cellId: topRowCell?.id, type: 'green' }));
-      dispatch(battleActions.addAnimation({ cellId: bottomRowCell?.id, type: 'green' }));
       dispatch(battleActions.addActiveCard({ card: newAimCard, player: castingPlayer }));
+      addNextLinesCellsForMove({ activeCard: aimCard, fieldCards: currentFieldCards, fieldCells: currentFieldCells });
       if (player2Type === 'computer' && castingPlayer === 'player2') {
         performAIAction({
           card: newAimCard, playerPoints, fieldCards: newFieldCards, fieldCells: currentFieldCells, room: '',
@@ -568,18 +566,13 @@ const useBattleActions = () => {
     },
     moveAdjasent: (data) => {
       const {
-        aimCell, aimCard, currentFieldCells, currentFieldCards, castingPlayer, feature, player2Type, performAIAction, playerPoints,
+        aimCard, currentFieldCells, currentFieldCards, castingPlayer, feature, player2Type, performAIAction, playerPoints,
       } = data;
       dispatch(battleActions.addWarriorAttachment({ cellId: aimCard.cellId, feature }));
-      const adjasentCells = findAdjasentCells(currentFieldCells, aimCell);
-      const cellsToMoveIds = adjasentCells
-        .filter((cell) => isCellEmpty(currentFieldCards, cell.id) && cell.player === aimCard.player)
-        .map((cell) => cell.id);
       const newFieldCards = store.getState().battleReducer.fieldCards;
       const newAimCard = newFieldCards.find((card) => card.id === aimCard.id);
-      dispatch(battleActions.addActiveCells({ cellsIds: [...cellsToMoveIds], type: 'cellsForWarMove' }));
-      cellsToMoveIds.forEach((cellId) => dispatch(battleActions.addAnimation({ cellId, type: 'green' })));
       dispatch(battleActions.addActiveCard({ card: newAimCard, player: castingPlayer }));
+      addAdjasentCellsForMove({ activeCard: aimCard, fieldCards: currentFieldCards, fieldCells: currentFieldCells });
       if (player2Type === 'computer' && castingPlayer === 'player2') {
         performAIAction({
           card: newAimCard, playerPoints, fieldCards: newFieldCards, fieldCells: currentFieldCells, room: '',
@@ -775,11 +768,36 @@ const useBattleActions = () => {
     }
   };
 
+  const applySpellFeatures = ({
+    card, cell, player, player2Type, performAIAction,
+  }) => {
+    card.features.forEach((feature) => {
+      if (!feature.condition && !feature.attach) {
+        makeFeatureCast({
+          feature, aimCell: cell, applyingCard: null, player, player2Type, performAIAction,
+        });
+      } else if (feature.attach) {
+        dispatch(battleActions.setLastCellWithAction({
+          cellActionData: {
+            id: cell.id, content: 1, source: card.status, type: card.type,
+          },
+        }));
+        makeFeatureAttach(feature, cell, player, player2Type, performAIAction);
+      }
+    });
+  };
+
   // APPLY SPELL CARD
 
   const applySpellCard = async ({
     card, cell, player, player2Type, performAIAction,
   }) => {
+    if (player2Type === 'computer' && player === 'player2') {
+      applySpellFeatures({
+        card, cell, player, player2Type, performAIAction,
+      });
+      return;
+    }
     await Promise.all(card.features.map((feature) => new Promise((resolve) => {
       setTimeout(() => {
         if (!feature.condition && !feature.attach && feature.name !== 'cantPostpone') {
@@ -795,7 +813,7 @@ const useBattleActions = () => {
           makeFeatureAttach(feature, cell, player, player2Type, performAIAction);
         }
         resolve();
-      }, 500);
+      }, 700);
     })));
   };
 

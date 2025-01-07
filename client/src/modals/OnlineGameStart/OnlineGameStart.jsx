@@ -19,7 +19,7 @@ import socket from '../../socket.js';
 import styles from './OnlineGameStart.module.css';
 import MenuSlider from '../../components/MenuSlider/MenuSlider.jsx';
 import makeShaffledDeck from '../../utils/makeShaffledDeck.js';
-import createDeckForPLayer from '../../utils/makeDeckForPlayer.js';
+import createDeckForPLayer, { addPlayerToCard } from '../../utils/makeDeckForPlayer.js';
 import dummyCard from '../../gameCardsData/dummyCard.js';
 import { passwordYup } from '../../utils/validation.js';
 
@@ -120,8 +120,10 @@ const OnlineGameStart = () => {
             }
             const player1 = res.players[0];
             const player2 = res.players[1];
-            dispatch(battleActions.setHero({ hero: player1.hero, player: 'player1' }));
-            dispatch(battleActions.setHero({ hero: player2.hero, player: 'player2' }));
+            const player1Hero = addPlayerToCard(player1.hero, 'player1');
+            const player2Hero = addPlayerToCard(player2.hero, 'player2');
+            dispatch(battleActions.setHero({ hero: player1Hero, player: 'player1' }));
+            dispatch(battleActions.setHero({ hero: player2Hero, player: 'player2' }));
             dispatch(battleActions.setPlayersDeck({ deck: player1.deck, player: 'player1' }));
             dispatch(battleActions.setPlayersDeck({ deck: player2.deck, player: 'player2' }));
             dispatch(battleActions.setPlayersHand({ hand: player1.hand, player: 'player1' }));

@@ -6,6 +6,7 @@ import { NavLink } from 'react-router-dom';
 import { actions as battleActions } from '../../slices/battleSlice.js';
 import PrimaryButton from '../../components/Buttons/PrimaryButton/PrimaryButton.jsx';
 // import { factionsData, heroes, decks } from '../../gameCardsData/factionsData.js';
+import createDeckForPLayer, { addPlayerToCard } from '../../utils/makeDeckForPlayer.js';
 import cardsData from '../../gameCardsData/index.js';
 import { startCardsNumber1, startCardsNumber2, minDeckCards } from '../../gameData/gameLimits.js';
 import { actions as modalsActions } from '../../slices/modalsSlice.js';
@@ -16,7 +17,6 @@ import styles from './HotSeatStartMenu.module.css';
 import MenuSlider from '../../components/MenuSlider/MenuSlider.jsx';
 import makeInitialDeck from '../../utils/makeInitialDeck.js';
 import makeShaffledDeck from '../../utils/makeShaffledDeck.js';
-import createDeckForPLayer from '../../utils/makeDeckForPlayer.js';
 import dummyCard from '../../gameCardsData/dummyCard.js';
 
 const HotSeatMenu = () => {
@@ -65,6 +65,8 @@ const HotSeatMenu = () => {
       try {
         const { startPoints, startHeroHP } = getSetUpData(Number(values.gameDifficulty));
         console.log(startPoints, startHeroHP);
+        const heroPlayer1 = addPlayerToCard(values.player1Hero, 'player1');
+        const heroPlayer2 = addPlayerToCard(values.player2Hero, 'player2');
         const player1DeckData = makeInitialDeck(values.player1Deck);
         const player1FullDeck = createDeckForPLayer(makeShaffledDeck(player1DeckData), 'player1');
         const player1Hand = player1FullDeck.slice(0, startCardsNumber1);
@@ -73,8 +75,8 @@ const HotSeatMenu = () => {
         const player2FullDeck = createDeckForPLayer(makeShaffledDeck(player2DeckData), 'player2');
         const player2Hand = [...player2FullDeck.slice(0, startCardsNumber2), dummyCard];
         const player2FinalDeck = player2FullDeck.slice(startCardsNumber2);
-        dispatch(battleActions.setHero({ hero: values.player1Hero, player: 'player1' }));
-        dispatch(battleActions.setHero({ hero: values.player2Hero, player: 'player2' }));
+        dispatch(battleActions.setHero({ hero: heroPlayer1, player: 'player1' }));
+        dispatch(battleActions.setHero({ hero: heroPlayer2, player: 'player2' }));
         dispatch(battleActions.setPlayerName({ name: 'Тест 1', player: 'player1' }));
         dispatch(battleActions.setPlayerType({ type: 'human', player: 'player1' }));
         dispatch(battleActions.setPlayerName({ name: 'Тест 2', player: 'player2' }));

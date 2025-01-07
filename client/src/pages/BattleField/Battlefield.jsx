@@ -18,6 +18,7 @@ import ActiveCardInfo from '../../components/CardComponents/ActiveCard/ActiveCar
 import InGameMenu from './InGameMenu/InGameMenu.jsx';
 import styles from './Battlefield.module.css';
 import getModal from '../../modals/index.js';
+import { addPlayerToCard } from '../../utils/makeDeckForPlayer.js';
 import { actions as modalsActions } from '../../slices/modalsSlice.js';
 import { actions as battleActions } from '../../slices/battleSlice.js';
 import { actions as gameActions } from '../../slices/gameSlice.js';
@@ -86,8 +87,10 @@ const Battlefield = () => {
       const { roomId, timer } = roomData;
       const player1 = roomData.players[0];
       const player2 = roomData.players[1];
-      dispatch(battleActions.setHero({ hero: player1.hero, player: 'player1' }));
-      dispatch(battleActions.setHero({ hero: player2.hero, player: 'player2' }));
+      const player1Hero = addPlayerToCard(player1.hero, 'player1');
+      const player2Hero = addPlayerToCard(player2.hero, 'player2');
+      dispatch(battleActions.setHero({ hero: player1Hero, player: 'player1' }));
+      dispatch(battleActions.setHero({ hero: player2Hero, player: 'player2' }));
       dispatch(battleActions.setPlayersDeck({ deck: player1.deck, player: 'player1' }));
       dispatch(battleActions.setPlayersDeck({ deck: player2.deck, player: 'player2' }));
       dispatch(battleActions.setPlayersHand({ hand: player1.hand, player: 'player1' }));

@@ -192,6 +192,8 @@ const useAITurn = () => {
         warCard: card, fieldCards, fieldCells, featureName: 'moving',
       }) || warHasSpecialFeature({
         warCard: card, fieldCards, fieldCells, featureName: 'moveNextRow',
+      }) || warHasSpecialFeature({
+        warCard: card, fieldCards, fieldCells, featureName: 'moveAdjasent',
       });
       const canMove = cellsForWarMove.length > 0;
       const canAttack = cellsForAttack.length > 0 && getWarriorPower(card) > 0;
@@ -257,7 +259,9 @@ const useAITurn = () => {
         makeGameAction(actionData, gameMode);
         return;
       }
-      dispatch(battleActions.turnCardLeft({ cardId: card.id, qty: 1 }));
+      if (card.player === 'player2') {
+        dispatch(battleActions.turnCardLeft({ cardId: card.id, qty: 1 }));
+      }
     }
   };
 

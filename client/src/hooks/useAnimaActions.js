@@ -1,15 +1,16 @@
 /* eslint-disable max-len */
 import { useDispatch, useSelector, useStore } from 'react-redux';
 import { actions as battleActions } from '../slices/battleSlice.js';
-import findNextRowCells from '../utils/supportFunc/findNextRowCells';
+import findEmptyNextRowCells from '../utils/supportFunc/findEmptyNextRowCells.js';
 import findCellsForWarAttack from '../utils/supportFunc/findCellsForWarAttack.js';
 import findCellsForWarMove from '../utils/supportFunc/findCellsForWarMove.js';
 import findCellsForSpellCast from '../utils/supportFunc/findCellsForSpellCast.js';
 import isAllowedCost from '../utils/supportFunc/isAllowedCost.js';
-import findAttachmentType from '../utils/supportFunc/findAttachmentType.js';
 import getEnemyPlayer from '../utils/supportFunc/getEnemyPlayer.js';
 import getAddedWarPower from '../utils/supportFunc/getAddedWarPower.js';
 import isSpellMeetCondition from '../utils/supportFunc/isSpellMeetCondition.js';
+import findAdjasentCells from '../utils/supportFunc/findAdjasentCells.js';
+import isCellEmpty from '../utils/supportFunc/isCellEmpty.js';
 
 const useAnimaActions = () => {
   const dispatch = useDispatch();
@@ -35,13 +36,23 @@ const useAnimaActions = () => {
     return totalPower >= 0 ? totalPower : 0;
   };
 
-  const addNextLinesCellsAnima = (data) => {
+  const addNextLinesCellsForMove = (data) => {
     const { activeCard, fieldCards, fieldCells } = data;
     const currentCell = fieldCells.find((cell) => cell.id === activeCard.cellId);
-    const { topRowCell, bottomRowCell } = findNextRowCells(currentCell, fieldCells, fieldCards);
-    dispatch(battleActions.addActiveCells({ cellsIds: [topRowCell?.id, bottomRowCell?.id], type: 'cellsForWarMove' }));
-    dispatch(battleActions.addAnimation({ cellId: topRowCell?.id, type: 'green' }));
-    dispatch(battleActions.addAnimation({ cellId: bottomRowCell?.id, type: 'green' }));
+    const emptyNextRowCellsIds = findEmptyNextRowCells(currentCell, fieldCells, fieldCards).map((cell) => cell?.id);
+    dispatch(battleActions.addActiveCells({ cellsIds: [...emptyNextRowCellsIds], type: 'cellsForWarMove' }));
+    emptyNextRowCellsIds.forEach((cellId) => dispatch(battleActions.addAnimation({ cellId, type: 'green' })));
+  };
+
+  const addAdjasentCellsForMove = (data) => {
+    const { activeCard, fieldCards, fieldCells } = data;
+    const aimCell = fieldCells.find((cell) => cell.id === activeCard.cellId);
+    const adjasentCells = findAdjasentCells(fieldCells, aimCell);
+    const cellsToMoveIds = adjasentCells
+      .filter((cell) => isCellEmpty(fieldCards, cell.id) && cell.player === activeCard.player)
+      .map((cell) => cell.id);
+    dispatch(battleActions.addActiveCells({ cellsIds: [...cellsToMoveIds], type: 'cellsForWarMove' }));
+    cellsToMoveIds.forEach((cellId) => dispatch(battleActions.addAnimation({ cellId, type: 'green' })));
   };
 
   const addCellsAnimaForAttack = (card, curFieldCards, curFieldCells) => {
@@ -51,7 +62,7 @@ const useAnimaActions = () => {
     dispatch(battleActions.addActiveCells({ cellsIds, type: 'cellsForAttack' }));
   };
 
-  const addCellsAnimaForWarMove = (data) => {
+  const addAllCellsForWarMove = (data) => {
     const cellsToMove = findCellsForWarMove(data);
     cellsToMove.forEach((cell) => dispatch(battleActions.addAnimation({ cellId: cell.id, type: 'green' })));
     const cellsIds = cellsToMove.map((cell) => cell.id);
@@ -101,8 +112,11 @@ const useAnimaActions = () => {
       const movingAttachment = warHasSpecialFeature({
         warCard: activeCard, fieldCells, fieldCards, featureName: 'moving',
       });
-      const moverowAttachment = warHasSpecialFeature({
+      const moveRowAttachment = warHasSpecialFeature({
         warCard: activeCard, fieldCells, fieldCards, featureName: 'moveNextRow',
+      });
+      const moveAdjasentAttachment = warHasSpecialFeature({
+        warCard: activeCard, fieldCells, fieldCards, featureName: 'moveAdjasent',
       });
       const canMove = !warHasSpecialFeature({
         warCard: activeCard, fieldCells, fieldCards, featureName: 'immobile',
@@ -112,29 +126,23 @@ const useAnimaActions = () => {
       }) && turn === 0 && status === 'field';
 
       if ((status === 'hand') && activeCard.player === playerTurn) {
-        addCellsAnimaForWarMove({
+        addAllCellsForWarMove({
           activeCard, player: playerTurn, fieldCards, fieldCells,
         });
       }
-      if ((findAttachmentType(moverowAttachment, 'bad') && activeCard.player !== playerTurn)
-        || (findAttachmentType(moverowAttachment, 'good') && activeCard.player === playerTurn)) {
-        addNextLinesCellsAnima({
+      const anyMoveAttachment = moveRowAttachment || moveAdjasentAttachment || movingAttachment;
+      const rightPlayer = anyMoveAttachment?.type === 'good' || !anyMoveAttachment ? playerTurn : getEnemyPlayer(playerTurn);
+      if (activeCard.player === rightPlayer && moveRowAttachment) {
+        addNextLinesCellsForMove({ activeCard, fieldCards, fieldCells });
+      }
+      if ((activeCard.player === rightPlayer && movingAttachment) || (canMove && activeCard.player === playerTurn)) {
+        addAllCellsForWarMove({
+          activeCard, player: rightPlayer, fieldCards, fieldCells,
+        });
+      }
+      if (activeCard.player === rightPlayer && moveAdjasentAttachment) {
+        addAdjasentCellsForMove({
           activeCard, fieldCards, fieldCells,
-        });
-      }
-      if (findAttachmentType(movingAttachment, 'bad') && activeCard.player !== playerTurn) {
-        addCellsAnimaForWarMove({
-          activeCard, player: getEnemyPlayer(playerTurn), fieldCards, fieldCells,
-        });
-      }
-      if (findAttachmentType(movingAttachment, 'good') && activeCard.player === playerTurn) {
-        addCellsAnimaForWarMove({
-          activeCard, player: playerTurn, fieldCards, fieldCells,
-        });
-      }
-      if (canMove && activeCard.player === playerTurn) {
-        addCellsAnimaForWarMove({
-          activeCard, player: playerTurn, fieldCards, fieldCells,
         });
       }
 
@@ -181,6 +189,9 @@ const useAnimaActions = () => {
     getWarriorPower,
     addAnimatedCells,
     warHasSpecialFeature,
+    addAdjasentCellsForMove,
+    addNextLinesCellsForMove,
+    addAllCellsForWarMove,
   };
 };
 

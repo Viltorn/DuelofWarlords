@@ -12,7 +12,7 @@ export default (fieldCards, availableCells, card) => {
     ? preferableCellsIDsInRow : preferableCellsIDsInLine;
 
   const aiHeroHP = fieldCards.find((c) => c.type === 'hero' && c.player === card.player);
-  const unprotectedCells = preferablesCells.filter((cellId) => {
+  const unprotectedCells = preferableCellsIDsInLine.filter((cellId) => {
     const enemyWar = isWarInRow(cellId[0], fieldCards, enemyPlayer);
     const allyWar = isWarInRow(cellId[0], fieldCards, card.player);
     return enemyWar && !allyWar;

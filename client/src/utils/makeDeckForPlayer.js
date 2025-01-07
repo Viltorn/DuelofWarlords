@@ -1,4 +1,4 @@
-const addPlayerToCard = (card, player) => {
+export const addPlayerToCard = (card, player) => {
   const newCard = { ...card };
   newCard.player = player;
   newCard.features = newCard.features.map((feat) => {
@@ -11,7 +11,7 @@ const addPlayerToCard = (card, player) => {
   return newCard;
 };
 
-const makeDeckForPLayer = (deck, player) => {
+const makeDeckForPlayer = (deck, player) => {
   const newDeck = deck.map((card) => {
     const newCard = addPlayerToCard(card, player);
     return newCard;
@@ -19,4 +19,4 @@ const makeDeckForPLayer = (deck, player) => {
   return newDeck;
 };
 
-export default makeDeckForPLayer;
+export default makeDeckForPlayer;
