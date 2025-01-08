@@ -7,6 +7,7 @@
   align-items: center;
   background-size: cover;
   background-repeat: no-repeat;
+  background-color: var(--dark-color);
   background-image: url("@assets/ChooseGameCover.png");
   background-position: center;
   min-height: 100svh;
@@ -63,6 +64,7 @@
   font-weight: 600;
   top: 1rem;
   left: 1rem;
+  border: 2px solid;
   padding: 5px 10px;
   font-family: Roboto;
   cursor: pointer;
@@ -76,8 +78,8 @@
 
 .loginBtn.secondary {
   background-color: var(--light-gray);
-  border-color: var(--purple);
-  color: var(--dark-color);
+  border-color: var(--dark-golden);
+  color: var(--dark-golden);
 }
 
 

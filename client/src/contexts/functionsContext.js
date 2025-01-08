@@ -243,11 +243,6 @@ export const FunctionProvider = ({ children }) => {
             makeFeatureAttach(feature, curCell, player, player2Type, performAIAction);
           }
         }, 500));
-      if (card.heroSpell) {
-        const newfieldCards = store.getState().battleReducer.fieldCards;
-        const heroCard = newfieldCards.find((c) => c.type === 'hero' && c.player === card.player);
-        dispatch(battleActions.turnCardLeft({ cardId: heroCard.id, qty: 1 }));
-      }
     }
     dispatch(battleActions.setLastPlayedCard(card));
   };

@@ -20,6 +20,7 @@ router.get('/', async (req, res) => {
     res.status(200).json(accounts);
   } catch (err) {
     res.status(500).json({ message: err.message })
+    console.log(err.message);
   }
 });
 
@@ -37,7 +38,8 @@ router.get('/names', async (req, res) => {
     }
     res.status(200).json(accountsNames);
   } catch (err) {
-    res.status(500).json({ message: err.message })
+    res.status(500).json({ message: err.message });
+    console.log(err.message);
   }
 });
 
@@ -52,7 +54,8 @@ router.post('/', async (req, res) => {
     await redis.set('DofWAccounts',  JSON.stringify([]));
     res.status(201).json({ message: 'accounts sets'});
   } catch (err) {
-    res.status(500).json({ message: err.message })
+    res.status(500).json({ message: err.message });
+    console.log(err.message);
   }
 })
 

@@ -2,11 +2,12 @@ export const addPlayerToCard = (card, player) => {
   const newCard = { ...card };
   newCard.player = player;
   newCard.features = newCard.features.map((feat) => {
-    feat.player = player;
-    if (feat.name === 'invoke') {
-      feat.value = addPlayerToCard(feat.value, player);
+    const newFeat = { ...feat };
+    newFeat.player = player;
+    if (newFeat.name === 'invoke') {
+      newFeat.value = addPlayerToCard(newFeat.value, player);
     }
-    return feat;
+    return newFeat;
   });
   return newCard;
 };

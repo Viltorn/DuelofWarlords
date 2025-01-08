@@ -18,7 +18,8 @@ router.get('/', async (req, res) => {
     }
     res.status(200).json(account);
   } catch (err) {
-    res.status(500).json({ message: err.message })
+    res.status(500).json({ message: 'AuthOrNetError' })
+    console.log(err.message);
   }
 });
 
@@ -41,7 +42,8 @@ router.post('/', async (req, res) => {
       res.status(201).json(userData);
     }
   } catch (err) {
-    res.status(500).json({ message: err.message })
+    res.status(500).json({ message: 'AuthOrNetError' })
+    console.log(err.message);
   }
 });
 

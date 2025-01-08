@@ -50,3 +50,26 @@ Content-Type: application/json
 
 // PRODUCTION
 
+
+GET https://duelofwarlords.ru/accounts/names
+Content-Type: application/json
+username: admin
+password: heroes3
+
+###
+
+// get Account
+GET  https://duelofwarlords.ru/accounts/Vik
+Content-Type: application/json
+username: admin
+password: heroes3
+
+###
+
+
+GET  https://duelofwarlords.ru/auth
+Content-Type: application/json
+username: Vik
+password: supergame
+
+###
