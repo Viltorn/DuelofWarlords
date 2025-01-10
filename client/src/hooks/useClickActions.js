@@ -4,9 +4,9 @@ import { actions as gameActions } from '@slices/gameSlice.js';
 import { actions as uiActions } from '@slices/uiSlice.js';
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-
 import { maxActionPoints } from '../gameData/gameLimits.js';
 import useFunctionsContext from './useFunctionsContext.js';
+import isPlayerDisconnected from '../utils/supportFunc/isPlayerDisconnected.js';
 import useAITurn from './useAITurn.js';
 import findTempSpellsOnField from '../utils/supportFunc/findTempSpellsOnField.js';
 import findTurnSpellsOnField from '../utils/supportFunc/findTurnSpellsOnField.js';
@@ -42,9 +42,7 @@ const useClickActions = () => {
     canBeMoved, invoking, canBeAttacked, addActiveCard,
   } = useBattleActions();
 
-  const {
-    handleAnimation,
-  } = useAnimaActions();
+  const { handleAnimation } = useAnimaActions();
 
   const endTurnInTutorial = (newPoints) => {
     dispatch(battleActions.setPlayerPoints({ points: newPoints, player: 'player1' }));
@@ -55,9 +53,8 @@ const useClickActions = () => {
   };
 
   const hadleEndTurnClick = () => {
-    if (gameMode === 'online' && actionPerforming) {
-      return;
-    }
+    if ((gameMode === 'online' && actionPerforming) || isPlayerDisconnected(players)) return;
+
     const { maxPoints } = playerPoints.find((p) => p.player === thisPlayer);
     const newPlayer = thisPlayer === 'player1' ? 'player2' : 'player1';
     const newPoints = (maxPoints + 1) <= maxActionPoints ? maxPoints + 1 : maxPoints;
@@ -65,9 +62,9 @@ const useClickActions = () => {
       endTurnInTutorial(newPoints);
       return;
     }
-    if (gameTurn !== thisPlayer) {
-      return;
-    }
+
+    if (gameTurn !== thisPlayer) return;
+
     const currentRound = newPlayer === 'player1' ? roundNumber + 1 : roundNumber;
     const postponedCell = fieldCells.find((cell) => cell.type === 'postponed' && cell.player === thisPlayer);
     const temporarySpells = findTempSpellsOnField(fieldCards, newPlayer);
@@ -104,9 +101,8 @@ const useClickActions = () => {
     const {
       btnType, card, ability, ressurect,
     } = data;
-    if (gameMode === 'online' && actionPerforming) {
-      return;
-    }
+    if ((gameMode === 'online' && actionPerforming) || isPlayerDisconnected(players)) return;
+
     const {
       cellId,
     } = card;
@@ -186,13 +182,9 @@ const useClickActions = () => {
     const activeCard = getActiveCard();
     const { points } = playerPoints.find((p) => p.player === thisPlayer);
 
-    if (gameMode === 'online' && actionPerforming) {
-      return;
-    }
+    if ((gameMode === 'online' && actionPerforming) || isPlayerDisconnected(players)) return;
 
-    if (activeCard && !isAllowedCost(activeCard, points)) {
-      return;
-    }
+    if (activeCard && !isAllowedCost(activeCard, points)) return;
 
     const isWarOnFieldCard = activeCard && activeCard.type === 'warrior' && type === 'field' && cellContent.length === 0;
     const isSpell = activeCard && activeCard.type === 'spell';
@@ -265,7 +257,7 @@ const useClickActions = () => {
 
   const handleCellCardClick = ({ item, cardElement }) => {
     if (invoking) return;
-    if (gameMode === 'online' && actionPerforming) return;
+    if ((gameMode === 'online' && actionPerforming) || isPlayerDisconnected(players)) return;
 
     const currentCell = fieldCells.find((cell) => cell.id === item.cellId);
     const spellsInCell = fieldCards.filter((card) => card.cellId === item.cellId && card.type === 'spell');

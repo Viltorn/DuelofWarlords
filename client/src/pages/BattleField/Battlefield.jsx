@@ -12,6 +12,7 @@ import HeroPad from './HeroPad/HeroPad.jsx';
 import Card from '../../components/CardComponents/Card/Card.jsx';
 import Header from './BattleHeader/BattleHeader.jsx';
 import RotateScreen from '../../components/RotateScreen/RotateScreen.jsx';
+import isPlayerDisconnected from '../../utils/supportFunc/isPlayerDisconnected.js';
 import TutorialStepsWindow from '../../modals/TutorialModals/TutorialStepsWindow.jsx';
 import ActiveCard from '../../components/CardComponents/ActiveCard/ActiveCard.jsx';
 import ActiveCardInfo from '../../components/CardComponents/ActiveCard/ActiveCardInfo.jsx';
@@ -100,8 +101,8 @@ const Battlefield = () => {
     socket.on('closeRoom', (data) => {
       const { roomId, name } = data;
       if (roomId === curRoom) {
-        dispatch(modalsActions.openModal({ type: 'playerDisconnected', player: name, roomId: curRoom }));
         navigate('/lobby', { replace: true });
+        dispatch(modalsActions.openModal({ type: 'playerDisconnected', player: name, roomId: curRoom }));
       }
     });
 
@@ -160,10 +161,8 @@ const Battlefield = () => {
   ]);
 
   useEffect(() => {
-    const player1Name = players.player1.name;
-    const player2Name = players.player2.name;
     if (gameMode === 'online' && curRoom !== ''
-      && (player1Name === '' || player2Name === '') && type !== 'warningWindow') {
+      && isPlayerDisconnected(players) && type !== 'warningWindow') {
       dispatch(modalsActions.openModal({ type: 'waitForPlayer' }));
     } else if (type === 'waitForPlayer' && players[thisPlayer].cardsdrawn) {
       dispatch(modalsActions.closeModal());
