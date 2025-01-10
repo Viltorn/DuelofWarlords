@@ -12,7 +12,8 @@ router.get('/', async (req, res) => {
       res.status(500).json({ message: "Wrong password or username!"});
       return;
     }
-    const accounts = await getAllAccounts();
+    const accountsNames = JSON.parse(await redis.get(`DofWAccounts:accounts`));
+    const accounts = await getAllAccounts(accountsNames);
     if (!accounts) {
       res.status(500).json({ message: "NoAccountsSet!"});
       return;

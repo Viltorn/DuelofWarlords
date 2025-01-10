@@ -42,6 +42,7 @@ const HeroPad = ({ type, player }) => {
   const classesContainer = cn({
     [styles.heroPad1]: type === 'first',
     [styles.heroPad2]: type === 'second',
+    [styles.onlineMargin]: type === 'first' && timer,
   });
 
   const cellsClasses = cn({
@@ -57,10 +58,6 @@ const HeroPad = ({ type, player }) => {
     [styles.secondPlayer]: type === 'first' && player === 'player2',
   });
 
-  // const postPonedAnima = cn({
-  //   [styles.animationGreen]: postponedCell.animation === 'green',
-  // });
-
   const heroAnima = cn({
     [styles.animationGreen]: heroCell.animation === 'green',
     [styles.animationRed]: heroCell.animation === 'red',
@@ -72,41 +69,6 @@ const HeroPad = ({ type, player }) => {
     [styles.animationGreen]: graveCell.animation === 'green',
     [styles.animationRed]: graveCell.animation === 'red',
   });
-
-  // const addPosponedCard = () => {
-  //   const activeCard = getActiveCard();
-
-  //   if (gameMode === 'online' && actionPerforming) {
-  //     return;
-  //   }
-  //   if ((activeCard && !isAllowedCost(activeCard, currentPoints)) || postponedCell.disabled) {
-  //     return;
-  //   }
-
-  //   if (activeCard && player === activeCard.player) {
-  //     const data = {
-  //       move: 'addCardToField', room: curRoom, card: activeCard, player, points: currentPoints, curCell: postponedCell, field: fieldCells,
-  //     };
-  //     makeGameAction(data, gameMode);
-  //   }
-  // };
-
-  // const handlePostCardClick = () => {
-  //   if (gameMode === 'online' && actionPerforming) {
-  //     return;
-  //   }
-  //   const activeCard = getActiveCard();
-  //   if (!activeCard && (postponedCell.status === 'cover' && player === thisPlayer)) {
-  //     dispatch(battleActions.addActiveCard({ card: postponedContentData, player: thisPlayer }));
-  //   }
-  //   if (!activeCard && postponedCell.status === 'face') {
-  //     dispatch(battleActions.addActiveCard({ card: postponedContentData, player: thisPlayer }));
-  //     handleAnimation(postponedContentData, 'add');
-  //   } else if (activeCard && activeCard.id === postponedContentData.id) {
-  //     dispatch(battleActions.deleteActiveCard({ player: thisPlayer }));
-  //     handleAnimation(activeCard, 'delete');
-  //   }
-  // };
 
   return (
     <div>

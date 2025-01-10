@@ -47,7 +47,7 @@
   justify-content: flex-end;
   height: 22rem;
   gap: 1rem;
-  align-items: center;
+  align-items: flex-start;
   padding: 0 0 0 0;
 }
 
@@ -58,7 +58,7 @@
   flex-direction: row;
   justify-content: flex-start;
   gap: 1rem;
-  align-items: center;
+  align-items: flex-start;
   padding: 0;
 }
 

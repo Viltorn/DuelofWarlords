@@ -1,6 +1,6 @@
 
 .container {
-  background: var(--dark-blue);
+  background: var(--dark-color);
   font-family: "Roboto-Regular", Helvetica;
   line-height: 2rem;
   color: var(--light-gray);

@@ -10,10 +10,12 @@ router.get('/', async (req, res) => {
     const account = JSON.parse(await redis.get(`DofWAccounts:${username}`));
     if (!account) {
       res.status(401).json({ message: 'AccountNotFound' })
+      console.log('AccountNotFound');
       return;
     }
     if (account.password !== password) {
       res.status(401).json({ message: 'PasswordInvalid' });
+      console.log('PasswordInvalid');
       return;
     }
     res.status(200).json(account);
@@ -29,6 +31,7 @@ router.post('/', async (req, res) => {
     const account = JSON.parse(await redis.get(`DofWAccounts:${username}`));
     if (account) {
       res.status(401).json({ message: 'UserAlreadyExist' })
+      console.log('UserAlreadyExist');
       return;
     }
     const id = uuidV4();

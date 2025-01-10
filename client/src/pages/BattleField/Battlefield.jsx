@@ -73,15 +73,6 @@ const Battlefield = () => {
   };
 
   useEffect(() => {
-    const player1Name = players.player1.name;
-    const player2Name = players.player2.name;
-    if (gameMode === 'online' && curRoom !== ''
-      && (player1Name === '' || player2Name === '')) {
-      dispatch(modalsActions.openModal({ type: 'waitForPlayer' }));
-    }
-  }, [players.player2.name, dispatch, gameMode, curRoom, players.player1.name]);
-
-  useEffect(() => {
     socket.on('opponentJoined', (roomData) => {
       console.log('roomData', roomData);
       const { roomId, timer } = roomData;
@@ -167,6 +158,19 @@ const Battlefield = () => {
     gameMode,
     setTimerPaused,
   ]);
+
+  useEffect(() => {
+    const player1Name = players.player1.name;
+    const player2Name = players.player2.name;
+    if (gameMode === 'online' && curRoom !== ''
+      && (player1Name === '' || player2Name === '') && type !== 'warningWindow') {
+      dispatch(modalsActions.openModal({ type: 'waitForPlayer' }));
+    } else if (type === 'waitForPlayer' && players[thisPlayer].cardsdrawn) {
+      dispatch(modalsActions.closeModal());
+    } else if (type === 'waitForPlayer' && !players[thisPlayer].cardsdrawn) {
+      dispatch(modalsActions.openModal({ type: 'startFirstRound', player: thisPlayer }));
+    }
+  }, [players.player2.name, dispatch, gameMode, curRoom, players.player1.name, type, players, thisPlayer]);
 
   useEffect(() => {
     socket.on('makeMove', (data) => {

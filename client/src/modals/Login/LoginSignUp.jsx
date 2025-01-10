@@ -55,23 +55,12 @@ const LoginSignUp = () => {
         dispatch(gameActions.setUserType({ userType: 'logged' }));
         dispatch(gameActions.setDecks({ decks }));
         setAuthToken({ login: username, pass: password });
-        // socket.emit('updateOnlineData', (callback) => {
-        //   if (res.error) {
-        //     handleError(res);
-        //     formik.setSubmitting(false);
-        //     return;
-        //   }
-        //   const { id, rooms } = callback;
-        //   dispatch(gameActions.setSocketId({ socketId: id }));
-        //   dispatch(gameActions.updateRooms({ rooms }));
-        //   handleClose();
-        // });
         handleClose();
       }
     } catch (err) {
       formik.setSubmitting(false);
-      handleError(err);
-      console.log(err);
+      handleError(err.response?.data ?? err);
+      console.log(err.response?.data.message ?? err);
     }
   };
 

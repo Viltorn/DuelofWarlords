@@ -55,6 +55,7 @@ io.on('connection', async (socket) => {
   currentRooms.forEach(async (room) => {
     const roomUser = room.players.find((player) => player.id === socket.id);
 
+    console.log(roomUser);
     if (roomUser) {
       await socket.join(room.roomId);
       io.to(room.roomId).emit('playerReconnected', roomUser);

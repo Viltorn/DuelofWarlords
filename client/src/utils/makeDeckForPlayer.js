@@ -14,7 +14,7 @@ export const addPlayerToCard = (card, player) => {
 
 const makeDeckForPlayer = (deck, player) => {
   const newDeck = deck.map((card) => {
-    const newCard = addPlayerToCard(card, player);
+    const newCard = { ...addPlayerToCard(card, player) };
     return newCard;
   });
   return newDeck;

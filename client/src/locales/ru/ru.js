@@ -181,6 +181,8 @@ export default {
       WrongPass: 'Неверный пароль!',
       UserAlreadyExist: 'Такой пользователь уже существует!',
       AuthOrNetError: 'Ошибка авторизации или соединения',
+      AccountNotFound: 'Логин не найден',
+      PasswordInvalid: 'Неверный пароль!',
       AuthorizationError: 'Пожалуйста, авторизуйте аккаунт',
       LoginError: 'Пожалуйста, проверьте данные для входа',
       Conflict: 'Такой пользователь уже существует',
