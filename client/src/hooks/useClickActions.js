@@ -53,7 +53,7 @@ const useClickActions = () => {
   };
 
   const hadleEndTurnClick = () => {
-    if ((gameMode === 'online' && actionPerforming) || isPlayerDisconnected(players)) return;
+    if (gameMode === 'online' && (actionPerforming || isPlayerDisconnected(players))) return;
 
     const { maxPoints } = playerPoints.find((p) => p.player === thisPlayer);
     const newPlayer = thisPlayer === 'player1' ? 'player2' : 'player1';
@@ -101,7 +101,7 @@ const useClickActions = () => {
     const {
       btnType, card, ability, ressurect,
     } = data;
-    if ((gameMode === 'online' && actionPerforming) || isPlayerDisconnected(players)) return;
+    if (gameMode === 'online' && (actionPerforming || isPlayerDisconnected(players))) return;
 
     const {
       cellId,
@@ -182,7 +182,7 @@ const useClickActions = () => {
     const activeCard = getActiveCard();
     const { points } = playerPoints.find((p) => p.player === thisPlayer);
 
-    if ((gameMode === 'online' && actionPerforming) || isPlayerDisconnected(players)) return;
+    if (gameMode === 'online' && (actionPerforming || isPlayerDisconnected(players))) return;
 
     if (activeCard && !isAllowedCost(activeCard, points)) return;
 
@@ -245,7 +245,7 @@ const useClickActions = () => {
     if (appliedCard.subtype === 'reaction' && player !== appliedCard.player) {
       return;
     }
-    if (cell.type === 'field' && appliedCard.type === 'spell') {
+    if ((cell.type === 'field' || cell.type === 'hero') && appliedCard.type === 'spell') {
       dispatch(modalsActions.openModal({ type: 'openCheckCard', data: spellsInCell, id: 'attached' }));
       return;
     }
@@ -257,7 +257,7 @@ const useClickActions = () => {
 
   const handleCellCardClick = ({ item, cardElement }) => {
     if (invoking) return;
-    if ((gameMode === 'online' && actionPerforming) || isPlayerDisconnected(players)) return;
+    if (gameMode === 'online' && (actionPerforming || isPlayerDisconnected(players))) return;
 
     const currentCell = fieldCells.find((cell) => cell.id === item.cellId);
     const spellsInCell = fieldCards.filter((card) => card.cellId === item.cellId && card.type === 'spell');
@@ -280,7 +280,7 @@ const useClickActions = () => {
   };
 
   const handleDeckClick = ({ player }) => {
-    if (gameMode === 'online' && actionPerforming) {
+    if (gameMode === 'online' && (actionPerforming || isPlayerDisconnected(players))) {
       return;
     }
     if (gameTurn !== thisPlayer) {
@@ -297,7 +297,7 @@ const useClickActions = () => {
   };
 
   const handleGraveyardClick = (player, graveCell) => {
-    if (gameMode === 'online' && actionPerforming) {
+    if (gameMode === 'online' && (actionPerforming || isPlayerDisconnected(players))) {
       return;
     }
     const activeCard = getActiveCard();

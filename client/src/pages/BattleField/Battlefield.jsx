@@ -46,6 +46,7 @@ const Battlefield = () => {
     playersHands,
     thisPlayer,
     players,
+    gameTurn,
   } = useSelector((state) => state.battleReducer);
   const { gameMode, curRoom, socketId } = useSelector((state) => state.gameReducer);
   const thisPlayerName = useSelector((state) => state.gameReducer.name);
@@ -128,8 +129,8 @@ const Battlefield = () => {
         socket.emit('closeRoom', { roomId: curRoom, name: thisPlayerName }, (data) => {
           dispatch(gameActions.updateRooms({ rooms: data }));
         });
+        dispatch(modalsActions.openModal({ type: 'playerDisconnected', player: thisPlayerName, roomId: curRoom }));
         navigate('/lobby');
-        dispatch(gameActions.setPlayerName({ name: '' }));
       }
     };
 
@@ -166,10 +167,10 @@ const Battlefield = () => {
       dispatch(modalsActions.openModal({ type: 'waitForPlayer' }));
     } else if (type === 'waitForPlayer' && players[thisPlayer].cardsdrawn) {
       dispatch(modalsActions.closeModal());
-    } else if (type === 'waitForPlayer' && !players[thisPlayer].cardsdrawn) {
+    } else if (type === 'waitForPlayer' && !players[thisPlayer].cardsdrawn && gameTurn === thisPlayer) {
       dispatch(modalsActions.openModal({ type: 'startFirstRound', player: thisPlayer }));
     }
-  }, [players.player2.name, dispatch, gameMode, curRoom, players.player1.name, type, players, thisPlayer]);
+  }, [players.player2.name, dispatch, gameMode, curRoom, players.player1.name, type, gameTurn, players, thisPlayer]);
 
   useEffect(() => {
     socket.on('makeMove', (data) => {

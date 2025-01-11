@@ -12,6 +12,8 @@ import CellCard from '../CellCard/CellCard.jsx';
 import styles from './HeroPad.module.css';
 import useClickActions from '../../../hooks/useClickActions.js';
 
+const cardsToShowHeroSlot = 5;
+
 const HeroPad = ({ type, player }) => {
   const { t } = useTranslation();
   const deck = useRef();
@@ -38,6 +40,10 @@ const HeroPad = ({ type, player }) => {
   const lastItem = useMemo(() => graveyardContent[0], [graveyardContent]);
   const heroCard = heroData.find((card) => card.type === 'hero');
   const readyWarrior = useMemo(() => isWarriorReady(heroCard, player, gameTurn) && heroCard.features.find((feat) => feat.cost <= curPoints), [gameTurn, heroCard, curPoints, player]);
+
+  const lastCardToShowIdx = heroData.length + 1 - cardsToShowHeroSlot;
+  const heroCellContent = heroData
+    .slice(lastCardToShowIdx > 0 ? lastCardToShowIdx : 0);
 
   const classesContainer = cn({
     [styles.heroPad1]: type === 'first',
@@ -87,13 +93,13 @@ const HeroPad = ({ type, player }) => {
           </button>
         </div>
         <div className={`${cellsClasses} ${heroAnima} ${styles.noBorder}`}>
-          {heroData.length > 0 && (
-            heroData.map((item) => (
+          {heroCellContent.length > 0 && (
+            heroCellContent.map((item) => (
               <CellCard
                 key={item.id}
                 item={item}
                 cellType="hero"
-                content={heroData}
+                content={heroCellContent}
               />
             ))
           )}

@@ -12,7 +12,7 @@ const getTopMargin = (cellType, contentLength) => {
     return Math.min(2.3 * contentLength, 5.3);
   }
   if (cellType === 'hero') {
-    return 6.5;
+    return 6.6;
   }
   return 0;
 };

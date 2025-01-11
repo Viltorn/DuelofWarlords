@@ -51,7 +51,7 @@ Content-Type: application/json
 // PRODUCTION
 
 
-GET https://duelofwarlords.ru/accounts/names
+GET https://duelofwarlords.ru/accounts
 Content-Type: application/json
 username: admin
 password: heroes3

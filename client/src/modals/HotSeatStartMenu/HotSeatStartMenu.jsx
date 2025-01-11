@@ -1,11 +1,11 @@
 import React, { useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import _ from 'lodash';
 import { useDispatch, useSelector } from 'react-redux';
 import { useFormik } from 'formik';
 import { NavLink } from 'react-router-dom';
 import { actions as battleActions } from '../../slices/battleSlice.js';
 import PrimaryButton from '../../components/Buttons/PrimaryButton/PrimaryButton.jsx';
-// import { factionsData, heroes, decks } from '../../gameCardsData/factionsData.js';
 import createDeckForPLayer, { addPlayerToCard } from '../../utils/makeDeckForPlayer.js';
 import cardsData from '../../gameCardsData/index.js';
 import { startCardsNumber1, startCardsNumber2, minDeckCards } from '../../gameData/gameLimits.js';
@@ -35,7 +35,7 @@ const HotSeatMenu = () => {
     const playerDeck = decks[number];
     const heroFaction = playerDeck.hero.faction;
     const heroName = playerDeck.hero.name;
-    const playerHeroData = cardsData[heroFaction][heroName];
+    const playerHeroData = { ...cardsData[heroFaction][heroName], id: _.uniqueId() };
     return { playerDeck, playerHeroData, heroName };
   };
 

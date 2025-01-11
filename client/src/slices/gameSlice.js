@@ -5,7 +5,7 @@ const initialState = {
   rooms: [],
   curRoom: '',
   name: '',
-  onlineCount: '',
+  onlineCount: 0,
   socketId: '',
   messages: [],
   logged: false,

@@ -65,43 +65,7 @@ io.on('connection', async (socket) => {
   // const userCount = io.engine.clientsCount;
   // io.emit('clientsCount', userCount);
   // io.to(socket.id).emit('rooms', getRooms(rooms));
-  io.to(socket.id).emit('getSocketId', socket.id);
-
-  // socket.on('saveDeck', async (data, callback) => {
-  //   try {
-  //     const { deck, username } = data;
-  //     const rawRes = await redis.get(username, function(err, result) {
-  //       if (err) {
-  //         console.log('DatabaseError');
-  //       } else if (result === null) {
-  //         console.log('UserDoesNotExist');
-  //       } else {
-  //         console.log(result);
-  //       }
-  //     });
-    
-  //     const res = JSON.parse(rawRes);
-  //     const { decks } = res;
-  //     console.log(decks);
-  //     if (isDeckExist(deck, decks)) {
-  //       const newDecks = renewPlayerDecks(deck, decks);
-  //       const jsonData = JSON.stringify({ ...res, decks: newDecks });
-  //       await redis.set(username, jsonData);
-  //       callback({ decks: newDecks });
-  //       return;
-  //     }
-  //     if (!isDeckExist(deck, decks) && decks.length < 10) {
-  //       const newDecks = [deck, ...decks ];
-  //       const jsonData = JSON.stringify({ ...res, decks: newDecks });
-  //       await redis.set(username, jsonData);
-  //       callback({ decks: newDecks });
-  //       return;
-  //     }
-  //     callback({ error: true, message: 'MaximumDecks' });
-  //   } catch (e) {
-  //     return;
-  //   }
-  // });
+  socket.emit('getSocketId', socket.id);
 
   socket.on('deleteDeck', async (data, callback) => {
     const { deckName, username } = data;
@@ -196,7 +160,7 @@ io.on('connection', async (socket) => {
     const { username } = data;
     socket.data.username = username;
     const userCount = io.engine.clientsCount;
-    socket.emit('clientsCount', userCount); 
+    socket.broadcast.emit('clientsCount', userCount); 
     // io.to(socket.id).emit('getMessages', messages);
     callback({ id: socket.id, newRooms: getRooms(rooms), messages, players: userCount });
   });
