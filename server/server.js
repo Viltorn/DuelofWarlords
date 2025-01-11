@@ -65,31 +65,6 @@ io.on('connection', async (socket) => {
 
   socket.emit('getSocketId', socket.id);
 
-  // socket.on('deleteDeck', async (data, callback) => {
-  //   const { deckName, username } = data;
-  //   const rawRes = await redis.get(`DofWAccounts:${username}`, function(err, result) {
-  //     if (err) {
-  //       console.log('DatabaseError');
-  //     } else if (result === null) {
-  //       console.log('UserDoesNotExist');
-  //     } else {
-  //       console.log(result);
-  //     }
-  //   });
-  //   const res = JSON.parse(rawRes);
-  //   const { decks } = res;
-
-  //   if (decks.length === 1) {
-  //     callback({ error: true, message: 'YouNeedOneDeck' });
-  //     return;
-  //   }
-
-  //   const newDecks = decks.filter((item) => item.deckName !== deckName);
-  //   const jsonData = JSON.stringify({ ...res, decks: newDecks });
-  //   await redis.set(`DofWAccounts:${username}`, jsonData);
-  //   callback({ decks: newDecks });
-  // });
-
   socket.on('updateOnlineData', async (data, callback) => {
     const { username } = data;
     socket.data.username = username;
