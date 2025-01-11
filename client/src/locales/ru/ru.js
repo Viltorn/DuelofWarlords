@@ -198,7 +198,7 @@ export default {
       'Network Error': 'Ошибка соединения',
       meetDeckRequirments: 'Выберите героя!',
       MaximumDecks: 'Вы уже создали максимальное количество колод!',
-      YouNeedOneDeck: 'У вас должна быть хотя бы 1 колода!',
+      YouNeedTwoDecks: 'У вас должно быть хотя бы 2 колоды!',
       false: '',
     },
 

@@ -43,12 +43,15 @@ const OnlineLobby = () => {
 
   useEffect(() => {
     socket.emit('updateOnlineData', { username: name }, (data) => {
-      const { newRooms, messages, players } = data;
+      const {
+        newRooms, messages, players, id,
+      } = data;
       dispatch(gameActions.setMessages({ data: messages }));
       dispatch(gameActions.updateRooms({ rooms: newRooms }));
       dispatch(gameActions.setOnlineCount({ count: players }));
+      if (socketId === '') dispatch(gameActions.setSocketId({ socketId: id }));
     });
-  }, [dispatch, name]);
+  }, [dispatch, name, socketId]);
 
   useEffect(() => {
     const setMessages = (data) => {

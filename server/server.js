@@ -55,105 +55,38 @@ io.on('connection', async (socket) => {
   currentRooms.forEach(async (room) => {
     const roomUser = room.players.find((player) => player.id === socket.id);
 
-    console.log(roomUser);
+    console.log(roomUser.username);
     if (roomUser) {
       await socket.join(room.roomId);
       io.to(room.roomId).emit('playerReconnected', roomUser);
     }
   });
 
-  // const userCount = io.engine.clientsCount;
-  // io.emit('clientsCount', userCount);
-  // io.to(socket.id).emit('rooms', getRooms(rooms));
   socket.emit('getSocketId', socket.id);
 
-  socket.on('deleteDeck', async (data, callback) => {
-    const { deckName, username } = data;
-    const rawRes = await redis.get(`DofWAccounts:${username}`, function(err, result) {
-      if (err) {
-        console.log('DatabaseError');
-      } else if (result === null) {
-        console.log('UserDoesNotExist');
-      } else {
-        console.log(result);
-      }
-    });
-    const res = JSON.parse(rawRes);
-    const { decks } = res;
-
-    if (decks.length === 1) {
-      callback({ error: true, message: 'YouNeedOneDeck' });
-      return;
-    }
-
-    const newDecks = decks.filter((item) => item.deckName !== deckName);
-    const jsonData = JSON.stringify({ ...res, decks: newDecks });
-    await redis.set(`DofWAccounts:${username}`, jsonData);
-    callback({ decks: newDecks });
-  });
-
-  // socket.on('logIn', async (data, callback) => {
-  //   try {
-  //     const { username, password } = data;
-  //     console.log('log1');
-  //     const rawRes = await redis.get(username, function(err, result) {
-  //         if (err) {
-  //           console.log('DatabaseError');
-  //         } else if (result === null) {
-  //           console.log('UserDoesNotExist');
-  //         } else {
-  //           console.log(result);
-  //         }
-  //       });
-      
-  //     if (rawRes === null) {
-  //       callback({ error: true, message: 'UserDoesNotExist' });
-  //       return;
-  //     }
-
-  //     const res = JSON.parse(rawRes);
-  //     const { pass, decks } = res;
-        
-  //     if (pass !== password) {
-  //       const error = true;
-  //       const message = 'WrongPass';
-  //       callback({ error, message });
-  //       return;
-  //     }
-
-  //     socket.data.username = username;
-  //     const userCount = io.engine.clientsCount;
-  //     io.emit('clientsCount', userCount); 
-  //     io.to(socket.id).emit('getMessages', messages);
-  //     callback({ id: socket.id, rooms: getRooms(rooms), decks });
-  //   } catch (e) {
-  //     return;
-  //   }
-  // });
-
-  // socket.on('signUp', async (args, callback) => {
-  //   const { username, password, decks } = args;
-  //   const rawRes = await redis.get(username, function(err, result) {
+  // socket.on('deleteDeck', async (data, callback) => {
+  //   const { deckName, username } = data;
+  //   const rawRes = await redis.get(`DofWAccounts:${username}`, function(err, result) {
   //     if (err) {
   //       console.log('DatabaseError');
-  //     } else if (result !== null) {
-  //       console.log('UserAlreadyExist');
+  //     } else if (result === null) {
+  //       console.log('UserDoesNotExist');
+  //     } else {
+  //       console.log(result);
   //     }
   //   });
+  //   const res = JSON.parse(rawRes);
+  //   const { decks } = res;
 
-  //   if (rawRes !== null) {
-  //     callback({error: true, message:  'UserAlreadyExist' });
+  //   if (decks.length === 1) {
+  //     callback({ error: true, message: 'YouNeedOneDeck' });
   //     return;
   //   }
-    
-  //   const jsonData = JSON.stringify({ pass: password, decks });
-  //   await redis.set(username, jsonData);
-  
-  //   socket.data.username = username;
-  //   const userCount = io.engine.clientsCount;
-  //   io.emit('clientsCount', userCount); 
-  //   io.to(socket.id).emit('getMessages', messages);
-  //   callback({ id: socket.id, rooms: getRooms(rooms), decks });
+
+  //   const newDecks = decks.filter((item) => item.deckName !== deckName);
+  //   const jsonData = JSON.stringify({ ...res, decks: newDecks });
+  //   await redis.set(`DofWAccounts:${username}`, jsonData);
+  //   callback({ decks: newDecks });
   // });
 
   socket.on('updateOnlineData', async (data, callback) => {

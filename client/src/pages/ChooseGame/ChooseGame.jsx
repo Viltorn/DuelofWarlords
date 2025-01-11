@@ -14,8 +14,9 @@ const ChooseGame = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const {
-    logged, userType, socketId,
+    logged, userType, socketId, name,
   } = useSelector((state) => state.gameReducer);
+
   const { isOpened, type } = useSelector((state) => state.modalsReducer);
 
   const loginBtnStyle = cn({
@@ -42,6 +43,15 @@ const ChooseGame = () => {
   };
 
   useEffect(() => {
+    socket.emit('updateOnlineData', { username: name }, (data) => {
+      const {
+        id,
+      } = data;
+      dispatch(gameActions.setSocketId({ socketId: id }));
+    });
+  }, [dispatch, name]);
+
+  useEffect(() => {
     if (!logged && userType !== 'guest') {
       dispatch(modalsActions.openModal({ type: 'loginWindow' }));
     }
@@ -50,9 +60,6 @@ const ChooseGame = () => {
       if (socketId !== id && socketId !== '') {
         dispatch(gameActions.setSocketId({ socketId: id }));
         dispatch(gameActions.setLogged({ logged: false }));
-      }
-      if (socketId === '') {
-        dispatch(gameActions.setSocketId({ socketId: id }));
       }
     };
 
