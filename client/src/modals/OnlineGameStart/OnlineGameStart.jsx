@@ -137,6 +137,7 @@ const OnlineGameStart = () => {
             dispatch(uiActions.setTimer(Number(res.timer)));
             dispatch(uiActions.setCurTime([parseInt(res.timer, 10), parseInt(0, 10)]));
             dispatch(uiActions.setTimerIsPaused(true));
+            dispatch(modalsActions.closeModal());
             navigate('/battle');
           });
         }

@@ -112,7 +112,7 @@ const Battlefield = () => {
       dispatch(battleActions.setPlayerName({ name: player.username, player: player.type }));
       if (type === 'waitForPlayer' && !players[thisPlayer].cardsdrawn && gameTurn === thisPlayer) {
         dispatch(modalsActions.openModal({ type: 'startFirstRound', player: thisPlayer }));
-      } else if (type === 'waitForPlayer') dispatch(modalsActions.closeModal());
+      } else dispatch(modalsActions.closeModal());
     });
 
     const handleThisPlayerDisc = () => {
