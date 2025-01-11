@@ -12,7 +12,6 @@ import HeroPad from './HeroPad/HeroPad.jsx';
 import Card from '../../components/CardComponents/Card/Card.jsx';
 import Header from './BattleHeader/BattleHeader.jsx';
 import RotateScreen from '../../components/RotateScreen/RotateScreen.jsx';
-import isPlayerDisconnected from '../../utils/supportFunc/isPlayerDisconnected.js';
 import TutorialStepsWindow from '../../modals/TutorialModals/TutorialStepsWindow.jsx';
 import ActiveCard from '../../components/CardComponents/ActiveCard/ActiveCard.jsx';
 import ActiveCardInfo from '../../components/CardComponents/ActiveCard/ActiveCardInfo.jsx';
@@ -95,8 +94,10 @@ const Battlefield = () => {
       dispatch(gameActions.setCurrentRoom({ room: roomId }));
       dispatch(modalsActions.openModal({ type: 'startFirstRound', player: 'player1' }));
     });
+
     socket.on('playerDisconnected', (player) => {
       dispatch(battleActions.setPlayerName({ name: '', player: player.type }));
+      dispatch(modalsActions.openModal({ type: 'waitForPlayer' }));
     });
 
     socket.on('closeRoom', (data) => {
@@ -109,10 +110,15 @@ const Battlefield = () => {
 
     socket.on('playerReconnected', (player) => {
       dispatch(battleActions.setPlayerName({ name: player.username, player: player.type }));
+      if (type === 'waitForPlayer' && players[thisPlayer].cardsdrawn) dispatch(modalsActions.closeModal());
+      if (type === 'waitForPlayer' && !players[thisPlayer].cardsdrawn && gameTurn === thisPlayer) {
+        dispatch(modalsActions.openModal({ type: 'startFirstRound', player: thisPlayer }));
+      }
     });
 
     const handleThisPlayerDisc = () => {
       dispatch(battleActions.setPlayerName({ name: '', player: thisPlayer }));
+      dispatch(modalsActions.openModal({ type: 'waitForPlayer' }));
     };
 
     const updateRoomsBattle = (data) => {
@@ -159,18 +165,17 @@ const Battlefield = () => {
     thisPlayerName,
     gameMode,
     setTimerPaused,
+    gameTurn,
+    players,
+    type,
   ]);
 
-  useEffect(() => {
-    if (gameMode === 'online' && curRoom !== ''
-      && isPlayerDisconnected(players) && type !== 'warningWindow') {
-      dispatch(modalsActions.openModal({ type: 'waitForPlayer' }));
-    } else if (type === 'waitForPlayer' && players[thisPlayer].cardsdrawn) {
-      dispatch(modalsActions.closeModal());
-    } else if (type === 'waitForPlayer' && !players[thisPlayer].cardsdrawn && gameTurn === thisPlayer) {
-      dispatch(modalsActions.openModal({ type: 'startFirstRound', player: thisPlayer }));
-    }
-  }, [players.player2.name, dispatch, gameMode, curRoom, players.player1.name, type, gameTurn, players, thisPlayer]);
+  // useEffect(() => {
+  //   if (gameMode === 'online' && curRoom !== ''
+  //     && isPlayerDisconnected(players) && type !== 'warningWindow') {
+  //     dispatch(modalsActions.openModal({ type: 'waitForPlayer' }));
+
+  // }, [players.player2.name, dispatch, gameMode, curRoom, players.player1.name, type, gameTurn, players, thisPlayer]);
 
   useEffect(() => {
     socket.on('makeMove', (data) => {
