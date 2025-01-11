@@ -101,6 +101,7 @@ const OnlineGameStart = () => {
             handleClose();
             dispatch(gameActions.setCurrentRoom({ room: res }));
             dispatch(battleActions.addCommonPoint());
+            dispatch(modalsActions.openModal({ type: 'waitForPlayer' }));
             navigate('/battle');
           });
         } else if (socket.connected) {
@@ -136,7 +137,6 @@ const OnlineGameStart = () => {
             dispatch(uiActions.setTimer(Number(res.timer)));
             dispatch(uiActions.setCurTime([parseInt(res.timer, 10), parseInt(0, 10)]));
             dispatch(uiActions.setTimerIsPaused(true));
-            handleClose();
             navigate('/battle');
           });
         }

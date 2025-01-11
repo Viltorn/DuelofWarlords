@@ -170,13 +170,6 @@ const Battlefield = () => {
     type,
   ]);
 
-  // useEffect(() => {
-  //   if (gameMode === 'online' && curRoom !== ''
-  //     && isPlayerDisconnected(players) && type !== 'warningWindow') {
-  //     dispatch(modalsActions.openModal({ type: 'waitForPlayer' }));
-
-  // }, [players.player2.name, dispatch, gameMode, curRoom, players.player1.name, type, gameTurn, players, thisPlayer]);
-
   useEffect(() => {
     socket.on('makeMove', (data) => {
       const { move } = data;
