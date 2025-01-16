@@ -7,7 +7,7 @@ export default (deck) => deck.flatMap(({
   const arr = Array(qty).fill({});
   const cards = arr.map(() => {
     const card = faction ? cardsData[faction][name] : cardsData[school][name];
-    const uniqCard = { ...card, id: _.uniqueId() };
+    const uniqCard = { ...card, id: _.uniqueId(), status: 'deck' };
     uniqCard.features = uniqCard.features.map((feat) => {
       const newFeat = { ...feat, id: uniqCard.id };
       if (feat.name === 'invoke') {

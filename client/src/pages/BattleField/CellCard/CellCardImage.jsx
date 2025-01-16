@@ -1,9 +1,10 @@
 import cn from 'classnames';
 import { useTranslation } from 'react-i18next';
 import Healed from '@assets/battlefield/HealingIcon.webp';
+import Shield from '@assets/battlefield/ShieldIcon.png';
 import styles from './CellCard.module.css';
 
-const CellCardImage = ({ cardInfo, currentCell }) => {
+const CellCardImage = ({ cardInfo, currentCell, protection }) => {
   const {
     cardsFeature, power, description, currentHP, currentC, type, img, name,
   } = cardInfo;
@@ -35,6 +36,13 @@ const CellCardImage = ({ cardInfo, currentCell }) => {
         src={img}
         alt={name}
       />
+      {protection && (
+      <img
+        className={styles.protectIcon}
+        src={Shield}
+        alt="shield icon"
+      />
+      )}
       {/* {currentCell.animation === 'attacked' && (type === 'warrior' || type === 'hero') && (
       <img
         className={styles.attackIcon}

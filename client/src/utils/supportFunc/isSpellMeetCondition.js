@@ -14,7 +14,7 @@ const isSpellMeetCondition = (data) => {
   } = data;
   const { condition, conditionValue, cost } = spell;
   if (cost && spellOwnerPoints && spellOwnerPoints - cost < 0) return false;
-  if (!condition) {
+  if (!condition || !defendingCard) {
     return true;
   }
   if (type === 'warrior' || warSubtypes.includes(type)) {

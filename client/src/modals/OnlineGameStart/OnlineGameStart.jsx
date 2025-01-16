@@ -87,7 +87,8 @@ const OnlineGameStart = () => {
         const startCardsNum = player === 'player1' ? startCardsNumber1 : startCardsNumber2;
         const playerDeckData = makeInitialDeck(values.playerDeck);
         const playerFullDeck = createDeckForPLayer(makeShaffledDeck(playerDeckData), player);
-        const playerHand = player === 'player1' ? playerFullDeck.slice(0, startCardsNum) : [...playerFullDeck.slice(0, startCardsNum), dummyCard];
+        const playerHand = player === 'player1' ? playerFullDeck.slice(0, startCardsNum).map((card) => ({ ...card, status: 'hand' }))
+          : [...playerFullDeck.slice(0, startCardsNum), dummyCard].map((card) => ({ ...card, status: 'hand' }));
         const playerFinalDeck = playerFullDeck.slice(startCardsNum);
         if (player === 'player1' && socket.connected) {
           socket.emit('createRoom', {

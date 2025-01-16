@@ -11,16 +11,20 @@ const MusicButton = () => {
 
   const handlePlayPause = () => {
     if (!musicRef.current) return;
-
-    if (isPlaying) musicRef.current.pause();
-    if (!isPlaying) musicRef.current.play();
+    if (!isPlaying) {
+      musicRef.current.play();
+    }
+    if (isPlaying) {
+      console.log('pause');
+      musicRef.current.pause();
+    }
     setIsPlaying(!isPlaying);
   };
 
   return (
     <button className={styles.button} type="button" onClick={handlePlayPause}>
       {isPlaying ? <img src={PauseIcon} alt="menu" /> : <img src={PlayIcon} alt="menu" />}
-      <audio ref={musicRef} loop>
+      <audio ref={musicRef} loop preload="true">
         <source src={Music} type="audio/mpeg" />
       </audio>
     </button>

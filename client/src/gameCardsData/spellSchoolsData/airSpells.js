@@ -188,7 +188,7 @@ export default {
     subtype: 'temporary',
     cost: 2,
     currentC: 2,
-    featInfo: [],
+    featInfo: ['SWIFT'],
     description: 'AirFlows',
     school: 'Air',
     place: 'midSpell',

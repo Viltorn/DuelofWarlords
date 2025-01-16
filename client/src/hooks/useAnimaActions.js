@@ -97,9 +97,9 @@ const useAnimaActions = () => {
       attackingCard: warCard, type: 'warrior', allFieldCells: fieldCells, allFieldCards: fieldCards,
     };
     const warCell = fieldCells.find((cell) => cell.id === warCard.cellId);
-    const warCellFeatureAttachment = warCell?.attachments?.find((feature) => feature.name === featureName && feature.aim.includes(warCard.subtype) && checkMeetCondition({ ...defaultConditionData, spell: feature }));
+    const warCellFeatureAttachment = warCell?.attachments?.find((feature) => feature.name === featureName && checkMeetCondition({ ...defaultConditionData, spell: feature }) && (feature.aim.includes(warCard.subtype) || warCell.type === 'hero'));
     const warCardFeatureAttachment = warCard.attachments.find((feature) => feature.name === featureName && checkMeetCondition({ ...defaultConditionData, spell: feature }));
-    const warHasFeature = warCard.features.find((feature) => feature.name === featureName);
+    const warHasFeature = warCard.features.find((feature) => feature.name === featureName && !feature.attach);
     return warCellFeatureAttachment || warCardFeatureAttachment || warHasFeature;
   };
 

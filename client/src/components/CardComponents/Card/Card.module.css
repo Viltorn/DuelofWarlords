@@ -199,7 +199,7 @@
 }
 
 .cardCanBePlayed {
-  box-shadow: 0rem  0rem  0.3rem  0.3rem var(--golden);
+  box-shadow: 0rem  0rem  0.3rem  0.3rem var(--golden-bright);
 }
 
 .bigCard {

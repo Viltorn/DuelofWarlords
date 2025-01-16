@@ -193,7 +193,8 @@ const battleSlice = createSlice({
       const { player } = payload;
       if (state.playersDecks[player].length !== 0) {
         const card = state.playersDecks[player].shift();
-        state.playersHands[player] = [card, ...state.playersHands[player]];
+        const handCard = { ...card, status: 'hand' };
+        state.playersHands[player] = [handCard, ...state.playersHands[player]];
       }
     },
 
@@ -250,6 +251,11 @@ const battleSlice = createSlice({
     deleteFieldCard(state, { payload }) {
       const { cardId } = payload;
       state.fieldCards = state.fieldCards.filter((card) => card.id !== cardId);
+    },
+
+    deleteDeckCard(state, { payload }) {
+      const { cardId, player } = payload;
+      state.playersDecks[player] = state.playersDecks[player].filter((c) => c.id !== cardId);
     },
 
     returnCard(state, { payload }) {

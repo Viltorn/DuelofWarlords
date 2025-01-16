@@ -97,7 +97,7 @@ const Battlefield = () => {
 
     socket.on('playerDisconnected', (player) => {
       dispatch(battleActions.setPlayerName({ name: '', player: player.type }));
-      dispatch(modalsActions.openModal({ type: 'waitForPlayer' }));
+      if (gameMode === 'online') dispatch(modalsActions.openModal({ type: 'waitForPlayer' }));
     });
 
     socket.on('closeRoom', (data) => {
@@ -117,7 +117,7 @@ const Battlefield = () => {
 
     const handleThisPlayerDisc = () => {
       dispatch(battleActions.setPlayerName({ name: '', player: thisPlayer }));
-      dispatch(modalsActions.openModal({ type: 'waitForPlayer' }));
+      if (gameMode === 'online') dispatch(modalsActions.openModal({ type: 'waitForPlayer' }));
     };
 
     const updateRoomsBattle = (data) => {

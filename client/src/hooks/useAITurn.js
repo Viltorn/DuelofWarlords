@@ -195,6 +195,9 @@ const useAITurn = () => {
       }) || warHasSpecialFeature({
         warCard: card, fieldCards, fieldCells, featureName: 'moveAdjasent',
       });
+      const hasSwift = warHasSpecialFeature({
+        warCard: card, fieldCards, fieldCells, featureName: 'swift',
+      });
       const canMove = cellsForWarMove.length > 0;
       const canAttack = cellsForAttack.length > 0 && getWarriorPower(card) > 0;
       const canUseAblities = abilitiesToUse.length > 0;
@@ -239,7 +242,7 @@ const useAITurn = () => {
         return;
       }
 
-      if (canMove && (isWarBetterMove || warHasMovingFeature)) {
+      if (canMove && (isWarBetterMove || warHasMovingFeature || hasSwift)) {
         console.log('warrior move');
         const cellToApply = findBestCellForWarDeploy(fieldCards, cellsForWarMove, card);
         const curCell = fieldCells.find((c) => c.id === cellToApply);

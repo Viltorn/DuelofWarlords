@@ -114,26 +114,18 @@ const useBattleActions = () => {
   const deleteCardFromSource = (card) => {
     // Extract properties from the card object
     const {
-      player, status, cellId, id, type,
+      player, status, id, type,
     } = card;
 
     // Delete the card from the appropriate source based on its status
-    if (status === 'hand') {
-      dispatch(battleActions.deleteHandCard({ cardId: id, player }));
-    } else {
-      dispatch(battleActions.deleteFieldCard({ cardId: id }));
-    }
+    if (status === 'hand') dispatch(battleActions.deleteHandCard({ cardId: id, player }));
+    if (status === 'field') dispatch(battleActions.deleteFieldCard({ cardId: id }));
+    if (status === 'deck') dispatch(battleActions.deleteDeckCard({ cardId: id, player }));
 
     // Perform additional actions based on conditions
-    if (cellId === 'postponed1' || cellId === 'postponed2') {
-      // Turn the postponed card to cover status
-      dispatch(battleActions.turnPostponed({ player, status: 'cover' }));
-    }
 
     // If the card type is 'warrior', delete any attachment associated with it
-    if (type === 'warrior') {
-      dispatch(battleActions.deleteAttachment({ spellId: id }));
-    }
+    if (type === 'warrior') dispatch(battleActions.deleteAttachment({ spellId: id }));
   };
 
   const changeCardHP = (power, health, card) => {
@@ -250,14 +242,10 @@ const useBattleActions = () => {
 
     dispatch(battleActions.addAnimation({ cellId: applyingCell.id, type: 'attacked' }));
     if (isKilled(calculatedPower, receivedHealth)) {
-      const cardCell = currentFieldCells.find((cell) => cell.id === aimCard.cellId);
-      const lastSpells = findTriggerSpells(aimCard, cardCell, 'lastcall', 'warrior', gameTurn);
-      deleteCardFromSource(aimCard);
-      dispatch(battleActions.addToGraveyard({ card: aimCard }));
       moveAttachedSpells(aimCard.cellId, null, 'kill');
-      lastSpells.forEach((feat) => castFunc({
-        feature: feat, aimCell: cardCell, applyingCard: null, player: aimCard.player, player2Type: '', performAIAction: null,
-      }));
+      sendCardFromField({
+        card: aimCard, castFunc, destination: 'grave', cardCost: null, cellsOnField: currentFieldCells, gameTurn,
+      });
     }
     if (isKilled(calculatedPower, receivedHealth) && isHeroKilled(aimCard)) {
       showVictoryWindow(getEnemyPlayer(aimCard.player));
@@ -405,9 +393,9 @@ const useBattleActions = () => {
           card: spellCard, playerPoints, fieldCards: currentFieldCards, fieldCells: currentFieldCells, room: '',
         });
       } else {
-        handleAnimation(spellCard, 'add');
         setInvoking(true);
         setTimeout(() => setInvoking(false), 1000);
+        handleAnimation(spellCard, 'add');
       }
     },
     drawCard: (data) => {
@@ -629,8 +617,6 @@ const useBattleActions = () => {
     if (cellsToAttach && attach.includes('grave')) {
       const playerToApply = feature.type === 'good' ? castingPlayer : getEnemyPlayer(castingPlayer);
       dispatch(modalsActions.openModal({ type: 'openCheckCard', player: playerToApply, id: 'grave' }));
-      // const currenttOwnerPoints = playerPoints.find((item) => item.player === castingPlayer).points;
-      // dispatch(battleActions.setPlayerPoints({ points: currenttOwnerPoints - feature.cost ?? 0, player: castingPlayer }));
       if (player2Type === 'computer' && castingPlayer === 'player2') {
         const cardsCanBeRessurected = currentFieldCards
           .filter((c) => c.status === 'graveyard' && c.player === playerToApply && feature.aim.includes(c.subtype));

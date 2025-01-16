@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 import _ from 'lodash';
 import Blizzard from '../../assets/waterSpells/Blizzard.png';
 import Frostbite from '../../assets/waterSpells/Frostbite.png';
@@ -75,7 +76,7 @@ export default {
     showCharges: false,
     place: 'bigSpell',
     features: [{
-      spell: true, attach: ['field', 'warrior'], aim: ['warrior', 'fighter', 'shooter', 'flyer'], name: 'stun', condition: 'onplay', type: 'bad', charges: 1, aimStatus: 'field', cost: 2, subtype: 'reaction',
+      spell: true, attach: ['field', 'warrior'], aim: ['warrior', 'fighter', 'shooter', 'flyer'], name: 'stun', condition: 'onplay', type: 'bad', charges: 1, aimStatus: 'field', cost: 1, subtype: 'reaction',
     },
     {
       spell: true, attach: ['field', 'warrior'], type: 'bad', aim: ['warrior', 'fighter', 'shooter', 'flyer'], name: 'attack', value: 3, charges: 1, condition: 'onplay', aimStatus: 'field', cost: 0, subtype: 'reaction',
@@ -84,7 +85,7 @@ export default {
       spell: true, attach: ['field', 'warrior'], type: 'bad', aim: ['warrior', 'fighter', 'shooter', 'flyer'], name: 'attack', value: 3, charges: 1, condition: 'onmove', aimStatus: 'field', cost: 0, subtype: 'reaction',
     },
     {
-      spell: true, attach: ['field', 'warrior'], aim: ['warrior', 'fighter', 'shooter', 'flyer'], name: 'stun', condition: 'onmove', type: 'bad', charges: 1, aimStatus: 'field', cost: 2, subtype: 'reaction',
+      spell: true, attach: ['field', 'warrior'], aim: ['warrior', 'fighter', 'shooter', 'flyer'], name: 'stun', condition: 'onmove', type: 'bad', charges: 1, aimStatus: 'field', cost: 1, subtype: 'reaction',
     }],
     img: FrostTrap,
     status: 'hand',
@@ -234,15 +235,23 @@ export default {
     id: _.uniqueId(),
     type: 'spell',
     subtype: 'instant',
-    cost: 7,
-    currentC: 7,
+    cost: 5,
+    currentC: 5,
     featInfo: [],
     description: 'Tsunami',
     school: 'Water',
     place: '',
-    features: [{
-      spell: true, attach: false, type: 'all', aim: ['field', 'warrior', 'fighter', 'shooter'], name: 'attack', value: 7, depend: 'postponed', dependValue: 8, aimStatus: 'field',
-    }],
+    features: [
+      {
+        spell: true, attach: false, type: 'all', aim: ['row', 'warrior', 'fighter', 'shooter'], name: 'attack', value: 7, aimStatus: 'field',
+      },
+      {
+        spelll: true, attach: false, type: 'all', aim: ['randomNextRow', 'warrior', 'fighter', 'shooter'], name: 'attack', value: 7, aimStatus: 'field',
+      },
+    //   {
+    //   spell: true, attach: false, type: 'all', aim: ['field', 'warrior', 'fighter', 'shooter'], name: 'attack', value: 7, depend: 'postponed', dependValue: 8, aimStatus: 'field',
+    // }
+    ],
     img: Tsunami,
     status: 'hand',
   },

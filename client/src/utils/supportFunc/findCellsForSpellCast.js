@@ -36,6 +36,7 @@ const findCellsForSpellCast = (data) => {
     }) : [];
     const heroCells = attach.includes('hero') ? fieldCells.filter((cell) => !cell.disabled && cell.player === aimPlayer && cell.type === 'hero')
       : [];
+    console.log([...warriorCells, ...heroCells]);
     return [...warriorCells, ...heroCells];
   }
   if (place === 'warrior' && type === 'all') {

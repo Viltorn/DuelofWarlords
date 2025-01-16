@@ -35,9 +35,13 @@ const CellCard = ({
   } = item;
   const cardsFeature = faction ?? school;
 
+  const { fieldCells, fieldCards } = useSelector((state) => state.battleReducer);
   const { handleCellCardClick } = useClickActions();
-  const { getWarriorPower } = useAnimaActions();
-  const { fieldCells } = useSelector((state) => state.battleReducer);
+  const { getWarriorPower, warHasSpecialFeature } = useAnimaActions();
+  const protectionOfWar = type === 'warrior' || type === 'hero' ? warHasSpecialFeature({
+    warCard: item, fieldCells, fieldCards, featureName: 'protection',
+  }) : null;
+  const showProtectionIcon = protectionOfWar && protectionOfWar?.subtype !== 'reaction' && !protectionOfWar.hide;
   const currentCell = fieldCells.find((cell) => cell.id === item.cellId);
   const power = item.type === 'warrior' ? getWarriorPower(item) : null;
   const marginTop = getTopMargin(cellType, content.length);
@@ -66,7 +70,11 @@ const CellCard = ({
       style={{ marginTop: `-${marginTop}rem`, marginRight: `-${marginRight}rem` }}
     >
       {subtype !== 'reaction' ? (
-        <CellCardImage cardInfo={cardInfo} currentCell={currentCell} />
+        <CellCardImage
+          cardInfo={cardInfo}
+          currentCell={currentCell}
+          protection={showProtectionIcon}
+        />
       ) : (<CellCardCover />)}
     </button>
   );

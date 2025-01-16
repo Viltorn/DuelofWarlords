@@ -64,6 +64,14 @@
   left: 0.5rem;
 }
 
+.protectIcon {
+  height: 2rem;
+  width: 2rem;
+  position: absolute;
+  top: 2rem;
+  right: -0.5rem;
+}
+
 .cost {
   color: var(--white-color);
   font-family: "Roboto-Bold", Helvetica;

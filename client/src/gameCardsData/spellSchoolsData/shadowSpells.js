@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 import _ from 'lodash';
 import ArcaneArmor from '../../assets/shadowSpells/ArcaneArmor.png';
 import CursedShackle from '../../assets/shadowSpells/CursedShackle.png';
@@ -141,15 +142,20 @@ export default {
     subtype: 'instant',
     cost: 1,
     currentC: 1,
-    featInfo: [],
+    featInfo: ['STUN'],
     description: 'Transformation',
     school: 'Shadow',
     place: '',
     features: [{
       spell: true, attach: false, type: 'bad', name: 'stun', aim: 'warrior', aimStatus: 'field',
-    }, {
-      spell: true, attach: ['warrior'], aim: ['warrior', 'flyer', 'shooter', 'fighter'], type: 'bad', name: 'moveNextRow', aimStatus: 'field', charges: 1, immediate: true,
-    }],
+    },
+    {
+      spell: true, attach: ['warrior'], type: 'bad', aim: ['warrior', 'flyer', 'shooter', 'fighter'], name: 'moveAdjasent', charges: 1, immediate: true, aimStatus: 'field',
+    },
+    //  {
+    //   spell: true, attach: ['warrior'], aim: ['warrior', 'flyer', 'shooter', 'fighter'], type: 'bad', name: 'moveNextRow', aimStatus: 'field', charges: 1, immediate: true,
+    // }
+    ],
     img: Transformation,
     status: 'hand',
   },

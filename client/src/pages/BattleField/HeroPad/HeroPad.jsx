@@ -6,6 +6,7 @@ import cn from 'classnames';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import DeckCover from '@assets/battlefield/DeckCover.png';
 import CardCounter from '@assets/battlefield/CardCounter.png';
+import getEnemyPlayer from '../../../utils/supportFunc/getEnemyPlayer.js';
 import Timer from '../../../components/Timer/Timer.jsx';
 import isWarriorReady from '../../../utils/supportFunc/isWarriorReady.js';
 import CellCard from '../CellCard/CellCard.jsx';
@@ -21,7 +22,7 @@ const HeroPad = ({ type, player }) => {
   const { handleDeckClick, handlePointsClick, handleGraveyardClick } = useClickActions();
 
   const {
-    fieldCells, fieldCards, playersHands, thisPlayer, playerPoints, gameTurn,
+    fieldCells, fieldCards, playersHands, thisPlayer, playerPoints, gameTurn, playersDecks,
   } = useSelector((state) => state.battleReducer);
   const { gameMode } = useSelector((state) => state.gameReducer);
   const { timer } = useSelector((state) => state.uiReducer);
@@ -29,8 +30,8 @@ const HeroPad = ({ type, player }) => {
   const curPoints = playerPoints.find((data) => data.player === player).points;
   const { maxPoints } = playerPoints.find((data) => data.player === player);
 
-  const cardsCount = useMemo(() => (thisPlayer === 'player1' ? playersHands.player2.length : playersHands.player1.length), [thisPlayer,
-    playersHands]);
+  const cardsCount = useMemo(() => playersHands[getEnemyPlayer(thisPlayer)].length, [thisPlayer, playersHands]);
+  const cardsInDecks = useMemo(() => playersDecks[player].length, [playersDecks, player]);
   const heroCellId = useMemo(() => (player === 'player1' ? 'hero1' : 'hero2'), [player]);
   const heroCell = useMemo(() => fieldCells.find((cell) => cell.player === player && cell.type === 'hero'), [fieldCells, player]);
   const heroData = useMemo(() => fieldCards.filter((card) => card.cellId === heroCellId), [heroCellId, fieldCards]);
@@ -87,11 +88,21 @@ const HeroPad = ({ type, player }) => {
           <img className={`${styles.image} ${styles.noBorder}`} src={CardCounter} alt="cards counter" />
         </div>
         )}
-        <div className={`${cellsClasses} ${styles.noBorder}`}>
-          <button className={styles.defaultBtn} ref={deck} data-player={player} type="button" onClick={() => handleDeckClick({ deck, player })}>
-            <img className={`${styles.image} ${styles.noBorder}`} src={DeckCover} alt="deck cover" />
-          </button>
-        </div>
+        {cardsInDecks > 0
+          ? (
+            <div className={`${cellsClasses} ${styles.noBorder}`}>
+              <button className={styles.defaultBtn} ref={deck} data-player={player} type="button" onClick={() => handleDeckClick({ deck, player })}>
+                <img className={`${styles.image} ${styles.noBorder}`} src={DeckCover} alt="deck cover" />
+              </button>
+            </div>
+          )
+          : (
+            <div className={`${cellsClasses}`}>
+              <button className={styles.defaultBtn} onClick={() => handleDeckClick({ deck, player })} type="button">
+                <h3 className={styles.defaultTitle}>{t('Deck')}</h3>
+              </button>
+            </div>
+          )}
         <div className={`${cellsClasses} ${heroAnima} ${styles.noBorder}`}>
           {heroCellContent.length > 0 && (
             heroCellContent.map((item) => (

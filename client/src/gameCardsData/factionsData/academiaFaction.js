@@ -77,13 +77,13 @@ const academiaDeck = {
     turn: 0,
   },
   LivingWall: {
-    name: 'Living wall', id: _.uniqueId(), type: 'warrior', subtype: 'fighter', power: 2, currentP: 2, health: 5, currentHP: 5, cost: 2, currentC: 2, featInfo: ['FIGHTER', 'IMMOBILIZED'], description: 'LivingWall', faction: 'Academia', features: [{ name: 'immobile' }, { name: 'unarmed' }], attachments: [], img: LivingWall, status: 'hand', turn: 1,
+    name: 'Living wall', id: _.uniqueId(), type: 'warrior', subtype: 'fighter', power: 2, currentP: 2, health: 5, currentHP: 5, cost: 2, currentC: 2, featInfo: ['FIGHTER', 'IMMOBILIZED'], description: 'LivingWall', faction: 'Academia', features: [{ name: 'immobile' }, { name: 'unarmed' }], attachments: [], img: LivingWall, status: 'deck', turn: 1,
   },
   MageApprentice: {
-    name: 'Mage apprentice', id: _.uniqueId(), type: 'warrior', subtype: 'shooter', power: 2, currentP: 2, health: 4, currentHP: 4, cost: 3, currentC: 3, featInfo: ['SHOOTER', 'MAGICSHIELD'], description: 'MageApprentice', faction: 'Academia', features: [{ name: 'protection', value: { type: 'percent', val: 0.5 }, aim: ['spell'] }], attachments: [], img: MageApprentice, status: 'hand', turn: 1,
+    name: 'Mage apprentice', id: _.uniqueId(), type: 'warrior', subtype: 'shooter', power: 2, currentP: 2, health: 4, currentHP: 4, cost: 3, currentC: 3, featInfo: ['SHOOTER', 'MAGICSHIELD'], description: 'MageApprentice', faction: 'Academia', features: [{ name: 'protection', value: { type: 'percent', val: 0.5 }, aim: ['spell'] }], attachments: [], img: MageApprentice, status: 'deck', turn: 1,
   },
   GremlinShooter: {
-    name: 'Gremlin shooter', id: _.uniqueId(), type: 'warrior', subtype: 'shooter', power: 2, currentP: 2, health: 3, currentHP: 3, cost: 2, currentC: 2, featInfo: ['SHOOTER'], description: 'GremlinShooter', faction: 'Academia', features: [{ name: 'retaliation', value: 1, aim: ['shooter'] }], attachments: [], img: GremlinShooter, status: 'hand', turn: 1,
+    name: 'Gremlin shooter', id: _.uniqueId(), type: 'warrior', subtype: 'shooter', power: 2, currentP: 2, health: 3, currentHP: 3, cost: 2, currentC: 2, featInfo: ['SHOOTER'], description: 'GremlinShooter', faction: 'Academia', features: [{ name: 'retaliation', value: 1, aim: ['shooter'] }], attachments: [], img: GremlinShooter, status: 'deck', turn: 1,
   },
   IceElement: {
     name: 'Ice element',

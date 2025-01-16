@@ -108,11 +108,11 @@
 
 @keyframes yellowGlowing {
   from {
-    box-shadow: 0rem  0rem  0.3rem  0.3rem var(--golden);
+    box-shadow: 0rem  0rem  0.3rem  0.3rem var(--golden-bright);
   }
 
   to {
-    box-shadow: 0rem  0rem  0.5rem  0.5rem var(--golden);
+    box-shadow: 0rem  0rem  0.5rem  0.5rem var(--golden-bright);
   }
 }
 
