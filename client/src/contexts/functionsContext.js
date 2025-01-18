@@ -179,6 +179,7 @@ export const FunctionProvider = ({ children }) => {
         recieveCardOwnerPoints: attackCardOwnerPoints,
       });
     }
+    setActionPerforming(false);
   };
 
   // ADD CARD TO FIELD ///////
@@ -220,16 +221,19 @@ export const FunctionProvider = ({ children }) => {
       const moveNextRowFeature = warHasSpecialFeature({
         warCard: card, fieldCards, fieldCells: cellsOnField, featureName: 'moveNextRow',
       });
+      const moveNextAdjasentFeature = warHasSpecialFeature({
+        warCard: card, fieldCards, fieldCells: cellsOnField, featureName: 'moveAdjasent',
+      });
       const swiftFeature = warHasSpecialFeature({
         warCard: card, fieldCards, fieldCells: cellsOnField, featureName: 'swift',
       });
-      if (!swiftFeature && card.player === player && !movingFeature && !moveNextRowFeature) {
+      if (!swiftFeature && card.player === player && !movingFeature && !moveNextRowFeature && !moveNextAdjasentFeature) {
         dispatch(battleActions.turnCardLeft({
           cardId: card.id,
           qty: 1,
         }));
       }
-      [movingFeature, swiftFeature, moveNextRowFeature]
+      [movingFeature, swiftFeature, moveNextRowFeature, moveNextAdjasentFeature]
         .forEach((spell) => changeChargedSpellCard(spell, fieldCards, cellsOnField, makeFeatureCast));
     }
     if (card.type === 'spell') {
@@ -245,6 +249,7 @@ export const FunctionProvider = ({ children }) => {
         }, 500));
     }
     dispatch(battleActions.setLastPlayedCard(card));
+    setActionPerforming(false);
   };
 
   // END TURN //////
@@ -314,6 +319,7 @@ export const FunctionProvider = ({ children }) => {
       dispatch(uiActions.setTimerIsOver(false));
       dispatch(uiActions.setTimerIsPaused(true));
     }
+    setActionPerforming(false);
   };
 
   // MAKE CAST SPELL
@@ -354,6 +360,7 @@ export const FunctionProvider = ({ children }) => {
       dispatch(battleActions.turnCardLeft({ cardId: heroCard.id, qty: 1 }));
     }
     dispatch(battleActions.setLastPlayedCard(card));
+    setActionPerforming(false);
   };
 
   // RETURN CARD TO HAND
@@ -377,6 +384,7 @@ export const FunctionProvider = ({ children }) => {
       cellsOnField,
     });
     dispatch(battleActions.deleteAttachment({ spellId }));
+    setActionPerforming(false);
   };
 
   // RETURN CARD TO OWNER'S DECK
@@ -388,6 +396,7 @@ export const FunctionProvider = ({ children }) => {
     dispatch(battleActions.sendCardtoDeck({ card }));
     deleteCardFromSource(card);
     dispatch(battleActions.deleteActiveCard({ player }));
+    setActionPerforming(false);
   };
 
   // USE CARD ABILITY
@@ -414,6 +423,7 @@ export const FunctionProvider = ({ children }) => {
       const heroCard = newfieldCards.find((c) => c.type === 'hero' && c.player === card.player);
       dispatch(battleActions.turnCardLeft({ cardId: heroCard.id, qty: 1 }));
     }
+    setActionPerforming(false);
   };
 
   // SWITCH CARD
@@ -461,7 +471,6 @@ export const FunctionProvider = ({ children }) => {
       socket.emit('makeMove', actionData, (res) => {
         const resType = res.error ? 'error' : 'action';
         chooseAction[resType](move, actionData);
-        setActionPerforming(false);
       });
     } else {
       chooseAction.error();

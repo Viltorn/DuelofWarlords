@@ -232,11 +232,11 @@ const academiaDeck = {
         featInfo: [],
         description: 'YoungGenieCast',
         faction: 'Academia',
+        ownerId: '',
         place: '',
         features: [{
           attach: ['warrior'], type: 'all', aim: ['warrior', 'flyer', 'shooter', 'fighter'], name: 'moveNextRow', charges: 1, immediate: true, aimStatus: 'field',
-        },
-        { name: 'cantPostpone' }],
+        }],
         status: 'hand',
       },
       condition: 'onplay',

@@ -6,7 +6,7 @@ import findCellsForWarAttack from '../utils/supportFunc/findCellsForWarAttack.js
 import findCellsForWarMove from '../utils/supportFunc/findCellsForWarMove.js';
 import findCellsForSpellCast from '../utils/supportFunc/findCellsForSpellCast.js';
 import isAllowedCost from '../utils/supportFunc/isAllowedCost.js';
-import getEnemyPlayer from '../utils/supportFunc/getEnemyPlayer.js';
+// import getEnemyPlayer from '../utils/supportFunc/getEnemyPlayer.js';
 import getAddedWarPower from '../utils/supportFunc/getAddedWarPower.js';
 import isSpellMeetCondition from '../utils/supportFunc/isSpellMeetCondition.js';
 import findAdjasentCells from '../utils/supportFunc/findAdjasentCells.js';
@@ -130,17 +130,15 @@ const useAnimaActions = () => {
           activeCard, player: playerTurn, fieldCards, fieldCells,
         });
       }
-      const anyMoveAttachment = moveRowAttachment || moveAdjasentAttachment || movingAttachment;
-      const rightPlayer = anyMoveAttachment?.type === 'good' || !anyMoveAttachment ? playerTurn : getEnemyPlayer(playerTurn);
-      if (activeCard.player === rightPlayer && moveRowAttachment) {
+      if (moveRowAttachment && moveRowAttachment.player === playerTurn) {
         addNextLinesCellsForMove({ activeCard, fieldCards, fieldCells });
       }
-      if ((activeCard.player === rightPlayer && movingAttachment) || (canMove && activeCard.player === playerTurn)) {
+      if ((movingAttachment && movingAttachment.player === playerTurn) || (canMove && activeCard.player === playerTurn)) {
         addAllCellsForWarMove({
-          activeCard, player: rightPlayer, fieldCards, fieldCells,
+          activeCard, player: playerTurn, fieldCards, fieldCells,
         });
       }
-      if (activeCard.player === rightPlayer && moveAdjasentAttachment) {
+      if (moveAdjasentAttachment && moveAdjasentAttachment.player === playerTurn) {
         addAdjasentCellsForMove({
           activeCard, fieldCards, fieldCells,
         });

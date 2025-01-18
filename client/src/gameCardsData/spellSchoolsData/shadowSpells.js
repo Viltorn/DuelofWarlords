@@ -147,7 +147,7 @@ export default {
     school: 'Shadow',
     place: '',
     features: [{
-      spell: true, attach: false, type: 'bad', name: 'stun', aim: 'warrior', aimStatus: 'field',
+      spell: true, attach: false, type: 'bad', name: 'stun', aim: ['warrior', 'fighter', 'shooter', 'flyer'], aimStatus: 'field',
     },
     {
       spell: true, attach: ['warrior'], type: 'bad', aim: ['warrior', 'flyer', 'shooter', 'fighter'], name: 'moveAdjasent', charges: 1, immediate: true, aimStatus: 'field',

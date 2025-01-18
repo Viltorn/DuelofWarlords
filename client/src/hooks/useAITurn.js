@@ -102,6 +102,7 @@ const useAITurn = () => {
     if ((card.type === 'spell' || card.type === 'hero')) {
       const cardSpell = cellsForSpellCast.length > 0 && isAllowedCost(card, aiPoints) ? [card] : [];
       const spellToUse = getRandomFromArray([...cardSpell, ...abilitiesToUse]);
+      if (!spellToUse) return;
       if (spellToUse.condition === 'insteadatk') {
         const currentCell = fieldCells.find((item) => item.id === card.cellId);
         const abilityData = {

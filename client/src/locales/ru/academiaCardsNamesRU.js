@@ -16,4 +16,5 @@ export default {
   PowerChannel: 'Канал силы',
   NalaHero: 'Нала-Герой',
   AstralHero: 'Астрал-Герой',
+  YoungGenieCast: 'Заклинание',
 };

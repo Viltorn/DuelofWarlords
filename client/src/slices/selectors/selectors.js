@@ -1,4 +1,7 @@
+/* eslint-disable max-len */
 import { createSelector } from '@reduxjs/toolkit';
+
+const getInfoForCardsExtraction = (state, { id, player, data }) => ({ id, player, data });
 
 const getCardsToShow = {
   grave: ({ fieldCells, player, fieldCards }) => {
@@ -13,13 +16,17 @@ const getCardsToShow = {
   },
 };
 
+const getBattleReducer = (state) => state.battleReducer;
+
+const fieldCardsData = createSelector([getBattleReducer], (battleReducer) => battleReducer.fieldCards);
+const fieldCellsData = createSelector([getBattleReducer], (battleReducer) => battleReducer.fieldCells);
+const fieldPlayerDecksData = createSelector([getBattleReducer], (battleReducer) => battleReducer.playersDecks);
+
+const getStateData = createSelector([fieldCardsData, fieldCellsData, fieldPlayerDecksData], (fieldCards, fieldCells, playableDecks) => ({ fieldCards, fieldCells, playableDecks }));
+
 export const battleSelectors = {
   getCheckCardsData: createSelector(
-    [(state) => ({
-      fieldCells: state.battleReducer.fieldCells,
-      fieldCards: state.battleReducer.fieldCards,
-      playersDecks: state.battleReducer.playersDecks,
-    }), (state, { id, player, data }) => ({ id, player, data })],
+    [getStateData, getInfoForCardsExtraction],
     (stateData, { id, player, data }) => getCardsToShow[id]({
       ...stateData, player, data,
     }),

@@ -3,18 +3,22 @@ import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import PrimaryButton from '@components/Buttons/PrimaryButton/PrimaryButton';
 import LogoMain from '@assets/mainPageIcons/DuelofWarlords.png';
-import CastleLogo from '@assets/mainPageIcons/Castle_logo.png';
-import ForestLogo from '@assets/mainPageIcons/Forest_logo.png';
-import AcademiaLogo from '@assets/mainPageIcons/Academia_logo.png';
-import DungeonLogo from '@assets/mainPageIcons/Dungeon_logo.png';
-import BattlefieldTactics from '@assets/mainPageIcons/Battlefield_tactics.png';
-import SpellCast from '@assets/mainPageIcons/Spell_cast.png';
+import CastleLogo from '@assets/mainPageIcons/CastleLogo.png';
+import ForestLogo from '@assets/mainPageIcons/ForestLogo.png';
+import AcademiaLogo from '@assets/mainPageIcons/AcademiaLogo.png';
+import DungeonLogo from '@assets/mainPageIcons/DungeonLogo.png';
+import NecroLogo from '@assets/mainPageIcons/NecroLogo.png';
+import StrongholdLogo from '@assets/mainPageIcons/StrongholdLogo.png';
+import BattlefieldTactics from '@assets/mainPageIcons/BattlefieldTactics.png';
+import SpellCast from '@assets/mainPageIcons/SpellImage.png';
 import HeroPower from '@assets/mainPageIcons/Hero_power.png';
 import Paladin from '@assets/mainPageIcons/Paladin_logo.png';
 import Mage from '@assets/mainPageIcons/Mage_logo.png';
 import Hunter from '@assets/mainPageIcons/Hunter_logo.png';
 import Assasin from '@assets/mainPageIcons/Assasin_logo.png';
-import PostponedCover from '@assets/mainPageIcons/PostponedCover.png';
+import Leach from '@assets/mainPageIcons/LeachLogo.jpeg';
+import Orc from '@assets/mainPageIcons/OrcLogo.webp';
+import SecretCard from '@assets/mainPageIcons/SecretCard.png';
 import DiscordLogo from '@assets/discord.svg';
 import GameFeature from './GameFeature/GameFeature';
 import GameFaction from './GameFaction/GameFaction';
@@ -89,6 +93,8 @@ const MainPage = () => {
               <GameFaction faction={ForestLogo} hero={Hunter} />
               <GameFaction faction={AcademiaLogo} hero={Mage} />
               <GameFaction faction={DungeonLogo} hero={Assasin} />
+              <GameFaction faction={NecroLogo} hero={Leach} />
+              <GameFaction faction={StrongholdLogo} hero={Orc} />
             </div>
           </article>
         </div>
@@ -104,7 +110,7 @@ const MainPage = () => {
             <hr className={styles.devider} />
             <GameFeature img={SpellCast} direction="normal" h1={t('mainPage.Spells')} p={t('mainPage.SpellsDescription')} />
             <hr className={styles.devider} />
-            <GameFeature img={PostponedCover} direction="reverse" h1={t('mainPage.PostponedCard')} p={t('mainPage.PostponedDescription')} />
+            <GameFeature img={SecretCard} direction="reverse" h1={t('mainPage.PostponedCard')} p={t('mainPage.PostponedDescription')} />
           </article>
           <Link to="/choose" className={styles.link}>
             <PrimaryButton showIcon={false} state="default" text={t('buttons.PLAY')} variant="primary" />

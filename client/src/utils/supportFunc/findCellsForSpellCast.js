@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 import getEnemyPlayer from './getEnemyPlayer';
 import { spellsCells } from '../../gameData/heroes&spellsCellsData';
 import isCellEmpty from './isCellEmpty';
@@ -6,7 +7,9 @@ const findCellsForSpellCast = (data) => {
   const {
     feature, player, place, fieldCards, fieldCells, spellCard,
   } = data;
-  const { type, attach, aim } = feature;
+  const {
+    type, attach, aim, ownerId,
+  } = feature;
 
   const aimPlayer = type === 'good' ? player : getEnemyPlayer(player);
 
@@ -16,23 +19,26 @@ const findCellsForSpellCast = (data) => {
   }
 
   if (type !== 'all' && place === '') {
-    return fieldCells.filter((cell) => !isCellEmpty(fieldCards, cell.id)
-    && cell.player === aimPlayer && !cell.disabled && cell.type === 'field');
+    return fieldCells.filter((cell) => {
+      const rightSubtype = fieldCards
+        .find((card) => aim.includes(card.subtype) && card.cellId === cell.id && ownerId !== card.id);
+      return rightSubtype && !isCellEmpty(fieldCards, cell.id) && cell.player === aimPlayer && !cell.disabled && cell.type === 'field';
+    });
   }
   if (type === 'all' && place === '') {
     return fieldCells.filter((cell) => {
       const rightSubtype = fieldCards
-        .find((card) => aim.includes(card.subtype) && card.cellId === cell.id);
+        .find((card) => aim.includes(card.subtype) && card.cellId === cell.id && ownerId !== card.id);
       return !isCellEmpty(fieldCards, cell.id) && !cell.disabled && rightSubtype && cell.type === 'field';
     });
   }
   if (place === 'warrior' && type !== 'all') {
     const warriorCells = attach.includes('warrior') ? fieldCells.filter((cell) => {
-      const cardsInCell = fieldCards.filter((card) => card.cellId === cell.id).length;
+      // const cardsInCell = fieldCards.filter((card) => card.cellId === cell.id).length;
       const warriorInCell = fieldCards
-        .find((card) => card.cellId === cell.id && attach.includes(card.subtype));
-      const isPlayerOccupiedCell = cardsInCell > 0;
-      return isPlayerOccupiedCell && !cell.disabled && cell.player === aimPlayer && cell.type === 'field' && warriorInCell;
+        .find((card) => card.cellId === cell.id && attach.includes(card.subtype) && ownerId !== card.id);
+      // const isPlayerOccupiedCell = cardsInCell > 0;
+      return !cell.disabled && cell.player === aimPlayer && cell.type === 'field' && warriorInCell;
     }) : [];
     const heroCells = attach.includes('hero') ? fieldCells.filter((cell) => !cell.disabled && cell.player === aimPlayer && cell.type === 'hero')
       : [];
@@ -41,11 +47,11 @@ const findCellsForSpellCast = (data) => {
   }
   if (place === 'warrior' && type === 'all') {
     return fieldCells.filter((cell) => {
-      const cardsInCell = fieldCards.filter((card) => card.cellId === cell.id).length;
+      // const cardsInCell = fieldCards.filter((card) => card.cellId === cell.id).length;
       const warriorInCell = fieldCards
-        .find((card) => card.cellId === cell.id && attach.includes(card.subtype));
-      const isPlayerOccupiedCell = cardsInCell > 0;
-      return isPlayerOccupiedCell && !cell.disabled && cell.type === 'field' && warriorInCell;
+        .find((card) => card.cellId === cell.id && attach.includes(card.subtype) && ownerId !== card.id);
+      // const isPlayerOccupiedCell = cardsInCell > 0;
+      return !cell.disabled && cell.type === 'field' && warriorInCell;
     });
   }
 

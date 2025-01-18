@@ -280,8 +280,6 @@ const useBattleActions = () => {
     const spellPower = countSpellDependVal({
       spell: feature, aimCardPower: getWarriorPower(aimCard), currentFieldCards, lastPlayedCard,
     });
-    console.log('heal card:');
-    console.log(aimCard);
     const healthLessThanDefault = appliedCard.currentHP < appliedCard.health;
     if (healthLessThanDefault) {
       const newHealth = (appliedCard.currentHP + spellPower) >= appliedCard.health
@@ -394,7 +392,6 @@ const useBattleActions = () => {
         });
       } else {
         setInvoking(true);
-        setTimeout(() => setInvoking(false), 1000);
         handleAnimation(spellCard, 'add');
       }
     },
@@ -644,6 +641,7 @@ const useBattleActions = () => {
       .forEach((card) => {
         const immediate = card.attachments.find((spell) => spell.immediate);
         if (immediate) {
+          console.log(immediate);
           dispatch(battleActions.deleteAttachment({ spellId: immediate.id }));
         }
       });

@@ -149,16 +149,16 @@ export default {
     curCharges: 1,
     showCharges: false,
     features: [{
-      spell: true, attach: ['field', 'warrior'], aim: ['adjacent', 'warrior', 'fighter', 'shooter', 'flyer'], name: 'attack', value: 3, condition: 'onplay', type: 'all', charges: 1, aimStatus: 'field', cost: 2, subtype: 'reaction',
+      spell: true, attach: ['field', 'warrior'], aim: ['adjacent', 'warrior', 'fighter', 'shooter', 'flyer'], name: 'attack', value: 3, condition: 'onplay', type: 'all', aimStatus: 'field', cost: 2, subtype: 'reaction',
     },
     {
       spell: true, attach: ['field', 'warrior'], type: 'bad', aim: ['warrior', 'fighter', 'shooter', 'flyer'], name: 'attack', value: 3, charges: 1, condition: 'onplay', aimStatus: 'field', cost: 0, subtype: 'reaction',
     },
     {
-      spell: true, attach: ['field', 'warrior'], type: 'bad', aim: ['warrior', 'fighter', 'shooter', 'flyer'], name: 'attack', value: 3, charges: 1, condition: 'onmove', aimStatus: 'field', cost: 0, subtype: 'reaction',
+      spell: true, attach: ['field', 'warrior'], type: 'bad', aim: ['warrior', 'fighter', 'shooter', 'flyer'], name: 'attack', value: 3, charges: 1, condition: 'onmove', aimStatus: 'field', cost: 2, subtype: 'reaction',
     },
     {
-      spell: true, attach: ['field', 'warrior'], aim: ['adjacent', 'warrior', 'fighter', 'shooter', 'flyer'], name: 'attack', value: 3, condition: 'onmove', type: 'all', charges: 1, aimStatus: 'field', cost: 2, subtype: 'reaction',
+      spell: true, attach: ['field', 'warrior'], aim: ['adjacent', 'warrior', 'fighter', 'shooter', 'flyer'], name: 'attack', value: 3, condition: 'onmove', type: 'all', aimStatus: 'field', cost: 0, subtype: 'reaction',
     }],
     img: ExplosiveTrap,
     status: 'hand',
