@@ -438,6 +438,7 @@ export const FunctionProvider = ({ children }) => {
     // dispatch(battleActions.setPlayerPoints({ points, player }));
     dispatch(battleActions.drawCard({ player }));
     dispatch(battleActions.setCardSucrificeStatus({ player, status: true }));
+    setActionPerforming(false);
   };
 
   // MAKE ONLINE ACTION
@@ -471,6 +472,7 @@ export const FunctionProvider = ({ children }) => {
       socket.emit('makeMove', actionData, (res) => {
         const resType = res.error ? 'error' : 'action';
         chooseAction[resType](move, actionData);
+        setActionPerforming(false);
       });
     } else {
       chooseAction.error();
