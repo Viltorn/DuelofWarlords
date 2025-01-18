@@ -85,7 +85,7 @@ const OnlineGameStart = () => {
         // await axios.get('https://duelsofwarlords.onrender.com');
         const player = !roomId ? 'player1' : 'player2';
         const startCardsNum = player === 'player1' ? startCardsNumber1 : startCardsNumber2;
-        const playerDeckData = makeInitialDeck(values.playerDeck);
+        const playerDeckData = makeInitialDeck(values.playerDeck, player);
         const playerFullDeck = createDeckForPLayer(makeShaffledDeck(playerDeckData), player);
         const playerHand = player === 'player1' ? playerFullDeck.slice(0, startCardsNum).map((card) => ({ ...card, status: 'hand' }))
           : [...playerFullDeck.slice(0, startCardsNum), dummyCard].map((card) => ({ ...card, status: 'hand' }));
@@ -117,7 +117,6 @@ const OnlineGameStart = () => {
             if (res.error) {
               setError(res);
               formik.setSubmitting(false);
-              inputEl.current.focus();
               return;
             }
             const player1 = res.players[0];

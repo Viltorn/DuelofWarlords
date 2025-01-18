@@ -49,10 +49,10 @@ export default {
     id: _.uniqueId(),
     place: '',
     features: [{
-      spell: true, attach: false, type: 'all', aim: ['row', 'warrior', 'fighter', 'shooter', 'flyer'], name: 'attack', value: 4, aimStatus: 'field',
+      spell: true, attach: false, type: 'all', aim: ['row', 'warrior', 'fighter', 'shooter', 'flyer'], name: 'attack', value: 3, aimStatus: 'field',
     },
     {
-      spelll: true, attach: false, type: 'bad', aim: ['randomNextRow', 'warrior', 'fighter', 'shooter', 'flyer'], name: 'attack', value: 4, aimStatus: 'field',
+      spelll: true, attach: false, type: 'bad', aim: ['randomNextRow', 'warrior', 'fighter', 'shooter', 'flyer'], name: 'attack', value: 3, aimStatus: 'field',
     },
     ],
     img: MeteorShower,
