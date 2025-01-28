@@ -14,6 +14,8 @@ export default {
   IntellectPower: 'Сила интеллекта',
   ForgottenSpell: 'Рассеивание заклинания',
   PowerChannel: 'Канал силы',
+  FireMage: 'Маг огня',
+  FireMageCast: 'Огненный шар',
   NalaHero: 'Нала-Герой',
   AstralHero: 'Астрал-Герой',
   YoungGenieCast: 'Заклинание',

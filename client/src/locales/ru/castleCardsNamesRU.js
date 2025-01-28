@@ -10,6 +10,7 @@ export default {
   KnightGuardian: 'Рыцарь-защитник',
   ImperialGriffon: 'Имперский Гриффон',
   TemplarChampion: 'Тамплиер Чемпион',
+  Marksman: 'Арбалетчик',
   MasterOfLight: 'Магистр света',
   YouthFountain: 'Фонтан молодости',
   RetaliationHammer: 'Молот возмездия',

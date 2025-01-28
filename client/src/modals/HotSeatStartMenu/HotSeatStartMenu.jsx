@@ -67,11 +67,11 @@ const HotSeatMenu = () => {
         console.log(startPoints, startHeroHP);
         const heroPlayer1 = addPlayerToCard(values.player1Hero, 'player1');
         const heroPlayer2 = addPlayerToCard(values.player2Hero, 'player2');
-        const player1DeckData = makeInitialDeck(values.player1Deck);
+        const player1DeckData = makeInitialDeck(values.player1Deck, 'player1');
         const player1FullDeck = createDeckForPLayer(makeShaffledDeck(player1DeckData), 'player1');
         const player1Hand = player1FullDeck.slice(0, startCardsNumber1).map((card) => ({ ...card, status: 'hand' }));
         const player1FinalDeck = player1FullDeck.slice(startCardsNumber1);
-        const player2DeckData = makeInitialDeck(values.player2Deck);
+        const player2DeckData = makeInitialDeck(values.player2Deck, 'player2');
         const player2FullDeck = createDeckForPLayer(makeShaffledDeck(player2DeckData), 'player2');
         const player2Hand = [...player2FullDeck.slice(0, startCardsNumber2), dummyCard].map((card) => ({ ...card, status: 'hand' }));
         const player2FinalDeck = player2FullDeck.slice(startCardsNumber2);

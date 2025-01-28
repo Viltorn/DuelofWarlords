@@ -19,17 +19,19 @@ const findCellsForSpellCast = (data) => {
   }
 
   if (type !== 'all' && place === '') {
-    return fieldCells.filter((cell) => {
+    const cellsToapply = fieldCells.filter((cell) => {
       const rightSubtype = fieldCards
         .find((card) => aim.includes(card.subtype) && card.cellId === cell.id && ownerId !== card.id);
-      return rightSubtype && !isCellEmpty(fieldCards, cell.id) && cell.player === aimPlayer && !cell.disabled && cell.type === 'field';
+      return rightSubtype && !isCellEmpty(fieldCards, cell.id) && cell.player === aimPlayer && !cell.disabled && (cell.type === 'field' || cell.type === 'hero');
     });
+    console.log(cellsToapply);
+    return cellsToapply;
   }
   if (type === 'all' && place === '') {
     return fieldCells.filter((cell) => {
       const rightSubtype = fieldCards
         .find((card) => aim.includes(card.subtype) && card.cellId === cell.id && ownerId !== card.id);
-      return !isCellEmpty(fieldCards, cell.id) && !cell.disabled && rightSubtype && cell.type === 'field';
+      return !isCellEmpty(fieldCards, cell.id) && !cell.disabled && rightSubtype && (cell.type === 'field' || cell.type === 'hero');
     });
   }
   if (place === 'warrior' && type !== 'all') {

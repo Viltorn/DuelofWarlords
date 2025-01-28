@@ -24,6 +24,9 @@ const isAbilityCanBeUsed = (
       warCard: card, fieldCards, fieldCells, featureName: 'unarmed',
     }));
   }
+  if (name === 'moving' || (invokeFeature?.features[0].name === 'moving')) {
+    return warCards.find((card) => card.player === rightPlayer);
+  }
   return true;
 };
 

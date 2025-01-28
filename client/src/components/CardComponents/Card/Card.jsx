@@ -3,7 +3,8 @@ import React, { useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
 import cn from 'classnames';
-// import { actions as uiActions } from '../../../slices/uiSlice.js';
+import WarShield from '@assets/WarShieldIcon.png';
+import CostIcon from '@assets/ActionPointsCounter.png';
 import styles from './Card.module.css';
 import useClickActions from '../../../hooks/useClickActions.js';
 import isAllowedCost from '../../../utils/supportFunc/isAllowedCost.js';
@@ -16,6 +17,7 @@ const Card = ({
   const {
     type,
     power,
+    defPower,
     health,
     description,
     img,
@@ -71,14 +73,6 @@ const Card = ({
     }
   };
 
-  // const setBigCard = () => {
-  //   dispatch(uiActions.setBigCard(card));
-  // };
-
-  // const deleteBigCard = () => {
-  //   dispatch(uiActions.resetState());
-  // };
-
   return (
     <div className={classes} ref={cardElement} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave} style={{ marginRight: `-${marginRight}rem` }}>
       <button className={cn([styles.imageContainer], { [styles.active]: active })} type="button" onClick={() => handleCardClick(card)}>
@@ -86,6 +80,9 @@ const Card = ({
         {type === 'warrior' && (
         <>
           <h3 className={cn([styles.warriorPower], { [styles.active]: active })}>{power}</h3>
+          <h3 className={cn([styles.warriorDefPow], { [styles.active]: active })}>{defPower || 0}</h3>
+          <img src={WarShield} className={cn([styles.shieldIcon], { [styles.active]: active })} alt="shield icon fow health" />
+          <img src={CostIcon} className={cn([styles.costIcon], { [styles.active]: active })} alt="card cost" />
           <h3 className={cn([styles.warriorHealth], { [styles.active]: active })}>{health}</h3>
         </>
         )}

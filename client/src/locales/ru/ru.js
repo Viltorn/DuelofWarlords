@@ -230,6 +230,9 @@ export default {
     },
 
     abilities: {
+      windStaff: 'ПОСОХ ВЕТРА',
+      enchancedShot: 'СИЛЬНЫЙ ВЫСТРЕЛ',
+      fireMageCast: 'ОГНЕННЫЙ ШАР',
       retributionSword: 'МЕЧ ВОЗМЕЗДИЯ',
       meleeCombat: 'ДВА КИНЖАЛА',
       righteousHammer: 'ПРАВЕДНЫЙ МОЛОТ',

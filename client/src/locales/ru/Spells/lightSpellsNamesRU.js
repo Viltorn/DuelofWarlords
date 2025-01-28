@@ -11,4 +11,5 @@ export default {
   LightShield: 'Щит света',
   LastChance: 'Последний шанс',
   Conciliation: 'Умиротворение',
+  GuardianAngel: 'Ангел-хранитель',
 };

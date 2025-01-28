@@ -11,6 +11,7 @@ import LastChance from '../../assets/lightSpells/LastChance.png';
 import LightShield from '../../assets/lightSpells/LightShield.png';
 import Resurrection from '../../assets/lightSpells/Resurrection.png';
 import SaintWord from '../../assets/lightSpells/SaintWord.png';
+import GuardianAngel from '../../assets/lightSpells/GuardianAngel.png';
 // import RetributionSword from '../../assets/castleCards/RetributionSword.png';
 
 export default {
@@ -301,10 +302,44 @@ export default {
       value: { type: 'immortal', val: 0 },
       charges: 1,
       aimStatus: 'field',
-      cost: 2,
+      cost: 1,
       subtype: 'reaction',
     }],
     img: LastChance,
+    status: 'hand',
+    disabled: false,
+  },
+  GuardianAngel: {
+    name: 'Guardian Angel',
+    type: 'spell',
+    subtype: 'reaction',
+    cost: 2,
+    currentC: 2,
+    featInfo: ['REACTION'],
+    description: 'GuardianAngel',
+    school: 'Light',
+    id: _.uniqueId(),
+    place: 'bigSpell',
+    charges: 1,
+    curCharges: 1,
+    showCharges: false,
+    features: [{
+      spell: true,
+      attach: ['field', 'hero'],
+      aim: ['field', 'warrior', 'fighter', 'shooter', 'flyer', 'spell', 'hero'],
+      type: 'good',
+      condition: 'gotAttacked',
+      name: 'heal',
+      value: 2,
+      cost: 2,
+      aimStatus: 'field',
+      subtype: 'reaction',
+    },
+    {
+      spell: true, attach: ['field', 'hero'], type: 'good', name: 'protection', aim: ['warrior', 'flyer', 'shooter', 'fighter', 'spell'], condition: 'gotAttacked', value: { type: 'number', val: 2 }, aimStatus: 'field', charges: 1, hide: true,
+    },
+    ],
+    img: GuardianAngel,
     status: 'hand',
     disabled: false,
   },
@@ -320,7 +355,7 @@ export default {
     id: _.uniqueId(),
     place: 'bigSpell',
     features: [{
-      spell: true, attach: ['field', 'warrior', 'hero'], type: 'good', name: 'protection', aim: ['warrior', 'spell', 'fighter', 'shooter', 'flyer'], value: { type: 'number', val: 100 }, aimStatus: 'field',
+      spell: true, attach: ['field', 'warrior'], type: 'good', name: 'protection', aim: ['warrior', 'spell', 'fighter', 'shooter', 'flyer'], value: { type: 'number', val: 100 }, aimStatus: 'field',
     }],
     img: Сonciliation,
     status: 'hand',

@@ -110,7 +110,7 @@ export const FunctionProvider = ({ children }) => {
       return;
     }
 
-    const attackingInitPower = getWarriorPower(card1);
+    const attackingInitPower = getWarriorPower(card1, 'atkPower');
     const attackingPowerFeature = card1.features.find((feat) => feat.name === 'power' && feat.aim.includes(card2.subtype));
     const attackingAddPower = attackingPowerFeature?.value || 0;
     const attackingPower = attackingInitPower + attackingAddPower;
@@ -126,7 +126,8 @@ export const FunctionProvider = ({ children }) => {
     const calculatedPower = attackingPower - protectionVal > 0
       ? attackingPower - protectionVal : 0;
 
-    const powerSpells = card1.attachments.filter((spell) => spell.name === 'power');
+    const attackingCell = newfieldCells.find((cell) => cell.id === card1.cellId);
+    const powerSpells = [...card1.attachments.filter((spell) => spell.name === 'power'), ...attackingCell.attachments.filter((spell) => spell.name === 'power' && spell.aim.includes(card1.subtype))];
     powerSpells.forEach((spell) => changeChargedSpellCard(spell, newfieldCards, newfieldCells, makeFeatureCast));
 
     if (protectSpells.length > 0) {
@@ -140,12 +141,16 @@ export const FunctionProvider = ({ children }) => {
 
     dispatch(battleActions.addAnimation({ cellId: attackedCell.id, type: 'attacked' }));
     if (isKilled(calculatedPower, attackedHealth)) {
+      const destination = warHasSpecialFeature({
+        warCard: card2, fieldCards: newfieldCards, fieldCells: newfieldCells, featureName: 'returnable',
+      }) ? 'return' : 'grave';
       sendCardFromField({
         card: card2,
         castFunc: makeFeatureCast,
-        destination: 'grave',
+        destination,
         cardCost: null,
         cellsOnField: newfieldCells,
+        gameTurn: gameturn,
       });
       moveAttachedSpells(card2.cellId, null, 'kill');
     }
@@ -278,7 +283,6 @@ export const FunctionProvider = ({ children }) => {
       dispatch(battleActions.drawCard({ player: newPlayer }));
     }
     handleAnimation(activeCardPlayer2, 'delete');
-    dispatch(battleActions.turnPostponed({ player: newPlayer, status: 'face' }));
     dispatch(battleActions.massTurnCards({ player: newPlayer }));
     dispatch(battleActions.changeTurn({ player: newPlayer }));
 
@@ -380,6 +384,7 @@ export const FunctionProvider = ({ children }) => {
       card,
       castFunc: makeFeatureCast,
       destination: 'return',
+      player,
       cardCost: cost,
       cellsOnField,
     });
@@ -409,7 +414,7 @@ export const FunctionProvider = ({ children }) => {
     handleAnimation(card, 'delete');
     dispatch(battleActions.deleteActiveCard({ player }));
     makeFeatureCast({
-      feature: ability, aimCell: cell, applyingCard: null, player, player2Type, performAIAction,
+      feature: ability, aimCell: cell, applyingCard: card, player, player2Type, performAIAction,
     });
     if (card.type === 'spell') {
       deleteCardFromSource(card);

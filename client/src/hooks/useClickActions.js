@@ -66,7 +66,6 @@ const useClickActions = () => {
     if (gameTurn !== thisPlayer) return;
 
     const currentRound = newPlayer === 'player1' ? roundNumber + 1 : roundNumber;
-    const postponedCell = fieldCells.find((cell) => cell.type === 'postponed' && cell.player === thisPlayer);
     const temporarySpells = findTempSpellsOnField(fieldCards, newPlayer);
     const reactionSpells = findReactSpellsOnField(fieldCards, newPlayer);
     const turnSpells = findTurnSpellsOnField(fieldCards, thisPlayer);
@@ -77,7 +76,6 @@ const useClickActions = () => {
       newPlayer,
       newPoints,
       player2Type: players.player2.type,
-      postponedCell,
       temporarySpells,
       turnSpells,
       reactionSpells,
@@ -308,15 +306,15 @@ const useClickActions = () => {
         card: activeCard,
         player2Type: players.player2.type,
         performAIAction: null,
-        player,
+        player: activeCard.player,
         playerPoints,
         cell: graveCell,
         gameTurn,
       };
       makeGameAction(actionData, gameMode);
-      return;
+    } else {
+      dispatch(modalsActions.openModal({ type: 'openCheckCard', player, id: 'grave' }));
     }
-    dispatch(modalsActions.openModal({ type: 'openCheckCard', player, id: 'grave' }));
   };
 
   const handleCardClick = (card) => {

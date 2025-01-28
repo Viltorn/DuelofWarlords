@@ -2,11 +2,14 @@ import cn from 'classnames';
 import { useTranslation } from 'react-i18next';
 import Healed from '@assets/battlefield/HealingIcon.webp';
 import Shield from '@assets/battlefield/ShieldIcon.png';
+import WarShield from '@assets/WarShieldIcon.png';
 import styles from './CellCard.module.css';
 
-const CellCardImage = ({ cardInfo, currentCell, protection }) => {
+const CellCardImage = ({
+  cardInfo, currentCell, protection, isInvisible,
+}) => {
   const {
-    cardsFeature, power, description, currentHP, currentC, type, img, name,
+    cardsFeature, atkPower, description, currentHP, currentC, type, img, name, defPower,
   } = cardInfo;
 
   const { t } = useTranslation();
@@ -21,18 +24,20 @@ const CellCardImage = ({ cardInfo, currentCell, protection }) => {
       <h2 className={titleClasses}>{t(`titles.${cardsFeature}.${description}`)}</h2>
       {type === 'warrior' && (
       <>
-        <h3 className={styles.warriorPower}>{power}</h3>
+        <img src={WarShield} className={styles.shieldIcon} alt="shield icon fow health" />
+        <h3 className={styles.warriorPower}>{atkPower}</h3>
+        <h3 className={styles.warriorDefPower}>{defPower || 0}</h3>
         <h3 className={styles.warriorHealth}>{currentHP}</h3>
       </>
       )}
-      {type !== 'hero' && (
+      {type === 'spell' && (
       <h3 className={styles.cost}>{currentC}</h3>
       )}
       {type === 'hero' && (
       <h3 className={styles.heroHealth}>{currentHP}</h3>
       )}
       <img
-        className={styles.image}
+        className={cn([styles.image], { [styles.invisible]: isInvisible })}
         src={img}
         alt={name}
       />

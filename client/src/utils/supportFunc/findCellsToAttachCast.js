@@ -4,7 +4,7 @@ import findAdjasentCells from './findAdjasentCells';
 
 const findCellsToAttachCast = (data) => {
   const {
-    currentFieldCells, feature, castingPlayer, enemyPlayer, aimCell,
+    currentFieldCells, feature, castingPlayer, aimCell,
   } = data;
   const { type, attach } = feature;
   if (attach.includes('cards')) return null;
@@ -33,9 +33,8 @@ const findCellsToAttachCast = (data) => {
     const adjacentCells = findAdjasentCells(currentFieldCells, aimCell);
     return adjacentCells.filter((cell) => cell.line === aimCell.line);
   } if (attach.includes('grave')) {
-    if (type === 'good') return currentFieldCells.filter((cell) => cell.type === 'graveyard' && cell.player === castingPlayer);
-    if (type === 'bad') return currentFieldCells.filter((cell) => cell.type === 'graveyard' && cell.player === enemyPlayer);
-  } else if (attach.includes('line')) {
+    return currentFieldCells.filter((cell) => cell.type === 'graveyard' && cell.player === aimCell.player);
+  } if (attach.includes('line')) {
     return currentFieldCells
       .filter((cell) => cell.line === aimCell.id);
   }

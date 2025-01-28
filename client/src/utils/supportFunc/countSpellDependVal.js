@@ -1,5 +1,5 @@
 const countSpellDependVal = ({
-  spell, aimCardPower, currentFieldCards, lastPlayedCard,
+  spell, aimCardPower, currentFieldCards, lastPlayedCard, playerPoints,
 }) => {
   const {
     depend, dependValue, value, id, player, school,
@@ -24,6 +24,14 @@ const countSpellDependVal = ({
     const diff = (badWarriorsQty - goodWarriorsQty) > 0 ? badWarriorsQty - goodWarriorsQty : 0;
     console.log(diff);
     return value + (dependValue * diff);
+  }
+  if (depend === 'enemiPoinstAndWarriorsDiff') {
+    const goodWarriorsQty = currentFieldCards.filter((card) => card.type === 'warrior'
+    && card.player === player && card.status === 'field').length;
+    const enemyPlayer = player === 'player1' ? 'player2' : 'player1';
+    const enemyPoints = playerPoints.find((item) => item.player === enemyPlayer).points;
+    const diff = enemyPoints - goodWarriorsQty > 0 ? enemyPoints - goodWarriorsQty : 0;
+    return diff;
   }
   if (depend === 'postponed') {
     const cardWithFeature = currentFieldCards.find((card) => card.id === id);

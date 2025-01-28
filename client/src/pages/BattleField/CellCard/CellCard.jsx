@@ -6,10 +6,11 @@ import CellCardImage from './CellCardImage.jsx';
 import CellCardCover from './CellCardCover.jsx';
 import useClickActions from '../../../hooks/useClickActions.js';
 import useAnimaActions from '../../../hooks/useAnimaActions.js';
+import isInvisible from '../../../utils/supportFunc/isInvisible.js';
 
 const getTopMargin = (cellType, contentLength) => {
   if (cellType === 'field') {
-    return Math.min(2.3 * contentLength, 5.3);
+    return Math.min(2.1 * contentLength, 5.1);
   }
   if (cellType === 'hero') {
     return 6.6;
@@ -43,11 +44,13 @@ const CellCard = ({
   }) : null;
   const showProtectionIcon = protectionOfWar && protectionOfWar?.subtype !== 'reaction' && !protectionOfWar.hide;
   const currentCell = fieldCells.find((cell) => cell.id === item.cellId);
-  const power = item.type === 'warrior' ? getWarriorPower(item) : null;
+  const atkPower = item.type === 'warrior' ? getWarriorPower(item, 'atkPower') : null;
+  const defPower = item.type === 'warrior' ? getWarriorPower(item, 'defPower') : null;
+  const invisible = item.type === 'warrior' && isInvisible(currentCell, fieldCards);
   const marginTop = getTopMargin(cellType, content.length);
   const marginRight = cellType === 'bigSpell' ? 5 : 0;
   const cardInfo = {
-    cardsFeature, power, description, currentHP, currentC, cellType, type, img, name,
+    cardsFeature, atkPower, description, currentHP, currentC, cellType, type, img, name, defPower,
   };
 
   const cardStyles = cn({
@@ -74,6 +77,7 @@ const CellCard = ({
           cardInfo={cardInfo}
           currentCell={currentCell}
           protection={showProtectionIcon}
+          isInvisible={invisible}
         />
       ) : (<CellCardCover />)}
     </button>

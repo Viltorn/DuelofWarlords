@@ -11,9 +11,13 @@ const findCellsForSpellApply = (data) => {
     feature, aimCell, player, currentFieldCells, currentFieldCards,
   } = data;
   const { type, aim } = feature;
+  const rightPlayer = type === 'good' ? player : getEnemyPlayer(player);
   if (aim.includes('field')) {
     if (type === 'all') {
       return currentFieldCells.filter((cell) => cell.type === 'field');
+    }
+    if (type !== 'all') {
+      return currentFieldCells.filter((cell) => cell.type === 'field' && cell.player === rightPlayer);
     }
   } else if (aim.includes('line')) {
     const { line } = aimCell;
@@ -24,15 +28,14 @@ const findCellsForSpellApply = (data) => {
       return currentFieldCells.filter((cell) => cell.row === row && !isCellEmpty(currentFieldCards, cell.id) && cell.type === 'field');
     }
     const { row } = aimCell;
-    const rightPlayer = type === 'bad' ? getEnemyPlayer(player) : player;
     return currentFieldCells
       .filter((cell) => cell.row === row && !isCellEmpty(currentFieldCards, cell.id)
           && cell.type === 'field' && cell.player === rightPlayer);
   } else if (aim.includes('randomNextRow')) {
     return findNextRowToApply(aimCell, currentFieldCells, currentFieldCards, player, type);
   } else if (aim.includes('otherWarInRow')) {
-    const rightPlayer = type === 'bad' ? aimCell.player : getEnemyPlayer(aimCell.player);
-    const foundCell = currentFieldCells.find((cell) => cell.player === rightPlayer && cell.type === 'field'
+    const playerToApply = type === 'bad' ? aimCell.player : getEnemyPlayer(aimCell.player);
+    const foundCell = currentFieldCells.find((cell) => cell.player === playerToApply && cell.type === 'field'
         && cell.row === aimCell.row && !isCellEmpty(currentFieldCards, cell.id)
         && cell.line !== aimCell.line);
     return [foundCell] ?? [];
@@ -51,7 +54,6 @@ const findCellsForSpellApply = (data) => {
       return findAdjasentCells(currentFieldCells, aimCell)
         .filter((cell) => !isCellEmpty(currentFieldCards, cell.id));
     }
-    const rightPlayer = type === 'bad' ? getEnemyPlayer(player) : player;
     return findAdjasentCells(currentFieldCells, aimCell)
       .filter((cell) => !isCellEmpty(currentFieldCards, cell.id) && cell.player === rightPlayer);
   } else if (aim.includes('oneAdjacent')) {

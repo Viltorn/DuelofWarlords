@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 import _ from 'lodash';
 import Swift from '../../assets/airSpells/Swift.png';
 import ThunderBlast from '../../assets/airSpells/ThunderBlast.png';
@@ -5,7 +6,6 @@ import LightningStrike from '../../assets/airSpells/LightningStrike.png';
 import Dodge from '../../assets/airSpells/Dodge.png';
 import LightningPower from '../../assets/airSpells/LightningPower.png';
 import ThunderWeapon from '../../assets/airSpells/ThunderWeapon.png';
-import ArrowsRain from '../../assets/airSpells/ArrowsRain.png';
 import AirFlows from '../../assets/airSpells/AirFlows.png';
 
 export default {
@@ -164,23 +164,23 @@ export default {
     status: 'hand',
     disabled: false,
   },
-  ArrowsRain: {
-    name: 'Arrows Rain',
-    id: _.uniqueId(),
-    type: 'spell',
-    subtype: 'temporary',
-    cost: 1,
-    currentC: 1,
-    featInfo: [],
-    description: 'ArrowsRain',
-    school: 'Air',
-    place: 'bigSpell',
-    features: [{
-      spell: true, attach: ['field', 'warrior'], aim: ['warrior', 'shooter'], type: 'good', name: 'massAttack', aimStatus: 'field',
-    }],
-    img: ArrowsRain,
-    status: 'hand',
-  },
+  // ArrowsRain: {
+  //   name: 'Arrows Rain',
+  //   id: _.uniqueId(),
+  //   type: 'spell',
+  //   subtype: 'temporary',
+  //   cost: 1,
+  //   currentC: 1,
+  //   featInfo: [],
+  //   description: 'ArrowsRain',
+  //   school: 'Air',
+  //   place: 'bigSpell',
+  //   features: [{
+  //     spell: true, attach: ['field', 'warrior'], aim: ['warrior', 'shooter'], type: 'good', name: 'massAttack', aimStatus: 'field',
+  //   }],
+  //   img: ArrowsRain,
+  //   status: 'hand',
+  // },
   AirFlows: {
     name: 'Air flows',
     id: _.uniqueId(),

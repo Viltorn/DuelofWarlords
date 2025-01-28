@@ -216,7 +216,7 @@
 .counter {
   border-radius: 50%;
   background-color: var(--black-color);
-  background-image: url("@assets/battlefield/ActionPointsCounter.png");
+  background-image: url("@assets/ActionPointsCounter.png");
   background-size: cover;
   height: 6rem;
   width: 6rem;

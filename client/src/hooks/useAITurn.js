@@ -221,7 +221,7 @@ const useAITurn = () => {
         makeGameAction(abilityData, gameMode);
         return;
       }
-      if ((canAttack && !isWarBetterMove && !warHasMovingFeature)) {
+      if ((canAttack && !isWarBetterMove)) {
         console.log('warrior attack');
 
         const cellToAttack = findBestCellForWarAttack({

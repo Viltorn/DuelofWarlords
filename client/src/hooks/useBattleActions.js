@@ -40,6 +40,7 @@ const useBattleActions = () => {
     addAnimatedCells,
     addAdjasentCellsForMove,
     addNextLinesCellsForMove,
+    warHasSpecialFeature,
   } = useAnimaActions();
 
   const getActiveCard = () => {
@@ -119,7 +120,7 @@ const useBattleActions = () => {
 
     // Delete the card from the appropriate source based on its status
     if (status === 'hand') dispatch(battleActions.deleteHandCard({ cardId: id, player }));
-    if (status === 'field') dispatch(battleActions.deleteFieldCard({ cardId: id }));
+    if (status === 'field' || status === 'graveyard') dispatch(battleActions.deleteFieldCard({ cardId: id }));
     if (status === 'deck') dispatch(battleActions.deleteDeckCard({ cardId: id, player }));
 
     // Perform additional actions based on conditions
@@ -169,7 +170,7 @@ const useBattleActions = () => {
 
   const sendCardFromField = (data) => {
     const {
-      card, castFunc, destination, cardCost, cellsOnField, gameTurn,
+      card, castFunc, destination, cardCost, cellsOnField, gameTurn, player,
     } = data;
     if (card.type === 'spell') {
       dispatch(battleActions.deleteAttachment({ spellId: card.id }));
@@ -180,7 +181,8 @@ const useBattleActions = () => {
       castLastSpells(card, castFunc, cellsOnField, destination, gameTurn);
     } else {
       const cost = cardCost ?? card.cost;
-      dispatch(battleActions.returnCard({ card, cost }));
+      const playerHand = player ?? card.player;
+      dispatch(battleActions.returnCard({ card, cost, playerHand }));
     }
   };
 
@@ -242,10 +244,18 @@ const useBattleActions = () => {
 
     dispatch(battleActions.addAnimation({ cellId: applyingCell.id, type: 'attacked' }));
     if (isKilled(calculatedPower, receivedHealth)) {
-      moveAttachedSpells(aimCard.cellId, null, 'kill');
+      const destination = warHasSpecialFeature({
+        warCard: aimCard, fieldCards: currentFieldCards, fieldCells: currentFieldCells, featureName: 'returnable',
+      }) ? 'return' : 'grave';
       sendCardFromField({
-        card: aimCard, castFunc, destination: 'grave', cardCost: null, cellsOnField: currentFieldCells, gameTurn,
+        card: aimCard,
+        castFunc,
+        destination,
+        cardCost: null,
+        cellsOnField: currentFieldCells,
+        gameTurn,
       });
+      moveAttachedSpells(aimCard.cellId, null, 'kill');
     }
     if (isKilled(calculatedPower, receivedHealth) && isHeroKilled(aimCard)) {
       showVictoryWindow(getEnemyPlayer(aimCard.player));
@@ -330,6 +340,22 @@ const useBattleActions = () => {
         },
       }));
     },
+    moveRandomNextRowCell: (data) => {
+      const {
+        currentFieldCells, currentFieldCards, aimCard, applyingCell,
+      } = data;
+      const emptyNextRowCells = findEmptyNextRowCells(applyingCell, currentFieldCells, currentFieldCards);
+      const choosenCell = emptyNextRowCells[0];
+      if (!choosenCell) return;
+      deleteCardFromSource(aimCard);
+      dispatch(battleActions.addFieldContent({ card: aimCard, id: choosenCell.id }));
+      moveAttachedSpells(aimCard.cellId, choosenCell.id, 'move');
+      dispatch(battleActions.setLastCellWithAction({
+        cellActionData: {
+          id: choosenCell.id, content: 1, source: aimCard.status, type: aimCard.type,
+        },
+      }));
+    },
     stun: (data) => {
       const { aimCard } = data;
       const { turn } = aimCard;
@@ -406,14 +432,15 @@ const useBattleActions = () => {
       dispatch(battleActions.setPlayerPoints({ points: newPoints, player: playerToApply }));
     },
     stealPoints: (data) => {
-      const { feature, castingPlayer, playerPoints } = data;
+      const {
+        feature, castingPlayer, playerPoints, lastPlayedCard, currentFieldCards,
+      } = data;
       const enemyPlayer = getEnemyPlayer(castingPlayer);
-      const ownerPoints = playerPoints.find((item) => item.player === castingPlayer).points;
-      const enemyPoints = playerPoints.find((item) => item.player === enemyPlayer).points;
-      const newPlayerPoints = ownerPoints + feature.value.owner;
-      const newEnemyPoints = enemyPoints - feature.value.enemy;
-      dispatch(battleActions.setPlayerPoints({ points: newPlayerPoints, player: castingPlayer }));
-      dispatch(battleActions.setPlayerPoints({ points: newEnemyPoints, player: enemyPlayer }));
+      const enemyPoints = playerPoints.find((p) => p.player === enemyPlayer).points;
+      const spellValue = countSpellDependVal({
+        spell: feature, aimCardPower: null, currentFieldCards, lastPlayedCard, playerPoints,
+      });
+      dispatch(battleActions.setPlayerPoints({ points: enemyPoints - spellValue, player: enemyPlayer }));
     },
     readiness: (data) => {
       const { aimCard } = data;
@@ -423,6 +450,11 @@ const useBattleActions = () => {
         cardId: aimCard.id,
         qty: newTurn,
       }));
+    },
+    getCardCopy: (data) => {
+      const { aimCard, castingPlayer } = data;
+      console.log('getcardcopy');
+      dispatch(battleActions.drawSpecificCard({ player: castingPlayer, cardName: aimCard.description }));
     },
   };
 
@@ -612,7 +644,7 @@ const useBattleActions = () => {
       attachSpellEffectOnCells(cellsToAttach, feature);
     }
     if (cellsToAttach && attach.includes('grave')) {
-      const playerToApply = feature.type === 'good' ? castingPlayer : getEnemyPlayer(castingPlayer);
+      const playerToApply = aimCell.player;
       dispatch(modalsActions.openModal({ type: 'openCheckCard', player: playerToApply, id: 'grave' }));
       if (player2Type === 'computer' && castingPlayer === 'player2') {
         const cardsCanBeRessurected = currentFieldCards
@@ -662,7 +694,7 @@ const useBattleActions = () => {
     } = data;
     const strikingCell = newfieldCells.find((cell) => cell.id === strikingCard.cellId);
     dispatch(battleActions.addAnimation({ cellId: strikingCell.id, type: 'makeattack' }));
-    const strikePower = canRetaliate ? getWarriorPower(strikingCard) : 0;
+    const strikePower = canRetaliate ? getWarriorPower(strikingCard, 'defPower') : 0;
     const spellRetaliatePower = retaliateSpells.length > 0 ? calcAllSpellslValue({
       spells: retaliateSpells, aimCardPower: getWarriorPower(recievingCard), currentFieldCards: newfieldCards,
     }) : 0;
@@ -687,12 +719,16 @@ const useBattleActions = () => {
       ? totalStrikePower - retaliateProtectVal : 0;
 
     if (isKilled(calcRetaliatePower, recieveHealth)) {
+      const destination = warHasSpecialFeature({
+        warCard: recievingCard, fieldCards: newfieldCards, fieldCells: newfieldCells, featureName: 'returnable',
+      }) ? 'return' : 'grave';
       sendCardFromField({
         card: recievingCard,
         castFunc: makeFeatureCast,
-        destination: 'grave',
+        destination,
         cardCost: null,
         cellsOnField: newfieldCells,
+        gameTurn: gameturn,
       });
       moveAttachedSpells(recievingCard.cellId, null, 'kill');
     } else {

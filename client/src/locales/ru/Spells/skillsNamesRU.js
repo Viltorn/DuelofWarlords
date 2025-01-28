@@ -13,4 +13,7 @@ export default {
   AddAttackCast: 'Заклинание',
   PlateArmor: 'Латные доспехи',
   LeatherArmor: 'Кожаные доспехи',
+  WindStaff: 'Посох ветра',
+  GoldenBow: 'Золотой лук',
+  MovingCast: 'Заклинание',
 };

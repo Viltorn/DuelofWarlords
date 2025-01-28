@@ -12,7 +12,7 @@ const ActiveCard = ({
   activeCard, playerType, info,
 }) => {
   const {
-    status, type,
+    status, type, cellId,
   } = activeCard;
 
   const { gameMode } = useSelector((state) => state.gameReducer);
@@ -31,8 +31,8 @@ const ActiveCard = ({
   const abilities = [...cardAbilities, ...attachedAbilities];
   const legalTurn = thisPlayer === gameTurn;
   const ressurect = fieldCells
-    .find((cell) => cell.type === 'graveyard' && cell.player === thisPlayer)
-    .attachments.find((feat) => feat.name === 'ressurect' && feat.aim.includes(activeCard.type));
+    .find((cell) => cell.id === cellId && cell.type === 'graveyard')?.attachments
+    .find((feat) => feat.name === 'ressurect' && feat.aim.includes(activeCard.type) && feat.player === gameTurn);
   const canUseAbilities = isActiveCard(activeCard) && !disAbility && legalTurn && status !== 'graveyard';
   const canSucrificeCard = !sucrificedCard && thisPlayer === activeCard.player && legalTurn && type !== 'hero' && status === 'hand';
   const canReturnCard = firstRound && thisPlayer === activeCard.player && !cardsdrawn && legalTurn;

@@ -139,19 +139,12 @@ const battleSlice = createSlice({
       state.players[player].sucrificedCard = status;
     },
 
-    turnPostponed(state, { payload }) {
-      const { player, status } = payload;
-      const index = state.fieldCells.findIndex((cell) => cell.type === 'postponed' && cell.player === player);
-      const postponedCard = state.fieldCards
-        .find((card) => card.cellId === state.fieldCells[index].id);
-      state.fieldCells[index].status = status === 'face' && postponedCard ? 'face' : 'cover';
-    },
-
     massTurnCards(state, { payload }) {
       const { player } = payload;
       state.fieldCards = state.fieldCards.map((card) => {
-        if (card.player === player && card.status !== 'postponed' && (card.type === 'hero' || card.type === 'warrior')) {
+        if (card.player === player && (card.type === 'hero' || card.type === 'warrior')) {
           card.turn = card.turn > 0 ? card.turn - 1 : card.turn;
+          card.justDeployed = false;
         }
         return card;
       });
@@ -191,8 +184,18 @@ const battleSlice = createSlice({
 
     drawCard(state, { payload }) {
       const { player } = payload;
-      if (state.playersDecks[player].length !== 0) {
-        const card = state.playersDecks[player].shift();
+      if (state.playersDecks[player].length === 0) return;
+      const card = state.playersDecks[player].shift();
+      const handCard = { ...card, status: 'hand' };
+      state.playersHands[player] = [handCard, ...state.playersHands[player]];
+    },
+
+    drawSpecificCard(state, { payload }) {
+      const { player, cardName } = payload;
+      if (state.playersDecks[player].length === 0) return;
+      const card = state.playersDecks[player].find((c) => c.description === cardName);
+      if (card) {
+        state.playersDecks[player] = state.playersDecks[player].filter((c) => c.id !== card.id);
         const handCard = { ...card, status: 'hand' };
         state.playersHands[player] = [handCard, ...state.playersHands[player]];
       }
@@ -259,18 +262,18 @@ const battleSlice = createSlice({
     },
 
     returnCard(state, { payload }) {
-      const { card, cost } = payload;
+      const { card, cost, playerHand } = payload;
       const {
-        health, player, type, curCharges, charges,
+        health, type, curCharges, charges,
       } = card;
       const changedBasic = {
-        ...card, status: 'hand', cellId: '', currentC: cost,
+        ...card, status: 'hand', cellId: '', currentC: cost, player: playerHand,
       };
       const chargedCard = curCharges ? { ...changedBasic, curCharges: charges } : changedBasic;
       const changedCard = type === 'warrior' ? {
         ...chargedCard, currentHP: health, turn: 1, attachments: [],
       } : { ...chargedCard };
-      state.playersHands[player].push(changedCard);
+      state.playersHands[playerHand].push(changedCard);
     },
 
     addToGraveyard(state, { payload }) {

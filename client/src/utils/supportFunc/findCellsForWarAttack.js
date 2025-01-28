@@ -1,7 +1,8 @@
+/* eslint-disable max-len */
 import findCellsForMassAttack from './findCellsForMassAttack';
 import findCellsInRowForAttack from './findCellsInRowForAttack';
 
-const findCellsForWarAttack = (card, fieldCards, fieldCells) => {
+const findCellsForWarAttack = (card, fieldCards, fieldCells, warHasSpecialFeature) => {
   const { cellId } = card;
   const cellArr = cellId.split('.');
   const row = cellArr[0];
@@ -10,10 +11,12 @@ const findCellsForWarAttack = (card, fieldCards, fieldCells) => {
   const attackingRowCells = findCellsInRowForAttack({
     fieldCards, fieldCells, attackingLines, row, card,
   });
-  console.log(attackingRowCells);
-  const warCell = fieldCells.find((cell) => cell.id === cellId);
-  const hasMassAttack = card.features.find((feat) => feat.name === 'massAttack') || card.attachments.find((feat) => feat.name === 'massAttack')
-  || warCell.attachments.find((feat) => feat.name === 'massAttack');
+  // const warCell = fieldCells.find((cell) => cell.id === cellId);
+  const hasMassAttack = warHasSpecialFeature({
+    warCard: card, fieldCards, fieldCells, featureName: 'massAttack',
+  });
+  // card.features.find((feat) => feat.name === 'massAttack') || card.attachments.find((feat) => feat.name === 'massAttack')
+  // || warCell.attachments.find((feat) => feat.name === 'massAttack');
   const attackingCells = !hasMassAttack
     ? attackingRowCells : findCellsForMassAttack({
       fieldCards, fieldCells, attackingLines, card,

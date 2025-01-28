@@ -44,10 +44,6 @@
   cursor: pointer;
   overflow: visible;
 }
-/* 
-.cardBlock_active:hover {
-  transform: none;
-} */
 
 .imageContainer {
   position: relative;
@@ -66,8 +62,8 @@
 .imageContainer h3 {
   font-family: "Roboto", Helvetica;
   font-weight: 600;
-  text-shadow: 1px 0 0 var(--dark-color),0 1px 0 var(--dark-color), -1px 0 0 var(--dark-color),0 -1px 0 var(--dark-color);
-  font-size: 1.2rem;
+  text-shadow: 0.1rem 0 0 var(--dark-color),0 0.1rem 0 var(--dark-color), -0.1rem 0 0 var(--dark-color),0 -0.1rem 0 var(--dark-color);
+  font-size: 1.1rem;
   position: absolute;
 }
 
@@ -79,26 +75,38 @@
 .warriorPower {
   color: var(--white-color);
   left: 0.4rem;
-  top: 0.5rem;
+  top: 0.6rem;
 }
 
 .warriorPower.active {
   color: var(--white-color);
   left: 0.8rem;
-  top: 0.8rem;
+  top: 1rem;
+}
+
+.warriorDefPow {
+  color: var(--white-color);
+  left: 0.4rem;
+  top: 2.3rem;
+}
+
+.warriorDefPow.active {
+  color: var(--white-color);
+  left: 0.8rem;
+  top: 4rem;
 }
 
 .warriorHealth {
   color: var(--white-color);
   left: 0.4rem;
-  top: 2.5rem;
+  top: 4.4rem;
   text-align: center;
 }
 
 .warriorHealth.active {
   color: var(--white-color);
   left: 0.8rem;
-  top: 31%;
+  top: 57%;
 }
 
 .warriorCost {
@@ -111,6 +119,38 @@
   color: var(--white-color);
   left: 0.8rem;
   top: 80%;
+}
+
+.shieldIcon {
+  position: absolute;
+  height: 1.6rem;
+  width: 1.6rem;
+  top: 4.3rem;
+  left: 0;
+}
+
+.shieldIcon.active {
+  position: absolute;
+  height: 2.6rem;
+  width: 2.6rem;
+  top: 7.5rem;
+  left: 0.1rem;
+}
+
+.costIcon {
+  position: absolute;
+  height: 1.5rem;
+  width: 1.5rem;
+  top: 6.1rem;
+  left: 0.1rem;
+}
+
+.costIcon.active {
+  position: absolute;
+  height: 2.5rem;
+  width: 2.5rem;
+  top: 10.7rem;
+  left: 0.1rem;
 }
 
 .cardCharges {
