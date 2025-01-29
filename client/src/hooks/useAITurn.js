@@ -204,7 +204,7 @@ const useAITurn = () => {
       const canUseAblities = abilitiesToUse.length > 0;
       const chooseAbilityOverAtk = canUseAblities ? Math.round(Math.random()) > 0 : false;
       if (!isWarBetterMove && !warHasMovingFeature && canUseAblities && chooseAbilityOverAtk) {
-        const spellToUse = getRandomFromArray([...abilitiesToUse, card]);
+        const spellToUse = getRandomFromArray([...abilitiesToUse]);
         const currentCell = fieldCells.find((item) => item.id === card.cellId);
         const abilityData = {
           move: 'makeAbilityCast',

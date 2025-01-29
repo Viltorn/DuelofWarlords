@@ -118,7 +118,7 @@ const castleDeck = {
     featInfo: ['SHOOTER'],
     description: 'MasterShooter',
     faction: 'Castle',
-    features: [{ name: 'retaliation', value: 1, aim: ['warrior', 'fighter', 'shooter', 'flyer'] }],
+    features: [],
     attachments: [],
     img: MasterShooter,
     status: 'hand',
