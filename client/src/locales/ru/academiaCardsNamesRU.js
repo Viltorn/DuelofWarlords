@@ -12,7 +12,7 @@ export default {
   IceGiant: 'Ледяной гигант',
   Wisdom: 'Мудрость',
   IntellectPower: 'Сила интеллекта',
-  ForgottenSpell: 'Рассеивание заклинания',
+  ForgottenSpell: 'Забытое заклинание',
   PowerChannel: 'Канал силы',
   FireMage: 'Маг огня',
   FireMageCast: 'Огненный шар',

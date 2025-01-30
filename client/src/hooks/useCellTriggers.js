@@ -5,6 +5,7 @@ import useAITurn from './useAITurn.js';
 
 const useCellTriggers = () => {
   const { players, gameTurn } = useSelector((state) => state.battleReducer);
+  // const store = useStore();
   const player2Type = players.player2.type;
 
   const {
@@ -29,14 +30,19 @@ const useCellTriggers = () => {
       });
     } else {
       onTriggerSpells
-        .forEach((spell) => makeFeatureCast({
-          feature: spell,
-          aimCell: thisCell,
-          applyingCard: card,
-          player: spell.player,
-          player2Type,
-          performAIAction,
-        }));
+        .forEach((spell) => {
+          // const currentFieldCards = store.getState().battleReducer.fieldCards;
+          // const currentCard = currentFieldCards.find((c) => c.cellId === thisCell.id);
+          // if (!currentCard) return;
+          makeFeatureCast({
+            feature: spell,
+            aimCell: thisCell,
+            applyingCard: card,
+            player: spell.player,
+            player2Type,
+            performAIAction,
+          });
+        });
     }
   };
 
@@ -67,7 +73,7 @@ const useCellTriggers = () => {
           });
         });
       }
-      if (spellCard && (cardSource === 'hand' || cardSource === 'postponed')) {
+      if (spellCard && (cardSource === 'hand')) {
         const onPlaySpells = findTriggerSpells(spellCard, currentCell, 'onplay', 'spell', gameTurn);
         onPlaySpells.forEach((spell) => {
           makeFeatureCast({

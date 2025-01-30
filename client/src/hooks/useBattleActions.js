@@ -244,6 +244,7 @@ const useBattleActions = () => {
 
     dispatch(battleActions.addAnimation({ cellId: applyingCell.id, type: 'attacked' }));
     if (isKilled(calculatedPower, receivedHealth)) {
+      moveAttachedSpells(aimCard.cellId, null, 'kill');
       const destination = warHasSpecialFeature({
         warCard: aimCard, fieldCards: currentFieldCards, fieldCells: currentFieldCells, featureName: 'returnable',
       }) ? 'return' : 'grave';
@@ -255,7 +256,6 @@ const useBattleActions = () => {
         cellsOnField: currentFieldCells,
         gameTurn,
       });
-      moveAttachedSpells(aimCard.cellId, null, 'kill');
     }
     if (isKilled(calculatedPower, receivedHealth) && isHeroKilled(aimCard)) {
       showVictoryWindow(getEnemyPlayer(aimCard.player));
@@ -347,6 +347,7 @@ const useBattleActions = () => {
       const emptyNextRowCells = findEmptyNextRowCells(applyingCell, currentFieldCells, currentFieldCards);
       const choosenCell = emptyNextRowCells[0];
       if (!choosenCell) return;
+      console.log(aimCard);
       deleteCardFromSource(aimCard);
       dispatch(battleActions.addFieldContent({ card: aimCard, id: choosenCell.id }));
       moveAttachedSpells(aimCard.cellId, choosenCell.id, 'move');

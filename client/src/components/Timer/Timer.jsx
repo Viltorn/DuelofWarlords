@@ -6,7 +6,7 @@ import useUIActions from '../../hooks/useUIActions';
 import styles from './Timer.module.css';
 import useClickActions from '../../hooks/useClickActions';
 
-const Timer = () => {
+const Timer = ({ thisPlayer }) => {
   const {
     tick,
   } = useUIActions();
@@ -28,6 +28,7 @@ const Timer = () => {
 
   const containerClasses = cn({
     [styles.container]: true,
+    [styles.alignLeft]: thisPlayer === 'player2',
   });
 
   const timeClasses = cn({

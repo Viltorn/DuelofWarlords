@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 import _ from 'lodash';
 import FireArrow from '../../assets/fireSpells/FireArrow.png';
 import MeteorShower from '../../assets/fireSpells/MeteorShower.png';
@@ -155,12 +156,13 @@ export default {
       {
         spell: true, attach: ['field', 'warrior'], aim: ['warrior', 'fighter', 'shooter', 'flyer'], name: 'attack', value: 4, condition: 'onplay', type: 'bad', aimStatus: 'field', cost: 2, subtype: 'reaction',
       },
-      {
-        spell: true, attach: ['field', 'warrior'], aim: ['warrior', 'fighter', 'shooter', 'flyer'], name: 'moveRandomNextRowCell', condition: 'onmove', type: 'bad', aimStatus: 'field', cost: 0, subtype: 'reaction',
-      },
-      {
-        spell: true, attach: ['field', 'warrior'], type: 'bad', aim: ['warrior', 'fighter', 'shooter', 'flyer'], name: 'attack', value: 4, charges: 1, condition: 'onmove', aimStatus: 'field', cost: 2, subtype: 'reaction',
-      }],
+      // {
+      //   spell: true, attach: ['field', 'warrior'], aim: ['warrior', 'fighter', 'shooter', 'flyer'], name: 'moveRandomNextRowCell', condition: 'onmove', type: 'bad', aimStatus: 'field', cost: 0, subtype: 'reaction',
+      // },
+      // {
+      //   spell: true, attach: ['field', 'warrior'], type: 'bad', aim: ['warrior', 'fighter', 'shooter', 'flyer'], name: 'attack', value: 4, charges: 1, condition: 'onmove', aimStatus: 'field', cost: 2, subtype: 'reaction',
+      // }
+    ],
     img: ExplosiveTrap,
     status: 'hand',
   },
@@ -189,8 +191,8 @@ export default {
     name: 'Fire Blast',
     type: 'spell',
     subtype: 'instant',
-    cost: 6,
-    currentC: 6,
+    cost: 5,
+    currentC: 5,
     featInfo: [],
     description: 'FireBlast',
     school: 'Fire',

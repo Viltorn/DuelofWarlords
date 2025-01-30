@@ -332,7 +332,6 @@ const useClickActions = () => {
   };
 
   const handleCardInfoClick = (card, active) => {
-    console.log(window.innerWidth);
     if (active && gameMode !== 'builder') {
       toogleInfoWindow((prev) => !prev);
       return;

@@ -65,7 +65,7 @@ export default {
     id: _.uniqueId(),
     place: '',
     features: [{
-      spell: true, attach: false, type: 'bad', aim: ['warrior', 'fighter', 'shooter', 'flyer'], name: 'attack', value: 4, aimStatus: 'field', depend: 'sameSchoolSpellOnFiled', dependValue: 1,
+      spell: true, attach: false, type: 'bad', aim: ['warrior', 'fighter', 'shooter', 'flyer'], name: 'attack', value: 4, aimStatus: 'field', depend: 'lastPlayedIsSpell', dependValue: 1,
     },
     ],
     img: LightningStrike,
@@ -152,6 +152,7 @@ export default {
         description: 'ShockWaveCast',
         school: 'Air',
         place: '',
+        featInfo: [],
         features: [{
           attach: false, aim: ['emptyRowField', 'adjacent', 'warrior', 'flyer', 'shooter', 'fighter'], type: 'bad', name: 'attack', value: 2, aimStatus: 'field',
         }],

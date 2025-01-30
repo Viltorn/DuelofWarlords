@@ -1,5 +1,12 @@
 /* HeroPad */
 
+.padContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+}
+
 .heroPad1 {
   display: grid;
   grid-template-columns: repeat(2, auto);
@@ -9,7 +16,7 @@
 }
 
 .onlineMargin {
-  margin-top: 1rem;
+  margin-top: 0;
 }
 
 .heroPad2 {

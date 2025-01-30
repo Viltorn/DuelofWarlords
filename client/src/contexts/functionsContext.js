@@ -219,7 +219,7 @@ export const FunctionProvider = ({ children }) => {
       attachSpells.forEach((spell) => makeFeatureAttach(spell, curCell, card.player, player2Type, performAIAction));
     }
     if (card.type === 'warrior' && card.status === 'field') {
-      moveAttachedSpells(card.cellId, cellId, 'move');
+      moveAttachedSpells(card.cellId, cellId, 'move', fieldCards);
       const movingFeature = warHasSpecialFeature({
         warCard: card, fieldCards, fieldCells: cellsOnField, featureName: 'moving',
       });

@@ -258,6 +258,7 @@ const castleDeck = {
         type: 'spell',
         subtype: 'instant',
         currentC: 0,
+        featInfo: [],
         description: 'BannermanCast',
         faction: 'Castle',
         place: '',
@@ -407,6 +408,7 @@ const castleDeck = {
         type: 'spell',
         subtype: 'instant',
         currentC: 0,
+        featInfo: [],
         description: 'TemplarChampCast',
         faction: 'Castle',
         place: '',
@@ -532,6 +534,7 @@ const castleDeck = {
           description: 'AddAttackCast',
           school: 'Skills',
           place: '',
+          featInfo: [],
           features: [{
             spell: true,
             attach: ['warrior', 'flyer', 'shooter', 'fighter'],

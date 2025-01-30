@@ -78,7 +78,7 @@ const HeroPad = ({ type, player }) => {
   });
 
   return (
-    <div>
+    <div className={styles.padContainer}>
       {timer && type === 'first' && (<Timer gameTurn={gameTurn} thisPlayer={thisPlayer} />)}
       <div className={classesContainer}>
 

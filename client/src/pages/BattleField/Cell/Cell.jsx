@@ -52,9 +52,9 @@ const Cell = ({ props, id }) => {
   });
 
   useEffect(() => {
-    checkTriggers({
+    setTimeout(() => checkTriggers({
       cardType, cardSource, currentCell, cellContent, cellType: type,
-    });
+    }), 1);
   // eslint-disable-next-line
   }, [cardType, contLength, cardSource]);
 

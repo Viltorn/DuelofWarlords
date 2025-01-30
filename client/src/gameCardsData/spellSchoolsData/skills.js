@@ -83,6 +83,7 @@ export default {
         description: 'AddAttackCast',
         school: 'Skills',
         place: '',
+        featInfo: [],
         features: [{
           attach: ['warrior'],
           aim: ['warrior', 'fighter', 'shooter', 'flyer', 'hero'],
@@ -246,6 +247,7 @@ export default {
         description: 'RighteousHammerCast',
         school: 'Skills',
         place: '',
+        featInfo: [],
         features: [{
           attach: false,
           aim: ['warrior', 'flyer', 'shooter', 'fighter'],
@@ -298,6 +300,7 @@ export default {
         description: 'MovingCast',
         school: 'Skills',
         place: '',
+        featInfo: [],
         features: [{
           spell: true,
           attach: ['warrior', 'flyer', 'shooter', 'fighter'],
@@ -321,8 +324,8 @@ export default {
     subtype: 'permanent',
     cost: 2,
     currentC: 2,
-    charges: 3,
-    curCharges: 3,
+    charges: 4,
+    curCharges: 4,
     showCharges: true,
     featInfo: ['ARTEFACT', 'MASSATTACK'],
     description: 'GoldenBow',

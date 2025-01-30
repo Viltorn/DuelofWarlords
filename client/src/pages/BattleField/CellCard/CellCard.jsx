@@ -9,11 +9,14 @@ import useAnimaActions from '../../../hooks/useAnimaActions.js';
 import isInvisible from '../../../utils/supportFunc/isInvisible.js';
 
 const getTopMargin = (cellType, contentLength) => {
+  if (cellType === 'field' && contentLength === 4) {
+    return 5.3;
+  }
   if (cellType === 'field') {
-    return Math.min(2.1 * contentLength, 5.1);
+    return Math.min(2.0 * contentLength, 5.0);
   }
   if (cellType === 'hero') {
-    return 6.6;
+    return 6.4;
   }
   return 0;
 };
