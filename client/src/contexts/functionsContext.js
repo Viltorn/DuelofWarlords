@@ -26,7 +26,7 @@ export const FunctionProvider = ({ children }) => {
   const store = useStore();
   const [play] = useSound(drumAudio, { volume: 0.3 });
   const {
-    activeCardPlayer1, activeCardPlayer2, thisPlayer,
+    activeCardPlayer1, activeCardPlayer2, thisPlayer, currentTutorStep,
   } = useSelector((state) => state.battleReducer);
   const { timer } = useSelector((state) => state.uiReducer);
   const { gameMode } = useSelector((state) => state.gameReducer);
@@ -39,7 +39,6 @@ export const FunctionProvider = ({ children }) => {
     deleteImmediateSpells,
     changeChargedSpellCard,
     drawCards,
-    changeTutorStep,
     makeFeatureCast,
     makeFeatureAttach,
     prepareForAttack,
@@ -86,7 +85,7 @@ export const FunctionProvider = ({ children }) => {
     const attackedCell = newfieldCells.find((cell) => cell.id === card2.cellId);
 
     if (gameMode === 'tutorial' && card1.player === 'player1') {
-      changeTutorStep((prev) => prev + 1);
+      dispatch(battleActions.setTutorialStep(currentTutorStep + 1));
     }
 
     prepareForAttack({
@@ -121,7 +120,8 @@ export const FunctionProvider = ({ children }) => {
 
     const attachedRetaliates = findSpells({ ...defaultSpellData, type: card1.subtype, spell: 'retaliation' });
     const retaliateStrikes = findSpells({ ...defaultSpellData, type: card1.subtype, spell: 'retaliatestrike' });
-    const canRetaliate = card2.subtype !== 'shooter' && card2.type !== 'hero' && card1.subtype !== 'shooter';
+    const retributionSpells = findSpells({ ...defaultSpellData, type: card1.subtype, spell: 'retribution' });
+    const canRetaliate = card2.type !== 'hero' && card1.subtype !== 'shooter';
 
     const calculatedPower = attackingPower - protectionVal > 0
       ? attackingPower - protectionVal : 0;
@@ -136,7 +136,7 @@ export const FunctionProvider = ({ children }) => {
         cost += spell.cost ?? 0;
         return cost;
       }, 0);
-      dispatch(battleActions.setPlayerPoints({ points: defendCardOwnerPoints - totalCost, player: card2.player }));
+      if (totalCost > 0) dispatch(battleActions.setPlayerPoints({ points: defendCardOwnerPoints - totalCost, player: card2.player }));
     }
 
     dispatch(battleActions.addAnimation({ cellId: attackedCell.id, type: 'attacked' }));
@@ -158,13 +158,14 @@ export const FunctionProvider = ({ children }) => {
       showVictoryWindow(getEnemyPlayer(card2.player));
       changeCardHP(calculatedPower, attackedHealth, card2);
     }
-    if (isKilled(calculatedPower, attackedHealth) && retaliateStrikes.length > 0) {
+    if (isKilled(calculatedPower, attackedHealth) && (retaliateStrikes.length > 0 || retributionSpells.length > 0)) {
       makeCounterStrike({
         strikingCard: card2,
         recievingCard: card1,
-        canRetaliate: [],
+        canRetaliate: false,
         retaliateSpells: [],
         retaliateStrikes,
+        retributionSpells,
         newfieldCells,
         newfieldCards,
         recieveCardOwnerPoints: attackCardOwnerPoints,
@@ -179,6 +180,7 @@ export const FunctionProvider = ({ children }) => {
         canRetaliate,
         retaliateSpells: attachedRetaliates,
         retaliateStrikes,
+        retributionSpells: [],
         newfieldCells,
         newfieldCards,
         recieveCardOwnerPoints: attackCardOwnerPoints,
@@ -197,7 +199,7 @@ export const FunctionProvider = ({ children }) => {
     const cellId = curCell.id;
     const { points } = playerPoints.find((p) => p.player === player);
     if (gameMode === 'tutorial') {
-      changeTutorStep((prev) => prev + 1);
+      dispatch(battleActions.setTutorialStep(currentTutorStep + 1));
     }
     if (card.status === 'hand' && card.subtype !== 'reaction') {
       const newPoints = points - card.currentC;
@@ -358,11 +360,14 @@ export const FunctionProvider = ({ children }) => {
         qty: 1,
       }));
     }
-    if (card.heroSpell) {
-      const newfieldCards = store.getState().battleReducer.fieldCards;
-      const heroCard = newfieldCards.find((c) => c.type === 'hero' && c.player === card.player);
-      dispatch(battleActions.turnCardLeft({ cardId: heroCard.id, qty: 1 }));
+    if (gameMode === 'tutorial') {
+      dispatch(battleActions.setTutorialStep(currentTutorStep + 1));
     }
+    // if (card.heroSpell) {
+    //   const newfieldCards = store.getState().battleReducer.fieldCards;
+    //   const heroCard = newfieldCards.find((c) => c.type === 'hero' && c.player === card.player);
+    //   dispatch(battleActions.turnCardLeft({ cardId: heroCard.id, qty: 1 }));
+    // }
     dispatch(battleActions.setLastPlayedCard(card));
     setActionPerforming(false);
   };
@@ -423,11 +428,14 @@ export const FunctionProvider = ({ children }) => {
     if (card.type !== 'spell') {
       dispatch(battleActions.turnCardLeft({ cardId: card.id, qty: 1 }));
     }
-    if (card.heroSpell) {
-      const newfieldCards = store.getState().battleReducer.fieldCards;
-      const heroCard = newfieldCards.find((c) => c.type === 'hero' && c.player === card.player);
-      dispatch(battleActions.turnCardLeft({ cardId: heroCard.id, qty: 1 }));
+    if (gameMode === 'tutorial') {
+      dispatch(battleActions.setTutorialStep(currentTutorStep + 1));
     }
+    // if (card.heroSpell) {
+    //   const newfieldCards = store.getState().battleReducer.fieldCards;
+    //   const heroCard = newfieldCards.find((c) => c.type === 'hero' && c.player === card.player);
+    //   dispatch(battleActions.turnCardLeft({ cardId: heroCard.id, qty: 1 }));
+    // }
     setActionPerforming(false);
   };
 

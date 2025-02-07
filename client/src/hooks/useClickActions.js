@@ -28,6 +28,7 @@ const useClickActions = () => {
     gameTurn,
     roundNumber,
     players,
+    currentTutorStep,
   } = useSelector((state) => state.battleReducer);
 
   const { makeAITurn } = useAITurn();
@@ -38,7 +39,7 @@ const useClickActions = () => {
 
   const { changeCardsInDeckBuilder } = useDeckBuilderActions();
   const {
-    sendCardToGraveAction, changeTutorStep, getActiveCard, canBeCast,
+    sendCardToGraveAction, getActiveCard, canBeCast,
     canBeMoved, invoking, canBeAttacked, addActiveCard,
   } = useBattleActions();
 
@@ -46,10 +47,10 @@ const useClickActions = () => {
 
   const endTurnInTutorial = (newPoints) => {
     dispatch(battleActions.setPlayerPoints({ points: newPoints, player: 'player1' }));
+    dispatch(battleActions.setPlayerMaxPoints({ maxPoints: newPoints, player: 'player1' }));
     dispatch(battleActions.addCommonPoint());
     dispatch(battleActions.drawCard({ player: 'player1' }));
-    dispatch(battleActions.turnPostponed({ player: 'player1', status: 'face' }));
-    changeTutorStep((prev) => prev + 1);
+    dispatch(battleActions.setTutorialStep(currentTutorStep + 1));
   };
 
   const hadleEndTurnClick = () => {
@@ -256,6 +257,7 @@ const useClickActions = () => {
   const handleCellCardClick = ({ item, cardElement }) => {
     if (actionPerforming || (gameMode === 'online' && isPlayerDisconnected(players))) return;
     if (invoking) return;
+    if (item.disabled) return;
     const activeCard = getActiveCard();
     const cardId = cardElement?.current.id;
     if (activeCard?.ownerId === cardId) return;
@@ -347,13 +349,13 @@ const useClickActions = () => {
   const handleResetGameClick = (dest) => {
     dispatch(battleActions.resetState());
     dispatch(uiActions.resetState());
-    changeTutorStep(0);
     if (dest === 'reset' && (gameMode === 'hotseat' || gameMode === 'test')) {
       dispatch(modalsActions.openModal({ type: 'openHotSeatMenu' }));
       return;
     }
     if (dest === 'reset' && gameMode === 'tutorial') {
-      dispatch(modalsActions.closeModal());
+      dispatch(battleActions.setTutorialStep(0));
+      dispatch(modalsActions.openModal({ type: 'tutorial' }));
       return;
     }
     if (dest !== '/lobby') {

@@ -248,9 +248,6 @@ export default {
       {
         spelll: true, attach: false, type: 'all', aim: ['randomNextRow', 'warrior', 'fighter', 'shooter'], name: 'attack', value: 7, aimStatus: 'field',
       },
-    //   {
-    //   spell: true, attach: false, type: 'all', aim: ['field', 'warrior', 'fighter', 'shooter'], name: 'attack', value: 7, depend: 'postponed', dependValue: 8, aimStatus: 'field',
-    // }
     ],
     img: Tsunami,
     status: 'hand',

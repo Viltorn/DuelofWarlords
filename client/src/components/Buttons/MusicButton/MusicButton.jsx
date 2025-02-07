@@ -1,6 +1,6 @@
 /* eslint-disable jsx-a11y/media-has-caption */
 import React, { useRef, useState } from 'react';
-import Music from '@assets/MusicBundle2.mp3';
+import Music from '@assets/battlefield/MusicBundle3.mp3';
 import PlayIcon from '@assets/PlayIcon.png';
 import PauseIcon from '@assets/PauseIcon.png';
 import styles from './MusicButton.module.css';

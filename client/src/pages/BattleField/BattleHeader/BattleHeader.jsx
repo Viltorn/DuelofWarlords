@@ -9,7 +9,6 @@ import useClickActions from '../../../hooks/useClickActions.js';
 import tutorialStepsData from '../../../gameData/tutorialStepsData.js';
 import useFunctionsContext from '../../../hooks/useFunctionsContext.js';
 import styles from './BattleHeader.module.css';
-import useBattleActions from '../../../hooks/useBattleActions.js';
 
 const BattleHeader = () => {
   const { t } = useTranslation();
@@ -24,12 +23,12 @@ const BattleHeader = () => {
     thisPlayer,
     players,
     gameTurn,
+    currentTutorStep,
   } = useSelector((state) => state.battleReducer);
   const {
     isOpenMenu,
   } = useFunctionsContext();
-  const { tutorStep } = useBattleActions();
-  const { disEndTurn } = tutorialStepsData[tutorStep];
+  const { disEndTurn } = tutorialStepsData[currentTutorStep];
 
   const playerOneBlock = cn({
     [styles.titleBlock]: true,

@@ -3,21 +3,21 @@ import { useTranslation } from 'react-i18next';
 import { useDispatch } from 'react-redux';
 import { actions as modalActions } from '../../slices/modalsSlice.js';
 import { actions as battleActions } from '../../slices/battleSlice.js';
-import { heroes } from '../../gameCardsData/factionsData.js';
 import PrimaryButton from '../../components/Buttons/PrimaryButton/PrimaryButton.jsx';
 import styles from './GreetingWindow.module.css';
+import useTutorialActions from '../../hooks/useTutorialActions.js';
 
 const GreetingWindow = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
 
+  const { stepFunctions } = useTutorialActions();
+
   const handleContinue = () => {
-    dispatch(modalActions.closeModal());
     dispatch(battleActions.disableCells({ ids: ['graveyard1', 'graveyard2'] }));
-    dispatch(battleActions.changePlayer({ newPlayer: 'player1' }));
-    dispatch(battleActions.setHero({ hero: heroes[0], player: 'player1' }));
-    dispatch(battleActions.setHero({ hero: heroes[1], player: 'player2' }));
-    dispatch(modalActions.openModal({ type: 'tutorialSteps' }));
+    stepFunctions.step1();
+    dispatch(battleActions.setTutorialStep(1));
+    dispatch(modalActions.closeModal());
   };
 
   return (
@@ -28,7 +28,7 @@ const GreetingWindow = () => {
         <PrimaryButton
           showIcon={false}
           state="default"
-          text={t('CONTINUE')}
+          text={t('buttons.CONTINUE')}
           variant="primary"
           type="submit"
           onClick={handleContinue}

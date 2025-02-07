@@ -1,11 +1,9 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 import cn from 'classnames';
-import tutorialStepsData from '../../../gameData/tutorialStepsData.js';
 import ActionButton from '../../Buttons/ActionButton/ActionButton.jsx';
 import Card from '../Card/Card.jsx';
 import styles from './ActiveCard.module.css';
-import useBattleActions from '../../../hooks/useBattleActions.js';
 import isActiveCard from '../../../utils/supportFunc/isActiveCard.js';
 
 const ActiveCard = ({
@@ -20,8 +18,6 @@ const ActiveCard = ({
     thisPlayer, playerPoints, fieldCells, roundNumber, gameTurn, players,
   } = useSelector((state) => state.battleReducer);
   const modalType = useSelector((state) => state.modalsReducer).type;
-  const { tutorStep } = useBattleActions();
-  const { disAbility } = tutorialStepsData[tutorStep];
 
   const firstRound = roundNumber === 1;
   const currentPoints = playerPoints.find((item) => item.player === thisPlayer).points;
@@ -33,7 +29,7 @@ const ActiveCard = ({
   const ressurect = fieldCells
     .find((cell) => cell.id === cellId && cell.type === 'graveyard')?.attachments
     .find((feat) => feat.name === 'ressurect' && feat.aim.includes(activeCard.type) && feat.player === gameTurn);
-  const canUseAbilities = isActiveCard(activeCard) && !disAbility && legalTurn && status !== 'graveyard';
+  const canUseAbilities = isActiveCard(activeCard) && !activeCard.disabled && legalTurn && status !== 'graveyard';
   const canSucrificeCard = !sucrificedCard && thisPlayer === activeCard.player && legalTurn && type !== 'hero' && status === 'hand';
   const canReturnCard = firstRound && thisPlayer === activeCard.player && !cardsdrawn && legalTurn;
   const canRessurectCard = status !== 'hand' && (type !== 'hero') && ressurect && activeCard.status === 'graveyard' && legalTurn;
@@ -51,7 +47,7 @@ const ActiveCard = ({
         {canSucrificeCard && gameMode !== 'build' && (
           <ActionButton card={activeCard} ability={null} type="sucrifice" name="sucrifice" />
         )}
-        {(canReturnCard || gameMode === 'test') && (type !== 'hero') && gameMode !== 'build' && (
+        {(canReturnCard || gameMode === 'test') && (type !== 'hero') && gameMode !== 'build' && gameMode !== 'tutorial' && (
           <ActionButton card={activeCard} ability={null} type="deckreturn" name="deckreturn" />
         )}
         {gameMode !== 'build' && canUseAbilities && abilities.map((ability) => {

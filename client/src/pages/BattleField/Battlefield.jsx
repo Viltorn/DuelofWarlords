@@ -46,6 +46,7 @@ const Battlefield = () => {
     thisPlayer,
     players,
     gameTurn,
+    currentTutorStep,
   } = useSelector((state) => state.battleReducer);
   const { gameMode, curRoom, socketId } = useSelector((state) => state.gameReducer);
   const thisPlayerName = useSelector((state) => state.gameReducer.name);
@@ -186,7 +187,7 @@ const Battlefield = () => {
         <RotateScreen />
       )}
       <div className={styles.main} ref={main}>
-        {gameMode === 'tutorial' && (
+        {gameMode === 'tutorial' && currentTutorStep !== 0 && (
           <TutorialStepsWindow />
         )}
         {isOpenInfo && activeCard && (

@@ -80,11 +80,16 @@
 }
 
 .core {
+  /* background-size: cover;
+  background-repeat: no-repeat;
+  background-image: url("../../assets/battlefield/BrownBack.jpeg"); */
+  border-radius: 0.3rem;
+  /* padding: 0.3rem; */
   display: flex;
   flex-direction: column;
   flex-wrap: nowrap;
   justify-content: center;
-  gap: 1rem;
+  gap: 0.8rem;
   justify-items: center;
   margin-top: 0.3rem;
 }
@@ -92,16 +97,16 @@
 .topspells {
   display: flex;
   justify-content: center;
-  grid-column-gap: 0.8rem;
+  grid-column-gap: 0.7rem;
 }
 
 .middleCells {
   display: flex;
   flex-direction: row;
   flex-wrap: nowrap;
-  justify-content: space-around;
+  justify-content: center;
   align-items: center;
-  gap: 1rem;
+  gap: 0.8rem;
 }
 
 .middleFieldcells {

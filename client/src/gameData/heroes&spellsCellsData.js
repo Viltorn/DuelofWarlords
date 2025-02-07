@@ -43,12 +43,12 @@ export const heroes = [
   },
 ];
 
-export const postponed = [
+export const counters = [
   {
-    id: 'postponed1', player: 'player1', content: [], type: 'postponed', status: 'cover', animation: '', disabled: false,
+    id: 'counter1', player: 'player1', content: [], type: 'counter', status: 'cover', animation: '', disabled: false,
   },
   {
-    id: 'postponed2', player: 'player2', content: [], type: 'postponed', status: 'cover', animation: '', disabled: false,
+    id: 'counter2', player: 'player2', content: [], type: 'counter', status: 'cover', animation: '', disabled: false,
   },
 ];
 

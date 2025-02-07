@@ -1,11 +1,10 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { actions as battleActions } from '../../slices/battleSlice.js';
 import { actions as modalsActions } from '../../slices/modalsSlice.js';
 import PrimaryButton from '../../components/Buttons/PrimaryButton/PrimaryButton.jsx';
-import functionContext from '../../contexts/functionsContext.js';
 import styles from './LastStepWindow.module.css';
 
 const GreetingWindow = () => {
@@ -13,12 +12,10 @@ const GreetingWindow = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const { changeTutorStep } = useContext(functionContext);
-
   const handleExit = () => {
     dispatch(battleActions.resetState());
     dispatch(modalsActions.closeModal());
-    changeTutorStep(0);
+    dispatch(battleActions.setTutorialStep(0));
     navigate('/choose');
   };
 
@@ -31,25 +28,25 @@ const GreetingWindow = () => {
         </p>
         <ul className={styles.tipsBlock}>
           <li className={styles.tip}>
-            {t('Tip1')}
+            {t('tutorialTips.Tip1')}
           </li>
           <li className={styles.tip}>
-            {t('Tip2')}
+            {t('tutorialTips.Tip2')}
           </li>
           <li className={styles.tip}>
-            {t('Tip3')}
+            {t('tutorialTips.Tip3')}
           </li>
           <li className={styles.tip}>
-            {t('Tip4')}
+            {t('tutorialTips.Tip4')}
           </li>
           <li className={styles.tip}>
-            {t('Tip5')}
+            {t('tutorialTips.Tip5')}
           </li>
         </ul>
         <PrimaryButton
           showIcon={false}
           state="default"
-          text={t('Exit')}
+          text={t('buttons.EXIT')}
           variant="primary"
           type="submit"
           onClick={handleExit}

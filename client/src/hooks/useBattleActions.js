@@ -688,6 +688,7 @@ const useBattleActions = () => {
       canRetaliate,
       retaliateSpells,
       retaliateStrikes,
+      retributionSpells,
       newfieldCells,
       newfieldCards,
       recieveCardOwnerPoints,
@@ -703,7 +704,10 @@ const useBattleActions = () => {
     const retaliateStrikePower = retaliateStrikes.length > 0 ? calcAllSpellslValue({
       spells: retaliateStrikes, aimCardPower: getWarriorPower(recievingCard), currentFieldCards: newfieldCards,
     }) : 0;
-    const totalStrikePower = strikePower + spellRetaliatePower + retaliateStrikePower;
+
+    const retributionPower = retributionSpells.length > 0 ? getWarriorPower(strikingCard, 'defPower') : 0;
+    console.log(retributionPower);
+    const totalStrikePower = strikePower + spellRetaliatePower + retaliateStrikePower + retributionPower;
     const recieveHealth = recievingCard.currentHP;
     const retaliateProtects = findSpells({
       attackingCard: strikingCard,

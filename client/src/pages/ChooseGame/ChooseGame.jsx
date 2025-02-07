@@ -88,7 +88,7 @@ const ChooseGame = () => {
         )}
         <hr className={styles.divider} />
         <h2 className={styles.header}>{t('ChooseGame')}</h2>
-        {/* <MenuBtn text={t('buttons.TUTORIAL')} data="tutorial" type="primary" /> */}
+        <MenuBtn text={t('buttons.TUTORIAL')} data="tutorial" type="primary" />
         <MenuBtn text={t('buttons.HOTSEAT')} data="hotseat" type="primary" />
         {logged && (
           <MenuBtn text={t('buttons.ONLINEGAME')} data="online" type="primary" />

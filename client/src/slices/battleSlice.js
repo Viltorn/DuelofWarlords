@@ -2,7 +2,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 import createFieldCells from '../utils/makeFieldCells.js';
 import {
-  bigSpell, topSpells, midSpells, heroes, postponed, graveyard, fieldCells,
+  bigSpell, topSpells, midSpells, heroes, counters, graveyard, fieldCells,
 } from '../gameData/heroes&spellsCellsData.js';
 
 const initialState = {
@@ -27,7 +27,7 @@ const initialState = {
     ...topSpells,
     ...midSpells,
     ...heroes,
-    ...postponed,
+    ...counters,
     ...graveyard,
   ],
   activeCells: { cellsForAttack: [], cellsForSpellCast: [], cellsForWarMove: [] },
@@ -35,6 +35,7 @@ const initialState = {
   lastPlayedCard: {},
   activeCardPlayer1: null,
   activeCardPlayer2: null,
+  currentTutorStep: 0,
 };
 
 const battleSlice = createSlice({
@@ -42,6 +43,17 @@ const battleSlice = createSlice({
   initialState,
   reducers: {
     resetState: () => initialState,
+
+    setTutorialStep(state, { payload }) {
+      const step = payload;
+      state.currentTutorStep = step;
+    },
+
+    changeFieldCardDisability(state, { payload }) {
+      const { card, disabled } = payload;
+      const cardIndex = state.fieldCards.findIndex((c) => c.id === card.id);
+      state.fieldCards[cardIndex].disabled = disabled;
+    },
 
     changeRound(state) {
       state.roundNumber += 1;

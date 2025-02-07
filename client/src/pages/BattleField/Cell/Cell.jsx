@@ -43,12 +43,13 @@ const Cell = ({ props, id }) => {
   const classes = cn({
     [styles.defaultSize]: true,
     [styles.spell]: type === 'midSpell' || type === 'topSpell',
+    [styles.border]: (type === 'midSpell' || type === 'topSpell' || type === 'bigSpell') && (animation !== '' || cardsInCell.length > 0),
     [styles.bigSpell]: type === 'bigSpell',
     [styles.field]: type === 'field',
     [styles.animationGreen]: animation === 'green',
     [styles.animationRed]: animation === 'red',
     [styles.animationAttacked]: animation === 'attacked',
-    [styles.animationCanMakeTurn]: animation === '' && readyWarrior,
+    [styles.animationCanMakeTurn]: animation === '' && readyWarrior && !currentCell.disabled,
   });
 
   useEffect(() => {

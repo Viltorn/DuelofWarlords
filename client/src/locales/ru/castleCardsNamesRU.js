@@ -13,7 +13,7 @@ export default {
   Marksman: 'Арбалетчик',
   MasterOfLight: 'Магистр света',
   YouthFountain: 'Фонтан молодости',
-  RetaliationHammer: 'Молот возмездия',
+  RetaliationHammer: 'Бросок молота',
   TemplarChampCast: 'Заклинание',
   BannermanCast: 'Заклинание',
   ZigfridHero: 'Зигфрид - Герой',

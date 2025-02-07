@@ -31,6 +31,7 @@ const HeroPad = ({ type, player }) => {
   const { maxPoints } = playerPoints.find((data) => data.player === player);
 
   const cardsCount = useMemo(() => playersHands[getEnemyPlayer(thisPlayer)].length, [thisPlayer, playersHands]);
+  const counterCell = useMemo(() => fieldCells.find((cell) => cell.player === player && cell.type === 'counter'), [fieldCells, player]);
   const cardsInDecks = useMemo(() => playersDecks[player].length, [playersDecks, player]);
   const heroCellId = useMemo(() => (player === 'player1' ? 'hero1' : 'hero2'), [player]);
   const heroCell = useMemo(() => fieldCells.find((cell) => cell.player === player && cell.type === 'hero'), [fieldCells, player]);
@@ -61,6 +62,7 @@ const HeroPad = ({ type, player }) => {
   const counterClasses = cn({
     [styles.counterCell]: true,
     [styles.noBorder]: true,
+    [styles.animationGreen]: counterCell.animation === 'green',
     [styles.secondType]: type === 'second',
     [styles.secondPlayer]: type === 'first' && player === 'player2',
   });
@@ -68,7 +70,7 @@ const HeroPad = ({ type, player }) => {
   const heroAnima = cn({
     [styles.animationGreen]: heroCell.animation === 'green',
     [styles.animationRed]: heroCell.animation === 'red',
-    [styles.heroCanAct]: heroCell.animation === '' && readyWarrior,
+    [styles.heroCanAct]: heroCell.animation === '' && readyWarrior && !heroCell.disabled,
   });
 
   const graveCellClasses = cn({

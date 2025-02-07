@@ -1,12 +1,11 @@
 .window {
   position: absolute; /* Stay in place */
-  z-index: 1; /* Sit on top */
+  z-index: 2; /* Sit on top */
   top: 6.5rem;
   width: 22rem;
   height: 20rem;
   background: var(--dark-blue);/* 15% from the top and centered */
   padding: 0.5rem 0.5rem;
-  border: 1px solid #888;
   border-radius: 0.5rem;
 }
 

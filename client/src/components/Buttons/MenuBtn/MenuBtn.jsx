@@ -44,6 +44,10 @@ const MenuBtn = ({
     } else if (gameMode === 'hotseat') {
       navigate('/battle');
       dispatch(modalsActions.openModal({ type: 'openHotSeatMenu' }));
+    } else if (gameMode === 'tutorial') {
+      navigate('/battle');
+      dispatch(modalsActions.openModal({ type: 'tutorial' }));
+      dispatch(gameActions.setGameMode({ gameMode }));
     }
   };
 

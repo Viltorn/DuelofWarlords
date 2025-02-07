@@ -134,7 +134,7 @@ const useAnimaActions = () => {
       if (moveRowAttachment && moveRowAttachment.player === playerTurn) {
         addNextLinesCellsForMove({ activeCard, fieldCards, fieldCells });
       }
-      if ((movingAttachment && movingAttachment.player === playerTurn) || (canMove && activeCard.player === playerTurn)) {
+      if ((movingAttachment && movingAttachment.player === playerTurn)) {
         addAllCellsForWarMove({
           activeCard, player: activeCard.player, fieldCards, fieldCells,
         });
@@ -142,6 +142,12 @@ const useAnimaActions = () => {
       if (moveAdjasentAttachment && moveAdjasentAttachment.player === playerTurn) {
         addAdjasentCellsForMove({
           activeCard, fieldCards, fieldCells,
+        });
+      }
+
+      if ((canMove && activeCard.player === playerTurn) && !moveRowAttachment && !moveAdjasentAttachment && !movingAttachment) {
+        addAllCellsForWarMove({
+          activeCard, player: activeCard.player, fieldCards, fieldCells,
         });
       }
 
