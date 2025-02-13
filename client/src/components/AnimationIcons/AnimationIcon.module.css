@@ -1,0 +1,191 @@
+.warAttacked {
+  position: absolute;
+  left: 1rem;
+  top: 1.2rem;
+  width: 5rem;
+  height: 5rem;
+  animation: 1.5s 0.5 normal warAttacked;
+  opacity: 0;
+  z-index: 5;
+}
+
+.arcane {
+  position: absolute;
+  left: 1.5rem;
+  top: 1.5rem;
+  margin-left: auto;
+  margin-right: auto;
+  width: 5rem;
+  height: 5rem;
+  animation: 1.5s 1 normal arcaneAttacked;
+  opacity: 0;
+  z-index: 5;
+}
+
+.light {
+  position: absolute;
+  left: 1.5rem;
+  top: 1.5rem;
+  margin-left: auto;
+  margin-right: auto;
+  width: 5rem;
+  height: 5rem;
+  animation: 1.5s 1 normal lightAttacked;
+  opacity: 0;
+  z-index: 5;
+}
+
+.air {
+  position: absolute;
+  left: 1.5rem;
+  top: 1.5rem;
+  margin-left: auto;
+  margin-right: auto;
+  width: 5rem;
+  height: 5rem;
+  animation: 1.5s 1 ease-out airAttacked;
+  opacity: 0;
+  z-index: 5;
+}
+
+.fire {
+  position: absolute;
+  left: 1.5rem;
+  top: 1.5rem;
+  margin-left: auto;
+  margin-right: auto;
+  width: 5rem;
+  height: 5rem;
+  animation: 1.5s 1 ease-out fireAttacked;
+  opacity: 0;
+  z-index: 5;
+}
+
+.water {
+  position: absolute;
+  left: 1.5rem;
+  top: 1.5rem;
+  margin-left: auto;
+  margin-right: auto;
+  width: 5rem;
+  height: 5rem;
+  animation: 1.5s 1 ease-out waterAttacked;
+  opacity: 0;
+  z-index: 5;
+}
+
+.healed {
+  position: absolute;
+  left: 1.5rem;
+  top: 1.5rem;
+  width: 5rem;
+  height: 5rem;
+  animation: 1.5s 1 normal healed;
+  opacity: 0;
+  z-index: 5;
+}
+
+@keyframes warAttacked {
+  from {
+    transform: rotate(-45deg);
+    opacity: 1;
+  }
+
+  to {
+    transform: rotate(60deg);
+    opacity: 1;
+  }
+}
+
+@keyframes arcaneAttacked {
+  from {
+    transform: scale(0.5) rotate(0deg);
+    opacity: 0.5;
+  }
+
+  to {
+    transform: rotate(120deg) scale(1.5);
+    opacity: 1;
+  }
+}
+
+@keyframes lightAttacked {
+  from {
+    transform: scale(0.5) rotate(0deg);
+    opacity: 0.5;
+  }
+
+  to {
+    transform: rotate(120deg) scale(1.5);
+    opacity: 1;
+  }
+}
+
+@keyframes airAttacked {
+  0% {
+    opacity: 1;
+  }
+
+  75% {
+    transform: translateY(-1rem);
+    opacity: 1;
+  }
+
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes fireAttacked {
+  0% {
+    transform: scale(0.5);
+    opacity: 0.5;
+  }
+
+  25% {
+    transform: scale(0.5);
+    opacity: 0.8;
+  }
+
+
+  50% {
+    transform: scale(0.7);
+    opacity: 1;
+  }
+
+  75% {
+    transform: scale(1.2);
+    opacity: 0.8;
+  }
+
+  100% {
+    transform:  scale(1.5);
+    opacity: 1;
+  }
+}
+
+@keyframes waterAttacked {
+  0% {
+    transform: scale(0.5);
+    opacity: 0.5;
+  }
+
+
+  100% {
+    transform:  scale(1.5);
+    opacity: 1;
+  }
+}
+
+@keyframes healed {
+  from {
+    transform: scale(0.5);
+    opacity: 1;
+  }
+
+  to {
+    transform: scale(1.2);
+    opacity: 1;
+  }
+}

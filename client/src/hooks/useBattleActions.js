@@ -242,7 +242,7 @@ const useBattleActions = () => {
     const calculatedPower = spellPower - protectionVal > 0 ? spellPower - protectionVal : 0;
     const applyingCell = currentFieldCells.find((cell) => cell.id === aimCard.cellId);
 
-    dispatch(battleActions.addAnimation({ cellId: applyingCell.id, type: 'attacked' }));
+    dispatch(battleActions.addAnimation({ cellId: applyingCell.id, type: feature.school }));
     if (isKilled(calculatedPower, receivedHealth)) {
       moveAttachedSpells(aimCard.cellId, null, 'kill');
       const destination = warHasSpecialFeature({
@@ -695,7 +695,12 @@ const useBattleActions = () => {
       gameturn,
     } = data;
     const strikingCell = newfieldCells.find((cell) => cell.id === strikingCard.cellId);
-    dispatch(battleActions.addAnimation({ cellId: strikingCell.id, type: 'makeattack' }));
+    const recievingCell = newfieldCells.find((cell) => cell.id === recievingCard.cellId);
+    if (strikingCard.type !== 'hero'
+      && (canRetaliate || retaliateSpells.length > 0 || retaliateStrikes.length > 0 || retributionSpells.length > 0)) {
+      dispatch(battleActions.addAnimation({ cellId: strikingCell.id, type: 'makeattack' }));
+      dispatch(battleActions.addAnimation({ cellId: recievingCell.id, type: 'warAttacked' }));
+    }
     const strikePower = canRetaliate ? getWarriorPower(strikingCard, 'defPower') : 0;
     const spellRetaliatePower = retaliateSpells.length > 0 ? calcAllSpellslValue({
       spells: retaliateSpells, aimCardPower: getWarriorPower(recievingCard), currentFieldCards: newfieldCards,
@@ -706,7 +711,6 @@ const useBattleActions = () => {
     }) : 0;
 
     const retributionPower = retributionSpells.length > 0 ? getWarriorPower(strikingCard, 'defPower') : 0;
-    console.log(retributionPower);
     const totalStrikePower = strikePower + spellRetaliatePower + retaliateStrikePower + retributionPower;
     const recieveHealth = recievingCard.currentHP;
     const retaliateProtects = findSpells({

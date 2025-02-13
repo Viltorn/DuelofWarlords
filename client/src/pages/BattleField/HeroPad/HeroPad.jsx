@@ -11,7 +11,9 @@ import Timer from '../../../components/Timer/Timer.jsx';
 import isWarriorReady from '../../../utils/supportFunc/isWarriorReady.js';
 import CellCard from '../CellCard/CellCard.jsx';
 import styles from './HeroPad.module.css';
+import AnimationIcon from '../../../components/AnimationIcons/AnimationIcon.jsx';
 import useClickActions from '../../../hooks/useClickActions.js';
+import icons from '../../../gameData/animationIcons.js';
 
 const cardsToShowHeroSlot = 5;
 
@@ -38,8 +40,8 @@ const HeroPad = ({ type, player }) => {
   const heroData = useMemo(() => fieldCards.filter((card) => card.cellId === heroCellId), [heroCellId, fieldCards]);
   const graveCell = useMemo(() => fieldCells.find((cell) => cell.player === player && cell.type === 'graveyard'), [fieldCells, player]);
   const graveCellId = graveCell.id;
-  const graveyardContent = useMemo(() => fieldCards.filter((card) => card.cellId === graveCellId), [graveCellId, fieldCards]);
-  const lastItem = useMemo(() => graveyardContent[0], [graveyardContent]);
+  const graveyardContent = useMemo(() => fieldCards.filter((card) => card.cellId === graveCellId).reverse(), [graveCellId, fieldCards]);
+  // const lastItem = useMemo(() => graveyardContent[0], [graveyardContent]);
   const heroCard = heroData.find((card) => card.type === 'hero');
   const readyWarrior = useMemo(() => isWarriorReady(heroCard, player, gameTurn) && heroCard.features.find((feat) => feat.cost <= curPoints), [gameTurn, heroCard, curPoints, player]);
 
@@ -106,6 +108,9 @@ const HeroPad = ({ type, player }) => {
             </div>
           )}
         <div className={`${cellsClasses} ${heroAnima} ${styles.noBorder}`}>
+          {heroCell.animation !== '' && icons[heroCell.animation] && (
+          <AnimationIcon animation={heroCell.animation} icon={icons[heroCell.animation]} />
+          )}
           {heroCellContent.length > 0 && (
             heroCellContent.map((item) => (
               <CellCard
@@ -118,27 +123,29 @@ const HeroPad = ({ type, player }) => {
           )}
         </div>
         <div className={cellsClasses}>
-          <TransitionGroup component={null}>
-            {graveyardContent.length !== 0 && (
-            <CSSTransition
-              timeout={500}
-              classNames={{
-                enter: styles.cardAnimationEnter,
-                enterActive: styles.cardAnimationActive,
-                exit: styles.cardAnimationExit,
-                exitActive: styles.cardAnimationExitActive,
-              }}
-            >
-              <button className={graveCellClasses} type="button" onClick={() => handleGraveyardClick(player, graveCell)}>
-                <img className={styles.image} src={lastItem.img} alt={lastItem.name} />
-              </button>
-            </CSSTransition>
-            )}
+          <TransitionGroup component={null} exit>
+            {graveyardContent.length > 0 && (
+              graveyardContent.map((item) => (
+                <CSSTransition
+                  key={item.id}
+                  timeout={500}
+                  classNames={{
+                    enter: styles.cardAnimationEnter,
+                    enterActive: styles.cardAnimationActive,
+                    exit: styles.cardAnimationExit,
+                    exitActive: styles.cardAnimationExitActive,
+                  }}
+                >
+                  <button key={item.id} className={graveCellClasses} type="button" onClick={() => handleGraveyardClick(player, graveCell)}>
+                    <img className={styles.image} src={item.img} alt={item.name} />
+                  </button>
+                </CSSTransition>
+              )))}
           </TransitionGroup>
           {graveyardContent.length === 0 && (
-          <button className={graveCellClasses} onClick={() => handleGraveyardClick(player, graveCell)} type="button">
-            <h3 className={styles.defaultTitle}>{t('Graveyard')}</h3>
-          </button>
+            <button className={graveCellClasses} onClick={() => handleGraveyardClick(player, graveCell)} type="button">
+              <h3 className={styles.defaultTitle}>{t('Graveyard')}</h3>
+            </button>
           )}
         </div>
         <div className={counterClasses}>
@@ -154,3 +161,14 @@ const HeroPad = ({ type, player }) => {
 };
 
 export default HeroPad;
+
+/* <motion.div
+key={graveyardContent[0].id}
+className={cellsClasses}
+initial={{ scale: 1, opacity: 1 }}
+animate={{ scale: isScaled ? 1.2 : 1, opacity: 1 }}
+exit="exit"
+onAnimationComplete={() => setIsScaled(false)}
+variants={cardVariants}
+transition={{ duration: 1 }}
+> */

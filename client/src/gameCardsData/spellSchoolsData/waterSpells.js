@@ -27,10 +27,10 @@ export default {
     place: 'midSpell',
     features: [
       {
-        spell: true, attach: false, type: 'all', aim: ['row', 'warrior', 'fighter', 'shooter', 'flyer'], value: 3, name: 'attack', aimStatus: 'field',
+        spell: true, attach: false, type: 'all', aim: ['row', 'warrior', 'fighter', 'shooter', 'flyer'], value: 3, name: 'attack', aimStatus: 'field', school: 'water',
       },
       {
-        spell: true, attach: false, type: 'all', aim: ['row', 'spell', 'warrior', 'fighter', 'shooter', 'flyer'], value: 3, name: 'attack', condition: 'lastcall', aimStatus: 'field',
+        spell: true, attach: false, type: 'all', aim: ['row', 'spell', 'warrior', 'fighter', 'shooter', 'flyer'], value: 3, name: 'attack', condition: 'lastcall', aimStatus: 'field', school: 'water',
       },
     ],
     img: Blizzard,
@@ -79,10 +79,10 @@ export default {
       spell: true, attach: ['field', 'warrior'], aim: ['warrior', 'fighter', 'shooter', 'flyer'], name: 'stun', condition: 'onplay', type: 'bad', charges: 1, aimStatus: 'field', cost: 1, subtype: 'reaction',
     },
     {
-      spell: true, attach: ['field', 'warrior'], type: 'bad', aim: ['warrior', 'fighter', 'shooter', 'flyer'], name: 'attack', value: 3, charges: 1, condition: 'onplay', aimStatus: 'field', cost: 0, subtype: 'reaction',
+      spell: true, attach: ['field', 'warrior'], type: 'bad', aim: ['warrior', 'fighter', 'shooter', 'flyer'], name: 'attack', value: 3, charges: 1, condition: 'onplay', aimStatus: 'field', cost: 0, subtype: 'reaction', school: 'water',
     },
     {
-      spell: true, attach: ['field', 'warrior'], type: 'bad', aim: ['warrior', 'fighter', 'shooter', 'flyer'], name: 'attack', value: 3, charges: 1, condition: 'onmove', aimStatus: 'field', cost: 0, subtype: 'reaction',
+      spell: true, attach: ['field', 'warrior'], type: 'bad', aim: ['warrior', 'fighter', 'shooter', 'flyer'], name: 'attack', value: 3, charges: 1, condition: 'onmove', aimStatus: 'field', cost: 0, subtype: 'reaction', school: 'water',
     },
     {
       spell: true, attach: ['field', 'warrior'], aim: ['warrior', 'fighter', 'shooter', 'flyer'], name: 'stun', condition: 'onmove', type: 'bad', charges: 1, aimStatus: 'field', cost: 1, subtype: 'reaction',
@@ -128,7 +128,7 @@ export default {
     school: 'Water',
     place: 'topSpell',
     features: [{
-      spell: true, attach: false, type: 'bad', name: 'attack', value: 2, aim: ['line', 'warrior', 'fighter', 'shooter', 'flyer'], aimStatus: 'field',
+      spell: true, attach: false, type: 'bad', name: 'attack', value: 2, aim: ['line', 'warrior', 'fighter', 'shooter', 'flyer'], aimStatus: 'field', school: 'water',
     },
     {
       spell: true,
@@ -139,6 +139,7 @@ export default {
       condition: 'onmove',
       value: 2,
       aimStatus: 'field',
+      school: 'water',
     },
     {
       spell: true,
@@ -149,6 +150,7 @@ export default {
       condition: 'onplay',
       value: 2,
       aimStatus: 'field',
+      school: 'water',
     }],
     img: IceSpikes,
     status: 'hand',
@@ -243,10 +245,10 @@ export default {
     place: '',
     features: [
       {
-        spell: true, attach: false, type: 'all', aim: ['row', 'warrior', 'fighter', 'shooter'], name: 'attack', value: 7, aimStatus: 'field',
+        spell: true, attach: false, type: 'all', aim: ['row', 'warrior', 'fighter', 'shooter'], name: 'attack', value: 7, aimStatus: 'field', school: 'water',
       },
       {
-        spelll: true, attach: false, type: 'all', aim: ['randomNextRow', 'warrior', 'fighter', 'shooter'], name: 'attack', value: 7, aimStatus: 'field',
+        spelll: true, attach: false, type: 'all', aim: ['randomNextRow', 'warrior', 'fighter', 'shooter'], name: 'attack', value: 7, aimStatus: 'field', school: 'water',
       },
     ],
     img: Tsunami,
@@ -281,7 +283,7 @@ export default {
     school: 'Water',
     place: '',
     features: [{
-      spell: true, attach: false, type: 'bad', aim: ['warrior', 'fighter', 'shooter', 'flyer'], name: 'attack', value: 2, aimStatus: 'field',
+      spell: true, attach: false, type: 'bad', aim: ['warrior', 'fighter', 'shooter', 'flyer'], name: 'attack', value: 2, aimStatus: 'field', school: 'water',
     }, {
       spell: true, attach: false, type: 'bad', aim: ['warrior', 'fighter', 'shooter', 'flyer'], name: 'stun', aimStatus: 'field',
     }],

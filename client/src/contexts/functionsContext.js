@@ -139,7 +139,7 @@ export const FunctionProvider = ({ children }) => {
       if (totalCost > 0) dispatch(battleActions.setPlayerPoints({ points: defendCardOwnerPoints - totalCost, player: card2.player }));
     }
 
-    dispatch(battleActions.addAnimation({ cellId: attackedCell.id, type: 'attacked' }));
+    dispatch(battleActions.addAnimation({ cellId: attackedCell.id, type: 'warAttacked' }));
     if (isKilled(calculatedPower, attackedHealth)) {
       const destination = warHasSpecialFeature({
         warCard: card2, fieldCards: newfieldCards, fieldCells: newfieldCells, featureName: 'returnable',
@@ -153,6 +153,7 @@ export const FunctionProvider = ({ children }) => {
         gameTurn: gameturn,
       });
       moveAttachedSpells(card2.cellId, null, 'kill');
+      setActionPerforming(false);
     }
     if (isKilled(calculatedPower, attackedHealth) && isHeroKilled(card2)) {
       showVictoryWindow(getEnemyPlayer(card2.player));
@@ -174,19 +175,24 @@ export const FunctionProvider = ({ children }) => {
     }
     if (!isKilled(calculatedPower, attackedHealth)) {
       changeCardHP(calculatedPower, attackedHealth, card2);
-      makeCounterStrike({
-        strikingCard: card2,
-        recievingCard: card1,
-        canRetaliate,
-        retaliateSpells: attachedRetaliates,
-        retaliateStrikes,
-        retributionSpells: [],
-        newfieldCells,
-        newfieldCards,
-        recieveCardOwnerPoints: attackCardOwnerPoints,
-      });
+      setTimeout(
+        () => {
+          makeCounterStrike({
+            strikingCard: card2,
+            recievingCard: card1,
+            canRetaliate,
+            retaliateSpells: attachedRetaliates,
+            retaliateStrikes,
+            retributionSpells: [],
+            newfieldCells,
+            newfieldCards,
+            recieveCardOwnerPoints: attackCardOwnerPoints,
+          });
+          setActionPerforming(false);
+        },
+        1500,
+      );
     }
-    setActionPerforming(false);
   };
 
   // ADD CARD TO FIELD ///////

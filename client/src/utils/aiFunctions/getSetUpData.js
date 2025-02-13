@@ -7,9 +7,9 @@ const points = {
 
 const HP = {
   1: 20,
-  2: 24,
-  3: 26,
-  4: 30,
+  2: 22,
+  3: 24,
+  4: 26,
 };
 
 const getSetUpData = (difficulty) => {

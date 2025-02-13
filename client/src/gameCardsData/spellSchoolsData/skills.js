@@ -258,6 +258,7 @@ export default {
           aimStatus: 'field',
           depend: 'warriorsDiff',
           dependValue: 1,
+          school: 'light',
         }],
         status: 'hand',
       },

@@ -72,7 +72,7 @@
   font-size: 1.1rem;
   position: absolute;
   top: 0.5rem;
-  left: 0.4rem;
+  left: 0.5rem;
   z-index: 1;
 }
 
@@ -82,8 +82,8 @@
   text-shadow: 2px 0 0 var(--dark-color),0 2px 0 var(--dark-color), -1px 0 0 var(--dark-color),0 -1px 0 var(--dark-color);
   font-size: 1rem;
   position: absolute;
-  top: 1.8rem;
-  left: 0.4rem;
+  top: 1.9rem;
+  left: 0.5rem;
   z-index: 1;
 }
 
@@ -93,15 +93,15 @@
   text-shadow: 1px 0 0 var(--dark-color),0 1px 0 var(--dark-color), -1px 0 0 var(--dark-color),0 -1px 0 var(--dark-color);
   font-size: 1rem;
   position: absolute;
-  top: 4.5rem;
-  left: 0.4rem;
+  top: 4.6rem;
+  left: 0.5rem;
   z-index: 1;
 }
 
 .shieldIcon {
   position: absolute;
-  width: 1.3rem;
-  height: 1.3rem;
+  width: 1.4rem;
+  height: 1.4rem;
   top: 4.5rem;
   left: 0.1rem;
   z-index: 1;
@@ -119,9 +119,9 @@
   color: var(--white-color);
   font-family: "Roboto-Bold", Helvetica;
   text-shadow: 1px 0 0 var(--dark-color),0 1px 0 var(--dark-color), -1px 0 0 var(--dark-color),0 -1px 0 var(--dark-color);
-  font-size: 0.8rem;
+  font-size: 1rem;
   position: absolute;
-  top: 5rem;
+  top: 5.1rem;
   left: 0.5rem;
 }
 
@@ -129,9 +129,9 @@
   color: var(--white-color);
   font-family: "Roboto-Bold", Helvetica;
   text-shadow: 1px 0 0 var(--dark-color),0 1px 0 var(--dark-color), -1px 0 0 var(--dark-color),0 -1px 0 var(--dark-color);
-  font-size: 0.8rem;
+  font-size: 1rem;
   position: absolute;
-  top: 0.4rem;
+  top: 0.5rem;
   right: 0.5rem;
 }
 
@@ -143,8 +143,8 @@
   transform: rotate(-90deg);
 }
 
-.makeAttackAnimation {
-  animation: 1s 1 alternate makeattack;
+.makeAttackAnima {
+  animation: 1s 1 ease-in-out alternate makeAttack;
 }
 
 .attackIcon {
@@ -156,18 +156,6 @@
   width: 5rem;
   height: 5rem;
   animation: 1s 1 normal attacked;
-  opacity: 0;
-}
-
-.healIcon {
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: auto;
-  bottom: auto;
-  width: 5rem;
-  height: 5rem;
-  animation: 1.5s 1 normal healed;
   opacity: 0;
 }
 
@@ -187,7 +175,7 @@
   margin-top: 0.2rem;
 }
 
-@keyframes makeattack {
+@keyframes makeAttack {
   from {
     transform: scale(1);
   }
@@ -205,18 +193,6 @@
 
   to {
     transform: rotate(60deg);
-    opacity: 1;
-  }
-}
-
-@keyframes healed {
-  from {
-    transform: scale(0.5);
-    opacity: 1;
-  }
-
-  to {
-    transform: scale(1.2);
     opacity: 1;
   }
 }

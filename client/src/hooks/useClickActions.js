@@ -244,7 +244,7 @@ const useClickActions = () => {
     if (appliedCard.subtype === 'reaction' && player !== appliedCard.player) {
       return;
     }
-    if ((cell.type === 'field' || cell.type === 'hero') && appliedCard.type === 'spell') {
+    if ((cell.type === 'field' || cell.type === 'hero' || cell.type === 'bigSpell') && appliedCard.type === 'spell') {
       dispatch(modalsActions.openModal({ type: 'openCheckCard', data: spellsInCell, id: 'attached' }));
       return;
     }
@@ -320,6 +320,7 @@ const useClickActions = () => {
   };
 
   const handleCardClick = (card) => {
+    if (actionPerforming) return;
     const activeCard = getActiveCard();
     const activeId = activeCard ? activeCard.id : null;
     if (activeId !== card.id) {

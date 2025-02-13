@@ -42,7 +42,7 @@ const academiaDeck = {
     spellSchools: ['Water', 'Shadow', 'Skills'],
     attachments: [],
     features: [{
-      attach: false, type: 'bad', aim: ['warrior', 'flyer', 'shooter', 'fighter'], name: 'attack', value: 1, aimStatus: 'field',
+      attach: false, type: 'bad', aim: ['warrior', 'flyer', 'shooter', 'fighter'], name: 'attack', value: 1, aimStatus: 'field', school: 'arcane',
     },
     {
       attach: false, type: 'all', aim: ['warrior'], name: 'drawCard', condition: 'insteadatk', cost: 1, description: 'drawCard',
@@ -246,7 +246,7 @@ const academiaDeck = {
     description: 'FireGolem',
     faction: 'Academia',
     features: [{
-      spell: true, attach: false, type: 'all', aim: ['row', 'warrior', 'flyer', 'shooter', 'fighter'], name: 'attack', condition: 'lastcall', value: 2, aimStatus: 'field',
+      spell: true, attach: false, type: 'all', aim: ['row', 'warrior', 'flyer', 'shooter', 'fighter'], name: 'attack', condition: 'lastcall', value: 2, aimStatus: 'field', school: 'fire',
     }],
     attachments: [],
     img: FireGolem,
@@ -340,7 +340,7 @@ const academiaDeck = {
     description: 'EnergyElemental',
     faction: 'Academia',
     features: [{
-      name: 'attack', condition: 'onattack', type: 'bad', aim: ['otherWarInRow', 'warrior', 'flyer', 'shooter', 'fighter'], value: 2, apply: 'attacked', aimStatus: 'field',
+      name: 'attack', condition: 'onattack', type: 'bad', aim: ['otherWarInRow', 'warrior', 'flyer', 'shooter', 'fighter'], value: 2, apply: 'attacked', aimStatus: 'field', school: 'air',
     }],
     attachments: [],
     img: EnergyElemental,
@@ -407,7 +407,7 @@ const academiaDeck = {
         ownerId: '',
         place: '',
         features: [{
-          attach: false, type: 'bad', aim: ['warrior', 'flyer', 'shooter', 'fighter'], name: 'attack', value: 3, aimStatus: 'field',
+          attach: false, type: 'bad', aim: ['warrior', 'flyer', 'shooter', 'fighter'], name: 'attack', value: 3, aimStatus: 'field', school: 'fire',
         }],
         status: 'hand',
       },

@@ -55,7 +55,7 @@ const useAnimaActions = () => {
     const warCellFeatureAttachment = warCell?.attachments?.find((feature) => feature.name === featureName && checkMeetCondition({ ...defaultConditionData, spell: feature }) && (feature.aim.includes(warCard.subtype) || warCell.type === 'hero'));
     const warCardFeatureAttachment = warCard.attachments.find((feature) => feature.name === featureName && checkMeetCondition({ ...defaultConditionData, spell: feature }));
     const warHasFeature = warCard.features.find((feature) => feature.name === featureName && !feature.attach);
-    return warCellFeatureAttachment || warCardFeatureAttachment || warHasFeature;
+    return warHasFeature || warCardFeatureAttachment || warCellFeatureAttachment;
   };
 
   const addNextLinesCellsForMove = (data) => {

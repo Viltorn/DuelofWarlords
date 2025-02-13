@@ -2,16 +2,15 @@ import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import cn from 'classnames';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
-import AttackIcon from '@assets/battlefield/BladeAttack.webp';
-// import { spellsCells } from '../../../gameData/heroes&spellsCellsData.js';
+import AnimationIcon from '../../../components/AnimationIcons/AnimationIcon.jsx';
 import CellCard from '../CellCard/CellCard.jsx';
-// import AttachedSpellCards from '../AttachedCellCards/AttachedSpellCards.jsx';
 import styles from './Cell.module.css';
 import useClickActions from '../../../hooks/useClickActions.js';
 import isWarriorReady from '../../../utils/supportFunc/isWarriorReady.js';
 import useCellTriggers from '../../../hooks/useCellTriggers.js';
+import icons from '../../../gameData/animationIcons.js';
 
-const cardsToShow = 5;
+const cardsToShow = 4;
 
 const Cell = ({ props, id }) => {
   const { type, animation } = props;
@@ -43,19 +42,20 @@ const Cell = ({ props, id }) => {
   const classes = cn({
     [styles.defaultSize]: true,
     [styles.spell]: type === 'midSpell' || type === 'topSpell',
-    [styles.border]: (type === 'midSpell' || type === 'topSpell' || type === 'bigSpell') && (animation !== '' || cardsInCell.length > 0),
+    [styles.border]: (type === 'bigSpell') && (animation !== '' || cardsInCell.length > 0),
     [styles.bigSpell]: type === 'bigSpell',
     [styles.field]: type === 'field',
-    [styles.animationGreen]: animation === 'green',
-    [styles.animationRed]: animation === 'red',
-    [styles.animationAttacked]: animation === 'attacked',
+    [styles.animationGreen]: animation === 'green' && type !== 'midSpell' && type !== 'topSpell' && type !== 'bigSpell',
+    [styles.animationGreenInset]: animation === 'green' && (type === 'midSpell' || type === 'topSpell' || type === 'bigSpell'),
+    [styles.animationRedInset]: animation === 'red' && (type === 'midSpell' || type === 'topSpell' || type === 'bigSpell'),
+    [styles.animationRed]: animation === 'red' && type !== 'midSpell' && type !== 'topSpell' && type !== 'bigSpell',
     [styles.animationCanMakeTurn]: animation === '' && readyWarrior && !currentCell.disabled,
   });
 
   useEffect(() => {
-    setTimeout(() => checkTriggers({
+    checkTriggers({
       cardType, cardSource, currentCell, cellContent, cellType: type,
-    }), 1);
+    });
   // eslint-disable-next-line
   }, [cardType, contLength, cardSource]);
 
@@ -69,12 +69,8 @@ const Cell = ({ props, id }) => {
 
   return (
     <div className={classes}>
-      {animation === 'attacked' && (
-      <img
-        className={styles.attackIcon}
-        src={AttackIcon}
-        alt="attack icon"
-      />
+      {animation !== '' && icons[animation] && (
+        <AnimationIcon animation={animation} icon={icons[animation]} />
       )}
       <TransitionGroup component={null} exit>
         {cellContent.length > 0 && (

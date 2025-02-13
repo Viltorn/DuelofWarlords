@@ -56,10 +56,10 @@ export default {
         spell: true, attach: ['warrior', 'flyer', 'shooter', 'fighter'], type: 'good', aim: ['warrior', 'flyer', 'shooter', 'fighter'], name: '', value: 0, aimStatus: 'field',
       },
       {
-        spell: true, attach: false, type: 'good', aim: ['closestEnemyInRow', 'warrior', 'spell', 'flyer', 'shooter', 'fighter'], name: 'attack', condition: 'lastcall', value: 2, aimStatus: 'field',
+        spell: true, attach: false, type: 'good', aim: ['closestEnemyInRow', 'warrior', 'spell', 'flyer', 'shooter', 'fighter'], name: 'attack', condition: 'lastcall', value: 2, aimStatus: 'field', school: 'light',
       },
       {
-        spell: true, attach: false, type: 'good', aim: ['closestEnemyInRow', 'warrior', 'flyer', 'shooter', 'fighter'], name: 'attack', value: 2, aimStatus: 'field',
+        spell: true, attach: false, type: 'good', aim: ['closestEnemyInRow', 'warrior', 'flyer', 'shooter', 'fighter'], name: 'attack', value: 2, aimStatus: 'field', school: 'light',
       },
     ],
     img: AttackAura,
@@ -173,7 +173,7 @@ export default {
     place: 'midSpell',
     features: [
       {
-        spell: true, attach: false, type: 'bad', aim: ['row', 'warrior', 'fighter', 'shooter', 'flyer'], value: 1, name: 'attack', aimStatus: 'field',
+        spell: true, attach: false, type: 'bad', aim: ['row', 'warrior', 'fighter', 'shooter', 'flyer'], value: 1, name: 'attack', aimStatus: 'field', school: 'light',
       },
       {
         spell: true,
@@ -184,6 +184,7 @@ export default {
         condition: 'onmove',
         value: 2,
         aimStatus: 'field',
+        school: 'light',
       },
       {
         spell: true,
@@ -194,6 +195,7 @@ export default {
         condition: 'onplay',
         value: 2,
         aimStatus: 'field',
+        school: 'light',
       }],
     img: HolyLand,
     status: 'hand',
@@ -218,6 +220,7 @@ export default {
       name: 'attack',
       value: 2,
       aimStatus: 'field',
+      school: 'light',
     },
     {
       spell: true, attach: false, aim: ['hero', 'warrior'], type: 'good', name: 'heroHeal', value: 2,
@@ -239,10 +242,10 @@ export default {
     id: _.uniqueId(),
     place: '',
     features: [{
-      spell: true, attach: false, type: 'bad', aim: ['row', 'warrior', 'fighter', 'shooter', 'flyer'], name: 'attack', value: 2, depend: 'postponed', dependValue: 3, aimStatus: 'field',
+      spell: true, attach: false, type: 'bad', aim: ['row', 'warrior', 'fighter', 'shooter', 'flyer'], name: 'attack', value: 2, depend: 'postponed', dependValue: 3, aimStatus: 'field', school: 'light',
     },
     {
-      attach: false, type: 'bad', aim: ['randomNextRow', 'warrior', 'fighter', 'shooter', 'flyer'], name: 'attack', value: 2, aimStatus: 'field',
+      attach: false, type: 'bad', aim: ['randomNextRow', 'warrior', 'fighter', 'shooter', 'flyer'], name: 'attack', value: 2, aimStatus: 'field', school: 'light',
     },
     ],
     img: SaintWord,

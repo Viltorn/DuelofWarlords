@@ -44,7 +44,7 @@ export default {
     id: _.uniqueId(),
     place: '',
     features: [{
-      spell: true, attach: false, type: 'bad', aim: ['warrior', 'fighter', 'shooter', 'flyer'], name: 'attack', value: 4, depend: 'postponed', dependValue: 4, aimStatus: 'field',
+      spell: true, attach: false, type: 'bad', aim: ['warrior', 'fighter', 'shooter', 'flyer'], name: 'attack', value: 4, depend: 'postponed', dependValue: 4, aimStatus: 'field', school: 'air',
     },
     {
       spell: true, attach: false, type: 'all', aim: ['adjacent', 'warrior', 'fighter', 'shooter', 'flyer'], name: 'stun', aimStatus: 'field',
@@ -65,7 +65,7 @@ export default {
     id: _.uniqueId(),
     place: '',
     features: [{
-      spell: true, attach: false, type: 'bad', aim: ['warrior', 'fighter', 'shooter', 'flyer'], name: 'attack', value: 4, aimStatus: 'field', depend: 'lastPlayedIsSpell', dependValue: 1,
+      spell: true, attach: false, type: 'bad', aim: ['warrior', 'fighter', 'shooter', 'flyer'], name: 'attack', value: 4, aimStatus: 'field', depend: 'lastPlayedIsSpell', dependValue: 1, school: 'air',
     },
     ],
     img: LightningStrike,
@@ -121,6 +121,7 @@ export default {
       aim: ['otherWarInRow', 'warrior', 'flyer', 'shooter', 'fighter'],
       value: 2,
       apply: 'attacked',
+      school: 'air',
     }],
     img: LightningPower,
     status: 'hand',
@@ -154,7 +155,7 @@ export default {
         place: '',
         featInfo: [],
         features: [{
-          attach: false, aim: ['emptyRowField', 'adjacent', 'warrior', 'flyer', 'shooter', 'fighter'], type: 'bad', name: 'attack', value: 2, aimStatus: 'field',
+          attach: false, aim: ['emptyRowField', 'adjacent', 'warrior', 'flyer', 'shooter', 'fighter'], type: 'bad', name: 'attack', value: 2, aimStatus: 'field', school: 'air',
         }],
         status: 'hand',
       },

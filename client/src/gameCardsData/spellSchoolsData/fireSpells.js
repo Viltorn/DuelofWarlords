@@ -32,6 +32,7 @@ export default {
       name: 'attack',
       value: 2,
       aimStatus: 'field',
+      school: 'fire',
     },
     ],
     img: FireArrow,
@@ -50,10 +51,10 @@ export default {
     id: _.uniqueId(),
     place: '',
     features: [{
-      spell: true, attach: false, type: 'all', aim: ['row', 'warrior', 'fighter', 'shooter', 'flyer'], name: 'attack', value: 3, aimStatus: 'field',
+      spell: true, attach: false, type: 'all', aim: ['row', 'warrior', 'fighter', 'shooter', 'flyer'], name: 'attack', value: 3, aimStatus: 'field', school: 'fire',
     },
     {
-      spelll: true, attach: false, type: 'bad', aim: ['randomNextRow', 'warrior', 'fighter', 'shooter', 'flyer'], name: 'attack', value: 3, aimStatus: 'field',
+      spelll: true, attach: false, type: 'bad', aim: ['randomNextRow', 'warrior', 'fighter', 'shooter', 'flyer'], name: 'attack', value: 3, aimStatus: 'field', school: 'fire',
     },
     ],
     img: MeteorShower,
@@ -81,6 +82,7 @@ export default {
       aimStatus: 'field',
       depend: 'lastPlayedIsSpell',
       dependValue: 1,
+      school: 'fire',
     },
     ],
     img: FireBall,
@@ -154,7 +156,7 @@ export default {
         spell: true, attach: ['field', 'warrior'], type: 'bad', aim: ['warrior', 'fighter', 'shooter', 'flyer'], name: 'moveRandomNextRowCell', charges: 1, condition: 'onplay', aimStatus: 'field', cost: 0, subtype: 'reaction',
       },
       {
-        spell: true, attach: ['field', 'warrior'], aim: ['warrior', 'fighter', 'shooter', 'flyer'], name: 'attack', value: 4, condition: 'onplay', type: 'bad', aimStatus: 'field', cost: 2, subtype: 'reaction',
+        spell: true, attach: ['field', 'warrior'], aim: ['warrior', 'fighter', 'shooter', 'flyer'], name: 'attack', value: 4, condition: 'onplay', type: 'bad', aimStatus: 'field', cost: 2, subtype: 'reaction', school: 'fire',
       },
       // {
       //   spell: true, attach: ['field', 'warrior'], aim: ['warrior', 'fighter', 'shooter', 'flyer'], name: 'moveRandomNextRowCell', condition: 'onmove', type: 'bad', aimStatus: 'field', cost: 0, subtype: 'reaction',
@@ -178,10 +180,10 @@ export default {
     id: _.uniqueId(),
     place: '',
     features: [{
-      spell: true, attach: false, type: 'bad', aim: ['warrior', 'fighter', 'shooter', 'flyer'], name: 'attack', value: 1, depend: 'postponed', dependValue: 4, aimStatus: 'field',
+      spell: true, attach: false, type: 'bad', aim: ['warrior', 'fighter', 'shooter', 'flyer'], name: 'attack', value: 1, depend: 'postponed', dependValue: 4, aimStatus: 'field', school: 'fire',
     },
     {
-      spell: true, attach: false, type: 'all', aim: ['adjacent', 'warrior', 'fighter', 'shooter', 'flyer'], name: 'attack', value: 1, aimStatus: 'field',
+      spell: true, attach: false, type: 'all', aim: ['adjacent', 'warrior', 'fighter', 'shooter', 'flyer'], name: 'attack', value: 1, aimStatus: 'field', school: 'fire',
     }],
     img: FireSplash,
     status: 'hand',
@@ -199,10 +201,10 @@ export default {
     id: _.uniqueId(),
     place: '',
     features: [{
-      spell: true, attach: false, type: 'bad', aim: ['warrior', 'fighter', 'shooter', 'flyer'], name: 'attack', value: 4, aimStatus: 'field',
+      spell: true, attach: false, type: 'bad', aim: ['warrior', 'fighter', 'shooter', 'flyer'], name: 'attack', value: 4, aimStatus: 'field', school: 'fire',
     },
     {
-      spell: true, attach: false, type: 'all', aim: ['adjacent', 'warrior', 'fighter', 'shooter', 'flyer'], name: 'attack', value: 4, aimStatus: 'field',
+      spell: true, attach: false, type: 'all', aim: ['adjacent', 'warrior', 'fighter', 'shooter', 'flyer'], name: 'attack', value: 4, aimStatus: 'field', school: 'fire',
     }],
     img: FireBlast,
     status: 'hand',
@@ -250,10 +252,10 @@ export default {
         spell: true, attach: ['warrior', 'flyer', 'shooter', 'fighter'], type: 'bad', aim: ['warrior', 'flyer', 'shooter', 'fighter'], name: '', value: 0, aimStatus: 'field',
       },
       {
-        spell: true, attach: false, type: 'bad', aim: ['warrior', 'flyer', 'shooter', 'fighter'], name: 'attack', value: 2, aimStatus: 'field',
+        spell: true, attach: false, type: 'bad', aim: ['warrior', 'flyer', 'shooter', 'fighter'], name: 'attack', value: 2, aimStatus: 'field', school: 'fire',
       },
       {
-        spell: true, attach: false, type: 'bad', aim: ['warInCell', 'flyer', 'shooter', 'fighter', 'spell'], name: 'attack', condition: 'lastcall', value: 3, aimStatus: 'field',
+        spell: true, attach: false, type: 'bad', aim: ['warInCell', 'flyer', 'shooter', 'fighter', 'spell'], name: 'attack', condition: 'lastcall', value: 3, aimStatus: 'field', school: 'fire',
       },
     ],
     img: Ignition,

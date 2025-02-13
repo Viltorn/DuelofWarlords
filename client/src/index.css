@@ -93,7 +93,7 @@ code {
   --dark-red-color: #9a3528;
   --white-color: rgb(238, 238, 238);
   --black-color: rgb(21, 21, 21);
-  --golden-bright: #f99945;;
+  --golden-bright: #fcc10f;;
   --red: #850409;
   --light-gray: #ccc8c8;
   --dark-gray: #868686;
@@ -102,8 +102,8 @@ code {
 
   /* dimensions */
   --hand-card-width: 8rem;
-  --cell-width: 7.4rem;
-  --cell-content-width: 6.2rem;
+  --cell-width: 7.6rem;
+  --cell-content-width: 6.5rem;
 
 }
 

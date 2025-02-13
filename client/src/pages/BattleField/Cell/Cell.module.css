@@ -53,8 +53,9 @@
   position: relative;
   background-size: cover;
   background-repeat: no-repeat;
-  width: calc(var(--cell-width) - 0.3rem);
-  height: calc((var(--cell-width) * 1.16) - 0.3rem);
+  width: calc(var(--cell-width));
+  height: calc((var(--cell-width) * 1.075));
+  /*1.16 0.3rem*/
   padding-bottom: 0.4rem;
   display: flex;
   flex-direction: column;
@@ -65,20 +66,52 @@
 
 .attackIcon {
   position: absolute;
-  left: 0;
-  right: 0;
-  top: auto;
-  bottom: auto;
+  left: 1rem;
+  top: 1.2rem;
   width: 5rem;
   height: 5rem;
-  animation: 1.5s 1 normal attacked;
+  animation: 1.5s 0.5 normal warAttacked;
   opacity: 0;
-  z-index: 10;
+  z-index: 5;
+}
+
+.MagicAttackIcon {
+  position: absolute;
+  left: 1.5rem;
+  top: 1.5rem;
+  margin-left: auto;
+  margin-right: auto;
+  width: 5rem;
+  height: 5rem;
+  animation: 1.5s 1 normal magicAttacked;
+  opacity: 0;
+  z-index: 5;
+}
+
+.healIcon {
+  position: absolute;
+  left: 1.5rem;
+  top: 1.5rem;
+  width: 5rem;
+  height: 5rem;
+  animation: 1.5s 1 normal healed;
+  opacity: 0;
+  z-index: 5;
 }
 
 .animationGreen {
   animation: 1.5s infinite alternate greenglowing;
 }
+
+.animationGreenInset {
+  animation: 1.5s infinite alternate greenGlowingInset;
+}
+
+.animationRedInset {
+  animation: 1.5s infinite alternate redGlowingInset;
+}
+
+
 
 @keyframes greenglowing {
   from {
@@ -87,6 +120,16 @@
 
   to {
     box-shadow: 0rem  0rem  0.5rem  0.5rem var(--green);
+  }
+}
+
+@keyframes greenGlowingInset {
+  from {
+    box-shadow: inset 0rem  0rem  0.3rem  0.3rem var(--green);
+  }
+
+  to {
+    box-shadow: inset 0rem  0rem  0.5rem  0.5rem var(--green);
   }
 }
 
@@ -101,6 +144,16 @@
 
   to {
     box-shadow: 0rem  0rem  0.5rem  0.5rem var(--red-light);
+  }
+}
+
+@keyframes redGlowingInset {
+  from {
+    box-shadow: inset 0rem  0rem  0.3rem  0.3rem var(--red-light);
+  }
+
+  to {
+    box-shadow: inset 0rem  0rem  0.5rem  0.5rem var(--red-light);
   }
 }
 
@@ -119,7 +172,7 @@
 }
 
 
-@keyframes attacked {
+@keyframes warAttacked {
   from {
     transform: rotate(-45deg);
     opacity: 1;
@@ -127,6 +180,30 @@
 
   to {
     transform: rotate(60deg);
+    opacity: 1;
+  }
+}
+
+@keyframes magicAttacked {
+  from {
+    transform: scale(0.5) rotate(0deg);
+    opacity: 1;
+  }
+
+  to {
+    transform: rotate(120deg) scale(1.5);
+    opacity: 1;
+  }
+}
+
+@keyframes healed {
+  from {
+    transform: scale(0.5);
+    opacity: 1;
+  }
+
+  to {
+    transform: scale(1.2);
     opacity: 1;
   }
 }

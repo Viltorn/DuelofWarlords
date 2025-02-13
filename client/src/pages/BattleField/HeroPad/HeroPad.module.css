@@ -36,6 +36,7 @@
   border: none;
   cursor: pointer;
   position: relative;
+  margin-top: -7.4rem;
 }
  
 .cells {
@@ -62,6 +63,31 @@
   background-color: transparent;
   width: calc(var(--cell-width) - 0.8rem);
   height: calc((var(--cell-width) - 0.8rem));
+}
+
+.attackIcon {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: auto;
+  bottom: auto;
+  width: 5rem;
+  height: 5rem;
+  animation: 1.5s 1 normal attacked;
+  opacity: 0;
+  z-index: 10;
+}
+
+@keyframes attacked {
+  from {
+    transform: rotate(-45deg);
+    opacity: 1;
+  }
+
+  to {
+    transform: rotate(60deg);
+    opacity: 1;
+  }
 }
 
 .sucrificeActive {
@@ -203,12 +229,12 @@
 
 .cardAnimationEnter {
   opacity: 1;
-  transform: scale(1.3);
+  transform: scale(1.5);
 }
 .cardAnimationActive {
   opacity: 1;
   transform: scale(1);
-  transition: opacity 500ms ease-in, transform 500ms ease-in;
+  transition: opacity 700ms ease-out, transform 700ms ease-out;
 }
 .cardAnimationExit {
   transform: scale(1.3);

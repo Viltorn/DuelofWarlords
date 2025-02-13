@@ -10,10 +10,10 @@ import isInvisible from '../../../utils/supportFunc/isInvisible.js';
 
 const getTopMargin = (cellType, contentLength) => {
   if (cellType === 'field' && contentLength === 4) {
-    return 5.5;
+    return 5.8;
   }
   if (cellType === 'field') {
-    return Math.min(2.1 * contentLength, 5.2);
+    return Math.min(2.4 * contentLength, 5.6);
   }
   if (cellType === 'hero') {
     return 6.4;
@@ -59,7 +59,7 @@ const CellCard = ({
   const cardStyles = cn({
     [styles.contentItem]: cellType !== 'hero',
     [styles.heroCellItem]: cellType === 'hero',
-    [styles.makeAttackAnimation]: currentCell.animation === 'makeattack',
+    [styles.makeAttackAnima]: currentCell.animation === 'makeattack',
     [styles.turn1]: turn === 1,
     [styles.turn2]: turn === 2,
   });

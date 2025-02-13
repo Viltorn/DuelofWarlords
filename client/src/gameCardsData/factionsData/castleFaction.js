@@ -38,7 +38,7 @@ const castleDeck = {
     spellSchools: ['Air', 'Light', 'Skills'],
     attachments: [],
     features: [{
-      attach: false, type: 'bad', aim: ['warrior', 'flyer', 'shooter', 'fighter'], name: 'attack', value: 1, aimStatus: 'field',
+      attach: false, type: 'bad', aim: ['warrior', 'flyer', 'shooter', 'fighter'], name: 'attack', value: 1, aimStatus: 'field', school: 'light',
     }, {
       attach: ['warrior'], type: 'bad', aim: ['warrior', 'flyer', 'shooter', 'fighter'], name: 'moveNextRow', charges: 1, immediate: true, aimStatus: 'field',
     },
@@ -144,7 +144,7 @@ const castleDeck = {
     description: 'Marksman',
     faction: 'Castle',
     features: [{
-      attach: false, type: 'bad', aim: ['closestEnemyInRow', 'warrior', 'flyer', 'shooter', 'fighter'], name: 'attack', value: 3, condition: 'insteadatk', cost: 0, description: 'enchancedShot', aimStatus: 'field',
+      attach: false, type: 'bad', aim: ['closestEnemyInRow', 'warrior', 'flyer', 'shooter', 'fighter'], name: 'attack', value: 3, condition: 'insteadatk', cost: 0, description: 'enchancedShot', aimStatus: 'field', school: 'light',
     }],
     attachments: [],
     img: Marksman,
@@ -422,7 +422,7 @@ const castleDeck = {
       condition: 'onplay',
     },
     {
-      name: 'attack', condition: 'onattack', type: 'bad', aim: ['otherWarInRow', 'warrior', 'flyer', 'shooter', 'fighter'], value: 2, apply: 'attacked', status: 'field',
+      name: 'attack', condition: 'onattack', type: 'bad', aim: ['otherWarInRow', 'warrior', 'flyer', 'shooter', 'fighter'], value: 2, apply: 'attacked', status: 'field', school: 'light',
     }],
     attachments: [],
     img: TemplarChampion,
@@ -448,7 +448,7 @@ const castleDeck = {
     faction: 'Castle',
     id: _.uniqueId(),
     features: [{
-      attach: false, type: 'bad', aim: ['row', 'warrior', 'flyer', 'shooter', 'fighter'], value: 3, name: 'attack', condition: 'insteadatk', cost: 0, aimStatus: 'field', description: 'lightAttack',
+      attach: false, type: 'bad', aim: ['row', 'warrior', 'flyer', 'shooter', 'fighter'], value: 3, name: 'attack', condition: 'insteadatk', cost: 0, aimStatus: 'field', description: 'lightAttack', school: 'light',
     }],
     attachments: [],
     img: MasterOfLight,
@@ -491,7 +491,7 @@ const castleDeck = {
     heroSpell: false,
     features: [
       {
-        spell: true, attach: false, type: 'bad', aim: ['warrior', 'flyer', 'shooter', 'fighter'], name: 'attack', value: 2, aimStatus: 'field',
+        spell: true, attach: false, type: 'bad', aim: ['warrior', 'flyer', 'shooter', 'fighter'], name: 'attack', value: 2, aimStatus: 'field', school: 'light',
       },
       {
         spell: true, attach: ['warrior'], type: 'bad', aim: ['warrior', 'flyer', 'shooter', 'fighter'], name: 'moveAdjasent', charges: 1, immediate: true, aimStatus: 'field',
