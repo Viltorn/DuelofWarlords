@@ -54,8 +54,7 @@
   background-size: cover;
   background-repeat: no-repeat;
   width: calc(var(--cell-width));
-  height: calc((var(--cell-width) * 1.075));
-  /*1.16 0.3rem*/
+  height: calc(var(--cell-width) * 1.075);
   padding-bottom: 0.4rem;
   display: flex;
   flex-direction: column;

@@ -1,1 +1,1 @@
-export default '0.8.39v';
+export default '0.8.40v';
