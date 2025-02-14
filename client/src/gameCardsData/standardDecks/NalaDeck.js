@@ -29,16 +29,13 @@ export default {
       name: 'IceGiant', type: 'warrior', faction: 'Academia', qty: 2,
     },
     {
-      name: 'InvisibilityCloak', type: 'spell', school: 'Shadow', qty: 2,
-    },
-    {
       name: 'FrostTrap', type: 'spell', school: 'Water', qty: 2,
     },
     {
       name: 'Icing', type: 'spell', school: 'Water', qty: 2,
     },
     {
-      name: 'MagicMist', type: 'spell', school: 'Shadow', qty: 1,
+      name: 'MagicMist', type: 'spell', school: 'Shadow', qty: 2,
     },
     {
       name: 'IceWall', type: 'spell', school: 'Water', qty: 2,
@@ -63,6 +60,9 @@ export default {
     },
     {
       name: 'RighteousHammer', type: 'spell', school: 'Skills', qty: 1,
+    },
+    {
+      name: 'ForgottenSpell', type: 'spell', school: 'Academia', qty: 1,
     },
   ],
 };

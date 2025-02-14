@@ -121,7 +121,9 @@ export const FunctionProvider = ({ children }) => {
     const attachedRetaliates = findSpells({ ...defaultSpellData, type: card1.subtype, spell: 'retaliation' });
     const retaliateStrikes = findSpells({ ...defaultSpellData, type: card1.subtype, spell: 'retaliatestrike' });
     const retributionSpells = findSpells({ ...defaultSpellData, type: card1.subtype, spell: 'retribution' });
-    const canRetaliate = card2.type !== 'hero' && card1.subtype !== 'shooter';
+    const canRetaliate = card2.type !== 'hero' && card1.subtype !== 'shooter' && !warHasSpecialFeature({
+      warCard: card1, fieldCards: newfieldCards, fieldCells: newfieldCells, featureName: 'ignoreRetalation',
+    });
 
     const calculatedPower = attackingPower - protectionVal > 0
       ? attackingPower - protectionVal : 0;
@@ -159,7 +161,7 @@ export const FunctionProvider = ({ children }) => {
       showVictoryWindow(getEnemyPlayer(card2.player));
       changeCardHP(calculatedPower, attackedHealth, card2);
     }
-    if (isKilled(calculatedPower, attackedHealth) && (retaliateStrikes.length > 0 || retributionSpells.length > 0)) {
+    if (isKilled(calculatedPower, attackedHealth) && (retaliateStrikes.length > 0 || (canRetaliate && retributionSpells.length > 0))) {
       makeCounterStrike({
         strikingCard: card2,
         recievingCard: card1,

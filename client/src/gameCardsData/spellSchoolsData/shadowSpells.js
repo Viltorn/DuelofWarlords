@@ -1,13 +1,13 @@
 /* eslint-disable max-len */
 import _ from 'lodash';
-import ArcaneArmor from '../../assets/shadowSpells/ArcaneArmor.png';
-import CursedShackle from '../../assets/shadowSpells/CursedShackle.png';
-import InvisibilityCloak from '../../assets/shadowSpells/InvisibilityCloak.png';
-import SoulDrain from '../../assets/shadowSpells/SoulDrain.png';
-import Teleport from '../../assets/shadowSpells/Teleport.png';
-import TownPortal from '../../assets/shadowSpells/TownPortal.png';
-import Transformation from '../../assets/shadowSpells/Transformation.png';
-import MagicMist from '../../assets/shadowSpells/MagicMist.png';
+import ArcaneArmor from '@assets/shadowSpells/ArcaneArmor.png';
+import CursedShackle from '@assets/shadowSpells/CursedShackle.png';
+import SoulDrain from '@assets/shadowSpells/SoulDrain.png';
+import Teleport from '@assets/shadowSpells/Teleport.png';
+import TownPortal from '@assets/shadowSpells/TownPortal.png';
+import Transformation from '@assets/shadowSpells/Transformation.png';
+import MagicMist from '@assets/shadowSpells/MagicMist.png';
+import MassPowerDrain from '@assets/shadowSpells/MassPowerDrain.png';
 
 export default {
   ArcaneArmor: {
@@ -57,30 +57,6 @@ export default {
     img: CursedShackle,
     status: 'hand',
   },
-  InvisibilityCloak: {
-    name: 'Invisibility cloak',
-    id: _.uniqueId(),
-    type: 'spell',
-    subtype: 'permanent',
-    cost: 1,
-    currentC: 1,
-    featInfo: ['INVISIBILITY'],
-    description: 'InvisibilityCloak',
-    school: 'Shadow',
-    place: 'warrior',
-    features: [
-      {
-        spell: true,
-        attach: ['warrior', 'flyer', 'shooter', 'fighter'],
-        aim: ['warrior', 'flyer', 'shooter', 'fighter'],
-        type: 'good',
-        name: 'invisible',
-        aimStatus: 'field',
-      },
-    ],
-    img: InvisibilityCloak,
-    status: 'hand',
-  },
   SoulDrain: {
     name: 'Soul drain',
     id: _.uniqueId(),
@@ -96,6 +72,26 @@ export default {
       spell: true, attach: false, type: 'bad', name: 'attack', value: 200, aim: ['warrior', 'flyer', 'shooter', 'fighter'], aimStatus: 'field', school: 'arcane',
     }],
     img: SoulDrain,
+    status: 'hand',
+  },
+  MassPowerDrain: {
+    name: 'Mass power drain',
+    id: _.uniqueId(),
+    type: 'spell',
+    subtype: 'instant',
+    cost: 5,
+    currentC: 5,
+    featInfo: [],
+    description: 'MassPowerDrain',
+    school: 'Shadow',
+    place: '',
+    features: [{
+      spell: true, attach: false, type: 'bad', name: 'attack', value: 2, aim: ['field', 'warrior', 'flyer', 'shooter', 'fighter'], aimStatus: 'field', school: 'arcane',
+    },
+    {
+      spell: true, attach: false, type: 'good', name: 'heal', value: 2, aim: ['field', 'warrior', 'flyer', 'shooter', 'fighter'], aimStatus: 'field', school: 'light',
+    }],
+    img: MassPowerDrain,
     status: 'hand',
   },
   Teleport: {
@@ -175,8 +171,16 @@ export default {
         spell: true,
         attach: ['warrior', 'flyer', 'shooter', 'fighter'],
         aim: ['warrior', 'flyer', 'shooter', 'fighter'],
-        type: 'bad',
+        type: 'all',
         name: 'invisible',
+        aimStatus: 'field',
+      },
+      {
+        spell: true,
+        attach: ['warrior', 'flyer', 'shooter', 'fighter'],
+        aim: ['warrior', 'flyer', 'shooter', 'fighter'],
+        type: 'all',
+        name: 'ignoreRetalation',
         aimStatus: 'field',
       },
     ],
@@ -184,3 +188,28 @@ export default {
     status: 'hand',
   },
 };
+
+// InvisibilityCloak: {
+//   name: 'Invisibility cloak',
+//   id: _.uniqueId(),
+//   type: 'spell',
+//   subtype: 'permanent',
+//   cost: 1,
+//   currentC: 1,
+//   featInfo: ['INVISIBILITY'],
+//   description: 'InvisibilityCloak',
+//   school: 'Shadow',
+//   place: 'warrior',
+//   features: [
+//     {
+//       spell: true,
+//       attach: ['warrior', 'flyer', 'shooter', 'fighter'],
+//       aim: ['warrior', 'flyer', 'shooter', 'fighter'],
+//       type: 'good',
+//       name: 'invisible',
+//       aimStatus: 'field',
+//     },
+//   ],
+//   img: InvisibilityCloak,
+//   status: 'hand',
+// },

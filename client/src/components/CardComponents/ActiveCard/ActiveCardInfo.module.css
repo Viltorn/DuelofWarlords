@@ -49,7 +49,7 @@
 
   .infoWindow {
     top: 3.6rem;
-    height: calc((var(--hand-card-width)) * 1.6 * 2.2);
+    height: calc((var(--hand-card-width)) * 1.6 * 2.27);
     width: calc((var(--hand-card-width)) * 2.5);
     z-index: 6;
   }
