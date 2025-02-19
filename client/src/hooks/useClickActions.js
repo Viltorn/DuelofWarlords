@@ -98,7 +98,7 @@ const useClickActions = () => {
 
   const handleButtonClick = (data) => {
     const {
-      btnType, card, ability, ressurect,
+      btnType, card, ability, ressurect, cardsLimitReached,
     } = data;
     if (actionPerforming || (gameMode === 'online' && isPlayerDisconnected(players))) return;
 
@@ -152,10 +152,10 @@ const useClickActions = () => {
 
     switch (btnType) {
       case 'addToDeck':
-        changeCardsInDeckBuilder(card, 1);
+        changeCardsInDeckBuilder(card, 1, cardsLimitReached);
         break;
       case 'deleteFromDeck':
-        changeCardsInDeckBuilder(card, -1);
+        changeCardsInDeckBuilder(card, -1, cardsLimitReached);
         break;
       case 'graveyard':
         sendCardToGraveAction(card, thisPlayer, fieldCells);

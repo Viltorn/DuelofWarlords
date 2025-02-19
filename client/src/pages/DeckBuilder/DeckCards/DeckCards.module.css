@@ -20,6 +20,20 @@
   height: 100%;
 }
 
+
+.titleBlock {
+  display: flex;
+  flex-direction: row;
+  align-items: baseline;
+  gap: 1rem;
+  justify-content: flex-start;
+}
+
+.deckLimits {
+  font-size: 1.2rem;
+  color: var(--white-color);
+}
+
 .title {
   font-size: 1.5rem;
   color: var(--dark-golden);

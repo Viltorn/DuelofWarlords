@@ -1,5 +1,5 @@
 /* eslint-disable jsx-a11y/media-has-caption */
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import Music from '@assets/battlefield/MusicBundle3.mp3';
 import PlayIcon from '@assets/PlayIcon.png';
 import PauseIcon from '@assets/PauseIcon.png';
@@ -20,6 +20,10 @@ const MusicButton = () => {
     }
     setIsPlaying(!isPlaying);
   };
+
+  useEffect(() => {
+    musicRef.current.volume = 0.3;
+  }, []);
 
   return (
     <button className={styles.button} type="button" onClick={handlePlayPause}>

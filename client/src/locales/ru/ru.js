@@ -104,6 +104,7 @@ export default {
     PlayerType: '',
     ChooseGame: 'Выбрать игру',
     YourDeck: 'Ваша колода',
+    DeckLimits: '(Мин. - 30 карт, Макс. - 40 карт)',
     AttachedCards: 'Наложенные заклинания',
     Timer: 'Таймер хода',
 

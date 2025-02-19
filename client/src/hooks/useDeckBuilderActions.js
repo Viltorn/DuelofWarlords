@@ -47,8 +47,8 @@ const useDeckBuilderActions = () => {
     dispatch(modalsActions.openModal({ type: 'activeCardWindow', data: newCard }));
   };
 
-  const changeCardsInDeckBuilder = (card, value) => {
-    if (value === 1 && card.qty < maxCardsDeckCopy) {
+  const changeCardsInDeckBuilder = (card, value, cardsLimitReached) => {
+    if (value === 1 && card.qty < maxCardsDeckCopy && !cardsLimitReached) {
       changeCardQuantity(card, 1);
       dispatch(deckbuilderActions.setChanges({ changesMade: true }));
     }

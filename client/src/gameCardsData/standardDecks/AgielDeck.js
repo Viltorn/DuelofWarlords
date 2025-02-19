@@ -47,13 +47,13 @@ export default {
       name: 'Protection', type: 'spell', school: 'Skills', qty: 2,
     },
     {
-      name: 'BattleTactics', type: 'spell', school: 'Skills', qty: 1,
+      name: 'Resistance', type: 'spell', school: 'Skills', qty: 2,
     },
     {
-      name: 'Blindness', type: 'spell', school: 'Fire', qty: 2,
+      name: 'FireShield', type: 'spell', school: 'Fire', qty: 2,
     },
     {
-      name: 'RetaliationHammer', type: 'warrior', faction: 'Castle', qty: 2,
+      name: 'GuardianAngel', type: 'spell', faction: 'Light', qty: 1,
     },
     {
       name: 'Enlightenment', type: 'spell', school: 'Light', qty: 2,

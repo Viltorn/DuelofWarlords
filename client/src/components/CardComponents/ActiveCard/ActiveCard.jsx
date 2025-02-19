@@ -28,7 +28,7 @@ const ActiveCard = ({
   const legalTurn = thisPlayer === gameTurn;
   const ressurect = fieldCells
     .find((cell) => cell.id === cellId && cell.type === 'graveyard')?.attachments
-    .find((feat) => feat.name === 'ressurect' && feat.aim.includes(activeCard.type) && feat.player === gameTurn);
+    .find((feat) => feat.name === 'ressurect' && feat.aim.includes(activeCard.subtype) && feat.player === gameTurn);
   const canUseAbilities = isActiveCard(activeCard) && !activeCard.disabled && legalTurn && status !== 'graveyard';
   const canSucrificeCard = !sucrificedCard && thisPlayer === activeCard.player && legalTurn && type !== 'hero' && status === 'hand';
   const canReturnCard = firstRound && thisPlayer === activeCard.player && !cardsdrawn && legalTurn;

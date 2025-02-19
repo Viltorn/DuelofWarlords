@@ -40,13 +40,14 @@ const Cell = ({ props, id }) => {
   } = useCellTriggers();
 
   const classes = cn({
-    [styles.defaultSize]: true,
+    [styles.defaultSize]: type !== 'topSpell' && type !== 'bigSpell',
     [styles.spell]: type === 'midSpell' || type === 'topSpell',
-    [styles.border]: (type === 'bigSpell') && (animation !== '' || cardsInCell.length > 0),
+    [styles.topSpell]: type === 'topSpell' || type === 'bigSpell',
     [styles.bigSpell]: type === 'bigSpell',
+    [styles.justifyCenter]: type === 'bigSpell' && cellContent.length === 1,
     [styles.field]: type === 'field',
-    [styles.animationGreen]: animation === 'green' && type !== 'midSpell' && type !== 'topSpell' && type !== 'bigSpell',
-    [styles.animationGreenInset]: animation === 'green' && (type === 'midSpell' || type === 'topSpell' || type === 'bigSpell'),
+    [styles.animationGreen]: animation === 'green' && type !== 'midSpell' && type !== 'topSpell',
+    [styles.animationGreenInset]: animation === 'green' && (type === 'midSpell' || type === 'topSpell'),
     [styles.animationRedInset]: animation === 'red' && (type === 'midSpell' || type === 'topSpell' || type === 'bigSpell'),
     [styles.animationRed]: animation === 'red' && type !== 'midSpell' && type !== 'topSpell' && type !== 'bigSpell',
     [styles.animationCanMakeTurn]: animation === '' && readyWarrior && !currentCell.disabled,

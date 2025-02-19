@@ -3,11 +3,11 @@ import {
   createContext, useEffect, useState,
 } from 'react';
 import { useDispatch, useStore, useSelector } from 'react-redux';
+import drumAudio from '@assets/DrumBeat.mp3';
 import useSound from 'use-sound';
 import { actions as battleActions } from '../slices/battleSlice.js';
 import { actions as modalsActions } from '../slices/modalsSlice.js';
 import { actions as uiActions } from '../slices/uiSlice.js';
-import drumAudio from '../assets/DrumBeat.mp3';
 import isKilled from '../utils/supportFunc/isKilled.js';
 import useBattleActions from '../hooks/useBattleActions.js';
 import useResizeWindow from '../hooks/useResizeWindow.js';
@@ -18,13 +18,15 @@ import isAttachFeatureAllowed from '../utils/supportFunc/isAttachFeatureAllowed.
 import useUIActions from '../hooks/useUIActions.js';
 import socket from '../socket.js';
 import getEnemyPlayer from '../utils/supportFunc/getEnemyPlayer.js';
+import useSoundEffects from '../hooks/useSoundEffects.js';
 
 const FunctionContext = createContext({});
 
 export const FunctionProvider = ({ children }) => {
   const dispatch = useDispatch();
-  const store = useStore();
+  const { playSound } = useSoundEffects();
   const [play] = useSound(drumAudio, { volume: 0.3 });
+  const store = useStore();
   const {
     activeCardPlayer1, activeCardPlayer2, thisPlayer, currentTutorStep,
   } = useSelector((state) => state.battleReducer);
@@ -141,6 +143,11 @@ export const FunctionProvider = ({ children }) => {
       if (totalCost > 0) dispatch(battleActions.setPlayerPoints({ points: defendCardOwnerPoints - totalCost, player: card2.player }));
     }
 
+    if (card1.subtype === 'shooter') {
+      playSound({ id: 'bow' });
+    } else {
+      playSound({ id: 'sword' });
+    }
     dispatch(battleActions.addAnimation({ cellId: attackedCell.id, type: 'warAttacked' }));
     if (isKilled(calculatedPower, attackedHealth)) {
       const destination = warHasSpecialFeature({

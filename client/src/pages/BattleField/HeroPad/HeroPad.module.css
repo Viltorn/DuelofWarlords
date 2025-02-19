@@ -24,7 +24,7 @@
   display: grid;
   grid-template-columns: repeat(1, auto);
   grid-template-rows: auto;
-  gap: 0.8rem;
+  gap: 1.6rem;
   align-items: start;
   margin-top: 0.3rem;
 }
@@ -50,6 +50,19 @@
   background-color: transparent;
   width: calc(var(--cell-width) - 0.8rem);
   height: calc((var(--cell-width) - 0.8rem) * 1.14);
+}
+
+.cardsCounterCell {
+  display: flex;
+  position: relative;
+  flex-direction: column;
+  justify-content: flex-end;
+  border: 0.2rem solid var(--dark-color);
+  border-radius: 0.3rem;
+  align-items: center;
+  background-color: transparent;
+  width: calc(var(--cell-width) - 0.8rem);
+  height: calc((var(--cell-width) - 1.8rem));
 }
 
 .counterCell {
@@ -183,9 +196,9 @@
   color: var(--white-color);
   font-family: "Roboto-Bold", Helvetica;
   text-shadow: 1px 0 0 var(--dark-color),0 1px 0 var(--dark-color), -1px 0 0 var(--dark-color),0 -1px 0 var(--dark-color);
-  font-size: 2.2rem;
+  font-size: 1.3rem;
   position: absolute;
-  top: 0.7rem;
+  top: 0.4rem;
   left: auto;
   right: 0;
   left: 0;

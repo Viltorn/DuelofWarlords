@@ -13,3 +13,5 @@ export const startCards2AfterDraw = 7;
 export const maxCardsDeckCopy = 3;
 
 export const minDeckCards = 30;
+
+export const maxCardsInDeck = 40;

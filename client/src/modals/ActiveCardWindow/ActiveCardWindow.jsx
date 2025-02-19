@@ -6,13 +6,16 @@ import ActiveCardInfo from '../../components/CardComponents/ActiveCard/ActiveCar
 import ActionButton from '../../components/Buttons/ActionButton/ActionButton.jsx';
 import Card from '../../components/CardComponents/Card/Card.jsx';
 import styles from './ActiveCardWindow.module.css';
+import { maxCardsInDeck } from '../../gameData/gameLimits.js';
+import countDeckCards from '../../utils/countDeckCards.js';
 
 const ActiveCardWindow = () => {
   const dispatch = useDispatch();
   const { data } = useSelector((state) => state.modalsReducer);
   const { qty, type } = data;
 
-  const { selectedHero } = useSelector((state) => state.deckbuilderReducer);
+  const { selectedHero, selectedCards } = useSelector((state) => state.deckbuilderReducer);
+  const { cardsNmb } = countDeckCards(selectedCards);
 
   const handleClose = (e) => {
     e.stopPropagation();
@@ -33,7 +36,7 @@ const ActiveCardWindow = () => {
             </div>
 
             {((!selectedHero && type === 'hero') || (type !== 'hero')) && (
-            <ActionButton card={data} type="addToDeck" name="addToDeck" />
+            <ActionButton card={data} type="addToDeck" name="addToDeck" cardsLimitReached={maxCardsInDeck === cardsNmb} />
             )}
             {qty !== 0 && selectedHero && (
             <ActionButton card={data} type="deleteFromDeck" name="deleteFromDeck" />

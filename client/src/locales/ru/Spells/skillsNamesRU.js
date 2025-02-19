@@ -6,7 +6,7 @@ export default {
   Resistance: 'Сопротивление магии',
   Durability: 'Стойкость',
   FirstAid: 'Первая помощь',
-  Leadership: 'Лидерство',
+  Leadership: 'Призыв к бою',
   BattleTactics: 'Тактика',
   RighteousHammerCast: 'Молот правосудия',
   RighteousHammer: 'Молот правосудия',

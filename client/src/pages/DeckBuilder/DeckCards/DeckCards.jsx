@@ -11,20 +11,23 @@ const DeckCards = ({ hero, cards, activeCard }) => {
 
   return (
     <div className={styles.container}>
-      <h2 className={styles.title}>{t('YourDeck')}</h2>
+      <div className={styles.titleBlock}>
+        <h2 className={styles.title}>{t('YourDeck')}</h2>
+        <p className={styles.deckLimits}>{t('DeckLimits')}</p>
+      </div>
       <div className={styles.cardBlock}>
         {hero && (
-        <button className={styles.cardContainer} key={hero.name} type="button" onClickCapture={(e) => handleBuilderCardClick(e, hero)}>
+        <div className={styles.cardContainer} key={hero.name} role="button" onClickCapture={(e) => handleBuilderCardClick(e, hero)}>
           <Card
             builder
             card={hero}
             activeCard={activeCard}
           />
-        </button>
+        </div>
         )}
         {cards.length !== 0 && (
           cards.map((el) => (
-            <button className={styles.cardContainer} key={el.name} type="button" onClickCapture={(e) => handleBuilderCardClick(e, el)}>
+            <div className={styles.cardContainer} key={el.name} role="button" onClickCapture={(e) => handleBuilderCardClick(e, el)}>
               <div className={styles.counterBlock}>
                 <img src={CardsCounter} alt="card counter" className={styles.counterImage} />
                 <h3 className={styles.cardQty}>{el.qty}</h3>
@@ -34,7 +37,7 @@ const DeckCards = ({ hero, cards, activeCard }) => {
                 card={el}
                 activeCard={activeCard}
               />
-            </button>
+            </div>
           ))
         )}
       </div>

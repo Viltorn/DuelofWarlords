@@ -7,5 +7,5 @@ export default {
   TownPortal: 'Портал в город',
   Transformation: 'Превращение в животное',
   MagicMist: 'Магический туман',
-  MassPowerDrain: 'Массовое вытягивание силы',
+  MassPowerDrain: 'Вытягивание силы',
 };

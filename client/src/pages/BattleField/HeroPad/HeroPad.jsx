@@ -34,7 +34,7 @@ const HeroPad = ({ type, player }) => {
 
   const cardsCount = useMemo(() => playersHands[getEnemyPlayer(thisPlayer)].length, [thisPlayer, playersHands]);
   const counterCell = useMemo(() => fieldCells.find((cell) => cell.player === player && cell.type === 'counter'), [fieldCells, player]);
-  const cardsInDecks = useMemo(() => playersDecks[player].length, [playersDecks, player]);
+  const cardsInDeck = useMemo(() => playersDecks[player].length, [playersDecks, player]);
   const heroCellId = useMemo(() => (player === 'player1' ? 'hero1' : 'hero2'), [player]);
   const heroCell = useMemo(() => fieldCells.find((cell) => cell.player === player && cell.type === 'hero'), [fieldCells, player]);
   const heroData = useMemo(() => fieldCards.filter((card) => card.cellId === heroCellId), [heroCellId, fieldCards]);
@@ -76,7 +76,9 @@ const HeroPad = ({ type, player }) => {
   });
 
   const graveCellClasses = cn({
-    [styles.defaultBtn]: true,
+    [styles.cells]: true,
+    [styles.secondType]: type === 'second',
+    [styles.secondPlayer]: type === 'first' && player === 'player2',
     [styles.animationGreen]: graveCell.animation === 'green',
     [styles.animationRed]: graveCell.animation === 'red',
   });
@@ -87,15 +89,16 @@ const HeroPad = ({ type, player }) => {
       <div className={classesContainer}>
 
         {type === 'second' && (
-        <div className={`${styles.cells} ${styles.noBorder}`}>
+        <div className={`${styles.cardsCounterCell} ${styles.noBorder}`}>
           <h3 className={styles.cardsCount}>{cardsCount}</h3>
           <img className={`${styles.image} ${styles.noBorder}`} src={CardCounter} alt="cards counter" />
         </div>
         )}
-        {cardsInDecks > 0
+        {cardsInDeck > 0
           ? (
             <div className={`${cellsClasses} ${styles.noBorder}`}>
               <button className={styles.defaultBtn} ref={deck} data-player={player} type="button" onClick={() => handleDeckClick({ deck, player })}>
+                <h3 className={styles.cardsCount}>{cardsInDeck}</h3>
                 <img className={`${styles.image} ${styles.noBorder}`} src={DeckCover} alt="deck cover" />
               </button>
             </div>
@@ -122,7 +125,7 @@ const HeroPad = ({ type, player }) => {
             ))
           )}
         </div>
-        <div className={cellsClasses}>
+        <div className={graveCellClasses}>
           <TransitionGroup component={null} exit>
             {graveyardContent.length > 0 && (
               graveyardContent.map((item) => (
@@ -136,14 +139,14 @@ const HeroPad = ({ type, player }) => {
                     exitActive: styles.cardAnimationExitActive,
                   }}
                 >
-                  <button key={item.id} className={graveCellClasses} type="button" onClick={() => handleGraveyardClick(player, graveCell)}>
+                  <button key={item.id} className={styles.defaultBtn} type="button" onClick={() => handleGraveyardClick(player, graveCell)}>
                     <img className={styles.image} src={item.img} alt={item.name} />
                   </button>
                 </CSSTransition>
               )))}
           </TransitionGroup>
           {graveyardContent.length === 0 && (
-            <button className={graveCellClasses} onClick={() => handleGraveyardClick(player, graveCell)} type="button">
+            <button className={styles.defaultBtn} onClick={() => handleGraveyardClick(player, graveCell)} type="button">
               <h3 className={styles.defaultTitle}>{t('Graveyard')}</h3>
             </button>
           )}

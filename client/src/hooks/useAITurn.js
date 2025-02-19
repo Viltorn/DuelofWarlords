@@ -338,7 +338,7 @@ const useAITurn = () => {
     console.log(cardToUse);
     makeAIAction(cardToUse, allPoints, curFieldCards, curFieldCells, curGameTurn);
     await new Promise((resolve) => {
-      setTimeout(() => resolve(), 3000);
+      setTimeout(() => resolve(), 2500);
     });
     const {
       cardsToUse,

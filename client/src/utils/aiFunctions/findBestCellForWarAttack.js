@@ -10,7 +10,8 @@ const findTargetCellForWarAttack = ({
 
   const warPower = getWarriorPower(warCard);
   const cellWithWarCanBeKilled = cellForAttackIds.find((cellId) => {
-    const warInCell = fieldCards.find((card) => card.cellId === cellId && (card.type === 'warrior' || card.type === ' hero'));
+    const warInCell = fieldCards.find((card) => card.cellId === cellId && (card.type === 'warrior' || card.type === 'hero'));
+    console.log(warInCell);
     const protectSpells = findSpells({
       attackingCard: warCard,
       defendingCard: warInCell,

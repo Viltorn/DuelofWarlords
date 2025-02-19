@@ -22,6 +22,12 @@
   padding: 0;
 }
 
+.topSpell {
+  width: calc(var(--cell-width) - 0.8rem);
+  height: calc(var(--cell-width) - 1rem);
+  align-items: center;
+}
+
 .bigSpell {
   position: relative;
   border-radius: 0.3rem;
@@ -31,8 +37,12 @@
   align-items: center;
   justify-content: flex-start;
   width: calc(var(--cell-width) + 0.5rem);
-  height: calc(var(--cell-width) - 0.8rem);
+  height: calc(var(--cell-width) - 1rem);
   padding: 0;
+}
+
+.justifyCenter {
+  justify-content: center;
 }
 
 .border {

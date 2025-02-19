@@ -17,6 +17,8 @@ import findCardsToAttachCast from '../utils/supportFunc/findCardsToAttachCast.js
 import findAimCard from '../utils/supportFunc/findAimCard.js';
 import getRandomFromArray from '../utils/getRandomFromArray.js';
 import calcAllSpellslValue from '../utils/supportFunc/calcAllSpellslValue.js';
+import { addPlayerToCard } from '../utils/makeDeckForPlayer.js';
+import useSoundEffects from './useSoundEffects.js';
 
 const useBattleActions = () => {
   const dispatch = useDispatch();
@@ -42,6 +44,8 @@ const useBattleActions = () => {
     addNextLinesCellsForMove,
     warHasSpecialFeature,
   } = useAnimaActions();
+
+  const { playSound } = useSoundEffects();
 
   const getActiveCard = () => {
     const activeCard1 = store.getState().battleReducer.activeCardPlayer1;
@@ -182,7 +186,8 @@ const useBattleActions = () => {
     } else {
       const cost = cardCost ?? card.cost;
       const playerHand = player ?? card.player;
-      dispatch(battleActions.returnCard({ card, cost, playerHand }));
+      const newCard = addPlayerToCard(card, playerHand);
+      dispatch(battleActions.returnCard({ card: newCard, cost, playerHand }));
     }
   };
 
@@ -294,6 +299,7 @@ const useBattleActions = () => {
     if (healthLessThanDefault) {
       const newHealth = (appliedCard.currentHP + spellPower) >= appliedCard.health
         ? appliedCard.health : appliedCard.currentHP + spellPower;
+      playSound({ id: 'heal' });
       dispatch(battleActions.addAnimation({ cellId: appliedCard.cellId, type: 'healed' }));
       dispatch(battleActions.changeHP({
         health: newHealth,
@@ -530,6 +536,7 @@ const useBattleActions = () => {
       const currentOwnerPoints = currentPlayerPoints.find((item) => item.player === player).points;
       dispatch(battleActions.setPlayerPoints({ points: currentOwnerPoints - feature.cost, player }));
     }
+    if (feature.name !== 'heal') playSound({ id: `${feature.school}` });
     if (feature.charges) changeChargedSpellCard(feature, currentFieldCards, currentFieldCells, makeFeatureCast);
   };
 
@@ -698,6 +705,7 @@ const useBattleActions = () => {
     const recievingCell = newfieldCells.find((cell) => cell.id === recievingCard.cellId);
     if (strikingCard.type !== 'hero'
       && (canRetaliate || retaliateSpells.length > 0 || retaliateStrikes.length > 0 || retributionSpells.length > 0)) {
+      playSound({ id: 'sword' });
       dispatch(battleActions.addAnimation({ cellId: strikingCell.id, type: 'makeattack' }));
       dispatch(battleActions.addAnimation({ cellId: recievingCell.id, type: 'warAttacked' }));
     }

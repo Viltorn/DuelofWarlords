@@ -10,15 +10,20 @@ import isInvisible from '../../../utils/supportFunc/isInvisible.js';
 
 const getTopMargin = (cellType, contentLength) => {
   if (cellType === 'field' && contentLength === 4) {
-    return 5.8;
-  }
-  if (cellType === 'field') {
-    return Math.min(2.4 * contentLength, 5.6);
-  }
-  if (cellType === 'hero') {
     return 6.4;
   }
+  if (cellType === 'field') {
+    return Math.min(2.3 * contentLength, 5.4);
+  }
+  if (cellType === 'hero') {
+    return Math.min(2.8 * contentLength, 6.9);
+  }
   return 0;
+};
+
+const calcBigSpellMargin = (contentLength) => {
+  if (contentLength === 1) return 0;
+  return 5;
 };
 
 const CellCard = ({
@@ -51,7 +56,7 @@ const CellCard = ({
   const defPower = item.type === 'warrior' ? getWarriorPower(item, 'defPower') : null;
   const invisible = item.type === 'warrior' && isInvisible(currentCell, fieldCards);
   const marginTop = getTopMargin(cellType, content.length);
-  const marginRight = cellType === 'bigSpell' ? 5 : 0;
+  const marginRight = cellType === 'bigSpell' ? calcBigSpellMargin(content.length) : 0;
   const cardInfo = {
     cardsFeature, atkPower, description, currentHP, currentC, cellType, type, img, name, defPower,
   };
@@ -59,6 +64,7 @@ const CellCard = ({
   const cardStyles = cn({
     [styles.contentItem]: cellType !== 'hero',
     [styles.heroCellItem]: cellType === 'hero',
+    [styles.selfJustifyCenter]: cellType === 'bigSpell' && content.length === 1,
     [styles.makeAttackAnima]: currentCell.animation === 'makeattack',
     [styles.turn1]: turn === 1,
     [styles.turn2]: turn === 2,

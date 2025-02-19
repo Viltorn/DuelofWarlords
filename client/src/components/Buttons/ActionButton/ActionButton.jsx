@@ -6,16 +6,17 @@ import styles from './ActionButton.module.css';
 import useClickActions from '../../../hooks/useClickActions.js';
 
 const ActionButton = ({
-  type, card, ability, ressurect, name,
+  type, card, ability, ressurect, name, cardsLimitReached,
 }) => {
   const { t } = useTranslation();
   const element = useRef();
 
   const { handleButtonClick } = useClickActions();
+  const cantAddCard = (card.qty === maxCardsDeckCopy || cardsLimitReached) && type === 'addToDeck';
 
   const classes = cn({
     [styles.btn]: true,
-    [styles.redBack]: card.qty === maxCardsDeckCopy && type === 'addToDeck',
+    [styles.redBack]: cantAddCard,
   });
 
   return (
@@ -24,7 +25,7 @@ const ActionButton = ({
       type="button"
       ref={element}
       onClick={() => handleButtonClick({
-        btnType: type, card, ability, ressurect,
+        btnType: type, card, ability, ressurect, cardsLimitReached,
       })}
     >
       <div className={styles.btnLabel}>{t(`abilities.${name}`)}</div>
