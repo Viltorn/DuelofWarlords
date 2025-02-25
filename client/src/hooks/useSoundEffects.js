@@ -5,21 +5,19 @@ const useSoundEffects = () => {
   const [play] = useSound(SoundEffects, {
     volume: 1,
     sprite: {
-      drum: [0, 2000],
-      bow: [2400, 600],
+      drum: [0, 1300],
+      bow: [2400, 500],
       sword: [2800, 400],
-      heal: [9800, 1000],
-      light: [5900, 1000],
-      air: [12000, 1200],
-      water: [13800, 900],
-      fire: [14700, 700],
-      arcane: [15800, 1200],
+      heal: [3500, 1200],
+      light: [6700, 1000],
+      air: [11500, 1200],
+      water: [13400, 900],
+      fire: [14300, 700],
+      arcane: [15000, 1000],
     },
   });
 
-  const playSound = play;
-
-  return { playSound };
+  return { play };
 };
 
 export default useSoundEffects;

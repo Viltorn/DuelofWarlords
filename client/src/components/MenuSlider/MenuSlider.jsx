@@ -1,6 +1,6 @@
 import React from 'react';
-import ArrowLeft from '../../assets/ArrowLeft.png';
-import ArrowRight from '../../assets/ArrowRight.png';
+import ArrowLeft from '@assets/ArrowLeft.png';
+import ArrowRight from '@assets/ArrowRight.png';
 import styles from './MenuSlider.module.css';
 
 const MenuSlider = ({

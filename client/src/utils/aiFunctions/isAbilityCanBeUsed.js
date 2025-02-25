@@ -32,7 +32,7 @@ const isAbilityCanBeUsed = (
   if ((name === 'heal' && !aim.includes('hero')) || (invokeFeature?.features[0].name === 'heal')) {
     return warCards.find((card) => card.player === rightPlayer);
   }
-  if (name === 'power' || (invokeFeature?.features[0].name === 'power')) {
+  if (name === 'power' || name === 'atkPower' || invokeFeature?.features[0].name === 'power' || invokeFeature?.features[0].name === 'atkPower') {
     return warCards.find((card) => card.player === rightPlayer && card.turn === 0
     && !warHasSpecialFeature({
       warCard: card, fieldCards, fieldCells, featureName: 'unarmed',

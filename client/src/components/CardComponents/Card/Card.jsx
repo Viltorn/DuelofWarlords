@@ -10,7 +10,7 @@ import useClickActions from '../../../hooks/useClickActions.js';
 import isAllowedCost from '../../../utils/supportFunc/isAllowedCost.js';
 
 const Card = ({
-  card, active, contentLength, builder, isOpenInfo,
+  card, active, contentLength, builder, isOpenInfo, log,
 }) => {
   const { t } = useTranslation();
   const cardElement = useRef();
@@ -34,7 +34,7 @@ const Card = ({
   const { playerPoints, thisPlayer, gameTurn } = useSelector((state) => state.battleReducer);
   const currentPoints = playerPoints.find((item) => item.player === thisPlayer).points;
   const cardsFeature = faction ?? school;
-  const marginRight = active || builder ? 0 : Math.min(contentLength * 0.5, 5.6);
+  const marginRight = active || builder || log ? 0 : Math.min(contentLength * 0.5, 5.6);
   /*  empirical number */
 
   const classes = cn({

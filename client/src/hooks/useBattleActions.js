@@ -45,7 +45,7 @@ const useBattleActions = () => {
     warHasSpecialFeature,
   } = useAnimaActions();
 
-  const { playSound } = useSoundEffects();
+  const { play } = useSoundEffects();
 
   const getActiveCard = () => {
     const activeCard1 = store.getState().battleReducer.activeCardPlayer1;
@@ -299,7 +299,7 @@ const useBattleActions = () => {
     if (healthLessThanDefault) {
       const newHealth = (appliedCard.currentHP + spellPower) >= appliedCard.health
         ? appliedCard.health : appliedCard.currentHP + spellPower;
-      playSound({ id: 'heal' });
+      play({ id: 'heal' });
       dispatch(battleActions.addAnimation({ cellId: appliedCard.cellId, type: 'healed' }));
       dispatch(battleActions.changeHP({
         health: newHealth,
@@ -536,7 +536,7 @@ const useBattleActions = () => {
       const currentOwnerPoints = currentPlayerPoints.find((item) => item.player === player).points;
       dispatch(battleActions.setPlayerPoints({ points: currentOwnerPoints - feature.cost, player }));
     }
-    if (feature.name !== 'heal') playSound({ id: `${feature.school}` });
+    if (feature.name !== 'heal') play({ id: `${feature.school}` });
     if (feature.charges) changeChargedSpellCard(feature, currentFieldCards, currentFieldCells, makeFeatureCast);
   };
 
@@ -705,7 +705,7 @@ const useBattleActions = () => {
     const recievingCell = newfieldCells.find((cell) => cell.id === recievingCard.cellId);
     if (strikingCard.type !== 'hero'
       && (canRetaliate || retaliateSpells.length > 0 || retaliateStrikes.length > 0 || retributionSpells.length > 0)) {
-      playSound({ id: 'sword' });
+      play({ id: 'sword' });
       dispatch(battleActions.addAnimation({ cellId: strikingCell.id, type: 'makeattack' }));
       dispatch(battleActions.addAnimation({ cellId: recievingCell.id, type: 'warAttacked' }));
     }
@@ -751,7 +751,7 @@ const useBattleActions = () => {
     } else {
       changeCardHP(calcRetaliatePower, recieveHealth, recievingCard);
     }
-    const powerSpells = strikingCard.attachments.filter((spell) => spell.name === 'power');
+    const powerSpells = strikingCard.attachments.filter((spell) => spell.name === 'power' || spell.name === 'defPower');
     powerSpells.forEach((spell) => changeChargedSpellCard(spell, newfieldCards, newfieldCells, makeFeatureCast));
 
     if (retaliateProtects.length > 0) {
@@ -837,7 +837,7 @@ const useBattleActions = () => {
     }
     await Promise.all(card.features.map((feature) => new Promise((resolve) => {
       setTimeout(() => {
-        if (!feature.condition && !feature.attach && feature.name !== 'cantPostpone') {
+        if (!feature.condition && !feature.attach) {
           makeFeatureCast({
             feature, aimCell: cell, applyingCard: null, player, player2Type, performAIAction,
           });

@@ -76,7 +76,7 @@ io.on('connection', async (socket) => {
 
   socket.on('createRoom', async (args, callback) => { // callback here refers to the callback function from the client passed as data
     const roomId = uuidV4(); // <- 1 create a new uuid
-    const { hero,  deck, hand, password, timer  } = args
+    const { hero,  deck, hand, password, timer, messages  } = args
     await socket.join(roomId); // <- 2 make creating user join the room
    
     // set roomId as a key and roomData including players as value in the map
@@ -84,7 +84,8 @@ io.on('connection', async (socket) => {
       roomId,
       players: [{ id: socket.id, type: 'player1', username: socket.data?.username, hero, deck, hand }],
       password,
-      timer
+      timer,
+      messages
     });
 
     callback(roomId); // <- 4 respond with roomId to client by calling the callback function from the client
@@ -166,6 +167,17 @@ io.on('connection', async (socket) => {
     const { room } = data;
     if (isRoomFull(room, io)) {
       socket.to(room).emit('makeMove', data);
+      callback({ error: false });
+    } else {
+      callback({ error: true });
+    }
+  });
+
+
+  socket.on('messageRoom', (data, callback) => {
+    const { room } = data;
+    if (isRoomFull(room, io)) {
+      socket.to(room).emit('messageRoom', data);
       callback({ error: false });
     } else {
       callback({ error: true });

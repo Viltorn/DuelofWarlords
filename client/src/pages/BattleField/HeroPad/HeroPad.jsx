@@ -32,7 +32,7 @@ const HeroPad = ({ type, player }) => {
   const curPoints = playerPoints.find((data) => data.player === player).points;
   const { maxPoints } = playerPoints.find((data) => data.player === player);
 
-  const cardsCount = useMemo(() => playersHands[getEnemyPlayer(thisPlayer)].length, [thisPlayer, playersHands]);
+  const cardsCount = useMemo(() => playersHands[getEnemyPlayer(player)].length, [player, playersHands]);
   const counterCell = useMemo(() => fieldCells.find((cell) => cell.player === player && cell.type === 'counter'), [fieldCells, player]);
   const cardsInDeck = useMemo(() => playersDecks[player].length, [playersDecks, player]);
   const heroCellId = useMemo(() => (player === 'player1' ? 'hero1' : 'hero2'), [player]);
@@ -41,9 +41,8 @@ const HeroPad = ({ type, player }) => {
   const graveCell = useMemo(() => fieldCells.find((cell) => cell.player === player && cell.type === 'graveyard'), [fieldCells, player]);
   const graveCellId = graveCell.id;
   const graveyardContent = useMemo(() => fieldCards.filter((card) => card.cellId === graveCellId).reverse(), [graveCellId, fieldCards]);
-  // const lastItem = useMemo(() => graveyardContent[0], [graveyardContent]);
   const heroCard = heroData.find((card) => card.type === 'hero');
-  const readyWarrior = useMemo(() => isWarriorReady(heroCard, thisPlayer, gameTurn) && heroCard.features.find((feat) => feat.cost <= curPoints), [gameTurn, heroCard, thisPlayer, curPoints]);
+  const readyWarrior = useMemo(() => isWarriorReady(heroCard, heroCard?.player, gameTurn) && heroCard.features.find((feat) => feat.cost <= curPoints), [gameTurn, heroCard, curPoints]);
 
   const lastCardToShowIdx = heroData.length + 1 - cardsToShowHeroSlot;
   const heroCellContent = heroData

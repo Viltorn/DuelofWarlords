@@ -64,7 +64,6 @@ const HotSeatMenu = () => {
     onSubmit: (values) => {
       try {
         const { startPoints, startHeroHP } = getSetUpData(Number(values.gameDifficulty));
-        console.log(startPoints, startHeroHP);
         const heroPlayer1 = addPlayerToCard(values.player1Hero, 'player1');
         const heroPlayer2 = addPlayerToCard(values.player2Hero, 'player2');
         const player1DeckData = makeInitialDeck(values.player1Deck, 'player1');
@@ -90,6 +89,7 @@ const HotSeatMenu = () => {
         dispatch(battleActions.setPlayerMaxPoints({ maxPoints: startPoints, player: 'player2' }));
         dispatch(battleActions.setPlayerPoints({ points: startPoints, player: 'player2' }));
         dispatch(battleActions.changeHP({ health: startHeroHP, cardId: values.player2Hero.id }));
+        dispatch(battleActions.addActionToLog({ round: 1, player: 'player1', id: _.uniqueId() }));
         dispatch(gameActions.setGameMode({ gameMode: values.gameMode }));
         dispatch(modalsActions.openModal({ type: 'startFirstRound', player: 'player1' }));
       } catch (err) {

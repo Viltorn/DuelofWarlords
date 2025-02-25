@@ -29,9 +29,15 @@ const useAnimaActions = () => {
     const newFieldCells = store.getState().battleReducer.fieldCells;
     const newFieldCards = store.getState().battleReducer.fieldCards;
     const cardCell = newFieldCells.find((cell) => cell.id === card.cellId);
-    const powerCellAttach = cardCell.attachments.filter((spell) => spell.name === 'power' || spell.name === powType);
+    const powerCellAttach = cardCell.attachments.filter((spell) => (spell.name === 'power' || spell.name === powType)
+      && isSpellMeetCondition({
+        attackingCard: card, spell, type: 'warrior', allFieldCells: newFieldCells, allFieldCards: newFieldCards,
+      }));
     const powerCellVal = getAddedWarPower(curPower, newFieldCards, powerCellAttach);
-    const powerCardAttach = attachments.filter((spell) => spell.name === 'power' || spell.name === powType);
+    const powerCardAttach = attachments.filter((spell) => (spell.name === 'power' || spell.name === powType)
+       && isSpellMeetCondition({
+         attackingCard: card, spell, type: 'warrior', allFieldCells: newFieldCells, allFieldCards: newFieldCards,
+       }));
     const attachPowerVal = getAddedWarPower(curPower, newFieldCards, powerCardAttach);
     const totalPower = curPower + attachPowerVal + powerCellVal;
     return totalPower >= 0 ? totalPower : 0;

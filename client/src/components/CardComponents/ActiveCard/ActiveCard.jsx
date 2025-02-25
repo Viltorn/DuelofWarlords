@@ -43,35 +43,37 @@ const ActiveCard = ({
 
   return (
     <div className={cardClasses}>
-      <div className={styles.buttons}>
-        {canSucrificeCard && gameMode !== 'build' && (
-          <ActionButton card={activeCard} ability={null} type="sucrifice" name="sucrifice" />
-        )}
-        {(canReturnCard || gameMode === 'test') && (type !== 'hero') && gameMode !== 'build' && gameMode !== 'tutorial' && (
-          <ActionButton card={activeCard} ability={null} type="deckreturn" name="deckreturn" />
-        )}
-        {gameMode !== 'build' && canUseAbilities && abilities.map((ability) => {
-          const leftPoints = ability.cost ? currentPoints - ability.cost : 0;
-          const costAllowed = leftPoints >= 0;
-          return costAllowed
-            ? (
-              <ActionButton
-                key={ability.name}
-                card={activeCard}
-                ability={ability}
-                type="ability"
-                name={ability.description}
-              />
-            )
-            : null;
-        })}
-        {(canRessurectCard || gameMode === 'test') && gameMode !== 'build' && (
-          <ActionButton card={activeCard} type="return" ressurect={ressurect} name="return" />
-        )}
-        {canBeSentToGrave && gameMode !== 'build' && (
-          <ActionButton card={activeCard} type="graveyard" name="graveyard" />
-        )}
-      </div>
+      {status !== 'void' && (
+        <div className={styles.buttons}>
+          {canSucrificeCard && gameMode !== 'build' && (
+            <ActionButton card={activeCard} ability={null} type="sucrifice" name="sucrifice" />
+          )}
+          {(canReturnCard || gameMode === 'test') && (type !== 'hero') && gameMode !== 'build' && gameMode !== 'tutorial' && (
+            <ActionButton card={activeCard} ability={null} type="deckreturn" name="deckreturn" />
+          )}
+          {gameMode !== 'build' && canUseAbilities && abilities.map((ability) => {
+            const leftPoints = ability.cost ? currentPoints - ability.cost : 0;
+            const costAllowed = leftPoints >= 0;
+            return costAllowed
+              ? (
+                <ActionButton
+                  key={ability.name}
+                  card={activeCard}
+                  ability={ability}
+                  type="ability"
+                  name={ability.description}
+                />
+              )
+              : null;
+          })}
+          {(canRessurectCard || gameMode === 'test') && gameMode !== 'build' && (
+            <ActionButton card={activeCard} type="return" ressurect={ressurect} name="return" />
+          )}
+          {canBeSentToGrave && gameMode !== 'build' && (
+            <ActionButton card={activeCard} type="graveyard" name="graveyard" />
+          )}
+        </div>
+      )}
       <Card
         card={activeCard}
         active

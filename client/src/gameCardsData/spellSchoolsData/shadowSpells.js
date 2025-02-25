@@ -8,6 +8,7 @@ import TownPortal from '@assets/shadowSpells/TownPortal.png';
 import Transformation from '@assets/shadowSpells/Transformation.png';
 import MagicMist from '@assets/shadowSpells/MagicMist.png';
 import MassPowerDrain from '@assets/shadowSpells/MassPowerDrain.png';
+import SinisterFog from '@assets/shadowSpells/SinisterFog.png';
 
 export default {
   ArcaneArmor: {
@@ -185,6 +186,23 @@ export default {
       },
     ],
     img: MagicMist,
+    status: 'hand',
+  },
+  SinisterFog: {
+    name: 'Sinister Fog',
+    id: _.uniqueId(),
+    type: 'spell',
+    subtype: 'temporary',
+    cost: 2,
+    currentC: 2,
+    featInfo: [],
+    description: 'SinisterFog',
+    school: 'Shadow',
+    place: 'bigSpell',
+    features: [{
+      spell: true, attach: ['field', 'warrior'], aim: ['warrior', 'fighter', 'shooter', 'flyer'], type: 'bad', name: 'power', value: -2, condition: 'noAdjasentAlly', aimStatus: 'field',
+    }],
+    img: SinisterFog,
     status: 'hand',
   },
 };

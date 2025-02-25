@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
 import cn from 'classnames';
 import Menu from '@assets/Menu.png';
-import MusicButton from '../../../components/Buttons/MusicButton/MusicButton.jsx';
+import CombatLogImg from '@assets/CombatLog.png';
 import useClickActions from '../../../hooks/useClickActions.js';
 import tutorialStepsData from '../../../gameData/tutorialStepsData.js';
 import useFunctionsContext from '../../../hooks/useFunctionsContext.js';
@@ -16,6 +16,7 @@ const BattleHeader = () => {
   const {
     hadleEndTurnClick,
     handleMenuClick,
+    handleBattleLogClick,
   } = useClickActions();
 
   const { gameMode } = useSelector((state) => state.gameReducer);
@@ -25,9 +26,9 @@ const BattleHeader = () => {
     gameTurn,
     currentTutorStep,
   } = useSelector((state) => state.battleReducer);
-  const {
-    isOpenMenu,
-  } = useFunctionsContext();
+
+  const { type } = useSelector((state) => state.modalsReducer);
+  const { isOpenMenu } = useFunctionsContext();
   const { disEndTurn } = tutorialStepsData[currentTutorStep];
 
   const playerOneBlock = cn({
@@ -48,7 +49,11 @@ const BattleHeader = () => {
             <button style={{ transform: isOpenMenu ? 'rotate(90deg)' : 'rotate(0)' }} type="button" onClick={handleMenuClick} className={styles.menuBtn}>
               <img src={Menu} alt="menu" />
             </button>
-            <MusicButton />
+            {gameMode !== 'tutorial' && (
+            <button style={{ transform: type === 'combatLog' ? 'rotate(90deg)' : 'rotate(0)' }} type="button" onClick={handleBattleLogClick} className={styles.menuBtn}>
+              <img src={CombatLogImg} alt="combat log" />
+            </button>
+            )}
           </>
         )}
         <div className={styles.infoContainer}>
@@ -82,7 +87,11 @@ const BattleHeader = () => {
         </div>
         {thisPlayer === 'player2' && (
           <>
-            <MusicButton />
+            {gameMode !== 'tutorial' && (
+              <button style={{ transform: type === 'combatLog' ? 'rotate(90deg)' : 'rotate(0)' }} type="button" onClick={handleBattleLogClick} className={styles.menuBtn}>
+                <img src={CombatLogImg} alt="combat log" />
+              </button>
+            )}
             <button type="button" style={{ transform: isOpenMenu ? 'rotate(90deg)' : 'rotate(0)' }} onClick={handleMenuClick} className={styles.menuBtn}>
               <img src={Menu} alt="menu" />
             </button>

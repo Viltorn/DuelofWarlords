@@ -526,6 +526,39 @@ const academiaDeck = {
     status: 'hand',
     disabled: false,
   },
+  FireMageCast: {
+    img: FireMage,
+    name: 'fake',
+    type: 'spell',
+    subtype: 'instant',
+    currentC: 0,
+    featInfo: [],
+    description: 'FireMageCast',
+    faction: 'Academia',
+    ownerId: '',
+    place: '',
+    features: [{
+      attach: false, type: 'bad', aim: ['warrior', 'flyer', 'shooter', 'fighter'], name: 'attack', value: 3, aimStatus: 'field', school: 'fire',
+    }],
+    status: 'hand',
+  },
+  YoungGenieCast: {
+    img: YoungGenie,
+    name: 'fake',
+    type: 'spell',
+    subtype: 'instant',
+    currentC: 0,
+    featInfo: [],
+    description: 'YoungGenieCast',
+    faction: 'Academia',
+    ownerId: '',
+    place: '',
+    features: [{
+      attach: ['warrior'], type: 'all', aim: ['warrior', 'flyer', 'shooter', 'fighter'], name: 'moveNextRow', charges: 1, immediate: true, aimStatus: 'field',
+    }],
+    status: 'hand',
+  },
+
 };
 
 export default academiaDeck;

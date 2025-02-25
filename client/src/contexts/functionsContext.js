@@ -2,9 +2,10 @@
 import {
   createContext, useEffect, useState,
 } from 'react';
+import _ from 'lodash';
 import { useDispatch, useStore, useSelector } from 'react-redux';
-import drumAudio from '@assets/DrumBeat.mp3';
-import useSound from 'use-sound';
+// import drumAudio from '@assets/DrumBeat.mp3';
+// import useSound from 'use-sound';
 import { actions as battleActions } from '../slices/battleSlice.js';
 import { actions as modalsActions } from '../slices/modalsSlice.js';
 import { actions as uiActions } from '../slices/uiSlice.js';
@@ -24,8 +25,8 @@ const FunctionContext = createContext({});
 
 export const FunctionProvider = ({ children }) => {
   const dispatch = useDispatch();
-  const { playSound } = useSoundEffects();
-  const [play] = useSound(drumAudio, { volume: 0.3 });
+  const { play } = useSoundEffects();
+  // const [play] = useSound(drumAudio, { volume: 0.3 });
   const store = useStore();
   const {
     activeCardPlayer1, activeCardPlayer2, thisPlayer, currentTutorStep,
@@ -131,7 +132,8 @@ export const FunctionProvider = ({ children }) => {
       ? attackingPower - protectionVal : 0;
 
     const attackingCell = newfieldCells.find((cell) => cell.id === card1.cellId);
-    const powerSpells = [...card1.attachments.filter((spell) => spell.name === 'power'), ...attackingCell.attachments.filter((spell) => spell.name === 'power' && spell.aim.includes(card1.subtype))];
+    const powerSpells = [...card1.attachments.filter((spell) => spell.name === 'power' || spell.name === 'atkPower'),
+      ...attackingCell.attachments.filter((spell) => (spell.name === 'power' || spell.name === 'atkPower') && spell.aim.includes(card1.subtype))];
     powerSpells.forEach((spell) => changeChargedSpellCard(spell, newfieldCards, newfieldCells, makeFeatureCast));
 
     if (protectSpells.length > 0) {
@@ -144,9 +146,9 @@ export const FunctionProvider = ({ children }) => {
     }
 
     if (card1.subtype === 'shooter') {
-      playSound({ id: 'bow' });
+      play({ id: 'bow' });
     } else {
-      playSound({ id: 'sword' });
+      play({ id: 'sword' });
     }
     dispatch(battleActions.addAnimation({ cellId: attackedCell.id, type: 'warAttacked' }));
     if (isKilled(calculatedPower, attackedHealth)) {
@@ -202,6 +204,11 @@ export const FunctionProvider = ({ children }) => {
         1500,
       );
     }
+    dispatch(battleActions.addActionToLog({
+      playedCard: { warCard: true, cardName: card1.description, cardsFeature: card1.faction },
+      aim: { warCard: true, cardName: card2.description, cardsFeature: card2.faction },
+      id: _.uniqueId(),
+    }));
   };
 
   // ADD CARD TO FIELD ///////
@@ -271,6 +278,10 @@ export const FunctionProvider = ({ children }) => {
         }, 500));
     }
     dispatch(battleActions.setLastPlayedCard(card));
+    const cardsFeature = card.school ?? card.faction;
+    const warCard = fieldCards.find((c) => (c.type === 'warrior' || c.type === 'hero') && c.cellId === curCell.id);
+    const aimData = warCard ? { warCard: true, cardName: warCard.description, cardsFeature: warCard.faction } : { cell: true, type: curCell.type };
+    dispatch(battleActions.addActionToLog({ playedCard: { warCard: true, cardName: card.description, cardsFeature }, aim: aimData, id: _.uniqueId() }));
     setActionPerforming(false);
   };
 
@@ -296,9 +307,8 @@ export const FunctionProvider = ({ children }) => {
     dispatch(battleActions.setCardSucrificeStatus({ player: prevPlayer, status: false }));
     if (trainingMode && player2Type === 'human') dispatch(battleActions.changePlayer({ newPlayer }));
     if (newPlayer === 'player1') dispatch(battleActions.changeRound());
-    if (currentRound > 1) {
-      dispatch(battleActions.drawCard({ player: newPlayer }));
-    }
+    if (currentRound > 1) dispatch(battleActions.drawCard({ player: newPlayer }));
+
     handleAnimation(activeCardPlayer2, 'delete');
     dispatch(battleActions.massTurnCards({ player: newPlayer }));
     dispatch(battleActions.changeTurn({ player: newPlayer }));
@@ -322,7 +332,8 @@ export const FunctionProvider = ({ children }) => {
       });
     if (currentRound !== 1 && gameMode === 'online' && newPlayer === thisPlayer) {
       showYourTurnWindow();
-      play();
+      play({ id: 'drum' });
+      // play();
     }
     const changeCardsAlowed = newPlayer === 'player2' && currentRound === 1 && player2Type === 'human';
     if ((changeCardsAlowed && trainingMode) || (changeCardsAlowed && thisPlayer === 'player2')) {
@@ -340,6 +351,7 @@ export const FunctionProvider = ({ children }) => {
       dispatch(uiActions.setTimerIsOver(false));
       dispatch(uiActions.setTimerIsPaused(true));
     }
+    dispatch(battleActions.addActionToLog({ round: currentRound, player: newPlayer, id: _.uniqueId() }));
     setActionPerforming(false);
   };
 
@@ -378,13 +390,13 @@ export const FunctionProvider = ({ children }) => {
     if (gameMode === 'tutorial') {
       dispatch(battleActions.setTutorialStep(currentTutorStep + 1));
     }
-    // if (card.heroSpell) {
-    //   const newfieldCards = store.getState().battleReducer.fieldCards;
-    //   const heroCard = newfieldCards.find((c) => c.type === 'hero' && c.player === card.player);
-    //   dispatch(battleActions.turnCardLeft({ cardId: heroCard.id, qty: 1 }));
-    // }
     dispatch(battleActions.setLastPlayedCard(card));
     setActionPerforming(false);
+    const cardsFeature = card.school ?? card.faction;
+    const newfieldCards = store.getState().battleReducer.fieldCards;
+    const warCard = newfieldCards.find((c) => (c.type === 'warrior' || c.type === 'hero') && c.cellId === cell.id);
+    const aimData = warCard ? { warCard: true, cardName: warCard.description, cardsFeature: warCard.faction } : { cell: true, type: cell.type };
+    dispatch(battleActions.addActionToLog({ playedCard: { warCard: true, cardName: card.description, cardsFeature }, aim: aimData, id: _.uniqueId() }));
   };
 
   // RETURN CARD TO HAND
@@ -446,11 +458,8 @@ export const FunctionProvider = ({ children }) => {
     if (gameMode === 'tutorial') {
       dispatch(battleActions.setTutorialStep(currentTutorStep + 1));
     }
-    // if (card.heroSpell) {
-    //   const newfieldCards = store.getState().battleReducer.fieldCards;
-    //   const heroCard = newfieldCards.find((c) => c.type === 'hero' && c.player === card.player);
-    //   dispatch(battleActions.turnCardLeft({ cardId: heroCard.id, qty: 1 }));
-    // }
+    const cardsFeature = card.school ?? card.faction;
+    dispatch(battleActions.addActionToLog({ playedCard: { warCard: true, cardName: card.description, cardsFeature }, aim: { ability: true, name: ability.description }, id: _.uniqueId() }));
     setActionPerforming(false);
   };
 

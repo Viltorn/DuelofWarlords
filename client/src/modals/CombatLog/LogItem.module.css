@@ -1,0 +1,54 @@
+.container {
+  width: 100%;
+}
+
+.roundItem {
+  font-size: 15px;
+  color: var(--white-color);
+}
+
+.cardsItem {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.coverImage {
+  width: var(--hand-card-width);
+  height: calc(var(--hand-card-width) * 1.6);
+}
+
+.cellImg {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  border-radius: 0.3rem;
+  border: 0.2rem solid var(--light-gray);
+  width: var(--hand-card-width);
+  height: calc(var(--hand-card-width) * 1.6);
+  padding: 0.3rem;
+}
+
+.ability {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  border-radius: 0.3rem;
+  border: none;
+  width: var(--hand-card-width);
+  height: calc(var(--hand-card-width) * 1.6);
+  padding: 0.3rem;
+}
+
+.defaultTitle {
+  color: var( --light-gray);
+  text-align: center;
+}
+
+.arrowImage {
+  height: 50px;
+  width: 50px;
+}

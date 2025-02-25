@@ -8,4 +8,5 @@ export default {
   Transformation: 'Превращение в животное',
   MagicMist: 'Магический туман',
   MassPowerDrain: 'Вытягивание силы',
+  SinisterFog: 'Зловещий туман',
 };

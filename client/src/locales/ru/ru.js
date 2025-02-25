@@ -107,6 +107,7 @@ export default {
     DeckLimits: '(Мин. - 30 карт, Макс. - 40 карт)',
     AttachedCards: 'Наложенные заклинания',
     Timer: 'Таймер хода',
+    Round: 'Раунд',
 
     tutorialTips: {
       Tips: 'ПОДСКАЗКИ',
@@ -227,6 +228,13 @@ export default {
       Shadow: shadowSpellsNamesRU,
       Water: waterSpellsNamesRU,
       Fire: fireSpellsNamesRU,
+    },
+
+    cells: {
+      topSpell: 'Линия',
+      bigSpell: 'Общее заклинание',
+      midSpell: 'Шеренга',
+      field: 'Поле',
     },
 
     types: {

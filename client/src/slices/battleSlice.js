@@ -30,6 +30,7 @@ const initialState = {
     ...counters,
     ...graveyard,
   ],
+  combatLog: [],
   activeCells: { cellsForAttack: [], cellsForSpellCast: [], cellsForWarMove: [] },
   lastCellWithAction: {},
   lastPlayedCard: {},
@@ -336,6 +337,10 @@ const battleSlice = createSlice({
     setLastPlayedCard(state, { payload }) {
       const card = payload;
       state.lastPlayedCard = card;
+    },
+
+    addActionToLog(state, { payload }) {
+      state.combatLog = [...state.combatLog, payload];
     },
   },
 });

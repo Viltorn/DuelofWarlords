@@ -264,10 +264,11 @@ export default {
     featInfo: [],
     description: 'Waterfall',
     school: 'Water',
-    place: 'bigSpell',
+    place: 'topSpell',
     features: [{
-      spell: true, attach: ['field', 'warrior'], aim: ['warrior', 'fighter', 'shooter', 'flyer'], type: 'bad', name: 'unarmed', condition: 'maxPower', conditionValue: 2, aimStatus: 'field',
+      spell: true, attach: ['line', 'warrior'], aim: ['warrior', 'fighter', 'shooter', 'flyer'], type: 'bad', name: 'atkPower', value: -2, aimStatus: 'field',
     }],
+    // condition: 'maxPower', conditionValue: 2,
     img: Waterfall,
     status: 'hand',
   },

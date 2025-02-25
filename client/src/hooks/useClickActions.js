@@ -30,6 +30,7 @@ const useClickActions = () => {
     players,
     currentTutorStep,
   } = useSelector((state) => state.battleReducer);
+  const modalType = useSelector((state) => state.modalsReducer).type;
 
   const { makeAITurn } = useAITurn();
   const { gameMode, curRoom, name } = useSelector((state) => state.gameReducer);
@@ -51,6 +52,15 @@ const useClickActions = () => {
     dispatch(battleActions.addCommonPoint());
     dispatch(battleActions.drawCard({ player: 'player1' }));
     dispatch(battleActions.setTutorialStep(currentTutorStep + 1));
+  };
+
+  const handleBattleLogClick = () => {
+    if (actionPerforming || (gameMode === 'online' && isPlayerDisconnected(players))) return;
+    if (modalType === 'combatLog') {
+      dispatch(modalsActions.closeModal());
+    } else {
+      dispatch(modalsActions.openModal({ type: 'combatLog' }));
+    }
   };
 
   const hadleEndTurnClick = () => {
@@ -373,6 +383,7 @@ const useClickActions = () => {
   };
 
   return {
+    handleBattleLogClick,
     handleButtonClick,
     hadleEndTurnClick,
     handleMenuClick,

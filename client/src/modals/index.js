@@ -14,6 +14,7 @@ import StartFirstRound from './StartFirstRound/StartFirstRound.jsx';
 import LoginSignUp from './Login/LoginSignUp.jsx';
 import PlayerTurn from './PlayerTurn/PlayerTurn.jsx';
 import ActiveCardWindow from './ActiveCardWindow/ActiveCardWindow.jsx';
+import CombatLog from './CombatLog/CombatLog.jsx';
 
 const modals = {
   loginWindow: LoginSignUp,
@@ -32,6 +33,7 @@ const modals = {
   startFirstRound: StartFirstRound,
   playerTurn: PlayerTurn,
   activeCardWindow: ActiveCardWindow,
+  combatLog: CombatLog,
 };
 
 export default (modalName) => modals[modalName];

@@ -200,7 +200,7 @@ const useAITurn = () => {
         warCard: card, fieldCards, fieldCells, featureName: 'swift',
       });
       const canMove = cellsForWarMove.length > 0;
-      const canAttack = cellsForAttack.length > 0 && getWarriorPower(card) > 0;
+      const canAttack = cellsForAttack.length > 0;
       const canUseAblities = abilitiesToUse.length > 0;
       const chooseAbilityOverAtk = canUseAblities ? Math.round(Math.random()) > 0 : false;
       if (!isWarBetterMove && !warHasMovingFeature && canUseAblities && chooseAbilityOverAtk) {

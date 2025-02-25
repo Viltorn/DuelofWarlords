@@ -41,7 +41,7 @@ const isSpellEffectivePlay = ({
     }));
     return warNeedsToMove;
   }
-  if (name === 'power') {
+  if (name === 'power' || name === 'atkPower') {
     const warCanAttack = playersWarsOnField
       .find((warCard) => warCard.turn === 0 && !warHasSpecialFeature({
         warCard, fieldCards, fieldCells, featureName: 'unarmed',

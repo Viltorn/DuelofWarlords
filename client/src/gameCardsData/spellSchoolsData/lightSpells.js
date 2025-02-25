@@ -100,7 +100,7 @@ export default {
       attach: ['field', 'warrior', 'flyer', 'shooter', 'fighter'],
       type: 'good',
       aim: ['warrior', 'fighter', 'shooter', 'flyer', 'hero'],
-      name: 'power',
+      name: 'atkPower',
       value: 1,
       aimStatus: 'field',
     }],

@@ -15,6 +15,7 @@ import RighteousFighter from '@assets/castleCards/RighteousFighter.png';
 import ZigfridHero from '@assets/castleCards/ZigfridHero.png';
 import RetributionSword from '@assets/castleCards/RetributionSword.png';
 import AgielHero from '@assets/castleCards/AgielHero.png';
+import GoodMorale from '@assets/GoodMorale.png';
 
 // SPELLS
 import RetaliationHammer from '../../assets/castleCards/RetaliationHammer.png';
@@ -542,7 +543,7 @@ const castleDeck = {
             attach: ['warrior', 'flyer', 'shooter', 'fighter'],
             aim: ['warrior', 'fighter', 'shooter', 'flyer'],
             type: 'good',
-            name: 'power',
+            name: 'atkPower',
             value: 1,
             depend: 'goodAttachments',
             dependValue: 1,
@@ -555,6 +556,82 @@ const castleDeck = {
     img: RetributionSword,
     status: 'hand',
     disabled: false,
+  },
+  Morale: {
+    name: 'Dummy',
+    type: 'spell',
+    subtype: 'instant',
+    featInfo: [],
+    description: 'Morale',
+    cost: 0,
+    currentC: 0,
+    faction: 'Castle',
+    id: '',
+    attachments: [],
+    features: [{
+      attach: false, type: 'good', aim: ['warrior'], name: 'increasePoints', value: 1, condition: 'insteadatk', cost: 0, description: 'increasePoints',
+    },
+    {
+      attach: false, type: 'all', aim: ['warrior'], name: 'drawCard', condition: 'insteadatk', cost: 0, description: 'drawCard',
+    }],
+    img: GoodMorale,
+    status: 'hand',
+    player: 'player2',
+    turn: 0,
+  },
+  TemplarChampCast: {
+    img: TemplarChampion,
+    name: 'fake',
+    type: 'spell',
+    subtype: 'instant',
+    currentC: 0,
+    featInfo: [],
+    description: 'TemplarChampCast',
+    faction: 'Castle',
+    place: '',
+    features: [{
+      attach: false, aim: ['warrior', 'flyer', 'shooter', 'fighter'], type: 'good', name: 'heal', value: 3, aimStatus: 'field',
+    }],
+    status: 'hand',
+  },
+  AddAttackCast: {
+    img: RetributionSword,
+    name: 'fake',
+    type: 'spell',
+    subtype: 'instant',
+    currentC: 0,
+    description: 'AddAttackCast',
+    faction: 'Castle',
+    place: '',
+    featInfo: [],
+    features: [{
+      spell: true,
+      attach: ['warrior', 'flyer', 'shooter', 'fighter'],
+      aim: ['warrior', 'fighter', 'shooter', 'flyer'],
+      type: 'good',
+      name: 'power',
+      value: 1,
+      depend: 'goodAttachments',
+      dependValue: 1,
+      charges: 1,
+      aimStatus: 'field',
+    }],
+    status: 'hand',
+  },
+  BannermanCast: {
+    img: BannerMan,
+    name: 'fake',
+    type: 'spell',
+    subtype: 'instant',
+    currentC: 0,
+    featInfo: [],
+    description: 'BannermanCast',
+    faction: 'Castle',
+    place: '',
+    features: [{
+      attach: ['warrior'], aim: ['warrior', 'fighter', 'shooter', 'flyer'], type: 'good', name: 'power', value: 2, charges: 1, id: _.uniqueId(), aimStatus: 'field',
+    }],
+    status: 'hand',
   },
 };
 
