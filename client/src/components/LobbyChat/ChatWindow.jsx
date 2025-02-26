@@ -1,20 +1,21 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { useFormik } from 'formik';
 // import axios from 'axios';
 import CloseBtn from '@assets/CloseBtn.svg';
 import Message from './Message.jsx';
-import socket from '../../../socket.js';
+import socket from '../../socket.js';
 import styles from './ChatWindow.module.css';
 
-const ChatWindow = ({ toogleChat }) => {
+const ChatWindow = ({ toogleChat, type, player }) => {
   const { t } = useTranslation();
   const inputEl = useRef();
   const [error, setError] = useState(false);
   const {
-    messages, name,
+    messages, name, curRoom,
   } = useSelector((state) => state.gameReducer);
+  const { roomMsgs } = useSelector((state) => state.battleReducer);
 
   const formik = useFormik({
     initialValues: {
@@ -23,7 +24,12 @@ const ChatWindow = ({ toogleChat }) => {
     onSubmit: async ({ message }) => {
       try {
         setError(false);
-        socket.emit('message', { message, name });
+        socket.emit(type, {
+          message, name, room: curRoom, player,
+        }, () => {
+          inputEl.current.focus();
+          formik.resetForm();
+        });
       } catch (err) {
         setError(err.message);
         console.log(err);
@@ -33,6 +39,14 @@ const ChatWindow = ({ toogleChat }) => {
     validateOnChange: false,
   });
 
+  useEffect(() => {
+    if (inputEl && inputEl.current) {
+      inputEl.current.style.height = '0px';
+      const inputElHeight = inputEl.current.scrollHeight;
+      inputEl.current.style.height = `${inputElHeight}px`;
+    }
+  }, [formik.values.message]);
+
   return (
     <div className={styles.window}>
       <div className={styles.headBlock}>
@@ -40,7 +54,8 @@ const ChatWindow = ({ toogleChat }) => {
         <h2 className={styles.header}>{t('ChatHeader')}</h2>
       </div>
       <div className={styles.chatBlock}>
-        {messages.map((item) => <Message key={item.id} data={item} />)}
+        {type === 'message' && (messages.map((item) => <Message key={item.id} data={item} />))}
+        {type === 'messageRoom' && (roomMsgs.map((item) => <Message key={item.id} data={item} />))}
       </div>
       <form className={styles.form} onSubmit={formik.handleSubmit}>
         <fieldset className={styles.fieldset} disabled={formik.isSubmitting}>
@@ -55,7 +70,7 @@ const ChatWindow = ({ toogleChat }) => {
               value={formik.values.message}
               data-testid="input-body"
               name="message"
-              rows="3"
+              rows="1"
               cols="33"
             />
             {error && (<div className={styles.invalidFeedback}>{t(`errors.${error}`)}</div>)}

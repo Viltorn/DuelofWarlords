@@ -368,6 +368,11 @@ export const FunctionProvider = ({ children }) => {
       dispatch(battleActions.setPlayerPoints({ points: newPoints, player }));
     }
     dispatch(battleActions.deleteActiveCard({ player }));
+    const cardsFeature = card.school ?? card.faction;
+    const newfieldCards = store.getState().battleReducer.fieldCards;
+    const warCard = newfieldCards.find((c) => (c.type === 'warrior' || c.type === 'hero') && c.cellId === cell.id);
+    const aimData = warCard ? { warCard: true, cardName: warCard.description, cardsFeature: warCard.faction } : { cell: true, type: cell.type };
+    dispatch(battleActions.addActionToLog({ playedCard: { warCard: true, cardName: card.description, cardsFeature }, aim: aimData, id: _.uniqueId() }));
 
     await applySpellCard({
       card, cell, player, player2Type, performAIAction,
@@ -392,11 +397,6 @@ export const FunctionProvider = ({ children }) => {
     }
     dispatch(battleActions.setLastPlayedCard(card));
     setActionPerforming(false);
-    const cardsFeature = card.school ?? card.faction;
-    const newfieldCards = store.getState().battleReducer.fieldCards;
-    const warCard = newfieldCards.find((c) => (c.type === 'warrior' || c.type === 'hero') && c.cellId === cell.id);
-    const aimData = warCard ? { warCard: true, cardName: warCard.description, cardsFeature: warCard.faction } : { cell: true, type: cell.type };
-    dispatch(battleActions.addActionToLog({ playedCard: { warCard: true, cardName: card.description, cardsFeature }, aim: aimData, id: _.uniqueId() }));
   };
 
   // RETURN CARD TO HAND

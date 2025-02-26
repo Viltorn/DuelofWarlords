@@ -21,6 +21,7 @@ const Cell = ({ props, id }) => {
     fieldCards,
     lastCellWithAction,
     gameTurn,
+    thisPlayer,
   } = useSelector((state) => state.battleReducer);
   const cardsInCell = fieldCards.filter((card) => card.cellId === id);
   const lastCardToShowIdx = cardsInCell.length + 1 - cardsToShow;
@@ -29,7 +30,7 @@ const Cell = ({ props, id }) => {
   const [contLength, setContLength] = useState(cellContent.length);
   const currentCell = fieldCells.find((cell) => cell.id === id);
   const warCard = cellContent.find((card) => (card.type === 'warrior' || card.type === 'hero'));
-  const readyWarrior = isWarriorReady(warCard, currentCell.player, gameTurn);
+  const readyWarrior = isWarriorReady(warCard, thisPlayer, gameTurn);
 
   const {
     handleCellClick,

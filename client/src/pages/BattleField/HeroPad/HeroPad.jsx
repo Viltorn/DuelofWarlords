@@ -1,5 +1,7 @@
 /* eslint-disable max-len */
-import React, { useRef, useMemo } from 'react';
+import React, {
+  useRef, useMemo, useState, useEffect,
+} from 'react';
 import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
 import cn from 'classnames';
@@ -20,11 +22,14 @@ const cardsToShowHeroSlot = 5;
 const HeroPad = ({ type, player }) => {
   const { t } = useTranslation();
   const deck = useRef();
+  const [msgToShow, setMsgToShow] = useState(null);
+  const [isShowAnimation, setShowAnimation] = useState(false);
+  const appear = { transform: 'translateY(0)' };
 
   const { handleDeckClick, handlePointsClick, handleGraveyardClick } = useClickActions();
 
   const {
-    fieldCells, fieldCards, playersHands, thisPlayer, playerPoints, gameTurn, playersDecks,
+    fieldCells, fieldCards, playersHands, thisPlayer, playerPoints, gameTurn, playersDecks, roomMsgs,
   } = useSelector((state) => state.battleReducer);
   const { gameMode } = useSelector((state) => state.gameReducer);
   const { timer } = useSelector((state) => state.uiReducer);
@@ -42,7 +47,7 @@ const HeroPad = ({ type, player }) => {
   const graveCellId = graveCell.id;
   const graveyardContent = useMemo(() => fieldCards.filter((card) => card.cellId === graveCellId).reverse(), [graveCellId, fieldCards]);
   const heroCard = heroData.find((card) => card.type === 'hero');
-  const readyWarrior = useMemo(() => isWarriorReady(heroCard, heroCard?.player, gameTurn) && heroCard.features.find((feat) => feat.cost <= curPoints), [gameTurn, heroCard, curPoints]);
+  const readyWarrior = useMemo(() => isWarriorReady(heroCard, thisPlayer, gameTurn) && heroCard.features.find((feat) => feat.cost <= curPoints), [gameTurn, thisPlayer, heroCard, curPoints]);
 
   const lastCardToShowIdx = heroData.length + 1 - cardsToShowHeroSlot;
   const heroCellContent = heroData
@@ -82,6 +87,21 @@ const HeroPad = ({ type, player }) => {
     [styles.animationRed]: graveCell.animation === 'red',
   });
 
+  useEffect(() => {
+    const message = roomMsgs[roomMsgs.length - 1];
+    if (message?.player === player && message.body.length > 24) {
+      setMsgToShow(`${message.body.substring(0, 24)}...`);
+    }
+    if (message?.player === player && message.body.length <= 24) {
+      setMsgToShow(message.body);
+    }
+    setTimeout(() => setMsgToShow(null), 3000);
+  }, [roomMsgs, player]);
+
+  useEffect(() => {
+    setTimeout(() => setShowAnimation(true), 0);
+  }, []);
+
   return (
     <div className={styles.padContainer}>
       {timer && type === 'first' && (<Timer gameTurn={gameTurn} thisPlayer={thisPlayer} />)}
@@ -112,6 +132,11 @@ const HeroPad = ({ type, player }) => {
         <div className={`${cellsClasses} ${heroAnima} ${styles.noBorder}`}>
           {heroCell.animation !== '' && icons[heroCell.animation] && (
           <AnimationIcon animation={heroCell.animation} icon={icons[heroCell.animation]} />
+          )}
+          {msgToShow && (
+          <div className={styles.message} style={isShowAnimation ? appear : {}}>
+            <p className={styles.msgBody}>{msgToShow}</p>
+          </div>
           )}
           {heroCellContent.length > 0 && (
             heroCellContent.map((item) => (

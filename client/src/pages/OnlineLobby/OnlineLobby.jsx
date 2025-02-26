@@ -9,7 +9,7 @@ import PrimaryButton from '@components/Buttons/PrimaryButton/PrimaryButton.jsx';
 import DiscordLogo from '@assets/mainPageIcons/discord.svg';
 import ChatLogo from '@assets/ChatRoom.png';
 import GameRoom from './GameRoom/GameRoom';
-import Chat from './LobbyChat/Chat.jsx';
+import Chat from '../../components/LobbyChat/Chat.jsx';
 import functionContext from '../../contexts/functionsContext.js';
 import getModal from '../../modals/index.js';
 import styles from './OnlineLobby.module.css';
@@ -145,7 +145,7 @@ const OnlineLobby = () => {
           )))}
       </div>
       {renderModal(isOpened, type)}
-      <Chat status={isOpenChat} toogleChat={setOpenChat} />
+      <Chat status={isOpenChat} toogleChat={setOpenChat} type="message" />
     </div>
   );
 };

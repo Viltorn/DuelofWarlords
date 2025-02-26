@@ -1,9 +1,11 @@
 .sender {
   font-size: 20px;
+  color: var(--light-gray);
 }
 
 .msg {
   font-size: 20px;
+  color: var(--light-gray);
 }
 
 

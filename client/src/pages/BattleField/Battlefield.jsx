@@ -1,6 +1,6 @@
 /* eslint-disable max-len */
 /* eslint-disable object-curly-newline */
-import React, { useEffect, useMemo, useRef, createRef } from 'react';
+import React, { useEffect, useMemo, useRef, createRef, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import { useOrientation } from '@uidotdev/usehooks';
@@ -8,6 +8,7 @@ import { useNavigate } from 'react-router-dom';
 import cn from 'classnames';
 import socket from '../../socket.js';
 import Cell from './Cell/Cell.jsx';
+import Chat from '../../components/LobbyChat/Chat.jsx';
 import HeroPad from './HeroPad/HeroPad.jsx';
 import Card from '../../components/CardComponents/Card/Card.jsx';
 import Header from './BattleHeader/BattleHeader.jsx';
@@ -51,6 +52,7 @@ const Battlefield = () => {
   const { gameMode, curRoom, socketId } = useSelector((state) => state.gameReducer);
   const thisPlayerName = useSelector((state) => state.gameReducer.name);
   const { isOpened, type } = useSelector((state) => state.modalsReducer);
+  const [isOpenedChat, toogleChat] = useState(false);
   const cellsPlayer1 = useMemo(() => fieldCells.filter((cell) => cell.player === 'player1' && cell.type === 'field'), [fieldCells]);
   const cellsPlayer2 = useMemo(() => fieldCells.filter((cell) => cell.player === 'player2' && cell.type === 'field'), [fieldCells]);
   const topSpellsPlayer1 = useMemo(() => fieldCells.filter((cell) => cell.player === 'player1' && cell.type === 'topSpell'), [fieldCells]);
@@ -140,12 +142,19 @@ const Battlefield = () => {
       }
     };
 
+    const addRoomMessage = (data) => {
+      console.log(data);
+      dispatch(battleActions.addMessage({ data }));
+    };
+
+    socket.on('messageRoom', addRoomMessage);
     socket.on('getSocketId', updateSocketIdBattle);
     socket.on('disconnect', handleThisPlayerDisc);
     socket.on('rooms', updateRoomsBattle);
     socket.on('clientsCount', updPlayersOnlieneBattle);
 
     return () => {
+      socket.off('messageRoom', addRoomMessage);
       socket.off('getSocketId', updateSocketIdBattle);
       socket.off('playerReconnected');
       socket.off('opponentJoined');
@@ -195,7 +204,7 @@ const Battlefield = () => {
         )}
         {thisPlayer === 'player1' ? (
           <div className={styles.handsContainer}>
-            <Header />
+            <Header toogleChat={toogleChat} />
             <InGameMenu />
             <div className={styles.heropad1}>
               {activeCardPlayer1 && (
@@ -315,7 +324,7 @@ const Battlefield = () => {
         </div>
         {thisPlayer === 'player2' ? (
           <div className={styles.handsContainer}>
-            <Header />
+            <Header toogleChat={toogleChat} />
             <InGameMenu />
             <div className={styles.heropad2}>
               <HeroPad type="first" player={thisPlayer} />
@@ -350,6 +359,7 @@ const Battlefield = () => {
         ) : (<HeroPad type="second" player="player2" />)}
       </div>
       {renderModal(isOpened, type)}
+      {gameMode === 'online' && (<Chat status={isOpenedChat} toogleChat={toogleChat} type="messageRoom" player={thisPlayer} />)}
     </div>
   );
 };

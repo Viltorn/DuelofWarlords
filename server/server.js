@@ -175,9 +175,12 @@ io.on('connection', async (socket) => {
 
 
   socket.on('messageRoom', (data, callback) => {
-    const { room } = data;
+    const { room, name, message, player } = data;
     if (isRoomFull(room, io)) {
-      socket.to(room).emit('messageRoom', data);
+      const id = uuidV4();
+      const newData = { senderName: name, body: message, id, player }
+      console.log(newData);
+      io.to(room).emit('messageRoom', newData);
       callback({ error: false });
     } else {
       callback({ error: true });
@@ -205,7 +208,7 @@ io.on('connection', async (socket) => {
     }
   });
 
-  socket.on('message', (data) => {
+  socket.on('message', (data, callback) => {
     const { name, message } = data;
     const id = uuidV4();
     const newData = { senderName: name, body: message, id }
@@ -214,6 +217,7 @@ io.on('connection', async (socket) => {
     }
     messages.push(newData);
     io.emit('message', newData);
+    callback();
   })
 
 });

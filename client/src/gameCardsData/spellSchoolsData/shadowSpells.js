@@ -7,7 +7,6 @@ import Teleport from '@assets/shadowSpells/Teleport.png';
 import TownPortal from '@assets/shadowSpells/TownPortal.png';
 import Transformation from '@assets/shadowSpells/Transformation.png';
 import MagicMist from '@assets/shadowSpells/MagicMist.png';
-import MassPowerDrain from '@assets/shadowSpells/MassPowerDrain.png';
 import SinisterFog from '@assets/shadowSpells/SinisterFog.png';
 
 export default {
@@ -75,26 +74,26 @@ export default {
     img: SoulDrain,
     status: 'hand',
   },
-  MassPowerDrain: {
-    name: 'Mass power drain',
-    id: _.uniqueId(),
-    type: 'spell',
-    subtype: 'instant',
-    cost: 6,
-    currentC: 6,
-    featInfo: [],
-    description: 'MassPowerDrain',
-    school: 'Shadow',
-    place: '',
-    features: [{
-      spell: true, attach: false, type: 'bad', name: 'attack', value: 2, aim: ['field', 'warrior', 'flyer', 'shooter', 'fighter'], aimStatus: 'field', school: 'arcane',
-    },
-    {
-      spell: true, attach: false, type: 'good', name: 'heal', value: 2, aim: ['field', 'warrior', 'flyer', 'shooter', 'fighter'], aimStatus: 'field', school: 'light',
-    }],
-    img: MassPowerDrain,
-    status: 'hand',
-  },
+  // MassPowerDrain: {
+  //   name: 'Mass power drain',
+  //   id: _.uniqueId(),
+  //   type: 'spell',
+  //   subtype: 'instant',
+  //   cost: 6,
+  //   currentC: 6,
+  //   featInfo: [],
+  //   description: 'MassPowerDrain',
+  //   school: 'Shadow',
+  //   place: '',
+  //   features: [{
+  //     spell: true, attach: false, type: 'bad', name: 'attack', value: 2, aim: ['field', 'warrior', 'flyer', 'shooter', 'fighter'], aimStatus: 'field', school: 'arcane',
+  //   },
+  //   {
+  //     spell: true, attach: false, type: 'good', name: 'heal', value: 2, aim: ['field', 'warrior', 'flyer', 'shooter', 'fighter'], aimStatus: 'field', school: 'light',
+  //   }],
+  //   img: MassPowerDrain,
+  //   status: 'hand',
+  // },
   Teleport: {
     name: 'Teleport',
     id: _.uniqueId(),

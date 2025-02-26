@@ -31,6 +31,7 @@ const initialState = {
     ...graveyard,
   ],
   combatLog: [],
+  roomMsgs: [],
   activeCells: { cellsForAttack: [], cellsForSpellCast: [], cellsForWarMove: [] },
   lastCellWithAction: {},
   lastPlayedCard: {},
@@ -341,6 +342,11 @@ const battleSlice = createSlice({
 
     addActionToLog(state, { payload }) {
       state.combatLog = [...state.combatLog, payload];
+    },
+
+    addMessage(state, { payload }) {
+      const { data } = payload;
+      state.roomMsgs = [...state.roomMsgs, data];
     },
   },
 });

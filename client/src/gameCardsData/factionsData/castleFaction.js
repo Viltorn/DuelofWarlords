@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 import _ from 'lodash';
 import BannerMan from '@assets/castleCards/Bannerman.png';
 import Defender from '@assets/castleCards/Defender.png';
@@ -351,9 +352,19 @@ const castleDeck = {
     description: 'KnightGuardian',
     faction: 'Castle',
     id: _.uniqueId(),
-    features: [{
-      attach: ['nextcells'], type: 'good', name: 'redirectWarAttack', aim: ['warrior', 'fighter', 'shooter', 'flyer'], status: 'field',
-    }],
+    features: [
+      {
+        attach: ['row'],
+        type: 'good',
+        name: 'redirectWarAttack',
+        aim: ['warrior', 'fighter', 'shooter', 'flyer'],
+        status: 'field',
+        attachCondition: 'cardInFrontLine',
+      },
+    //   {
+    //   attach: ['nextcells'], type: 'good', name: 'redirectWarAttack', aim: ['warrior', 'fighter', 'shooter', 'flyer'], status: 'field',
+    // }
+    ],
     attachments: [],
     img: KnightGuardian,
     status: 'hand',

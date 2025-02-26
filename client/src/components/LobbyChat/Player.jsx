@@ -3,10 +3,10 @@ import { useDispatch } from 'react-redux';
 // import { useTranslation } from 'react-i18next';
 import { useFormik } from 'formik';
 // import axios from 'axios';
-import { actions as modalActions } from '../../../slices/modalsSlice.js';
-import { actions as gameActions } from '../../../slices/gameSlice.js';
-import { userName } from '../../../utils/validation.js';
-import socket from '../../../socket.js';
+import { actions as modalActions } from '../../slices/modalsSlice.js';
+import { actions as gameActions } from '../../slices/gameSlice.js';
+import { userName } from '../../utils/validation.js';
+import socket from '../../socket.js';
 import styles from './enterUsername.module.css';
 
 const ChatWindow = () => {

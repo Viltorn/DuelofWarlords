@@ -91,6 +91,29 @@
   z-index: 10;
 }
 
+.message {
+  position: absolute;
+  bottom: 0;
+  width: calc(var(--cell-width) - 0.8rem);
+  height: 5rem;
+  background-color: var(--white-color);
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+  border: 0.1rem solid var(--dark-color);
+  z-index: 2;
+  transition: all 0.5s ease-in-out;
+  transform: translateY(100%);
+  overflow: hidden;
+}
+
+.msgBody {
+  text-align: start;
+  font-size: 1rem;
+  color: var(--dark-color);
+  line-height: 1.2rem;
+  position: relative;
+}
+
 @keyframes attacked {
   from {
     transform: rotate(-45deg);

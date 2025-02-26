@@ -5,12 +5,13 @@ import { useSelector } from 'react-redux';
 import cn from 'classnames';
 import Menu from '@assets/Menu.png';
 import CombatLogImg from '@assets/CombatLog.png';
+import ChatImg from '@assets/ChatGroup.png';
 import useClickActions from '../../../hooks/useClickActions.js';
 import tutorialStepsData from '../../../gameData/tutorialStepsData.js';
 import useFunctionsContext from '../../../hooks/useFunctionsContext.js';
 import styles from './BattleHeader.module.css';
 
-const BattleHeader = () => {
+const BattleHeader = ({ toogleChat }) => {
   const { t } = useTranslation();
 
   const {
@@ -54,6 +55,11 @@ const BattleHeader = () => {
               <img src={CombatLogImg} alt="combat log" />
             </button>
             )}
+            {gameMode === 'online' && (
+            <button type="button" onClick={() => toogleChat((prev) => !prev)} className={styles.menuBtn}>
+              <img src={ChatImg} alt="chat in game" />
+            </button>
+            )}
           </>
         )}
         <div className={styles.infoContainer}>
@@ -87,6 +93,11 @@ const BattleHeader = () => {
         </div>
         {thisPlayer === 'player2' && (
           <>
+            {gameMode === 'online' && (
+              <button type="button" onClick={() => toogleChat((prev) => !prev)} className={styles.menuBtn}>
+                <img src={ChatImg} alt="chat in game" />
+              </button>
+            )}
             {gameMode !== 'tutorial' && (
               <button style={{ transform: type === 'combatLog' ? 'rotate(90deg)' : 'rotate(0)' }} type="button" onClick={handleBattleLogClick} className={styles.menuBtn}>
                 <img src={CombatLogImg} alt="combat log" />

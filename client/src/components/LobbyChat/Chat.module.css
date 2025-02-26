@@ -17,11 +17,20 @@
   transition: all 0.3s linear;
 }
 
+.left {
+  left: 0;
+  right: auto;
+}
+
 .open {
   transform: translateX(0);
 }
 
 .closed {
   transform: translateX(100%);
+}
+
+.left.closed {
+  transform: translateX(-100%);
 }
 
