@@ -61,11 +61,11 @@ const MainPage = () => {
             <p className={styles.descriptionBig}>
               {t('mainPage.mainDescription')}
             </p>
-            <a href="https://ru.wikipedia.org/wiki/Might_%26_Magic:_Duel_of_Champions" target="_blank" className={styles.textMute} rel="noreferrer">
+            {/* <a href="https://ru.wikipedia.org/wiki/Might_%26_Magic:_Duel_of_Champions" target="_blank" className={styles.textMute} rel="noreferrer">
               &gt;&gt;
               {' '}
               {t('mainPage.moreAboutMMdoc')}
-            </a>
+            </a> */}
           </article>
           <article className={styles.gameDescription}>
             <h2 className={styles.h2Title}>

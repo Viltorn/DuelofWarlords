@@ -96,7 +96,7 @@
   bottom: 0;
   width: calc(var(--cell-width) - 0.8rem);
   height: 5rem;
-  background-color: var(--white-color);
+  background-color: var(--light-gray);
   padding: 0.5rem;
   border-radius: 0.5rem;
   border: 0.1rem solid var(--dark-color);

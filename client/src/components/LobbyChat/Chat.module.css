@@ -15,6 +15,7 @@
   padding: 1rem;
   border-radius: 10px;
   transition: all 0.3s linear;
+  z-index: 2;
 }
 
 .left {

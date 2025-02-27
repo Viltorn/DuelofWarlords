@@ -179,7 +179,6 @@ io.on('connection', async (socket) => {
     if (isRoomFull(room, io)) {
       const id = uuidV4();
       const newData = { senderName: name, body: message, id, player }
-      console.log(newData);
       io.to(room).emit('messageRoom', newData);
       callback({ error: false });
     } else {

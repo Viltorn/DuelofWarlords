@@ -12,7 +12,7 @@
   border: 1px solid #888;
   border-radius: 0.5rem;
   width: 27rem; /* Could be more or less, depending on screen size */
-  min-width: 300px;
+  min-width: 250px;
   height: 100vh;
   padding: 1rem 1rem;
   transition: all 0.3s ease-in-out;
