@@ -98,6 +98,7 @@ code {
   --light-gray: #ccc8c8;
   --dark-gray: #868686;
   --green: rgb(44, 138, 44);
+  --green-light: rgb(80, 194, 80);
   --red-light: rgb(228, 48, 48);
 
   /* dimensions */

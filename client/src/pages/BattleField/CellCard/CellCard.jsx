@@ -1,22 +1,36 @@
-import React, { useRef } from 'react';
+/* eslint-disable max-len */
+import React, { forwardRef } from 'react';
 import { useSelector } from 'react-redux';
 import cn from 'classnames';
 import styles from './CellCard.module.css';
 import CellCardImage from './CellCardImage.jsx';
-import CellCardCover from './CellCardCover.jsx';
+// import CellCardCover from './CellCardCover.jsx';
+import isWarriorReady from '../../../utils/supportFunc/isWarriorReady.js';
 import useClickActions from '../../../hooks/useClickActions.js';
 import useAnimaActions from '../../../hooks/useAnimaActions.js';
 import isInvisible from '../../../utils/supportFunc/isInvisible.js';
 
 const getTopMargin = (cellType, contentLength) => {
+  if (cellType === 'field' && contentLength === 6) {
+    return 6;
+  }
+  if (cellType === 'field' && contentLength === 5) {
+    return 5.8;
+  }
   if (cellType === 'field' && contentLength === 4) {
-    return 6.4;
+    return 5.6;
   }
   if (cellType === 'field') {
     return Math.min(2.3 * contentLength, 5.4);
   }
   if (cellType === 'hero') {
-    return Math.min(2.8 * contentLength, 6.9);
+    return Math.min(2.6 * contentLength, 6.8);
+  }
+  if (cellType === 'field') {
+    return 4.6;
+  }
+  if (cellType === 'hero') {
+    return 5.6;
   }
   return 0;
 };
@@ -26,10 +40,9 @@ const calcBigSpellMargin = (contentLength) => {
   return 5;
 };
 
-const CellCard = ({
-  item, cellType, content,
-}) => {
-  const cardElement = useRef();
+const CellCard = forwardRef(({
+  item, cellType, content, cardsShownNum,
+}, ref) => {
   const {
     turn,
     faction,
@@ -41,24 +54,41 @@ const CellCard = ({
     type,
     img,
     name,
+    showQty,
+    defPower,
+    power,
   } = item;
   const cardsFeature = faction ?? school;
 
-  const { fieldCells, fieldCards } = useSelector((state) => state.battleReducer);
+  const {
+    fieldCells, fieldCards, thisPlayer, gameTurn,
+  } = useSelector((state) => state.battleReducer);
   const { handleCellCardClick } = useClickActions();
-  const { getWarriorPower, warHasSpecialFeature } = useAnimaActions();
-  const protectionOfWar = type === 'warrior' || type === 'hero' ? warHasSpecialFeature({
-    warCard: item, fieldCells, fieldCards, featureName: 'protection',
-  }) : null;
-  const showProtectionIcon = protectionOfWar && protectionOfWar?.subtype !== 'reaction' && !protectionOfWar.hide;
+  const { getWarriorPower, warTokensData } = useAnimaActions();
+  const warTokens = type === 'warrior' || type === 'hero' ? warTokensData({ warCard: item, fieldCells, fieldCards }) : null;
+  // const tokensToShow  =  protectionOfWar && protectionOfWar?.subtype !== 'reaction' && !protectionOfWar.hide;
   const currentCell = fieldCells.find((cell) => cell.id === item.cellId);
-  const atkPower = item.type === 'warrior' ? getWarriorPower(item, 'atkPower') : null;
-  const defPower = item.type === 'warrior' ? getWarriorPower(item, 'defPower') : null;
+  const currentP = item.type === 'warrior' ? getWarriorPower(item, 'atkPower') : null;
+  const currentDP = item.type === 'warrior' ? getWarriorPower(item, 'defPower') : null;
   const invisible = item.type === 'warrior' && isInvisible(currentCell, fieldCards);
-  const marginTop = getTopMargin(cellType, content.length);
+  const marginTop = getTopMargin(cellType, cardsShownNum);
   const marginRight = cellType === 'bigSpell' ? calcBigSpellMargin(content.length) : 0;
+  const readyWarrior = type === 'warrior' ? isWarriorReady(item, thisPlayer, gameTurn) : false;
   const cardInfo = {
-    cardsFeature, atkPower, description, currentHP, currentC, cellType, type, img, name, defPower,
+    cardsFeature,
+    currentP,
+    description,
+    currentHP,
+    currentC,
+    cellType,
+    type,
+    img,
+    name,
+    currentDP,
+    subtype,
+    showQty,
+    defPower,
+    power,
   };
 
   const cardStyles = cn({
@@ -66,31 +96,31 @@ const CellCard = ({
     [styles.heroCellItem]: cellType === 'hero',
     [styles.selfJustifyCenter]: cellType === 'bigSpell' && content.length === 1,
     [styles.makeAttackAnima]: currentCell.animation === 'makeattack',
-    [styles.turn1]: turn === 1,
+    [styles.readyWarrior]: readyWarrior,
+    // [styles.turn1]: turn === 1,
     [styles.turn2]: turn === 2,
   });
 
   return (
     <button
-      ref={cardElement}
+      ref={ref}
       id={item.id}
-      onClick={() => handleCellCardClick({ item, cardElement })}
+      onClick={() => handleCellCardClick({ item, cardElement: ref })}
       key={item.id}
       type="button"
       data={item.player}
       className={cardStyles}
       style={{ marginTop: `-${marginTop}rem`, marginRight: `-${marginRight}rem` }}
     >
-      {subtype !== 'reaction' ? (
-        <CellCardImage
-          cardInfo={cardInfo}
-          currentCell={currentCell}
-          protection={showProtectionIcon}
-          isInvisible={invisible}
-        />
-      ) : (<CellCardCover />)}
+      <CellCardImage
+        cardInfo={cardInfo}
+        currentCell={currentCell}
+        warTokens={warTokens}
+        isInvisible={invisible}
+      />
     </button>
   );
-};
+});
 
+CellCard.displayName = 'CellCard';
 export default CellCard;

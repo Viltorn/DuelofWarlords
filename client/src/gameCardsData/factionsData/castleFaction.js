@@ -198,10 +198,10 @@ const castleDeck = {
     cost: 2,
     currentC: 2,
     justDeployed: true,
-    featInfo: ['FIGHTER', 'SWIFT'],
+    featInfo: ['FIGHTER'],
     description: 'WarriorOfLight',
     faction: 'Castle',
-    features: [{ name: 'swift' }],
+    features: [{ name: 'swift', token: 'swift' }],
     attachments: [],
     img: WarriorOfLight,
     status: 'hand',
@@ -267,7 +267,7 @@ const castleDeck = {
         faction: 'Castle',
         place: '',
         features: [{
-          attach: ['warrior'], aim: ['warrior', 'fighter', 'shooter', 'flyer'], type: 'good', name: 'power', value: 2, charges: 1, id: _.uniqueId(), aimStatus: 'field',
+          attach: ['warrior', 'fighter', 'shooter', 'flyer'], aim: ['warrior', 'fighter', 'shooter', 'flyer'], type: 'good', name: 'power', value: 2, charges: 1, id: _.uniqueId(), aimStatus: 'field',
         }],
         status: 'hand',
       },
@@ -298,7 +298,7 @@ const castleDeck = {
     id: _.uniqueId(),
     features: [
       {
-        attach: ['field', 'hero'], type: 'good', name: 'protection', value: { type: 'number', val: 1 }, aim: ['warrior', 'fighter', 'shooter', 'flyer', 'spells'], aimStatus: 'field',
+        attach: ['field', 'hero'], type: 'good', name: 'protection', token: 'protection', value: { type: 'number', val: 1 }, aim: ['warrior', 'fighter', 'shooter', 'flyer', 'spells'], aimStatus: 'field',
       },
       {
         attach: ['field', 'hero'], type: 'good', name: 'attack', value: 1, aim: ['warrior', 'fighter', 'shooter', 'flyer', 'spells', 'redirectToCaster'], aimStatus: 'field', condition: 'gotAttacked', apply: 'attacked',
@@ -556,7 +556,7 @@ const castleDeck = {
             type: 'good',
             name: 'atkPower',
             value: 1,
-            depend: 'goodAttachments',
+            depend: 'adjasentAlly',
             dependValue: 1,
             charges: 1,
             aimStatus: 'field',
@@ -647,3 +647,5 @@ const castleDeck = {
 };
 
 export default castleDeck;
+
+// depend: 'goodAttachments',

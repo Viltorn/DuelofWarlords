@@ -45,7 +45,7 @@ const findBestCellForSpellCast = ({
     const warWithMaxPower = warsInCells.find((war) => getWarriorPower(war) === maxPower);
     return warWithMaxPower.cellId;
   }
-  if (name === 'power') {
+  if (name === 'power' || name === 'atkPower') {
     const warsInCells = fieldCards.filter((c) => cellsForSpellCast.includes(c.cellId) && (c.type === 'warrior' || c.type === 'hero'));
     const cellIdsWithArmedWars = warsInCells
       .filter((c) => !warHasSpecialFeature({

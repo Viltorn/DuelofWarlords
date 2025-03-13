@@ -6,6 +6,7 @@
   height: 5rem;
   animation: 1.5s 0.5 normal warAttacked;
   opacity: 0;
+  transform: scale(0.1);
   z-index: 5;
 }
 
@@ -18,7 +19,7 @@
   width: 5rem;
   height: 5rem;
   animation: 1.5s 1 normal arcaneAttacked;
-  opacity: 0;
+  transform: scale(0.1);
   z-index: 5;
 }
 
@@ -32,6 +33,7 @@
   height: 5rem;
   animation: 1.5s 1 normal lightAttacked;
   opacity: 0;
+  transform: scale(0.1);
   z-index: 5;
 }
 
@@ -45,6 +47,7 @@
   height: 5rem;
   animation: 1.5s 1 ease-out airAttacked;
   opacity: 0;
+  transform: scale(0.1);
   z-index: 5;
 }
 
@@ -58,6 +61,7 @@
   height: 5rem;
   animation: 1.5s 1 ease-out fireAttacked;
   opacity: 0;
+  transform: scale(0.1);
   z-index: 5;
 }
 
@@ -71,6 +75,7 @@
   height: 5rem;
   animation: 1.5s 1 ease-out waterAttacked;
   opacity: 0;
+  transform: scale(0.1);
   z-index: 5;
 }
 
@@ -82,17 +87,56 @@
   height: 5rem;
   animation: 1.5s 1 normal healed;
   opacity: 0;
+  transform: scale(0.1);
   z-index: 5;
 }
 
+.buff {
+  position: absolute;
+  left: 1.5rem;
+  top: 1.5rem;
+  width: 5rem;
+  height: 5rem;
+  animation: 1.5s 1 normal buffed;
+  opacity: 0;
+  transform: scale(0.1);
+  z-index: 5;
+}
+
+.deBuff {
+  position: absolute;
+  left: 1.5rem;
+  top: 1.5rem;
+  width: 5rem;
+  height: 5rem;
+  animation: 1.5s 1 normal buffed;
+  opacity: 0;
+  transform: scale(0.1);
+  z-index: 5;
+}
+
+@keyframes buffed {
+  from {
+    transform: scale(0.5);
+    opacity: 0.5;
+  }
+
+
+  to {
+    transform:  scale(1.2);
+    opacity: 1;
+  }
+}
+
+
 @keyframes warAttacked {
   from {
-    transform: rotate(-45deg);
+    transform: rotate(-45deg) scale(1);
     opacity: 1;
   }
 
   to {
-    transform: rotate(60deg);
+    transform: rotate(60deg) scale(1);
     opacity: 1;
   }
 }
@@ -123,12 +167,12 @@
 
 @keyframes airAttacked {
   from {
-    transform: translateY(-1rem);
+    transform: translateY(-1rem) scale(1);
     opacity: 1;
   }
 
   to {
-    transform: translateY(0);
+    transform: translateY(0) scale(1);
     opacity: 1;
   }
 }

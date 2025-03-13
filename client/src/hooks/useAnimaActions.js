@@ -25,21 +25,24 @@ const useAnimaActions = () => {
 
     const { attachments } = card;
     const curPower = powType === 'defPower' ? card.currentDP : card.currentP;
-    if (!curPower) return 0;
+    // if (!curPower) return 0;
     const newFieldCells = store.getState().battleReducer.fieldCells;
     const newFieldCards = store.getState().battleReducer.fieldCards;
     const cardCell = newFieldCells.find((cell) => cell.id === card.cellId);
-    const powerCellAttach = cardCell.attachments.filter((spell) => (spell.name === 'power' || spell.name === powType)
-      && isSpellMeetCondition({
-        attackingCard: card, spell, type: 'warrior', allFieldCells: newFieldCells, allFieldCards: newFieldCards,
-      }));
-    const powerCellVal = getAddedWarPower(curPower, newFieldCards, powerCellAttach);
+    const powerCellAttach = cardCell ? cardCell.attachments.filter((spell) => (spell.name === 'power' || spell.name === powType) && isSpellMeetCondition({
+      attackingCard: card, spell, type: 'warrior', allFieldCells: newFieldCells, allFieldCards: newFieldCards,
+    })) : [];
+    const powerCellVal = getAddedWarPower({
+      aimCardPower: curPower, currentFieldCards: newFieldCards, attachedSpells: powerCellAttach, appliedCard: card, currentFieldCells: newFieldCells,
+    });
     const powerCardAttach = attachments.filter((spell) => (spell.name === 'power' || spell.name === powType)
        && isSpellMeetCondition({
          attackingCard: card, spell, type: 'warrior', allFieldCells: newFieldCells, allFieldCards: newFieldCards,
        }));
-    const attachPowerVal = getAddedWarPower(curPower, newFieldCards, powerCardAttach);
-    const totalPower = curPower + attachPowerVal + powerCellVal;
+    const attachPowerVal = getAddedWarPower({
+      aimCardPower: curPower, currentFieldCards: newFieldCards, attachedSpells: powerCardAttach, appliedCard: card, currentFieldCells: newFieldCells,
+    });
+    const totalPower = attachPowerVal + powerCellVal + curPower;
     return totalPower >= 0 ? totalPower : 0;
   };
 
@@ -62,6 +65,28 @@ const useAnimaActions = () => {
     const warCardFeatureAttachment = warCard.attachments.find((feature) => feature.name === featureName && checkMeetCondition({ ...defaultConditionData, spell: feature }));
     const warHasFeature = warCard.features.find((feature) => feature.name === featureName && !feature.attach);
     return warHasFeature || warCardFeatureAttachment || warCellFeatureAttachment;
+  };
+
+  const warTokensData = ({ warCard, fieldCards, fieldCells }) => {
+    const defaultConditionData = {
+      attackingCard: warCard, type: 'warrior', allFieldCells: fieldCells, allFieldCards: fieldCards,
+    };
+    const warCell = fieldCells.find((cell) => cell.id === warCard.cellId);
+    const warCellTokens = warCell ? warCell.attachments
+      .filter((feature) => feature.token && checkMeetCondition({ ...defaultConditionData, spell: feature }) && (feature.aim.includes(warCard.subtype) || warCell.type === 'hero'))
+      : [];
+    const warCardTokens = warCard.attachments.filter((feature) => feature.token && checkMeetCondition({ ...defaultConditionData, spell: feature }));
+    const warTokens = warCard.features.filter((feature) => feature.token && !feature.attach);
+    const tokensNames = [...warCellTokens, ...warCardTokens, ...warTokens].map((feat) => feat.token);
+    const tokensData = tokensNames.reduce((acc, token) => {
+      if (acc[token]) {
+        acc[token].qty += 1;
+      } else {
+        acc[token] = { qty: 1, name: token };
+      }
+      return acc;
+    }, {});
+    return Object.values(tokensData);
   };
 
   const addNextLinesCellsForMove = (data) => {
@@ -203,6 +228,7 @@ const useAnimaActions = () => {
     addAdjasentCellsForMove,
     addNextLinesCellsForMove,
     addAllCellsForWarMove,
+    warTokensData,
   };
 };
 

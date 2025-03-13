@@ -17,7 +17,7 @@ import AnimationIcon from '../../../components/AnimationIcons/AnimationIcon.jsx'
 import useClickActions from '../../../hooks/useClickActions.js';
 import icons from '../../../gameData/animationIcons.js';
 
-const cardsToShowHeroSlot = 5;
+// const cardsToShowHeroSlot = 5;
 
 const HeroPad = ({ type, player }) => {
   const { t } = useTranslation();
@@ -47,11 +47,11 @@ const HeroPad = ({ type, player }) => {
   const graveCellId = graveCell.id;
   const graveyardContent = useMemo(() => fieldCards.filter((card) => card.cellId === graveCellId).reverse(), [graveCellId, fieldCards]);
   const heroCard = heroData.find((card) => card.type === 'hero');
-  const readyWarrior = useMemo(() => isWarriorReady(heroCard, thisPlayer, gameTurn) && heroCard.features.find((feat) => feat.cost <= curPoints), [gameTurn, thisPlayer, heroCard, curPoints]);
+  const readyHero = useMemo(() => isWarriorReady(heroCard, thisPlayer, gameTurn) && heroCard.features.find((feat) => feat.cost <= curPoints), [gameTurn, thisPlayer, heroCard, curPoints]);
 
-  const lastCardToShowIdx = heroData.length + 1 - cardsToShowHeroSlot;
-  const heroCellContent = heroData
-    .slice(lastCardToShowIdx > 0 ? lastCardToShowIdx : 0);
+  // const lastCardToShowIdx = heroData.length + 1 - cardsToShowHeroSlot;
+  // const heroCellContent = heroData
+  //   .slice(lastCardToShowIdx > 0 ? lastCardToShowIdx : 0);
 
   const classesContainer = cn({
     [styles.heroPad1]: type === 'first',
@@ -76,7 +76,7 @@ const HeroPad = ({ type, player }) => {
   const heroAnima = cn({
     [styles.animationGreen]: heroCell.animation === 'green',
     [styles.animationRed]: heroCell.animation === 'red',
-    [styles.heroCanAct]: heroCell.animation === '' && readyWarrior && !heroCell.disabled,
+    [styles.heroCanAct]: heroCell.animation === '' && readyHero && !heroCell.disabled,
   });
 
   const graveCellClasses = cn({
@@ -138,36 +138,58 @@ const HeroPad = ({ type, player }) => {
             <p className={styles.msgBody}>{msgToShow}</p>
           </div>
           )}
-          {heroCellContent.length > 0 && (
-            heroCellContent.map((item) => (
-              <CellCard
-                key={item.id}
-                item={item}
-                cellType="hero"
-                content={heroCellContent}
-              />
-            ))
-          )}
+          <TransitionGroup component={null} exit>
+            {heroData.length > 0 && (
+              heroData.map((item) => {
+                const cardRef = React.createRef();
+                return (
+                  <CSSTransition
+                    key={item.id}
+                    timeout={500}
+                    classNames={{
+                      enter: styles.cardAnimationEnter,
+                      enterActive: styles.cardAnimationActive,
+                      exit: styles.cardAnimationExit,
+                      exitActive: styles.cardAnimationExitActive,
+                    }}
+                    nodeRef={cardRef}
+                  >
+                    <CellCard
+                      key={item.id}
+                      item={item}
+                      cellType="hero"
+                      content={heroData}
+                      cardsShownNum={heroData.length}
+                      ref={cardRef}
+                    />
+                  </CSSTransition>
+                );
+              }))}
+          </TransitionGroup>
         </div>
         <div className={graveCellClasses}>
           <TransitionGroup component={null} exit>
             {graveyardContent.length > 0 && (
-              graveyardContent.map((item) => (
-                <CSSTransition
-                  key={item.id}
-                  timeout={500}
-                  classNames={{
-                    enter: styles.cardAnimationEnter,
-                    enterActive: styles.cardAnimationActive,
-                    exit: styles.cardAnimationExit,
-                    exitActive: styles.cardAnimationExitActive,
-                  }}
-                >
-                  <button key={item.id} className={styles.defaultBtn} type="button" onClick={() => handleGraveyardClick(player, graveCell)}>
-                    <img className={styles.image} src={item.img} alt={item.name} />
-                  </button>
-                </CSSTransition>
-              )))}
+              graveyardContent.map((item) => {
+                const cardImgRef = React.createRef();
+                return (
+                  <CSSTransition
+                    key={item.id}
+                    timeout={500}
+                    classNames={{
+                      enter: styles.cardAnimationEnter,
+                      enterActive: styles.cardAnimationActive,
+                      exit: styles.cardAnimationExit,
+                      exitActive: styles.cardAnimationExitActive,
+                    }}
+                    nodeRef={cardImgRef}
+                  >
+                    <button key={item.id} ref={cardImgRef} className={styles.defaultBtn} type="button" onClick={() => handleGraveyardClick(player, graveCell)}>
+                      <img className={styles.image} src={item.img} alt={item.name} />
+                    </button>
+                  </CSSTransition>
+                );
+              }))}
           </TransitionGroup>
           {graveyardContent.length === 0 && (
             <button className={styles.defaultBtn} onClick={() => handleGraveyardClick(player, graveCell)} type="button">

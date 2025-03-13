@@ -112,10 +112,12 @@ const academiaDeck = {
     cost: 3,
     currentC: 3,
     justDeployed: true,
-    featInfo: ['SHOOTER', 'MAGICSHIELD'],
+    featInfo: ['SHOOTER'],
     description: 'MageApprentice',
     faction: 'Academia',
-    features: [{ name: 'protection', value: { type: 'percent', val: 0.5 }, aim: ['spell'] }],
+    features: [{
+      name: 'protection', token: 'resistance', value: { type: 'percent', val: 0.5 }, aim: ['spell'],
+    }],
     attachments: [],
     img: MageApprentice,
     status: 'deck',
@@ -218,6 +220,7 @@ const academiaDeck = {
       aim: ['shooter', 'warrior'],
       type: 'good',
       name: 'protection',
+      token: 'protection',
       value: { type: 'number', val: 1 },
       condition: 'minPower',
       conditionValue: 2,
@@ -311,7 +314,7 @@ const academiaDeck = {
         ownerId: '',
         place: '',
         features: [{
-          attach: ['warrior'], type: 'all', aim: ['warrior', 'flyer', 'shooter', 'fighter'], name: 'moveNextRow', charges: 1, immediate: true, aimStatus: 'field',
+          attach: ['warrior', 'flyer', 'shooter', 'fighter'], type: 'all', aim: ['warrior', 'flyer', 'shooter', 'fighter'], name: 'moveNextRow', charges: 1, immediate: true, aimStatus: 'field',
         }],
         status: 'hand',
       },
@@ -437,7 +440,7 @@ const academiaDeck = {
       spell: true,
       attach: ['grave'],
       type: 'good',
-      aim: ['spell', 'permanent', 'temporary'],
+      aim: ['spell', 'permanent', 'temporary', 'reaction'],
       name: 'ressurect',
       resCost: 0,
       aimStatus: 'graveyard',
@@ -558,7 +561,6 @@ const academiaDeck = {
     }],
     status: 'hand',
   },
-
 };
 
 export default academiaDeck;

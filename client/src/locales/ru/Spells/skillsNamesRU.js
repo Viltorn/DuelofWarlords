@@ -16,4 +16,5 @@ export default {
   WindStaff: 'Посох ветра',
   GoldenBow: 'Золотой лук',
   MovingCast: 'Заклинание',
+  AttachedSpells: 'Наложенные заклинания',
 };

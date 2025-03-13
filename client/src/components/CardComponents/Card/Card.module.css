@@ -241,6 +241,42 @@
   box-shadow: 0rem  0rem  0.3rem  0.3rem var(--golden-bright);
 }
 
+.tokensBlock {
+  position: absolute;
+  top: 2.2rem;
+  right: -0.5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 0.2rem;
+}
+
+.tokenInfo {
+  position: relative;
+  display: flex;
+  width: fit-content;
+  flex-direction: row;
+  gap: 0.2rem
+}
+
+.tokenIcon {
+  height: 2.5rem;
+  width: 2.5rem;
+}
+
+.showQty {
+  position: absolute;
+  font-family: "Roboto-Bold", Helvetica;
+  bottom: 50%;
+  top: 50%;
+  right: 0;
+  left: 0;
+  line-height: 1rem;
+  font-size: 1rem;
+  color: var(--white-color);
+  text-shadow: 1px 0 0 var(--dark-color),0 1px 0 var(--dark-color), -1px 0 0 var(--dark-color),0 -1px 0 var(--dark-color);
+}
+
 .bigCard {
   z-index: 5;
 }

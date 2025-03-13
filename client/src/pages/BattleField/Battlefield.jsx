@@ -200,7 +200,7 @@ const Battlefield = () => {
           <TutorialStepsWindow />
         )}
         {isOpenInfo && activeCard && (
-        <ActiveCardInfo info={activeCard.featInfo} type={thisPlayer} />
+        <ActiveCardInfo card={activeCard} type={thisPlayer} />
         )}
         {thisPlayer === 'player1' ? (
           <div className={styles.handsContainer}>
@@ -214,24 +214,29 @@ const Battlefield = () => {
             </div>
             <div className={handClasses}>
               <TransitionGroup component={null} exit>
-                {playerHandCards.map((card) => (
-                  <CSSTransition
-                    key={card.id}
-                    timeout={500}
-                    classNames={{
-                      enter: styles.cardAnimationEnter,
-                      enterActive: styles.cardAnimationActive,
-                      exit: styles.cardAnimationExit,
-                      exitActive: styles.cardAnimationExitActive,
-                    }}
-                  >
-                    <Card
+                {playerHandCards.map((card) => {
+                  const cardRef = React.createRef();
+                  return (
+                    <CSSTransition
                       key={card.id}
-                      contentLength={contentLength}
-                      card={card}
-                    />
-                  </CSSTransition>
-                ))}
+                      timeout={500}
+                      classNames={{
+                        enter: styles.cardAnimationEnter,
+                        enterActive: styles.cardAnimationActive,
+                        exit: styles.cardAnimationExit,
+                        exitActive: styles.cardAnimationExitActive,
+                      }}
+                      nodeRef={cardRef}
+                    >
+                      <Card
+                        key={card.id}
+                        contentLength={contentLength}
+                        card={card}
+                        ref={cardRef}
+                      />
+                    </CSSTransition>
+                  );
+                })}
               </TransitionGroup>
             </div>
           </div>
@@ -286,6 +291,7 @@ const Battlefield = () => {
                     status: 'active',
                     row: cell.row,
                     line: cell.line,
+                    cellOwner: 'player1',
                   }}
                 />
               ))}
@@ -316,6 +322,7 @@ const Battlefield = () => {
                     status: 'active',
                     row: cell.row,
                     line: cell.line,
+                    cellOwner: 'player2',
                   }}
                 />
               ))}
@@ -334,25 +341,30 @@ const Battlefield = () => {
             </div>
             <div className={handClasses}>
               <TransitionGroup component={null} exit>
-                {playersHands[thisPlayer].map((card) => (
-                  <CSSTransition
-                    key={card.id}
-                    timeout={500}
-                    classNames={{
-                      enter: styles.cardAnimationEnter,
-                      enterActive: styles.cardAnimationActive,
-                      exit: styles.cardAnimationExit,
-                      exitActive: styles.cardAnimationExitActive,
-                    }}
-                  >
-                    <Card
+                {playersHands[thisPlayer].map((card) => {
+                  const cardRef = React.createRef();
+                  return (
+                    <CSSTransition
                       key={card.id}
-                      contentLength={contentLength}
-                      card={card}
-                      isOpenInfo={isOpenInfo}
-                    />
-                  </CSSTransition>
-                ))}
+                      timeout={500}
+                      classNames={{
+                        enter: styles.cardAnimationEnter,
+                        enterActive: styles.cardAnimationActive,
+                        exit: styles.cardAnimationExit,
+                        exitActive: styles.cardAnimationExitActive,
+                      }}
+                      nodeRef={cardRef}
+                    >
+                      <Card
+                        key={card.id}
+                        contentLength={contentLength}
+                        card={card}
+                        isOpenInfo={isOpenInfo}
+                        ref={cardRef}
+                      />
+                    </CSSTransition>
+                  );
+                })}
               </TransitionGroup>
             </div>
           </div>

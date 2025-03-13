@@ -19,18 +19,19 @@ const findCellsForSpellCast = (data) => {
   }
 
   if (type !== 'all' && place === '') {
+    const aimMethod = attach || aim;
     const cellsToapply = fieldCells.filter((cell) => {
       const rightSubtype = fieldCards
-        .find((card) => aim.includes(card.subtype) && card.cellId === cell.id && ownerId !== card.id);
+        .find((card) => aimMethod.includes(card.subtype) && card.cellId === cell.id && ownerId !== card.id);
       return rightSubtype && !isCellEmpty(fieldCards, cell.id) && cell.player === aimPlayer && !cell.disabled && (cell.type === 'field' || cell.type === 'hero');
     });
-    console.log(cellsToapply);
     return cellsToapply;
   }
   if (type === 'all' && place === '') {
+    const aimMethod = attach || aim;
     return fieldCells.filter((cell) => {
       const rightSubtype = fieldCards
-        .find((card) => aim.includes(card.subtype) && card.cellId === cell.id && ownerId !== card.id);
+        .find((card) => aimMethod.includes(card.subtype) && card.cellId === cell.id && ownerId !== card.id);
       return !isCellEmpty(fieldCards, cell.id) && !cell.disabled && rightSubtype && (cell.type === 'field' || cell.type === 'hero');
     });
   }
@@ -44,7 +45,6 @@ const findCellsForSpellCast = (data) => {
     }) : [];
     const heroCells = attach.includes('hero') ? fieldCells.filter((cell) => !cell.disabled && cell.player === aimPlayer && cell.type === 'hero')
       : [];
-    console.log([...warriorCells, ...heroCells]);
     return [...warriorCells, ...heroCells];
   }
   if (place === 'warrior' && type === 'all') {
@@ -64,7 +64,6 @@ const findCellsForSpellCast = (data) => {
       return spellsCells.includes(cell.type) && spellInCell
         && (cell.player === aimPlayer || !cell.player) && !cell.disabled;
     });
-    console.log(cells);
     return cells;
   }
 

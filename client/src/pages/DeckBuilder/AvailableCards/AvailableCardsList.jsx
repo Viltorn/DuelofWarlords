@@ -21,34 +21,34 @@ const AvailableCardsList = ({ hero, cards, activeCard }) => {
           heroesList.map((el) => {
             const data = { ...gameCardsData[el.faction][el.name], player: 'player1', qty: 0 };
             return (
-              <button className={styles.cardContainer} key={el.name} type="button" onClickCapture={(e) => handleBuilderCardClick(e, data)}>
+              <div className={styles.cardContainer} key={el.name} type="button" onClickCapture={(e) => handleBuilderCardClick(e, data)}>
                 <Card
                   builder
                   card={data}
                   activeCard={activeCard}
                 />
-              </button>
+              </div>
             );
           }))}
         {hero && (
           Object.values(gameCardsData[faction])
-            .filter((el) => el.type !== 'hero' && !cards.some((card) => card.description === el.description))
+            .filter((el) => el.type !== 'hero' && !cards.some((card) => card.description === el.description) && el.name !== 'fake')
             .map((el) => {
               const card = { ...el, player: 'player1', qty: 0 };
               return (
-                <button key={el.name} className={styles.cardContainer} type="button" onClickCapture={(e) => handleBuilderCardClick(e, card)}>
+                <div key={el.name} className={styles.cardContainer} type="button" onClickCapture={(e) => handleBuilderCardClick(e, card)}>
                   <Card
                     builder
                     card={card}
                     activeCard={activeCard}
                   />
-                </button>
+                </div>
               );
             }))}
         {hero && (
           spellSchools.map((school) => (
             Object.values(gameCardsData[school])
-              .filter((el) => !cards.some((card) => card.description === el.description))
+              .filter((el) => !cards.some((card) => card.description === el.description) && el.name !== 'fake')
               .map((el) => {
                 const card = { ...el, player: 'player1', qty: 0 };
                 return (

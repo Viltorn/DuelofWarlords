@@ -231,7 +231,7 @@ const useBattleActions = () => {
     const aimCardOwnerPoints = playerPoints.find((item) => item.player === aimCard?.player)?.points ?? 0;
     const receivedHealth = aimCard.currentHP;
     const spellPower = countSpellDependVal({
-      spell: feature, aimCardPower: getWarriorPower(aimCard), currentFieldCards, lastPlayedCard,
+      spell: feature, aimCardPower: getWarriorPower(aimCard), currentFieldCards, lastPlayedCard, appliedCard: aimCard,
     });
     const protectSpells = findSpells({
       attackingCard: null,
@@ -311,6 +311,22 @@ const useBattleActions = () => {
   const performSpellEffect = {
     attack: (data) => {
       makeSpellCardAttack(data);
+    },
+    power: (data) => {
+      const { currentFieldCards, feature, aimCard } = data;
+      const newAtkPower = aimCard
+        .currentP + countSpellDependVal({
+        spell: feature, aimCardPower: getWarriorPower(aimCard, 'atkPower'), currentFieldCards,
+      });
+      const newDefPower = aimCard
+        .currentDP + countSpellDependVal({
+        spell: feature, aimCardPower: getWarriorPower(aimCard, 'defPower'), currentFieldCards,
+      });
+      dispatch(battleActions.changePower({ power: newAtkPower >= 0 ? newAtkPower : 0, cardId: aimCard.id, type: 'currentP' }));
+      dispatch(battleActions.changePower({ power: newDefPower >= 0 ? newDefPower : 0, cardId: aimCard.id, type: 'currentDP' }));
+      dispatch(battleActions.addAnimation({ cellId: aimCard.cellId, type: feature.school }));
+      const attachType = feature.type === 'good' ? 'buff' : 'deBuff';
+      dispatch(battleActions.addAnimation({ cellId: aimCard.cellId, type: attachType }));
     },
     selfHeroAttack: (data) => {
       const {

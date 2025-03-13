@@ -1,6 +1,6 @@
 import { useTranslation } from 'react-i18next';
 import ArrowRight from '@assets/ArrowRight.png';
-import Cover from '@assets/battlefield/CoverForLog.png';
+// import Cover from '@assets/battlefield/CoverForLog.png';
 import gameCardsData from '../../gameCardsData/index';
 import Card from '../../components/CardComponents/Card/Card.jsx';
 import styles from './LogItem.module.css';
@@ -37,15 +37,13 @@ const LogItem = ({ item }) => {
       )}
       {!round && (
         <div className={styles.cardsItem}>
-          {card.subtype !== 'reaction' && (
           <Card
             log
             card={card}
           />
-          )}
-          {card.subtype === 'reaction' && (
+          {/* {card.subtype === 'reaction' && (
             <img className={styles.coverImage} src={Cover} alt="card cover" />
-          )}
+          )} */}
           <img src={ArrowRight} className={styles.arrowImage} alt="arrow right" />
           {aim && warCard && (
             <Card

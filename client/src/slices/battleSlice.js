@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 /* eslint-disable no-param-reassign */
 import { createSlice } from '@reduxjs/toolkit';
 import createFieldCells from '../utils/makeFieldCells.js';
@@ -278,14 +279,14 @@ const battleSlice = createSlice({
     returnCard(state, { payload }) {
       const { card, cost, playerHand } = payload;
       const {
-        health, type, curCharges, charges,
+        health, type, curCharges, charges, power, defPower,
       } = card;
       const changedBasic = {
         ...card, status: 'hand', cellId: '', currentC: cost, player: playerHand,
       };
       const chargedCard = curCharges ? { ...changedBasic, curCharges: charges } : changedBasic;
       const changedCard = type === 'warrior' ? {
-        ...chargedCard, currentHP: health, turn: 1, attachments: [],
+        ...chargedCard, currentHP: health, turn: 1, attachments: [], currentP: power, currentDP: defPower,
       } : { ...chargedCard };
       state.playersHands[playerHand].push(changedCard);
     },
@@ -293,12 +294,12 @@ const battleSlice = createSlice({
     addToGraveyard(state, { payload }) {
       const { card } = payload;
       const {
-        player, type, health, cost,
+        player, type, health, cost, power, defPower,
       } = card;
       const cellId = player === 'player1' ? 'graveyard1' : 'graveyard2';
       const changedBasic = { ...card, status: 'graveyard', cellId };
       const newCard = type === 'warrior' ? {
-        ...changedBasic, turn: 1, currentHP: health, attachments: [], currentC: cost,
+        ...changedBasic, turn: 1, currentHP: health, attachments: [], currentC: cost, currentP: power, currentDP: defPower,
       }
         : changedBasic;
       state.fieldCards.unshift(newCard);
@@ -327,6 +328,12 @@ const battleSlice = createSlice({
       const { health, cardId } = payload;
       const index = state.fieldCards.findIndex((card) => card.id === cardId);
       state.fieldCards[index].currentHP = health;
+    },
+
+    changePower(state, { payload }) {
+      const { power, cardId, type } = payload;
+      const index = state.fieldCards.findIndex((card) => card.id === cardId);
+      state.fieldCards[index][type] = power;
     },
 
     changeSpellCharges(state, { payload }) {

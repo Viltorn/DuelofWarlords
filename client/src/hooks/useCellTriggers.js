@@ -1,11 +1,14 @@
-import { useSelector } from 'react-redux';
+/* eslint-disable max-len */
+import { useDispatch, useSelector } from 'react-redux';
+import _ from 'lodash';
+import { actions as battleActions } from '../slices/battleSlice.js';
 import findTriggerSpells from '../utils/supportFunc/findTriggerSpells.js';
 import useBattleActions from './useBattleActions.js';
 import useAITurn from './useAITurn.js';
 
 const useCellTriggers = () => {
-  const { players, gameTurn } = useSelector((state) => state.battleReducer);
-  // const store = useStore();
+  const { players, gameTurn, fieldCards } = useSelector((state) => state.battleReducer);
+  const dispatch = useDispatch();
   const player2Type = players.player2.type;
 
   const {
@@ -28,12 +31,17 @@ const useCellTriggers = () => {
         player2Type,
         performAIAction,
       });
+      const returnSpellCard = fieldCards.find((c) => c.id === returnSpell.id);
+      const returnCardFeature = returnSpellCard.school ?? returnSpellCard.faction;
+      const aimData = { warCard: true, cardName: card.description, cardsFeature: card.faction };
+      dispatch(battleActions.addActionToLog({
+        playedCard: { warCard: true, cardName: returnSpellCard.description, cardsFeature: returnCardFeature },
+        aim: aimData,
+        id: _.uniqueId(),
+      }));
     } else {
       onTriggerSpells
-        .forEach((spell) => {
-          // const currentFieldCards = store.getState().battleReducer.fieldCards;
-          // const currentCard = currentFieldCards.find((c) => c.cellId === thisCell.id);
-          // if (!currentCard) return;
+        .forEach((spell, i) => {
           makeFeatureCast({
             feature: spell,
             aimCell: thisCell,
@@ -42,6 +50,16 @@ const useCellTriggers = () => {
             player2Type,
             performAIAction,
           });
+          const spellCard = fieldCards.find((c) => c.id === spell.id);
+          const spellCardFeature = spellCard.school ?? spellCard.faction;
+          const aimData = { warCard: true, cardName: card.description, cardsFeature: card.faction };
+          if (onTriggerSpells[i - 1]?.id !== spell.id) {
+            dispatch(battleActions.addActionToLog({
+              playedCard: { warCard: true, cardName: spellCard.description, cardsFeature: spellCardFeature },
+              aim: aimData,
+              id: _.uniqueId(),
+            }));
+          }
         });
     }
   };

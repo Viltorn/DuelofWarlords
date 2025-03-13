@@ -1,10 +1,13 @@
+/* eslint-disable max-len */
+import findAdjasentCells from './findAdjasentCells';
+import isCellEmpty from './isCellEmpty';
+
 const countSpellDependVal = ({
-  spell, aimCardPower, currentFieldCards, lastPlayedCard, playerPoints,
+  spell, aimCardPower, currentFieldCards, currentFieldCells, lastPlayedCard, playerPoints, appliedCard,
 }) => {
   const {
     depend, dependValue, value, id, player, school,
   } = spell;
-  console.log(player);
   if (!depend) {
     return value;
   }
@@ -13,16 +16,19 @@ const countSpellDependVal = ({
       && card.player === player && card.status === 'field');
     return dependValue * goodAttach.length;
   }
+  if (depend === 'adjasentAlly' && appliedCard) {
+    const appliedCell = currentFieldCells.find((cell) => cell.id === appliedCard.cellId);
+    const adjasentCells = findAdjasentCells(currentFieldCells, appliedCell);
+    const adjasentCellWithWars = adjasentCells.filter((cell) => !isCellEmpty(currentFieldCards, cell.id) && cell.player === appliedCard.player);
+    return value + dependValue * adjasentCellWithWars.length;
+  }
   if (depend === 'warriorsDiff') {
     const goodWarriorsQty = currentFieldCards.filter((card) => card.type === 'warrior'
       && card.player === player && card.status === 'field').length;
     const enemyPlayer = player === 'player1' ? 'player2' : 'player1';
     const badWarriorsQty = currentFieldCards.filter((card) => card.type === 'warrior'
       && card.player === enemyPlayer && card.status === 'field').length;
-    console.log(badWarriorsQty);
-    console.log(badWarriorsQty - goodWarriorsQty);
     const diff = (badWarriorsQty - goodWarriorsQty) > 0 ? badWarriorsQty - goodWarriorsQty : 0;
-    console.log(diff);
     return value + (dependValue * diff);
   }
   if (depend === 'enemiPoinstAndWarriorsDiff') {

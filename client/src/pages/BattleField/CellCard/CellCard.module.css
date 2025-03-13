@@ -10,6 +10,10 @@
   background-color: var(--dark-color);
 }
 
+.readyWarrior {
+  box-shadow: 0  0  0.35rem  0.35rem var(--golden-bright);
+}
+
 .heroCellItem {
   position: relative;
   width: calc(var(--cell-width) - 0.8rem);
@@ -19,7 +23,6 @@
   cursor: pointer;
   transition: transform 0.3s linear;
 }
-
 
 .contentItem:first-child {
   margin-top: 0;
@@ -109,14 +112,6 @@
   z-index: 1;
 }
 
-.protectIcon {
-  height: 2rem;
-  width: 2rem;
-  position: absolute;
-  top: 2rem;
-  right: -0.5rem;
-}
-
 .cost {
   color: var(--white-color);
   font-family: "Roboto-Bold", Helvetica;
@@ -175,6 +170,51 @@
   color: var(--white-color);
   left: 0.4rem;
   margin-top: 0.2rem;
+}
+
+.tokensBlock {
+  position: absolute;
+  top: 0;
+  height: var(--cell-content-width);
+  right: -0.5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 0.2rem;
+}
+
+.tokenInfo {
+  position: relative;
+  display: flex;
+  width: fit-content;
+  flex-direction: row;
+  gap: 0.2rem
+}
+
+.tokenIcon {
+  height: 1.8rem;
+  width: 1.8rem;
+}
+
+.showQty {
+  position: absolute;
+  font-family: "Roboto-Bold", Helvetica;
+  bottom: 50%;
+  top: 50%;
+  right: 0;
+  left: 0;
+  line-height: 1rem;
+  font-size: 1rem;
+  color: var(--white-color);
+  text-shadow: 1px 0 0 var(--dark-color),0 1px 0 var(--dark-color), -1px 0 0 var(--dark-color),0 -1px 0 var(--dark-color);
+}
+
+.redColor {
+  color: var(--red-light);
+}
+
+.greenColor {
+  color: var(--green-light);
 }
 
 @keyframes makeAttack {

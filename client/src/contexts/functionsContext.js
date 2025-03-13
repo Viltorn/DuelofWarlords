@@ -1,6 +1,6 @@
 /* eslint-disable max-len */
 import {
-  createContext, useEffect, useState,
+  createContext, useState,
 } from 'react';
 import _ from 'lodash';
 import { useDispatch, useStore, useSelector } from 'react-redux';
@@ -66,16 +66,16 @@ export const FunctionProvider = ({ children }) => {
   const [actionPerforming, setActionPerforming] = useState(false);
   // const [socket, setSocket] = useState(null);
 
-  useEffect(() => {
-    window.addEventListener('beforeinstallprompt', (event) => {
-      // Prevent the mini-infobar from appearing on mobile.
-      event.preventDefault();
-      // console.log('👍', 'beforeinstallprompt', event);
-      // Stash the event so it can be triggered later.
-      window.deferredPrompt = event;
-      // Remove the 'hidden' class from the install button container.
-    });
-  });
+  // useEffect(() => {
+  //   window.addEventListener('beforeinstallprompt', (event) => {
+  //     // Prevent the mini-infobar from appearing on mobile.
+  //     event.preventDefault();
+  //     // console.log('👍', 'beforeinstallprompt', event);
+  //     // Stash the event so it can be triggered later.
+  //     window.deferredPrompt = event;
+  //     // Remove the 'hidden' class from the install button container.
+  //   });
+  // }, []);
 
   // MAKE FIGHT
 
@@ -281,7 +281,7 @@ export const FunctionProvider = ({ children }) => {
     const cardsFeature = card.school ?? card.faction;
     const warCard = fieldCards.find((c) => (c.type === 'warrior' || c.type === 'hero') && c.cellId === curCell.id);
     const aimData = warCard ? { warCard: true, cardName: warCard.description, cardsFeature: warCard.faction } : { cell: true, type: curCell.type };
-    dispatch(battleActions.addActionToLog({ playedCard: { warCard: true, cardName: card.description, cardsFeature }, aim: aimData, id: _.uniqueId() }));
+    if (card.subtype !== 'reaction') dispatch(battleActions.addActionToLog({ playedCard: { warCard: true, cardName: card.description, cardsFeature }, aim: aimData, id: _.uniqueId() }));
     setActionPerforming(false);
   };
 
@@ -385,6 +385,11 @@ export const FunctionProvider = ({ children }) => {
       } else {
         dispatch(battleActions.addFieldContent({ card, id: cell.id }));
       }
+    }
+    if (cell.type === 'field' || cell.type === 'hero') {
+      const attachFeat = card.features.find((f) => f.attach);
+      const attachType = attachFeat && attachFeat?.type === 'good' ? 'buff' : 'deBuff';
+      if (attachFeat) dispatch(battleActions.addAnimation({ cellId: cell.id, type: attachType }));
     }
     if (card.type === 'hero') {
       dispatch(battleActions.turnCardLeft({

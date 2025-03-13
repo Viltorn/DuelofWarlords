@@ -264,18 +264,18 @@ const useClickActions = () => {
     handleAnimation(appliedCard, 'add');
   };
 
-  const handleCellCardClick = ({ item, cardElement }) => {
+  const handleCellCardClick = ({ item }) => {
     if (actionPerforming || (gameMode === 'online' && isPlayerDisconnected(players))) return;
     if (invoking) return;
     if (item.disabled) return;
     const activeCard = getActiveCard();
-    const cardId = cardElement?.current.id;
-    if (activeCard?.ownerId === cardId) return;
+    // const cardId = cardElement?.current.id;
+    if (activeCard?.ownerId === item.id) return;
     const currentCell = fieldCells.find((cell) => cell.id === item.cellId);
     const spellsInCell = fieldCards.filter((card) => card.cellId === item.cellId && card.type === 'spell');
     const activeId = activeCard?.id ?? null;
 
-    if (activeId === cardId) {
+    if (activeId === item.id) {
       dispatch(battleActions.deleteActiveCard({ player: thisPlayer }));
       handleAnimation(activeCard, 'delete');
       toogleInfoWindow(false);

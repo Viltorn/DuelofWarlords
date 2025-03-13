@@ -1,14 +1,25 @@
 import cn from 'classnames';
 import { useTranslation } from 'react-i18next';
-import Shield from '@assets/battlefield/ShieldIcon.png';
+// import Shield from '@assets/battlefield/ShieldToken.png';
 import WarShield from '@assets/WarShieldIcon.png';
+import icons from '../../../gameData/animationIcons';
 import styles from './CellCard.module.css';
 
 const CellCardImage = ({
-  cardInfo, protection, isInvisible,
+  cardInfo, warTokens, isInvisible,
 }) => {
   const {
-    cardsFeature, atkPower, description, currentHP, currentC, type, img, name, defPower,
+    cardsFeature,
+    description,
+    currentHP,
+    currentC,
+    currentP,
+    currentDP,
+    type,
+    img,
+    name,
+    subtype,
+    showQty,
   } = cardInfo;
 
   const { t } = useTranslation();
@@ -18,14 +29,26 @@ const CellCardImage = ({
     [styles.heroName]: type === 'hero',
   });
 
+  const atkClasses = cn({
+    [styles.warriorPower]: true,
+    // [styles.greenColor]: currentP > power,
+    // [styles.redColor]: currentP < power,
+  });
+
+  const atkDefClasses = cn({
+    [styles.warriorDefPower]: true,
+    // [styles.greenColor]: currentDP > defPower,
+    // [styles.redColor]: currentDP < defPower,
+  });
+
   return (
     <>
       <h2 className={titleClasses}>{t(`titles.${cardsFeature}.${description}`)}</h2>
       {type === 'warrior' && (
       <>
-        <img src={WarShield} className={styles.shieldIcon} alt="shield icon fow health" />
-        <h3 className={styles.warriorPower}>{atkPower}</h3>
-        <h3 className={styles.warriorDefPower}>{defPower || 0}</h3>
+        <img src={WarShield} className={styles.shieldIcon} alt="shield icon for health" />
+        <h3 className={atkClasses}>{currentP}</h3>
+        <h3 className={atkDefClasses}>{currentDP}</h3>
         <h3 className={styles.warriorHealth}>{currentHP}</h3>
       </>
       )}
@@ -40,13 +63,26 @@ const CellCardImage = ({
         src={img}
         alt={name}
       />
-      {protection && (
-      <img
-        className={styles.protectIcon}
-        src={Shield}
-        alt="shield icon"
-      />
+      {subtype === 'attachedSpells' && (
+        <h3 className={styles.showQty}>{showQty}</h3>
       )}
+      <ul className={styles.tokensBlock}>
+        {warTokens && (
+          warTokens.map((token) => (
+            <div key={token.name} className={styles.tokenInfo}>
+              {token.qty > 1 && (
+                <p className={styles.showQty}>{token.qty }</p>
+              )}
+              <img
+                className={styles.tokenIcon}
+                src={icons[token.name]}
+                alt="shield icon"
+              />
+            </div>
+          ))
+
+        )}
+      </ul>
     </>
   );
 };

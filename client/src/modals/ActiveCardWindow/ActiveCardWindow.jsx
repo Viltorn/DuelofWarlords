@@ -49,7 +49,7 @@ const ActiveCardWindow = () => {
               active
               isOpenInfo
             />
-            <ActiveCardInfo info={data.featInfo} type="window" />
+            <ActiveCardInfo card={data} type="window" />
           </button>
         </div>
       </div>
