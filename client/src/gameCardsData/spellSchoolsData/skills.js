@@ -140,7 +140,7 @@ export default {
   Resistance: {
     name: 'Resistance',
     type: 'spell',
-    subtype: 'permanent',
+    subtype: 'instant',
     returnable: false,
     cost: 1,
     currentC: 1,
@@ -148,7 +148,7 @@ export default {
     description: 'Resistance',
     school: 'Skills',
     id: _.uniqueId(),
-    place: 'warrior',
+    place: '',
     token: true,
     heroSpell: false,
     features: [{

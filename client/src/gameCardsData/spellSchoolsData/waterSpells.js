@@ -107,7 +107,7 @@ export default {
       {
         spell: true,
         attach: ['hero'],
-        aim: ['hero', 'fighter', 'shooter', 'flyer', 'warrior', 'spell'],
+        aim: ['hero', 'fighter', 'shooter', 'flyer', 'warrior'],
         type: 'good',
         name: 'protection',
         token: 'protection',
