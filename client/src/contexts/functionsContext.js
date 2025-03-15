@@ -450,6 +450,8 @@ export const FunctionProvider = ({ children }) => {
     } = actionData;
     handleAnimation(card, 'delete');
     dispatch(battleActions.deleteActiveCard({ player }));
+    const cardsFeature = card.school ?? card.faction;
+    dispatch(battleActions.addActionToLog({ playedCard: { warCard: true, cardName: card.description, cardsFeature }, aim: { ability: true, name: ability.description }, id: _.uniqueId() }));
     makeFeatureCast({
       feature: ability, aimCell: cell, applyingCard: card, player, player2Type, performAIAction,
     });
@@ -463,8 +465,6 @@ export const FunctionProvider = ({ children }) => {
     if (gameMode === 'tutorial') {
       dispatch(battleActions.setTutorialStep(currentTutorStep + 1));
     }
-    const cardsFeature = card.school ?? card.faction;
-    dispatch(battleActions.addActionToLog({ playedCard: { warCard: true, cardName: card.description, cardsFeature }, aim: { ability: true, name: ability.description }, id: _.uniqueId() }));
     setActionPerforming(false);
   };
 

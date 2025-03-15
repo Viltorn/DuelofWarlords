@@ -26,12 +26,6 @@ const getTopMargin = (cellType, contentLength) => {
   if (cellType === 'hero') {
     return Math.min(2.6 * contentLength, 6.8);
   }
-  if (cellType === 'field') {
-    return 4.6;
-  }
-  if (cellType === 'hero') {
-    return 5.6;
-  }
   return 0;
 };
 
@@ -41,7 +35,7 @@ const calcBigSpellMargin = (contentLength) => {
 };
 
 const CellCard = forwardRef(({
-  item, cellType, content, cardsShownNum,
+  item, cellType, cardsShownNum,
 }, ref) => {
   const {
     turn,
@@ -72,7 +66,7 @@ const CellCard = forwardRef(({
   const currentDP = item.type === 'warrior' ? getWarriorPower(item, 'defPower') : null;
   const invisible = item.type === 'warrior' && isInvisible(currentCell, fieldCards);
   const marginTop = getTopMargin(cellType, cardsShownNum);
-  const marginRight = cellType === 'bigSpell' ? calcBigSpellMargin(content.length) : 0;
+  const marginRight = cellType === 'bigSpell' ? calcBigSpellMargin(cardsShownNum) : 0;
   const readyWarrior = type === 'warrior' ? isWarriorReady(item, thisPlayer, gameTurn) : false;
   const cardInfo = {
     cardsFeature,
@@ -94,7 +88,6 @@ const CellCard = forwardRef(({
   const cardStyles = cn({
     [styles.contentItem]: cellType !== 'hero',
     [styles.heroCellItem]: cellType === 'hero',
-    [styles.selfJustifyCenter]: cellType === 'bigSpell' && content.length === 1,
     [styles.makeAttackAnima]: currentCell.animation === 'makeattack',
     [styles.readyWarrior]: readyWarrior,
     // [styles.turn1]: turn === 1,

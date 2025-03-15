@@ -70,7 +70,6 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  gap: 2rem;
   border-radius: 0 0 0.3rem 0.3rem;
   padding: 0.5em;
   z-index: 2;

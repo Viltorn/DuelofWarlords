@@ -76,7 +76,7 @@ const Cell = ({ props, id }) => {
         <AnimationIcon animation={animation} icon={icons[animation]} />
       )}
       <TransitionGroup component={null} exit>
-        {cellContent.length > 0 && (
+        {cardsToShow.length > 0 && (
           cardsToShow.map((item) => {
             const cardRef = React.createRef();
             return (
@@ -105,7 +105,7 @@ const Cell = ({ props, id }) => {
           }))}
       </TransitionGroup>
       <TransitionGroup component={null} exit={false}>
-        {cellContent.length === 0 && (
+        {cardsToShow.length === 0 && (
           <CSSTransition
             in
             appear
