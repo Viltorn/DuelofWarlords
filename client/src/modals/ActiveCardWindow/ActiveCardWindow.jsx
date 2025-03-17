@@ -42,7 +42,7 @@ const ActiveCardWindow = () => {
             <ActionButton card={data} type="deleteFromDeck" name="deleteFromDeck" />
             )}
           </div>
-          <button className={styles.cardContainer} type="button" onClickCapture={handleClose}>
+          <div className={styles.cardContainer} role="button" onClickCapture={handleClose}>
             <Card
               builder
               card={data}
@@ -50,7 +50,7 @@ const ActiveCardWindow = () => {
               isOpenInfo
             />
             <ActiveCardInfo card={data} type="window" />
-          </button>
+          </div>
         </div>
       </div>
     </dialog>

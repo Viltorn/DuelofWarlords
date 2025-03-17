@@ -179,6 +179,7 @@ export default {
     },
 
     errors: {
+      captchaError: 'Капча не пройдена',
       RoomNotExist: 'Комната не найдена!',
       RoomEmpty: 'Эта комната пустая!',
       RoomFull: 'Комната уже полная!',
@@ -273,6 +274,11 @@ export default {
       turnRight: 'ПОВЕРНУТЬ',
       addToDeck: 'ДОБАВИТЬ',
       deleteFromDeck: 'УДАЛИТЬ',
+    },
+
+    statuses: {
+      CaptchaPassed: 'Капча пройдена!',
+      CaptchaInProcess: 'Капча в процессе',
     },
 
     misc: {

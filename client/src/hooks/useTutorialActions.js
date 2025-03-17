@@ -5,6 +5,7 @@ import { actions as modalActions } from '../slices/modalsSlice.js';
 import { actions as battleActions } from '../slices/battleSlice.js';
 import NalaDeck from '../gameCardsData/tutorialsDeck/NalaDeck.js';
 import ZigfridDeck from '../gameCardsData/tutorialsDeck/ZigfridDeck.js';
+import ZigfridHero from '../gameCardsData/tutorialsDeck/ZigfridTutorial.js';
 import gameCardsData from '../gameCardsData/index.js';
 import makeDeckForPlayer, { addPlayerToCard } from '../utils/makeDeckForPlayer.js';
 import { spellsCells } from '../gameData/heroes&spellsCellsData.js';
@@ -25,12 +26,14 @@ const useTutorialActions = () => {
     fieldCells, fieldCards, thisPlayer, currentTutorStep, playerPoints, gameTurn,
   } = useSelector((state) => state.battleReducer);
 
-  const hero1Info = ZigfridDeck.hero;
   const hero2Info = NalaDeck.hero;
-  const player1HeroCard = addPlayerToCard({ ...gameCardsData[hero1Info.faction][hero1Info.name], disabled: true }, 'player1');
+  const player1HeroCard = addPlayerToCard({ ...ZigfridHero, disabled: true }, 'player1');
   const player2HeroCard = addPlayerToCard({ ...gameCardsData[hero2Info.faction][hero2Info.name], disabled: true }, 'player2');
   const madeCastleDeck = useMemo(() => makeDeckForPlayer(makeInitialDeck(ZigfridDeck.cards, 'player1'), 'player1'), []);
   const madeAcademiaDeck = useMemo(() => makeDeckForPlayer(makeInitialDeck(NalaDeck.cards, 'player2'), 'player2'), []);
+  const drawCardFeat = {
+    attach: false, type: 'all', aim: ['warrior'], name: 'drawCard', condition: 'insteadatk', cost: 1, description: 'drawCard', id: 'drawCard',
+  };
 
   const cards = {
     shooter: madeCastleDeck.find((el) => el.name === 'Imperial Shooter'),
@@ -45,7 +48,7 @@ const useTutorialActions = () => {
     thunderBlast: madeCastleDeck.find((el) => el.name === 'Thunder Blast'),
     lightning: { ...madeCastleDeck.find((el) => el.name === 'Lightning Strike'), cost: 2, currentC: 2 },
     holyland: madeCastleDeck.find((el) => el.name === 'Holy Land'),
-    lightShield: madeCastleDeck.find((el) => el.name === 'LightShield'),
+    protection: { ...madeCastleDeck.find((el) => el.name === 'Protection'), cost: 1, currentC: 1 },
     lastChance: madeCastleDeck.find((el) => el.name === 'Last Chance'),
   };
 
@@ -59,7 +62,7 @@ const useTutorialActions = () => {
   const spellsDeck = [
     cards.lightning,
     cards.holyland,
-    cards.lightShield,
+    cards.protection,
     cards.thunderBlast,
     cards.lastChance,
   ];
@@ -150,7 +153,7 @@ const useTutorialActions = () => {
 
       makeGameAction(data1, 'tutorial');
       await new Promise((resolve) => {
-        setTimeout(() => resolve(), 1500);
+        setTimeout(() => resolve(), 2500);
       });
       makeGameAction(data2, 'tutorial');
     },
@@ -205,11 +208,13 @@ const useTutorialActions = () => {
     step35: () => {
       dispatch(battleActions.activateCells({ ids: ['hero1'] }));
       dispatch(battleActions.changeFieldCardDisability({ card: player1HeroCard, disabled: false }));
+      dispatch(battleActions.addWarriorAttachment({ cellId: 'hero1', feature: drawCardFeat }));
     },
 
     step36: () => {
       const ids = cellsForSpells.map((cell) => cell.id);
       dispatch(battleActions.disableCells({ ids: [...ids] }));
+      dispatch(battleActions.deleteAttachment({ spellId: 'drawCard' }));
     },
 
     step37: () => {

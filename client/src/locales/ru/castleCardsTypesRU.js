@@ -19,4 +19,5 @@ export default {
   ZigfridHero: 'Зигфрид - Герой',
   RionHero: 'Рион - Герой',
   Morale: 'Мораль',
+  AddAttackCast: 'Выберите воина для увеличения атаки',
 };

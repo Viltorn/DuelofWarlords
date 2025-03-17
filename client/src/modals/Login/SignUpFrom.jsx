@@ -1,9 +1,12 @@
 import React, { useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
+import Turnstile from 'react-turnstile';
 import PrimaryButton from '../../components/Buttons/PrimaryButton/PrimaryButton';
 import styles from './LoginSignUp.module.css';
 
-const LogInForm = ({ formik, error, changeType }) => {
+const LogInForm = ({
+  formik, error, changeType, setCaptcha, captcha,
+}) => {
   const { t } = useTranslation();
   const inputEl = useRef();
 
@@ -68,7 +71,19 @@ const LogInForm = ({ formik, error, changeType }) => {
             )}
             <label htmlFor="repeatpass" className="visually-hidden">{t('Repeatpass')}</label>
           </div>
+          {captcha ? (
+            <p className={styles.passedCaptcha}>{t('statuses.CaptchaPassed')}</p>)
+            : (<p className={styles.processCaptcha}>{t('statuses.CaptchaInProcess')}</p>)}
           {error && (<div className={styles.invalidFeedback}>{t(`errors.${error}`)}</div>)}
+          <div className={styles.captcha}>
+            <Turnstile
+              size="normal"
+              sitekey="0x4AAAAAAA9cFaDFosEvIR6y" // Replace with your site key
+              onSuccess={(token) => setCaptcha(token)} // Store captcha token on success
+              onExpire={() => setCaptcha(null)} // Reset token if captcha expires
+              onError={() => setCaptcha(null)}
+            />
+          </div>
         </div>
         <label htmlFor="username" className="visually-hidden">{t('YourName')}</label>
         <input type="hidden" className="visually-hidden" id="token" name="token" />

@@ -19,9 +19,9 @@
 }
 
 .cardContainer {
-  border: 2px solid var(--dark-color);
   border-radius: 0.4rem;
   background-color: transparent;
+  height: calc(var(--hand-card-width) * 1.6);
 }
 
 .title {

@@ -55,7 +55,7 @@ const CellCard = forwardRef(({
   const cardsFeature = faction ?? school;
 
   const {
-    fieldCells, fieldCards, thisPlayer, gameTurn,
+    fieldCells, fieldCards, gameTurn,
   } = useSelector((state) => state.battleReducer);
   const { handleCellCardClick } = useClickActions();
   const { getWarriorPower, warTokensData } = useAnimaActions();
@@ -67,7 +67,7 @@ const CellCard = forwardRef(({
   const invisible = item.type === 'warrior' && isInvisible(currentCell, fieldCards);
   const marginTop = getTopMargin(cellType, cardsShownNum);
   const marginRight = cellType === 'bigSpell' ? calcBigSpellMargin(cardsShownNum) : 0;
-  const readyWarrior = type === 'warrior' ? isWarriorReady(item, thisPlayer, gameTurn) : false;
+  const readyWarrior = type === 'warrior' ? isWarriorReady(item, gameTurn) : false;
   const cardInfo = {
     cardsFeature,
     currentP,

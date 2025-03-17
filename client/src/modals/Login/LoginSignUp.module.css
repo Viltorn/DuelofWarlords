@@ -22,7 +22,7 @@
   padding: 15px 30px;
   border: 2px ridge var(--dark-golden);
   width: 370px; /* Could be more or less, depending on screen size */
-  height: 450px;
+  height: 500px;
   border-radius: 5px;
 }
 
@@ -64,9 +64,11 @@ form {
 
 .fieldset {
   border: none;
+  height: 100%;
   width: 100%;
   display: flex;
   flex-direction: column;
+  justify-content: flex-start;
   gap: 30px;
 }
 
@@ -89,7 +91,7 @@ form {
   flex-direction: column;
   gap: 10px;
   width: 100%;
-  height: 200px;
+  height: 250px;
 }
 
 .inputBlock {
@@ -128,9 +130,21 @@ form {
   visibility: hidden;
 }
 
+.passedCaptcha {
+  border: 0.2rem solid var(--light-gray);
+  color: var( --green-light);
+  padding: 5px;
+}
+
+.processCaptcha {
+  border: 0.2rem solid var(--light-gray);
+  color: var(--red-light);
+  padding: 5px;
+}
+
 @media (max-width: 940px) {
  .content {
-   height: 350px;
+   height: 360px;
    width: 300px;
    padding: 15px;
    gap: 15px;
@@ -153,7 +167,7 @@ form {
  }
 
  .inputContainer {
-  height: 160px;
+  height: 170px;
  }
 
  .invalidFeedback {
@@ -198,7 +212,7 @@ form {
   }
 
   .inputContainer {
-    height: 150px;
+    height: 170px;
    }
 
   .invalidFeedback {

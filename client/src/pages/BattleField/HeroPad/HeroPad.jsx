@@ -47,7 +47,7 @@ const HeroPad = ({ type, player }) => {
   const graveCellId = graveCell.id;
   const graveyardContent = useMemo(() => fieldCards.filter((card) => card.cellId === graveCellId).reverse(), [graveCellId, fieldCards]);
   const heroCard = heroData.find((card) => card.type === 'hero');
-  const readyHero = useMemo(() => isWarriorReady(heroCard, thisPlayer, gameTurn) && heroCard.features.find((feat) => feat.cost <= curPoints), [gameTurn, thisPlayer, heroCard, curPoints]);
+  const readyHero = useMemo(() => isWarriorReady(heroCard, gameTurn) && heroCard.features.find((feat) => feat.cost <= curPoints), [gameTurn, heroCard, curPoints]);
 
   // const lastCardToShowIdx = heroData.length + 1 - cardsToShowHeroSlot;
   // const heroCellContent = heroData

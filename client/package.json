@@ -22,6 +22,7 @@
     "react-router-dom": "^6.12.1",
     "react-scripts": "5.0.1",
     "react-transition-group": "^4.4.5",
+    "react-turnstile": "^1.1.4",
     "socket.io-client": "^4.7.2",
     "use-sound": "^4.0.1",
     "web-vitals": "^2.1.4",
@@ -42,7 +43,7 @@
   "scripts": {
     "start": "craco start",
     "build": "craco build",
-    "test":  "craco test",
+    "test": "craco test",
     "eject": "craco eject"
   },
   "browserslist": {

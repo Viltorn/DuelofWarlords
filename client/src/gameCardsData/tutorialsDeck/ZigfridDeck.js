@@ -1,7 +1,7 @@
 export default {
   deckName: 'Зигфрид - Быстрая атака',
   hero: {
-    name: 'ZigfridHero', type: 'hero', faction: 'Castle', qty: 1,
+    name: 'ZigfridTutorial', type: 'hero', faction: 'Castle', qty: 1,
   },
   cards: [
     {
@@ -32,18 +32,6 @@ export default {
       name: 'ImperialGriffon', type: 'warrior', faction: 'Castle', qty: 2,
     },
     {
-      name: 'Swiftness', type: 'spell', school: 'Air', qty: 2,
-    },
-    {
-      name: 'AirFlows', type: 'spell', school: 'Air', qty: 1,
-    },
-    {
-      name: 'RetributionSword', type: 'spell', faction: 'Castle', qty: 2,
-    },
-    {
-      name: 'SaintWord', type: 'spell', school: 'Light', qty: 2,
-    },
-    {
       name: 'BattleTactics', type: 'spell', school: 'Skills', qty: 1,
     },
     {
@@ -65,7 +53,7 @@ export default {
       name: 'LightningStrike', type: 'spell', school: 'Air', qty: 1,
     },
     {
-      name: 'LightShield', type: 'spell', school: 'Light', qty: 1,
+      name: 'Protection', type: 'spell', school: 'Skills', qty: 1,
     },
   ],
 };

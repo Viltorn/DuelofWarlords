@@ -20,6 +20,8 @@ const CellCardImage = ({
     name,
     subtype,
     showQty,
+    power,
+    defPower,
   } = cardInfo;
 
   const { t } = useTranslation();
@@ -31,14 +33,14 @@ const CellCardImage = ({
 
   const atkClasses = cn({
     [styles.warriorPower]: true,
-    // [styles.greenColor]: currentP > power,
-    // [styles.redColor]: currentP < power,
+    [styles.greenColor]: currentP > power,
+    [styles.redColor]: currentP < power,
   });
 
   const atkDefClasses = cn({
     [styles.warriorDefPower]: true,
-    // [styles.greenColor]: currentDP > defPower,
-    // [styles.redColor]: currentDP < defPower,
+    [styles.greenColor]: currentDP > defPower,
+    [styles.redColor]: currentDP < defPower,
   });
 
   return (

@@ -20,4 +20,5 @@ export default {
   AgielHero: 'Агиель - Герой',
   Morale: 'Мораль',
   RetributionSword: 'Меч возмездия',
+  AddAttackCast: 'Заклинание',
 };

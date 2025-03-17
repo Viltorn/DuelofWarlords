@@ -22,6 +22,7 @@ const LoginSignUp = () => {
   const dispatch = useDispatch();
   const [error, setError] = useState(false);
   const [signUp, setSignUp] = useState(false);
+  const [captchaToken, setCaptchaToken] = useState(null);
   const token = useMemo(() => getAuthToken(), []);
   const user = useMemo(() => (token ? token.login : ''), [token]);
   const pass = useMemo(() => (token ? token.pass : ''), [token]);
@@ -44,6 +45,11 @@ const LoginSignUp = () => {
   const submitForm = async (values, type, formik) => {
     try {
       setError(false);
+      if (!captchaToken && type === 'signUp') {
+        handleError({ message: 'captchaError' });
+        formik.setSubmitting(false);
+        return;
+      }
       const { username, password } = values;
       const res = await makeAuth(username, password, type);
       console.log(res);
@@ -102,7 +108,13 @@ const LoginSignUp = () => {
             <p className={styles.cantBuild}>{t('modals.CantBuildDeck')}</p>
           </div>
           {signUp ? (
-            <SignUpForm error={error} changeType={setSignUp} formik={signUpFormik} />
+            <SignUpForm
+              error={error}
+              changeType={setSignUp}
+              formik={signUpFormik}
+              setCaptcha={setCaptchaToken}
+              captcha={captchaToken}
+            />
           ) : (
             <LogInForm error={error} changeType={setSignUp} formik={loginFormik} />
           )}
