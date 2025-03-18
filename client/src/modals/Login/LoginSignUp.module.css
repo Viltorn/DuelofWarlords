@@ -132,6 +132,7 @@ form {
 
 .passedCaptcha {
   border: 0.2rem solid var(--light-gray);
+  font-size: 12px;
   color: var( --green-light);
   padding: 5px;
 }
@@ -139,6 +140,7 @@ form {
 .processCaptcha {
   border: 0.2rem solid var(--light-gray);
   color: var(--red-light);
+  font-size: 12px;
   padding: 5px;
 }
 

@@ -29,7 +29,7 @@ const TutorialStepsWindow = () => {
   return (
     <div className={styles.window} style={{ left: `${indent}rem` }}>
       <div className={styles.container}>
-        <h2 className={styles.title}>{t(`tutorialSteps.${tutorialStepsData[currentTutorStep].step}`)}</h2>
+        <p className={styles.title}>{t(`tutorialSteps.${tutorialStepsData[currentTutorStep].step}`)}</p>
         <div className={styles.btnBlock}>
           {tutorialStepsData[currentTutorStep].back && (<button className={styles.btn} type="button" onClick={() => handleClick(-1)}>{t('buttons.BACK')}</button>)}
           {tutorialStepsData[currentTutorStep].next && (<button className={styles.btn} type="button" onClick={() => handleClick(1)}>{t('buttons.CONTINUE')}</button>)}

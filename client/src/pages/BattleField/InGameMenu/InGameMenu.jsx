@@ -33,7 +33,7 @@ const InGameMenu = () => {
       </ul>
       <li className={styles.contactBlock}>
         <p className={styles.footFeedback}>{t('Contact')}</p>
-        <a href="https://discord.gg/BUTqPcRC" target="_blank" rel="noreferrer"><img className={styles.discord} src={DiscordLogo} alt="discord logo" /></a>
+        <a href="https://discord.gg/FAy4BhxNyD" target="_blank" rel="noreferrer"><img className={styles.discord} src={DiscordLogo} alt="discord logo" /></a>
       </li>
     </div>
   );
