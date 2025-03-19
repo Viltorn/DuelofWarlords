@@ -177,10 +177,20 @@
   top: 0;
   height: var(--cell-content-width);
   right: -0.5rem;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
+  display: grid;
+  justify-items: center;
+  align-content: center;
   gap: 0.2rem;
+}
+
+.oneColumn {
+  grid-template-columns: 1fr;
+  grid-template-rows: repeat(3, auto);
+}
+
+.twoColumns {
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: repeat(3, auto);
 }
 
 .tokenInfo {

@@ -54,7 +54,7 @@ const data = [
     step: 'step17', func: 'step17', left: 22, next: true, back: false, disEndTurn: true,
   },
   {
-    step: 'step18', func: 'step18', left: 15, next: true, back: false, disEndTurn: true,
+    step: 'step18', func: 'step18', left: 22, next: true, back: false, disEndTurn: true,
   },
   {
     step: 'step19', func: 'step19', left: 15, next: false, back: false, disEndTurn: true,

@@ -43,6 +43,12 @@ const CellCardImage = ({
     [styles.redColor]: currentDP < defPower,
   });
 
+  const tokensBlock = cn({
+    [styles.tokensBlock]: true,
+    [styles.oneColumn]: warTokens?.length <= 3,
+    [styles.twoColumns]: warTokens?.length > 3,
+  });
+
   return (
     <>
       <h2 className={titleClasses}>{t(`titles.${cardsFeature}.${description}`)}</h2>
@@ -68,7 +74,7 @@ const CellCardImage = ({
       {subtype === 'attachedSpells' && (
         <h3 className={styles.showQty}>{showQty}</h3>
       )}
-      <ul className={styles.tokensBlock}>
+      <ul className={tokensBlock}>
         {warTokens && (
           warTokens.map((token) => (
             <div key={token.name} className={styles.tokenInfo}>

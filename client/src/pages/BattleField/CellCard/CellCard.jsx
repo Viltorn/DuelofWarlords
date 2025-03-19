@@ -60,7 +60,6 @@ const CellCard = forwardRef(({
   const { handleCellCardClick } = useClickActions();
   const { getWarriorPower, warTokensData } = useAnimaActions();
   const warTokens = type === 'warrior' || type === 'hero' ? warTokensData({ warCard: item, fieldCells, fieldCards }) : null;
-  // const tokensToShow  =  protectionOfWar && protectionOfWar?.subtype !== 'reaction' && !protectionOfWar.hide;
   const currentCell = fieldCells.find((cell) => cell.id === item.cellId);
   const currentP = item.type === 'warrior' ? getWarriorPower(item, 'atkPower') : null;
   const currentDP = item.type === 'warrior' ? getWarriorPower(item, 'defPower') : null;

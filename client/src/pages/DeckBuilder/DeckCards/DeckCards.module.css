@@ -50,14 +50,14 @@
 
 .counterBlock {
   position: absolute;
-  right: -0.4rem;
-  top: -0.2rem;
+  right: -0.5rem;
+  top: -0.4rem;
   z-index: 3;
 }
 
 .counterImage {
-  width: 3rem;
-  height: 3rem;
+  width: 2.7rem;
+  height: 2.7rem;
   right: -0.4rem;
   top: -0.3rem;
   z-index: 3;
@@ -67,8 +67,8 @@
   position: absolute;
   font-family: Roboto;
   color: var(--white-color);
-  font-size: 2.2rem;
-  top: 0.2rem;
-  right: 0.9rem;
+  font-size: 2rem;
+  top: 0.1rem;
+  right: 0.75rem;
   z-index: 3;
 }

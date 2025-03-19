@@ -227,6 +227,10 @@ export const FunctionProvider = ({ children }) => {
       const newPoints = points - card.currentC;
       dispatch(battleActions.setPlayerPoints({ points: newPoints, player }));
     }
+    const cardsFeature = card.school ?? card.faction;
+    const warCard = fieldCards.find((c) => (c.type === 'warrior' || c.type === 'hero') && c.cellId === curCell.id);
+    const aimData = warCard ? { warCard: true, cardName: warCard.description, cardsFeature: warCard.faction } : { cell: true, type: curCell.type };
+    if (card.subtype !== 'reaction') dispatch(battleActions.addActionToLog({ playedCard: { warCard: true, cardName: card.description, cardsFeature }, aim: aimData, id: _.uniqueId() }));
     handleAnimation(card, 'delete');
     deleteCardFromSource(card);
     dispatch(battleActions.deleteActiveCard({ player }));
@@ -277,11 +281,7 @@ export const FunctionProvider = ({ children }) => {
           }
         }, 500));
     }
-    dispatch(battleActions.setLastPlayedCard(card));
-    const cardsFeature = card.school ?? card.faction;
-    const warCard = fieldCards.find((c) => (c.type === 'warrior' || c.type === 'hero') && c.cellId === curCell.id);
-    const aimData = warCard ? { warCard: true, cardName: warCard.description, cardsFeature: warCard.faction } : { cell: true, type: curCell.type };
-    if (card.subtype !== 'reaction') dispatch(battleActions.addActionToLog({ playedCard: { warCard: true, cardName: card.description, cardsFeature }, aim: aimData, id: _.uniqueId() }));
+    if (card.status === 'hand') dispatch(battleActions.setLastPlayedCard(card));
     setActionPerforming(false);
   };
 
@@ -370,7 +370,7 @@ export const FunctionProvider = ({ children }) => {
     dispatch(battleActions.deleteActiveCard({ player }));
     const cardsFeature = card.school ?? card.faction;
     const newfieldCards = store.getState().battleReducer.fieldCards;
-    const warCard = newfieldCards.find((c) => (c.type === 'warrior' || c.type === 'hero') && c.cellId === cell.id);
+    const warCard = newfieldCards.find((c) => (c.type === 'warrior' || c.type === 'hero') && c.cellId === cell.id && cell.type === 'field');
     const aimData = warCard ? { warCard: true, cardName: warCard.description, cardsFeature: warCard.faction } : { cell: true, type: cell.type };
     dispatch(battleActions.addActionToLog({ playedCard: { warCard: true, cardName: card.description, cardsFeature }, aim: aimData, id: _.uniqueId() }));
 

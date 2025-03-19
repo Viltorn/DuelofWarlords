@@ -2,6 +2,7 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import PrimaryButton from '@components/Buttons/PrimaryButton/PrimaryButton';
+import TelgramLogo from '@assets/telegram.png';
 import LogoMain from '@assets/mainPageIcons/DuelofWarlords.png';
 import CastleLogo from '@assets/mainPageIcons/CastleLogo.png';
 import ForestLogo from '@assets/mainPageIcons/ForestLogo.png';
@@ -122,7 +123,8 @@ const MainPage = () => {
           <h3 className={styles.footTitle}>Duel of Warlords</h3>
           <div className={styles.feebackBlock}>
             <p className={styles.footFeedback}>{t('mainPage.FeedBackLine')}</p>
-            <a href="https://discord.gg/FAy4BhxNyD" target="_blank" rel="noreferrer"><img className={styles.discord} src={DiscordLogo} alt="discord logo" /></a>
+            <a href="https://discord.gg/FAy4BhxNyD" target="_blank" rel="noreferrer"><img className={styles.discord} src={DiscordLogo} alt="discord link" /></a>
+            <a href="https://t.me/+aKetsu0adqI1OWMy" target="_blank" rel="noreferrer"><img className={styles.discord} src={TelgramLogo} alt="telegram link" /></a>
           </div>
         </div>
       </footer>

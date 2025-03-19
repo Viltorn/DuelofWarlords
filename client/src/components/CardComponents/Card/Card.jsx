@@ -41,7 +41,8 @@ const Card = forwardRef(({
   const marginRight = active || builder || log ? 0 : Math.min(contentLength * 0.5, 5.6);
   const atkPower = card.type === 'warrior' && status !== 'hand' ? getWarriorPower(card, 'atkPower') : currentP;
   const defPower = card.type === 'warrior' && status !== 'hand' ? getWarriorPower(card, 'defPower') : currentDP;
-  const warTokens = (type === 'warrior' || type === 'hero') && active ? warTokensData({ warCard: card, fieldCells, fieldCards }) : null;
+  const warTokens = (type === 'warrior' || type === 'hero') ? warTokensData({ warCard: card, fieldCells, fieldCards }) : null;
+  const bigCard = isOpenInfo && active;
   /*  empirical number */
 
   const classes = cn({
@@ -62,6 +63,11 @@ const Card = forwardRef(({
     [styles.cardNameActive]: type !== 'hero' && active,
     [styles.cardNameWindow]: isOpenInfo && active && gameMode === 'build' && type !== 'hero',
     [styles.heroNameActive]: type === 'hero' && active,
+  });
+
+  const tokenIcon = cn({
+    [styles.tokenIcon]: !active,
+    [styles.tokenIconBig]: active,
   });
 
   const handleMouseEnter = () => {
@@ -103,14 +109,14 @@ const Card = forwardRef(({
           ? (<h3 className={cn([styles.cardCharges], { [styles.active]: active })}>{curCharges}</h3>) : null}
         <img className={styles.mainImage} src={img} alt={name} />
         <ul className={styles.tokensBlock}>
-          {warTokens && !builder && (
+          {warTokens && !bigCard && (
             warTokens.map((token) => (
               <div key={token.name} className={styles.tokenInfo}>
                 {token.qty > 1 && (
                 <p className={styles.showQty}>{token.qty }</p>
                 )}
                 <img
-                  className={styles.tokenIcon}
+                  className={tokenIcon}
                   src={icons[token.name]}
                   alt="shield icon"
                 />

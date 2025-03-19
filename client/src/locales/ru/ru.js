@@ -48,7 +48,7 @@ export default {
       GameDescriptTitle: 'ОПИСАНИЕ ИГРЫ',
       GameFactionsTitle: 'ИГРОВЫЕ ФРАКЦИИ',
       GameFeaturesTitle: 'ИГРОВЫЕ ОСОБЕННОСТИ',
-      FeedBackLine: 'Для обратной связи пишите нам в дискорд: ',
+      FeedBackLine: 'Для обратной связи пишите нам в мессенджеры: ',
     },
     Contact: 'Контакты:',
     DeckBuilder: 'КОЛОДОСТРОЕНИЕ',
@@ -238,6 +238,7 @@ export default {
       bigSpell: 'Общее заклинание',
       midSpell: 'Шеренга',
       field: 'Поле',
+      graveyard: 'Сброс',
     },
 
     types: {

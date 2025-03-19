@@ -74,7 +74,7 @@
 
 .warriorPower {
   color: var(--white-color);
-  left: 0.4rem;
+  left: 0.5rem;
   top: 0.6rem;
 }
 
@@ -86,32 +86,32 @@
 
 .warriorDefPow {
   color: var(--white-color);
-  left: 0.4rem;
-  top: 2.3rem;
+  left: 0.5rem;
+  top: 2.4rem;
 }
 
 .warriorDefPow.active {
   color: var(--white-color);
-  left: 0.8rem;
-  top: 4rem;
+  left: 0.9rem;
+  top: 4.1rem;
 }
 
 .warriorHealth {
   color: var(--white-color);
-  left: 0.4rem;
+  left: 0.5rem;
   top: 4.4rem;
   text-align: center;
 }
 
 .warriorHealth.active {
   color: var(--white-color);
-  left: 0.8rem;
+  left: 0.9rem;
   top: 7.6rem;
 }
 
 .warriorCost {
   color: var(--white-color);
-  left: 0.45rem;
+  left: 0.5rem;
   top: 6.25rem;
 }
 
@@ -126,7 +126,7 @@
   height: 1.6rem;
   width: 1.6rem;
   top: 4.3rem;
-  left: 0;
+  left: 0.05rem;
 }
 
 .shieldIcon.active {
@@ -134,7 +134,7 @@
   height: 2.6rem;
   width: 2.6rem;
   top: 7.5rem;
-  left: 0.1rem;
+  left: 0.2rem;
 }
 
 .costIcon {
@@ -260,6 +260,11 @@
 }
 
 .tokenIcon {
+  height: 2.1rem;
+  width: 2.1rem;
+}
+
+.tokenIconBig {
   height: 2.5rem;
   width: 2.5rem;
 }

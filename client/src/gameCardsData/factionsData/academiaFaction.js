@@ -90,7 +90,7 @@ const academiaDeck = {
     cost: 2,
     currentC: 2,
     justDeployed: true,
-    featInfo: ['FIGHTER', 'IMMOBILIZED'],
+    featInfo: ['IMMOBILIZED'],
     description: 'LivingWall',
     faction: 'Academia',
     features: [{ name: 'immobile' }, { name: 'unarmed' }],
@@ -112,11 +112,14 @@ const academiaDeck = {
     cost: 3,
     currentC: 3,
     justDeployed: true,
-    featInfo: ['SHOOTER'],
+    featInfo: [],
     description: 'MageApprentice',
     faction: 'Academia',
     features: [{
       name: 'protection', token: 'resistance', value: { type: 'percent', val: 0.5 }, aim: ['spell'],
+    },
+    {
+      token: 'shooter',
     }],
     attachments: [],
     img: MageApprentice,
@@ -136,10 +139,15 @@ const academiaDeck = {
     cost: 2,
     currentC: 2,
     justDeployed: true,
-    featInfo: ['SHOOTER'],
+    featInfo: [],
     description: 'GremlinShooter',
     faction: 'Academia',
-    features: [{ name: 'retaliation', value: 1, aim: ['shooter'] }],
+    features: [
+      { name: 'retaliation', value: 1, aim: ['shooter'] },
+      {
+        token: 'shooter',
+      },
+    ],
     attachments: [],
     img: GremlinShooter,
     status: 'deck',
@@ -159,11 +167,14 @@ const academiaDeck = {
     cost: 3,
     currentC: 3,
     justDeployed: true,
-    featInfo: ['SHOOTER'],
+    featInfo: [],
     description: 'IceElement',
     faction: 'Academia',
     features: [{
       attach: false, type: 'bad', aim: ['closestEnemyInRow', 'warrior', 'flyer', 'shooter', 'fighter'], name: 'stun', condition: 'lastcall', aimStatus: 'field',
+    },
+    {
+      token: 'shooter',
     }],
     attachments: [],
     img: IceElemental,
@@ -184,7 +195,7 @@ const academiaDeck = {
     cost: 2,
     currentC: 2,
     justDeployed: true,
-    featInfo: ['FIGHTER', 'PROTECTOR'],
+    featInfo: ['PROTECTOR'],
     description: 'EarthGolem',
     faction: 'Academia',
     features: [
@@ -211,7 +222,7 @@ const academiaDeck = {
     cost: 2,
     currentC: 2,
     justDeployed: true,
-    featInfo: ['FLYER'],
+    featInfo: [],
     description: 'Gargoyle',
     faction: 'Academia',
     features: [{
@@ -225,6 +236,9 @@ const academiaDeck = {
       condition: 'minPower',
       conditionValue: 2,
       aimStatus: 'field',
+    },
+    {
+      token: 'fly',
     }],
     attachments: [],
     img: Gargoyle,
@@ -245,7 +259,7 @@ const academiaDeck = {
     cost: 4,
     currentC: 4,
     justDeployed: true,
-    featInfo: ['FIGHTER', 'LASTCAST'],
+    featInfo: ['LASTCAST'],
     description: 'FireGolem',
     faction: 'Academia',
     features: [{
@@ -270,7 +284,7 @@ const academiaDeck = {
     cost: 3,
     currentC: 3,
     justDeployed: true,
-    featInfo: ['FIGHTER', 'EVASION'],
+    featInfo: ['EVASION'],
     description: 'Rakshasa',
     faction: 'Academia',
     features: [{
@@ -295,7 +309,7 @@ const academiaDeck = {
     cost: 4,
     currentC: 4,
     justDeployed: true,
-    featInfo: ['FLYER'],
+    featInfo: [],
     description: 'YoungGenie',
     faction: 'Academia',
     features: [{
@@ -319,6 +333,9 @@ const academiaDeck = {
         status: 'hand',
       },
       condition: 'onplay',
+    },
+    {
+      token: 'fly',
     }],
     attachments: [],
     img: YoungGenie,
@@ -339,11 +356,14 @@ const academiaDeck = {
     cost: 4,
     currentC: 4,
     justDeployed: true,
-    featInfo: ['SHOOTER', 'PIERCING'],
+    featInfo: ['PIERCING'],
     description: 'EnergyElemental',
     faction: 'Academia',
     features: [{
       name: 'attack', condition: 'onattack', type: 'bad', aim: ['otherWarInRow', 'warrior', 'flyer', 'shooter', 'fighter'], value: 2, apply: 'attacked', aimStatus: 'field', school: 'air',
+    },
+    {
+      token: 'shooter',
     }],
     attachments: [],
     img: EnergyElemental,
@@ -364,7 +384,7 @@ const academiaDeck = {
     cost: 6,
     currentC: 6,
     justDeployed: true,
-    featInfo: ['FIGHTER'],
+    featInfo: [],
     description: 'IceGiant',
     faction: 'Academia',
     features: [{
@@ -391,7 +411,7 @@ const academiaDeck = {
     cost: 5,
     currentC: 5,
     justDeployed: true,
-    featInfo: ['SHOOTER'],
+    featInfo: [],
     description: 'FireMage',
     faction: 'Academia',
     features: [{
@@ -418,6 +438,9 @@ const academiaDeck = {
       cost: 0,
       aimStatus: 'field',
       description: 'fireMageCast',
+    },
+    {
+      token: 'shooter',
     }],
     attachments: [],
     img: FireMage,

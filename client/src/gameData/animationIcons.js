@@ -10,6 +10,9 @@ import DeBuff from '@assets/battlefield/DeBuffToken.png';
 import Swift from '@assets/battlefield/SwiftToken.png';
 import MagicShieldToken from '@assets/battlefield/MagicShieldToken.png';
 import ShieldIcon from '@assets/battlefield/ShieldToken.png';
+import AnywayAttack from '@assets/battlefield/AnywayAttack.png';
+import RangeAttack from '@assets/battlefield/RangeAttack.png';
+import Fly from '@assets/battlefield/Fly.png';
 
 const icons = {
   warAttacked: AttackIcon,
@@ -24,6 +27,9 @@ const icons = {
   swift: Swift,
   resistance: MagicShieldToken,
   protection: ShieldIcon,
+  massAttack: AnywayAttack,
+  shooter: RangeAttack,
+  fly: Fly,
 };
 
 export default icons;

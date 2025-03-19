@@ -674,7 +674,6 @@ const useBattleActions = () => {
         const cardsCanBeRessurected = currentFieldCards
           .filter((c) => c.status === 'graveyard' && c.player === playerToApply && feature.aim.includes(c.subtype));
         const cardToRes = getRandomFromArray(cardsCanBeRessurected);
-        console.log(cardToRes);
         performAIAction({
           card: cardToRes, playerPoints, fieldCards: currentFieldCards, fieldCells: currentFieldCells, room: '', ressurectSpell: feature,
         });
