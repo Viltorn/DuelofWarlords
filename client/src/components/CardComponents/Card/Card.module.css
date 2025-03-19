@@ -172,6 +172,13 @@
   text-align: center;
 }
 
+.heroHealth.active {
+  color: var(--white-color);
+  right: 0.9rem;
+  top: 0.8rem;
+  text-align: center;
+}
+
 .description {
   padding: 0.3rem;
   margin: 0;

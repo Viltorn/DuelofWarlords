@@ -103,7 +103,7 @@ const Card = forwardRef(({
           <h3 className={cn([styles.warriorCost], { [styles.active]: active })}>{currentC}</h3>
         )}
         {type === 'hero' && (
-          <h3 className={styles.heroHealth}>{health}</h3>
+          <h3 className={cn([styles.heroHealth], { [styles.active]: active })}>{health}</h3>
         )}
         {curCharges && showCharges
           ? (<h3 className={cn([styles.cardCharges], { [styles.active]: active })}>{curCharges}</h3>) : null}
