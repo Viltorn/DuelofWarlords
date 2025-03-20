@@ -1,18 +1,49 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { useEffect } from 'react';
+import {
+  useEffect, useRef, useCallback,
+} from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import cn from 'classnames';
-import { useSelector } from 'react-redux';
+import { actions as uiActions } from '../../slices/uiSlice.js';
 import useUIActions from '../../hooks/useUIActions';
 import styles from './Timer.module.css';
 import useClickActions from '../../hooks/useClickActions';
 
 const Timer = ({ thisPlayer }) => {
-  const {
-    tick,
-  } = useUIActions();
   const { hadleEndTurnClick } = useClickActions();
-  const { isTimerOver, curTime } = useSelector((state) => state.uiReducer);
+  const {
+    isTimerOver, isTimerPaused, curTime,
+  } = useSelector((state) => state.uiReducer);
+  const { resetTimer } = useUIActions();
+  const timerRef = useRef(null);
   const [m, s] = curTime ?? [0, 0];
+  const dispatch = useDispatch();
+  console.log('timer', m, s);
+
+  const tick = () => {
+    if (isTimerOver || isTimerPaused) return;
+    if (m === 0 && s === 0) {
+      dispatch(uiActions.setTimerIsOver(true));
+      resetTimer();
+    } else if (s === 0) {
+      dispatch(uiActions.setCurTime([m - 1, 59]));
+      // setTimer([m - 1, 59]);
+    } else {
+      dispatch(uiActions.setCurTime([m, s - 1]));
+      // setTimer([m, s - 1]);
+    }
+  };
+
+  const startTimer = useCallback(() => {
+    if (timerRef.current) return; // Prevent multiple intervals
+
+    timerRef.current = setInterval(() => tick(), 1000);
+  }, [timerRef, tick]);
+
+  const stopTimer = () => {
+    clearInterval(timerRef.current);
+    timerRef.current = null;
+  };
 
   useEffect(() => {
     if (isTimerOver) {
@@ -22,9 +53,9 @@ const Timer = ({ thisPlayer }) => {
   }, [isTimerOver, hadleEndTurnClick]);
 
   useEffect(() => {
-    const timerID = setInterval(() => tick(), 1000);
-    return () => clearInterval(timerID);
-  }, [tick]);
+    startTimer();
+    return () => stopTimer();
+  }, [startTimer]);
 
   const containerClasses = cn({
     [styles.container]: true,

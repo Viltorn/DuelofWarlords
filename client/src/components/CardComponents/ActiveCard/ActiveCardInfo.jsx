@@ -26,7 +26,7 @@ const ActiveCardInfo = ({ card, type }) => {
       {card.featInfo.map((item) => (
         <div key={item} className={styles.itemBlock}>
           <h3 className={styles.tipTitle}>{t(`menuTipsHeader.${item}`)}</h3>
-          <p className={styles.tipBody}>{t(`menuTipsDescription.${item}`)}</p>
+          <div className={styles.tipBody}>{t(`menuTipsDescription.${item}`)}</div>
         </div>
       ))}
       {warTokens && (

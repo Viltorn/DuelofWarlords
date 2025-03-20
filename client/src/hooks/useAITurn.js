@@ -55,8 +55,8 @@ const useAITurn = () => {
   const performAIAction = ({
     card, playerPoints, fieldCards, fieldCells, room, gameTurn, ressurectSpell,
   }) => {
-    console.log('card to use');
-    console.log(card);
+    // console.log('card to use');
+    // console.log(card);
     const aiPoints = playerPoints.find((p) => p.player === 'player2').points;
     const enemyPoints = playerPoints.find((p) => p.player === 'player1').points;
     if (ressurectSpell) {
@@ -72,7 +72,7 @@ const useAITurn = () => {
         gameTurn,
       };
       makeGameAction(returnData, gameMode);
-      console.log('resurrected');
+      // console.log('resurrected');
       return;
     }
     const { activeCells } = store.getState().battleReducer;
@@ -121,7 +121,7 @@ const useAITurn = () => {
         return;
       }
       if (card.place && card.place !== '') {
-        console.log('attach spell');
+        // console.log('attach spell');
         const cellToApply = findBestCellForSpellCast({
           fieldCards, fieldCells, cellsForSpellCast, card, getWarriorPower, warHasSpecialFeature, findSpells, enemyPoints,
         });
@@ -143,7 +143,7 @@ const useAITurn = () => {
         makeGameAction(actionData, gameMode);
         return;
       }
-      console.log('apply spell');
+      // console.log('apply spell');
       const cellToApply = findBestCellForSpellCast({
         fieldCards, fieldCells, cellsForSpellCast, card, getWarriorPower, warHasSpecialFeature, findSpells, enemyPoints,
       });
@@ -164,7 +164,7 @@ const useAITurn = () => {
       return;
     }
     if (card.type === 'warrior' && card.status === 'hand') {
-      console.log('warrior deploy');
+      // console.log('warrior deploy');
       const cellToApply = findBestCellForWarDeploy(fieldCards, cellsForWarMove, card);
       const curCell = fieldCells.find((c) => c.id === cellToApply);
       const actionData = {
@@ -222,7 +222,7 @@ const useAITurn = () => {
         return;
       }
       if ((canAttack && !isWarBetterMove)) {
-        console.log('warrior attack');
+        // console.log('warrior attack');
 
         const cellToAttack = findBestCellForWarAttack({
           warCard: card, cellForAttackIds: cellsForAttack, fieldCards, fieldCells, enemyPoints, findSpells, getWarriorPower,
@@ -244,7 +244,7 @@ const useAITurn = () => {
       }
 
       if (canMove && (isWarBetterMove || warHasMovingFeature || hasSwift)) {
-        console.log('warrior move');
+        // console.log('warrior move');
         const cellToApply = findBestCellForWarDeploy(fieldCards, cellsForWarMove, card);
         const curCell = fieldCells.find((c) => c.id === cellToApply);
         const actionData = {
@@ -333,7 +333,7 @@ const useAITurn = () => {
   const performAIActions = async ({
     cards, allPoints, curFieldCards, curFieldCells, curGameTurn,
   }) => {
-    console.log('use cards');
+    // console.log('use cards');
     const cardToUse = getRandomFromArray(cards);
     console.log(cardToUse);
     makeAIAction(cardToUse, allPoints, curFieldCards, curFieldCells, curGameTurn);

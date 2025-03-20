@@ -4,8 +4,6 @@ import {
 } from 'react';
 import _ from 'lodash';
 import { useDispatch, useStore, useSelector } from 'react-redux';
-// import drumAudio from '@assets/DrumBeat.mp3';
-// import useSound from 'use-sound';
 import { actions as battleActions } from '../slices/battleSlice.js';
 import { actions as modalsActions } from '../slices/modalsSlice.js';
 import { actions as uiActions } from '../slices/uiSlice.js';
@@ -26,7 +24,6 @@ const FunctionContext = createContext({});
 export const FunctionProvider = ({ children }) => {
   const dispatch = useDispatch();
   const { play } = useSoundEffects();
-  // const [play] = useSound(drumAudio, { volume: 0.3 });
   const store = useStore();
   const {
     activeCardPlayer1, activeCardPlayer2, thisPlayer, currentTutorStep,
@@ -64,7 +61,6 @@ export const FunctionProvider = ({ children }) => {
   const [isOpenChat, setOpenChat] = useState(false);
   const [isOpenInfo, toogleInfoWindow] = useState(false);
   const [actionPerforming, setActionPerforming] = useState(false);
-  // const [socket, setSocket] = useState(null);
 
   // useEffect(() => {
   //   window.addEventListener('beforeinstallprompt', (event) => {
@@ -370,7 +366,7 @@ export const FunctionProvider = ({ children }) => {
     dispatch(battleActions.deleteActiveCard({ player }));
     const cardsFeature = card.school ?? card.faction;
     const newfieldCards = store.getState().battleReducer.fieldCards;
-    const warCard = newfieldCards.find((c) => (c.type === 'warrior' || c.type === 'hero') && c.cellId === cell.id && cell.type === 'field');
+    const warCard = cell.type === 'field' ? newfieldCards.find((c) => (c.type === 'warrior' || c.type === 'hero') && c.cellId === cell.id) : null;
     const aimData = warCard ? { warCard: true, cardName: warCard.description, cardsFeature: warCard.faction } : { cell: true, type: cell.type };
     dispatch(battleActions.addActionToLog({ playedCard: { warCard: true, cardName: card.description, cardsFeature }, aim: aimData, id: _.uniqueId() }));
 

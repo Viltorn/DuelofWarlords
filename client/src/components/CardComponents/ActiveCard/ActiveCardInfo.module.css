@@ -64,6 +64,7 @@
   color: var(--light-gray);
   text-align: start;
   font-size: 0.9rem;
+  line-height: 1.4;
 }
 
 @media (min-width: 0) and (max-width: 935px) {
