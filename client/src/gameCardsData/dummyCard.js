@@ -5,7 +5,7 @@ const goodMorale = {
   name: 'Dummy',
   type: 'spell',
   subtype: 'instant',
-  featInfo: [],
+  featInfo: ['INSTANT'],
   description: 'Morale',
   cost: 0,
   currentC: 0,

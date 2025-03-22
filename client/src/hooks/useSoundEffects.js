@@ -3,7 +3,7 @@ import SoundEffects from '@assets/battlefield/SoundEffects.mp3';
 
 const useSoundEffects = () => {
   const [play] = useSound(SoundEffects, {
-    volume: 1,
+    volume: 0.4,
     sprite: {
       drum: [0, 1300],
       bow: [2400, 500],

@@ -15,6 +15,10 @@
   cursor: pointer;
 }
 
+.highlighted {
+  box-shadow: 0rem  0rem  0.3rem  0.3rem var(--golden-bright);
+}
+
 .btn:hover {
   transform: scale(1.1);
 }

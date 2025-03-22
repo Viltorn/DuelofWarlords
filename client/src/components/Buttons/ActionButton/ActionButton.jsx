@@ -17,6 +17,7 @@ const ActionButton = ({
   const classes = cn({
     [styles.btn]: true,
     [styles.redBack]: cantAddCard,
+    [styles.highlighted]: !cantAddCard,
   });
 
   return (

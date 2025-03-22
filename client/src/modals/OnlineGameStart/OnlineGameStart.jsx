@@ -5,6 +5,7 @@ import { useFormik } from 'formik';
 import { useNavigate } from 'react-router-dom';
 // import axios from 'axios';
 import LoadSpinner from '@components/LoadSpinner/LoadSpinner.jsx';
+import _ from 'lodash';
 import { startCardsNumber1, startCardsNumber2, minDeckCards } from '../../gameData/gameLimits.js';
 import { actions as modalsActions } from '../../slices/modalsSlice.js';
 import { actions as battleActions } from '../../slices/battleSlice.js';
@@ -87,6 +88,7 @@ const OnlineGameStart = () => {
         const startCardsNum = player === 'player1' ? startCardsNumber1 : startCardsNumber2;
         const playerDeckData = makeInitialDeck(values.playerDeck, player);
         const playerFullDeck = createDeckForPLayer(makeShaffledDeck(playerDeckData), player);
+        const playerHeroWithId = { ...values.playerHero, player, id: _.uniqueId(`${player}_`) };
         const playerHand = player === 'player1' ? playerFullDeck.slice(0, startCardsNum).map((card) => ({ ...card, status: 'hand' }))
           : [...playerFullDeck.slice(0, startCardsNum), dummyCard].map((card) => ({ ...card, status: 'hand' }));
         const playerFinalDeck = playerFullDeck.slice(startCardsNum);
@@ -94,7 +96,7 @@ const OnlineGameStart = () => {
           socket.emit('createRoom', {
             deck: playerFinalDeck,
             hand: playerHand,
-            hero: values.playerHero,
+            hero: playerHeroWithId,
             password: values.password,
             timer: values.timer,
           }, (res) => {
@@ -110,7 +112,7 @@ const OnlineGameStart = () => {
             room: roomId,
             deck: playerFinalDeck,
             hand: playerHand,
-            hero: values.playerHero,
+            hero: playerHeroWithId,
             password: values.password,
           }, (res) => {
             console.log('response:', res);

@@ -64,8 +64,8 @@ const HotSeatMenu = () => {
     onSubmit: (values) => {
       try {
         const { startPoints, startHeroHP } = getSetUpData(Number(values.gameDifficulty));
-        const heroPlayer1 = addPlayerToCard(values.player1Hero, 'player1');
-        const heroPlayer2 = addPlayerToCard(values.player2Hero, 'player2');
+        const heroPlayer1 = { ...addPlayerToCard(values.player1Hero, 'player1'), id: _.uniqueId('player1_') };
+        const heroPlayer2 = { ...addPlayerToCard(values.player2Hero, 'player2'), id: _.uniqueId('player2_') };
         const player1DeckData = makeInitialDeck(values.player1Deck, 'player1');
         const player1FullDeck = createDeckForPLayer(makeShaffledDeck(player1DeckData), 'player1');
         const player1Hand = player1FullDeck.slice(0, startCardsNumber1).map((card) => ({ ...card, status: 'hand' }));
@@ -88,7 +88,7 @@ const HotSeatMenu = () => {
         dispatch(battleActions.setPlayerPoints({ points: 1, player: 'player1' }));
         dispatch(battleActions.setPlayerMaxPoints({ maxPoints: startPoints, player: 'player2' }));
         dispatch(battleActions.setPlayerPoints({ points: startPoints, player: 'player2' }));
-        dispatch(battleActions.changeHP({ health: startHeroHP, cardId: values.player2Hero.id }));
+        dispatch(battleActions.changeHP({ health: startHeroHP, cardId: heroPlayer2.id }));
         dispatch(battleActions.addActionToLog({ round: 1, player: 'player1', id: _.uniqueId() }));
         dispatch(gameActions.setGameMode({ gameMode: values.gameMode }));
         dispatch(modalsActions.openModal({ type: 'startFirstRound', player: 'player1' }));
