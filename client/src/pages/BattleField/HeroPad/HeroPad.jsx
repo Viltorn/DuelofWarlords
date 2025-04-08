@@ -8,9 +8,10 @@ import cn from 'classnames';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import DeckCover from '@assets/battlefield/DeckCover.png';
 import CardCounter from '@assets/battlefield/CardCounter.png';
+// import AbilitiesCanBeUsedArr from '../../../utils/supportFunc/AbilitiesCanBeUsedArr.js';
 import getEnemyPlayer from '../../../utils/supportFunc/getEnemyPlayer.js';
 import Timer from '../../../components/Timer/Timer.jsx';
-import isWarriorReady from '../../../utils/supportFunc/isWarriorReady.js';
+// import isWarriorReady from '../../../utils/supportFunc/isWarriorReady.js';
 import CellCard from '../CellCard/CellCard.jsx';
 import styles from './HeroPad.module.css';
 import AnimationIcon from '../../../components/AnimationIcons/AnimationIcon.jsx';
@@ -37,7 +38,7 @@ const HeroPad = ({ type, player }) => {
   const curPoints = playerPoints.find((data) => data.player === player).points;
   const { maxPoints } = playerPoints.find((data) => data.player === player);
 
-  const cardsCount = useMemo(() => playersHands[getEnemyPlayer(player)].length, [player, playersHands]);
+  const cardsCount = useMemo(() => playersHands[getEnemyPlayer(thisPlayer)].length, [thisPlayer, playersHands]);
   const counterCell = useMemo(() => fieldCells.find((cell) => cell.player === player && cell.type === 'counter'), [fieldCells, player]);
   const cardsInDeck = useMemo(() => playersDecks[player].length, [playersDecks, player]);
   const heroCellId = useMemo(() => (player === 'player1' ? 'hero1' : 'hero2'), [player]);
@@ -46,8 +47,8 @@ const HeroPad = ({ type, player }) => {
   const graveCell = useMemo(() => fieldCells.find((cell) => cell.player === player && cell.type === 'graveyard'), [fieldCells, player]);
   const graveCellId = graveCell.id;
   const graveyardContent = useMemo(() => fieldCards.filter((card) => card.cellId === graveCellId).reverse(), [graveCellId, fieldCards]);
-  const heroCard = heroData.find((card) => card.type === 'hero');
-  const readyHero = useMemo(() => isWarriorReady(heroCard, gameTurn) && heroCard.features.find((feat) => feat.cost <= curPoints), [gameTurn, heroCard, curPoints]);
+  // const heroCard = heroData.find((card) => card.type === 'hero');
+  // const readyHero = useMemo(() => isWarriorReady(heroCard, gameTurn) && AbilitiesCanBeUsedArr(heroCard, curPoints).length > 0, [gameTurn, heroCard, curPoints]);
 
   // const lastCardToShowIdx = heroData.length + 1 - cardsToShowHeroSlot;
   // const heroCellContent = heroData
@@ -76,7 +77,7 @@ const HeroPad = ({ type, player }) => {
   const heroAnima = cn({
     [styles.animationGreen]: heroCell.animation === 'green',
     [styles.animationRed]: heroCell.animation === 'red',
-    [styles.heroCanAct]: heroCell.animation === '' && readyHero && !heroCell.disabled,
+    // [styles.heroCanAct]: heroCell.animation === '' && readyHero && !heroCell.disabled,
   });
 
   const graveCellClasses = cn({

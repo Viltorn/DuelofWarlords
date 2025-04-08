@@ -4,8 +4,9 @@ import { useTranslation } from 'react-i18next';
 import { useFormik } from 'formik';
 // import axios from 'axios';
 import CloseBtn from '@assets/CloseBtn.svg';
+import useFunctionsContext from '../../hooks/useFunctionsContext.js';
+import ContactList from './ContactList.jsx';
 import Message from './Message.jsx';
-import socket from '../../socket.js';
 import styles from './ChatWindow.module.css';
 
 const ChatWindow = ({ toogleChat, type, player }) => {
@@ -15,6 +16,7 @@ const ChatWindow = ({ toogleChat, type, player }) => {
   const {
     messages, name, curRoom,
   } = useSelector((state) => state.gameReducer);
+  const { socket } = useFunctionsContext();
   const { roomMsgs } = useSelector((state) => state.battleReducer);
 
   const formik = useFormik({
@@ -24,6 +26,7 @@ const ChatWindow = ({ toogleChat, type, player }) => {
     onSubmit: async ({ message }) => {
       try {
         setError(false);
+        if (!socket) return;
         socket.emit(type, {
           message, name, room: curRoom, player,
         }, () => {
@@ -54,8 +57,15 @@ const ChatWindow = ({ toogleChat, type, player }) => {
         <h2 className={styles.header}>{t('ChatHeader')}</h2>
       </div>
       <div className={styles.chatBlock}>
-        {type === 'message' && (messages.map((item) => <Message key={item.id} data={item} />))}
-        {type === 'messageRoom' && (roomMsgs.map((item) => <Message key={item.id} data={item} />))}
+
+        {type === 'message' && (
+          <ContactList />
+        )}
+
+        <div className={styles.messagesBlock}>
+          {type === 'message' && (messages.map((item) => <Message key={item.id} data={item} />))}
+          {type === 'messageRoom' && (roomMsgs.map((item) => <Message key={item.id} data={item} />))}
+        </div>
       </div>
       <form className={styles.form} onSubmit={formik.handleSubmit}>
         <fieldset className={styles.fieldset} disabled={formik.isSubmitting}>

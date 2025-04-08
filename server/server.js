@@ -1,6 +1,5 @@
 import express from 'express';
 import path from 'path';
-import redis from './redisInit.js'
 import { fileURLToPath } from 'url';
 import { Server } from "socket.io";
 import { v4 as uuidV4 } from 'uuid';
@@ -51,9 +50,12 @@ io.on('connection', async (socket) => {
   console.log(socket.id, 'connected');
 
   const currentRooms = getRooms(rooms);
+  const { username } = socket.handshake.auth;
+  console.log('username:');
+  console.log(username);
 
   currentRooms.forEach(async (room) => {
-    const roomUser = room.players.find((player) => player.id === socket.id);
+    const roomUser = room.players.find((player) => player.username === username);
 
     if (roomUser) {
       console.log('room user name:')
@@ -69,9 +71,11 @@ io.on('connection', async (socket) => {
     const { username } = data;
     socket.data.username = username;
     const userCount = io.engine.clientsCount;
-    socket.broadcast.emit('clientsCount', userCount); 
-    // io.to(socket.id).emit('getMessages', messages);
-    callback({ id: socket.id, newRooms: getRooms(rooms), messages, players: userCount });
+    socket.broadcast.emit('clientsCount', userCount);
+    const allSockets = await io.fetchSockets();
+    const playersNames = allSockets.map((s) => s.handshake.auth.username);
+    socket.broadcast.emit('playersNames', playersNames);
+    callback({ id: socket.id, newRooms: getRooms(rooms), messages, players: userCount, playersNames });
   });
 
   socket.on('createRoom', async (args, callback) => { // callback here refers to the callback function from the client passed as data
@@ -142,11 +146,11 @@ io.on('connection', async (socket) => {
     callback(roomUpdate);
   });
 
-  socket.on('disconnect', () => {
+  socket.on('disconnect', async () => {
     const gameRooms = getRooms(rooms);
 
     gameRooms.forEach((room) => {
-      const userInRoom = room.players.find((player) => player.id === socket.id);
+      const userInRoom = room.players.find((player) => player.username === username);
 
       if (userInRoom) {
         if (room.players.length < 2 || isRoomEmpty(room.roomId, io)) {
@@ -158,9 +162,13 @@ io.on('connection', async (socket) => {
         socket.to(room.roomId).emit('playerDisconnected', userInRoom);
       }
     });
+    console.log(socket.id, username, 'disconnected');
     io.emit('rooms', getRooms(rooms));
     const userCount = io.engine.clientsCount;
     io.emit('clientsCount', userCount);
+    const allSockets = await io.fetchSockets();
+    const playerNames = allSockets.map((s) => s.handshake.auth.username);
+    io.emit('playersNames', playerNames);
   });
 
   socket.on('makeMove', (data, callback) => {

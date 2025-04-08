@@ -97,9 +97,10 @@ code {
   --red: #850409;
   --light-gray: #ccc8c8;
   --dark-gray: #868686;
-  --green: rgb(44, 138, 44);
+  --green: rgb(19, 145, 19);
   --green-light: rgb(80, 194, 80);
   --red-light: rgb(228, 48, 48);
+  --red-superlight: #ff4f4f;
 
   /* dimensions */
   --hand-card-width: 8rem;

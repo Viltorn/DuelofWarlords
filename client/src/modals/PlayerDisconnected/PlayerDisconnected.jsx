@@ -7,7 +7,7 @@ import { actions as battleActions } from '../../slices/battleSlice.js';
 import { actions as uiActions } from '../../slices/uiSlice.js';
 import PrimaryButton from '../../components/Buttons/PrimaryButton/PrimaryButton.jsx';
 import styles from './PlayerDisconnected.module.css';
-import socket from '../../socket.js';
+import useFunctionsContext from '../../hooks/useFunctionsContext.js';
 
 const PlayerDisconnected = () => {
   const { t } = useTranslation();
@@ -15,10 +15,12 @@ const PlayerDisconnected = () => {
   const { player, roomId } = useSelector((state) => state.modalsReducer);
   const { players, thisPlayer } = useSelector((state) => state.battleReducer);
   const { name } = players[thisPlayer];
+  const { socket } = useFunctionsContext();
+
   const handleClick = () => {
     if (!player) {
       dispatch(gameActions.resetConnection());
-      if (roomId) {
+      if (roomId && socket) {
         socket.emit('closeRoom', { roomId, name });
       }
     }

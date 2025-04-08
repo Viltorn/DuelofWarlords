@@ -6,10 +6,12 @@ import { useTranslation } from 'react-i18next';
 import { useFormik } from 'formik';
 import LoadSpinner from '@components/LoadSpinner/LoadSpinner.jsx';
 // import socket from '../../socket.js';
+import { io } from 'socket.io-client';
 import makeAuth from '../../utils/makeAuth.js';
 import { actions as modalActions } from '../../slices/modalsSlice.js';
 import { actions as gameActions } from '../../slices/gameSlice';
 import { SignUpSchema, LogInSchema } from '../../utils/validation.js';
+import useFunctionsContext from '../../hooks/useFunctionsContext.js';
 import standartDecks from '../../gameCardsData/standardDecks/standartDecks.js';
 import LogInForm from './LogInForm.jsx';
 import SignUpForm from './SignUpFrom.jsx';
@@ -23,6 +25,7 @@ const LoginSignUp = () => {
   const [error, setError] = useState(false);
   const [signUp, setSignUp] = useState(false);
   const [captchaToken, setCaptchaToken] = useState(null);
+  const { setSocket } = useFunctionsContext();
   const token = useMemo(() => getAuthToken(), []);
   const user = useMemo(() => (token ? token.login : ''), [token]);
   const pass = useMemo(() => (token ? token.pass : ''), [token]);
@@ -62,6 +65,13 @@ const LoginSignUp = () => {
         dispatch(gameActions.setDecks({ decks }));
         setAuthToken({ login: username, pass: password });
         handleClose();
+        const socket = io(process.env.REACT_APP_HOST_URL, {
+          autoConnect: true,
+          auth: {
+            username,
+          },
+        });
+        setSocket(socket);
       }
     } catch (err) {
       formik.setSubmitting(false);

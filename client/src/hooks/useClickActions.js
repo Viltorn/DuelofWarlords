@@ -15,7 +15,7 @@ import useDeckBuilderActions from './useDeckBuilderActions.js';
 import useBattleActions from './useBattleActions.js';
 import isAllowedCost from '../utils/supportFunc/isAllowedCost.js';
 import useAnimaActions from './useAnimaActions.js';
-import socket from '../socket.js';
+// import socket from '../socket.js';
 
 const useClickActions = () => {
   const dispatch = useDispatch();
@@ -35,7 +35,7 @@ const useClickActions = () => {
   const { makeAITurn } = useAITurn();
   const { gameMode, curRoom, name } = useSelector((state) => state.gameReducer);
   const {
-    setOpenMenu, actionPerforming, makeGameAction, toogleInfoWindow,
+    setOpenMenu, actionPerforming, makeGameAction, toogleInfoWindow, socket,
   } = useFunctionsContext();
 
   const { changeCardsInDeckBuilder } = useDeckBuilderActions();

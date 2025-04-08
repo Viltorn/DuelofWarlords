@@ -17,13 +17,13 @@ const Card = forwardRef(({
   const { t } = useTranslation();
   const {
     type,
-    health,
     description,
     img,
     name,
     currentP,
     currentDP,
     currentC,
+    currentHP,
     faction,
     school,
     curCharges,
@@ -96,14 +96,14 @@ const Card = forwardRef(({
           <h3 className={cn([styles.warriorDefPow], { [styles.active]: active })}>{defPower}</h3>
           <img src={WarShield} className={cn([styles.shieldIcon], { [styles.active]: active })} alt="shield icon fow health" />
           <img src={CostIcon} className={cn([styles.costIcon], { [styles.active]: active })} alt="card cost" />
-          <h3 className={cn([styles.warriorHealth], { [styles.active]: active })}>{health}</h3>
+          <h3 className={cn([styles.warriorHealth], { [styles.active]: active })}>{currentHP}</h3>
         </>
         )}
-        {type !== 'hero' && (
+        {type !== 'hero' && name !== 'fake' && (
           <h3 className={cn([styles.warriorCost], { [styles.active]: active })}>{currentC}</h3>
         )}
         {type === 'hero' && (
-          <h3 className={cn([styles.heroHealth], { [styles.active]: active })}>{health}</h3>
+          <h3 className={cn([styles.heroHealth], { [styles.active]: active })}>{currentHP}</h3>
         )}
         {curCharges && showCharges
           ? (<h3 className={cn([styles.cardCharges], { [styles.active]: active })}>{curCharges}</h3>) : null}

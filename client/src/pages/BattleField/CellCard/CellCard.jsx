@@ -5,6 +5,7 @@ import cn from 'classnames';
 import styles from './CellCard.module.css';
 import CellCardImage from './CellCardImage.jsx';
 // import CellCardCover from './CellCardCover.jsx';
+import AbilitiesCanBeUsedArr from '../../../utils/supportFunc/AbilitiesCanBeUsedArr.js';
 import isWarriorReady from '../../../utils/supportFunc/isWarriorReady.js';
 import useClickActions from '../../../hooks/useClickActions.js';
 import useAnimaActions from '../../../hooks/useAnimaActions.js';
@@ -51,11 +52,13 @@ const CellCard = forwardRef(({
     showQty,
     defPower,
     power,
+    health,
+    player,
   } = item;
   const cardsFeature = faction ?? school;
 
   const {
-    fieldCells, fieldCards, gameTurn,
+    fieldCells, fieldCards, gameTurn, playerPoints,
   } = useSelector((state) => state.battleReducer);
   const { handleCellCardClick } = useClickActions();
   const { getWarriorPower, warTokensData } = useAnimaActions();
@@ -66,7 +69,9 @@ const CellCard = forwardRef(({
   const invisible = item.type === 'warrior' && isInvisible(currentCell, fieldCards);
   const marginTop = getTopMargin(cellType, cardsShownNum);
   const marginRight = cellType === 'bigSpell' ? calcBigSpellMargin(cardsShownNum) : 0;
+  const curPoints = playerPoints.find((data) => data.player === player).points;
   const readyWarrior = type === 'warrior' ? isWarriorReady(item, gameTurn) : false;
+  const readyHero = type === 'hero' ? isWarriorReady(item, gameTurn) && AbilitiesCanBeUsedArr(item, curPoints).length > 0 : false;
   const cardInfo = {
     cardsFeature,
     currentP,
@@ -82,13 +87,14 @@ const CellCard = forwardRef(({
     showQty,
     defPower,
     power,
+    health,
   };
 
   const cardStyles = cn({
     [styles.contentItem]: cellType !== 'hero',
     [styles.heroCellItem]: cellType === 'hero',
     [styles.makeAttackAnima]: currentCell.animation === 'makeattack',
-    [styles.readyWarrior]: readyWarrior,
+    [styles.readyWarrior]: readyWarrior || readyHero,
     // [styles.turn1]: turn === 1,
     [styles.turn2]: turn === 2,
   });

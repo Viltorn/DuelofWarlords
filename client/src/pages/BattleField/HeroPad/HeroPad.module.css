@@ -150,21 +150,21 @@
 
 @keyframes greenglowing {
   from {
-    box-shadow: 0rem  0rem  0.3rem  0.3rem var(--green);
+    box-shadow: 0rem  0rem  0.5rem  0.5rem var(--green);
   }
 
   to {
-    box-shadow: 0rem  0rem  0.5rem  0.5rem var(--green);
+    box-shadow: 0rem  0rem  0.7rem  0.7rem var(--green);
   }
 }
 
 @keyframes redglowing {
   from {
-    box-shadow: 0rem  0rem  0.3rem  0.3rem var(--red-light);
+    box-shadow: 0rem  0rem  0.5rem  0.5rem var(--red-light);
   }
 
   to {
-    box-shadow: 0rem  0rem  0.5rem  0.5rem var(--red-light);
+    box-shadow: 0rem  0rem  0.7rem  0.7rem var(--red-light);
   }
 }
 

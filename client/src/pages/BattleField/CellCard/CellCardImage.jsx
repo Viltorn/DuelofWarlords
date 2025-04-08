@@ -15,6 +15,7 @@ const CellCardImage = ({
     currentC,
     currentP,
     currentDP,
+    health,
     type,
     img,
     name,
@@ -43,6 +44,12 @@ const CellCardImage = ({
     [styles.redColor]: currentDP < defPower,
   });
 
+  const healthClasses = cn({
+    [styles.warriorHealth]: true,
+    [styles.greenColor]: currentHP > health,
+    // [styles.redColor]: currentHP < health,
+  });
+
   const tokensBlock = cn({
     [styles.tokensBlock]: true,
     [styles.oneColumn]: warTokens?.length <= 3,
@@ -57,7 +64,7 @@ const CellCardImage = ({
         <img src={WarShield} className={styles.shieldIcon} alt="shield icon for health" />
         <h3 className={atkClasses}>{currentP}</h3>
         <h3 className={atkDefClasses}>{currentDP}</h3>
-        <h3 className={styles.warriorHealth}>{currentHP}</h3>
+        <h3 className={healthClasses}>{currentHP}</h3>
       </>
       )}
       {type === 'spell' && (

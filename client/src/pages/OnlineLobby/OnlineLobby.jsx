@@ -1,5 +1,5 @@
 /* eslint-disable max-len */
-import React, { useEffect, useContext } from 'react';
+import React, { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
@@ -10,10 +10,10 @@ import DiscordLogo from '@assets/mainPageIcons/discord.svg';
 import ChatLogo from '@assets/ChatRoom.png';
 import GameRoom from './GameRoom/GameRoom';
 import Chat from '../../components/LobbyChat/Chat.jsx';
-import functionContext from '../../contexts/functionsContext.js';
+import useFunctionsContext from '../../hooks/useFunctionsContext.js';
 import getModal from '../../modals/index.js';
 import styles from './OnlineLobby.module.css';
-import socket from '../../socket.js';
+// import socket from '../../socket.js';
 
 const OnlineLobby = () => {
   const { t } = useTranslation();
@@ -23,7 +23,9 @@ const OnlineLobby = () => {
     rooms, name, onlineCount, socketId,
   } = useSelector((state) => state.gameReducer);
   const { isOpened, type } = useSelector((state) => state.modalsReducer);
-  const { setOpenChat, isOpenChat } = useContext(functionContext);
+  const {
+    setOpenChat, isOpenChat, socket, setSocket,
+  } = useFunctionsContext();
 
   const renderModal = (status, option) => {
     if (!status) {
@@ -44,14 +46,15 @@ const OnlineLobby = () => {
   useEffect(() => {
     socket.emit('updateOnlineData', { username: name }, (data) => {
       const {
-        newRooms, messages, players, id,
+        newRooms, messages, players, id, playersNames,
       } = data;
       dispatch(gameActions.setMessages({ data: messages }));
       dispatch(gameActions.updateRooms({ rooms: newRooms }));
       dispatch(gameActions.setOnlineCount({ count: players }));
+      dispatch(gameActions.setOnlinePlayers(playersNames));
       if (socketId === '') dispatch(gameActions.setSocketId({ socketId: id }));
     });
-  }, [dispatch, name, socketId]);
+  }, [dispatch, name, socketId, socket]);
 
   useEffect(() => {
     const setMessages = (data) => {
@@ -70,10 +73,16 @@ const OnlineLobby = () => {
       dispatch(gameActions.setOnlineCount({ count: players }));
     };
 
+    const updatePlayersNames = (players) => {
+      dispatch(gameActions.setOnlinePlayers(players));
+    };
+
     const updateSocketId = (id) => {
       if (socketId !== id && socketId !== '') {
-        dispatch(gameActions.setSocketId({ socketId: id }));
+        dispatch(gameActions.setSocketId({ socketId: '' }));
         dispatch(gameActions.setLogged({ logged: false }));
+        socket.disconnect();
+        setSocket(null);
         navigate('/choose');
       }
     };
@@ -83,6 +92,7 @@ const OnlineLobby = () => {
     socket.on('getSocketId', updateSocketId);
     socket.on('rooms', updateLobbyRooms);
     socket.on('clientsCount', updatePlayersOnline);
+    socket.on('playersNames', updatePlayersNames);
 
     return () => {
       socket.off('message', addMessage);
@@ -91,7 +101,7 @@ const OnlineLobby = () => {
       socket.off('rooms', updateLobbyRooms);
       socket.off('clientsCount', updatePlayersOnline);
     };
-  }, [dispatch, socketId, navigate]);
+  }, [dispatch, socketId, navigate, socket, setSocket]);
 
   return (
     <div className={styles.container}>

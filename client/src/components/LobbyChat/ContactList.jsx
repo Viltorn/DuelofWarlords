@@ -1,22 +1,23 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
-import Player from './Player.jsx';
-import styles from './enterUsername.module.css';
+import { useTranslation } from 'react-i18next';
+import styles from './ContactList.module.css';
 
-const EnterUsername = () => {
-  const {
-    onlinePlayers,
-  } = useSelector((state) => state.gameReducer);
+const ContactList = () => {
+  const { onlinePlayers } = useSelector((state) => state.gameReducer);
+  const { t } = useTranslation();
 
   return (
     <div className={styles.window}>
-      <ul>
-        {onlinePlayers.map((player) => (
-          <Player key={player.id} username={player.username} />
-        ))}
+      <h2 className={styles.header}>{t('CurrentOnline')}</h2>
+      <ul className={styles.contactList}>
+        {onlinePlayers && (
+          onlinePlayers.map((player) => (
+            <p className={styles.playerName} key={player}>{player}</p>
+          )))}
       </ul>
     </div>
   );
 };
 
-export default EnterUsername;
+export default ContactList;

@@ -8,7 +8,7 @@ import { actions as modalsActions } from '../../slices/modalsSlice.js';
 import { actions as uiActions } from '../../slices/uiSlice.js';
 import PrimaryButton from '../../components/Buttons/PrimaryButton/PrimaryButton.jsx';
 import styles from './PlayerVictory.module.css';
-import socket from '../../socket.js';
+import useFunctionsContext from '../../hooks/useFunctionsContext.js';
 
 const PlayerVictory = () => {
   const { t } = useTranslation();
@@ -17,13 +17,17 @@ const PlayerVictory = () => {
   const { player, roomId } = useSelector((state) => state.modalsReducer);
   const { players, thisPlayer } = useSelector((state) => state.battleReducer);
   const { gameMode } = useSelector((state) => state.gameReducer);
+  const { socket } = useFunctionsContext();
   const { name } = players[player];
   const thisPlayerName = players[thisPlayer].name;
+
   const handleClick = () => {
     dispatch(battleActions.resetState());
     dispatch(uiActions.resetState());
     if (gameMode === 'online') {
-      socket.emit('closeRoom', { roomId, name: thisPlayerName });
+      if (socket) {
+        socket.emit('closeRoom', { roomId, name: thisPlayerName });
+      }
       dispatch(gameActions.setCurrentRoom({ room: '' }));
       navigate('/lobby');
     } else {

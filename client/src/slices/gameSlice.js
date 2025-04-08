@@ -6,6 +6,7 @@ const initialState = {
   curRoom: '',
   name: '',
   onlineCount: 0,
+  onlinePlayers: [],
   socketId: '',
   messages: [],
   logged: false,
@@ -56,6 +57,11 @@ const gameSlice = createSlice({
     setOnlineCount(state, { payload }) {
       const { count } = payload;
       state.onlineCount = count;
+    },
+
+    setOnlinePlayers(state, { payload }) {
+      const playersNames = payload;
+      state.onlinePlayers = playersNames;
     },
 
     addMessage(state, { payload }) {

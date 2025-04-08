@@ -8,7 +8,8 @@ import { actions as gameActions } from '../../slices/gameSlice';
 import gameVersion from '../../gameData/currentGameVer';
 import MenuBtn from '../../components/Buttons/MenuBtn/MenuBtn.jsx';
 import styles from './ChooseGame.module.css';
-import socket from '../../socket.js';
+// import socket from '../../socket.js';
+import useFunctionsContext from '../../hooks/useFunctionsContext.js';
 
 const ChooseGame = () => {
   const { t } = useTranslation();
@@ -18,6 +19,7 @@ const ChooseGame = () => {
   } = useSelector((state) => state.gameReducer);
 
   const { isOpened, type } = useSelector((state) => state.modalsReducer);
+  const { socket, setSocket } = useFunctionsContext();
 
   const loginBtnStyle = cn({
     [styles.loginBtn]: true,
@@ -36,6 +38,9 @@ const ChooseGame = () => {
   const handleLogBtnClick = () => {
     if (logged) {
       dispatch(gameActions.setLogged({ logged: false }));
+      socket.disconnect();
+      setSocket(null);
+      dispatch(gameActions.setSocketId({ socketId: '' }));
     }
     if (!logged) {
       dispatch(gameActions.setUserType({ userType: '' }));
@@ -43,13 +48,15 @@ const ChooseGame = () => {
   };
 
   useEffect(() => {
-    socket.emit('updateOnlineData', { username: name }, (data) => {
-      const {
-        id,
-      } = data;
-      dispatch(gameActions.setSocketId({ socketId: id }));
-    });
-  }, [dispatch, name]);
+    if (socket) {
+      socket.emit('updateOnlineData', { username: name }, (data) => {
+        const {
+          id,
+        } = data;
+        dispatch(gameActions.setSocketId({ socketId: id }));
+      });
+    }
+  }, [dispatch, name, socket]);
 
   useEffect(() => {
     if (!logged && userType !== 'guest') {
@@ -58,18 +65,20 @@ const ChooseGame = () => {
 
     const updateSockId = (id) => {
       if (socketId !== id && socketId !== '') {
-        dispatch(gameActions.setSocketId({ socketId: id }));
+        dispatch(gameActions.setSocketId({ socketId: '' }));
         dispatch(gameActions.setLogged({ logged: false }));
+        socket.disconnect();
+        setSocket(null);
       }
     };
 
-    socket.on('getSocketId', updateSockId);
+    socket?.on('getSocketId', updateSockId);
     return () => {
-      socket.off('getSocketId', updateSockId);
+      socket?.off('getSocketId', updateSockId);
       // socket.off('rooms', updateOnlineRooms);
       // socket.off('clientsCount', updateCurOnline);
     };
-  }, [dispatch, socketId, logged, userType]);
+  }, [dispatch, socketId, logged, userType, socket, setSocket]);
 
   return (
     <div className={styles.container}>

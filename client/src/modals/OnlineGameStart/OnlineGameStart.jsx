@@ -16,13 +16,13 @@ import cardsData from '../../gameCardsData/index.js';
 import makeInitialDeck from '../../utils/makeInitialDeck.js';
 import PrimaryButton from '../../components/Buttons/PrimaryButton/PrimaryButton.jsx';
 import timerOptions from '../../gameData/timerOptions.js';
-import socket from '../../socket.js';
 import styles from './OnlineGameStart.module.css';
 import MenuSlider from '../../components/MenuSlider/MenuSlider.jsx';
 import makeShaffledDeck from '../../utils/makeShaffledDeck.js';
 import createDeckForPLayer, { addPlayerToCard } from '../../utils/makeDeckForPlayer.js';
 import dummyCard from '../../gameCardsData/dummyCard.js';
 import { passwordYup } from '../../utils/validation.js';
+import useFunctionsContext from '../../hooks/useFunctionsContext.js';
 
 const TimerOption = ({ value, min }) => (
   <option value={value}>
@@ -39,6 +39,7 @@ const OnlineGameStart = () => {
   const inputEl = useRef();
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { socket } = useFunctionsContext();
 
   const {
     roomId, name, password, data,

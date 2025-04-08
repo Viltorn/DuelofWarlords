@@ -15,7 +15,6 @@ import getProtectionVal from '../utils/supportFunc/getProtectionVal.js';
 import useAnimaActions from '../hooks/useAnimaActions.js';
 import isAttachFeatureAllowed from '../utils/supportFunc/isAttachFeatureAllowed.js';
 import useUIActions from '../hooks/useUIActions.js';
-import socket from '../socket.js';
 import getEnemyPlayer from '../utils/supportFunc/getEnemyPlayer.js';
 import useSoundEffects from '../hooks/useSoundEffects.js';
 
@@ -61,6 +60,7 @@ export const FunctionProvider = ({ children }) => {
   const [isOpenChat, setOpenChat] = useState(false);
   const [isOpenInfo, toogleInfoWindow] = useState(false);
   const [actionPerforming, setActionPerforming] = useState(false);
+  const [socket, setSocket] = useState(null);
 
   // useEffect(() => {
   //   window.addEventListener('beforeinstallprompt', (event) => {
@@ -532,6 +532,7 @@ export const FunctionProvider = ({ children }) => {
       actionPerforming,
       makeMove,
       socket,
+      setSocket,
     }}
     >
       {children}
