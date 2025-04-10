@@ -1,11 +1,25 @@
 .sender {
-  font-size: 20px;
+  font-size: 18px;
   color: var(--light-gray);
 }
 
+.youSender {
+  color: var(--dark-red-color);
+}
+
+.otherSender {
+  color: var(--dark-golden);
+}
+
 .msg {
-  font-size: 20px;
+  font-size: 18px;
   color: var(--light-gray);
+  white-space: normal;
+  overflow-wrap: break-word;
+}
+
+.msgBlock {
+  width: 100%;
 }
 
 

@@ -38,7 +38,9 @@ const HeroPad = ({ type, player }) => {
   const curPoints = playerPoints.find((data) => data.player === player).points;
   const { maxPoints } = playerPoints.find((data) => data.player === player);
 
-  const cardsCount = useMemo(() => playersHands[getEnemyPlayer(thisPlayer)].length, [thisPlayer, playersHands]);
+  const handCardsCount = useMemo(() => playersHands[getEnemyPlayer(thisPlayer)].length, [thisPlayer, playersHands]);
+  const reactioCardsCount = useMemo(() => fieldCards.filter((card) => card.type === 'reaction' && card.status === 'field' && card.player === getEnemyPlayer(thisPlayer)).length, [thisPlayer, fieldCards]);
+  const cardsCount = useMemo(() => handCardsCount + reactioCardsCount, [handCardsCount, reactioCardsCount]);
   const counterCell = useMemo(() => fieldCells.find((cell) => cell.player === player && cell.type === 'counter'), [fieldCells, player]);
   const cardsInDeck = useMemo(() => playersDecks[player].length, [playersDecks, player]);
   const heroCellId = useMemo(() => (player === 'player1' ? 'hero1' : 'hero2'), [player]);

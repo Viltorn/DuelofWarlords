@@ -143,7 +143,6 @@ const Battlefield = () => {
     };
 
     const addRoomMessage = (data) => {
-      console.log(data);
       dispatch(battleActions.addMessage({ data }));
     };
 

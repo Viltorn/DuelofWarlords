@@ -1,14 +1,17 @@
 .window {
   position: absolute;
+  width: 35rem;
+  min-width: 350px;
   top: 0;
   right: 0;
   height: 100vh;
   display: flex;
-  flex-direction: wrap;
+  flex-direction: column;
   align-items: center;
   flex-wrap: nowrap;
   background-color: var(--dark-color);
   background-image: url('@assets/BrownBack.png');
+  background-size: cover;
   padding: 2rem;
   border: 2px ridge var(--golden);
   margin: auto auto; /* 15% from the top and centered */
@@ -35,3 +38,9 @@
   transform: translateX(-100%);
 }
 
+@media (max-width: 500px) {
+  .window {
+    width: 100vw;
+  }
+
+}

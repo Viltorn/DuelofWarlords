@@ -18,7 +18,6 @@ const Timer = ({ thisPlayer }) => {
   const timerRef = useRef(null);
   const [m, s] = curTime ?? [0, 0];
   const dispatch = useDispatch();
-  console.log('timer', m, s);
 
   const tick = () => {
     if (isTimerOver || isTimerPaused) return;
@@ -47,7 +46,6 @@ const Timer = ({ thisPlayer }) => {
 
   useEffect(() => {
     if (isTimerOver) {
-      console.log('end turn');
       hadleEndTurnClick();
     }
   }, [isTimerOver, hadleEndTurnClick]);

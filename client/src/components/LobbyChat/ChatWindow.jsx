@@ -63,8 +63,8 @@ const ChatWindow = ({ toogleChat, type, player }) => {
         )}
 
         <div className={styles.messagesBlock}>
-          {type === 'message' && (messages.map((item) => <Message key={item.id} data={item} />))}
-          {type === 'messageRoom' && (roomMsgs.map((item) => <Message key={item.id} data={item} />))}
+          {type === 'message' && (messages.map((item) => <Message key={item.id} data={item} username={name} />))}
+          {type === 'messageRoom' && (roomMsgs.map((item) => <Message key={item.id} data={item} username={name} />))}
         </div>
       </div>
       <form className={styles.form} onSubmit={formik.handleSubmit}>

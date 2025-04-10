@@ -1,6 +1,6 @@
 .window {
-  width: 6.5rem;
-  min-width: 100px;
+  width: 30%;
+  min-width: 50px;
   display: flex;
   margin: 0;
   padding: 0;
@@ -34,7 +34,6 @@
 }
 
 .playerName {
-  overflow: hidden;
   border: 2px solid var(--dark-golden);
   width: 100%;
   margin: 0;
@@ -42,4 +41,13 @@
   border-radius: 5px;
   color: var(--light-brown-color);
   font-size: 16px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+@media (max-width: 933px) {
+  /* .window {
+    width: 4rem;
+  } */
 }

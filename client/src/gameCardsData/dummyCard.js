@@ -1,4 +1,4 @@
-// import _ from 'lodash';
+import _ from 'lodash';
 import GoodMorale from '../assets/GoodMorale.png';
 
 const goodMorale = {
@@ -10,7 +10,7 @@ const goodMorale = {
   cost: 0,
   currentC: 0,
   faction: 'Castle',
-  id: '',
+  id: _.uniqueId('spell_'),
   attachments: [],
   features: [{
     attach: false, type: 'good', aim: ['warrior'], name: 'increasePoints', value: 1, condition: 'insteadatk', cost: 0, description: 'increasePoints',

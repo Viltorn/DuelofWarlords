@@ -110,6 +110,7 @@ export default {
     Timer: 'Таймер хода',
     Round: 'Раунд',
     CombatLog: 'Лог боя',
+    You: 'Вы',
 
     tutorialTips: {
       Tips: 'ПОДСКАЗКИ',
